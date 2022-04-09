@@ -223,7 +223,7 @@ async def warn(ctx:SlashContext, user, reason):
     target=client.get_user(user.id)
     try:
         await target.send(embed=discord.Embed(title=f':warning: You\'ve been warned in {ctx.guild} ({ctx.guild.id})', description=f'Reason {reason}'))
-        await ctx.send(embed=discord.Embed(description=f'{user} has been warned. I couldn\'t DM them, but their warning is logged.'))
+        await ctx.send(embed=discord.Embed(description=f'{user} has been warned.'))
     except:
         await ctx.send(embed=discord.Embed(description=f'{user} has been warned. I couldn\'t DM them, but their warning is logged.'))
 
