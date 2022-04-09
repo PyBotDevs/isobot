@@ -1,3 +1,7 @@
+<p align="center">
+  <img width="500px" src="https://github.com/notsniped/stock-webpage/blob/main/assets/Stock%20(Dark).jpg?raw=true">
+</p>
+
 # Stock, the future of isobot.
 Stock is a project developed by the PBD organization, as a version of isobot which is sharper than beta.
 
@@ -10,7 +14,7 @@ I wanted to make brand new, cutting-edge features for isobot. But in the process
 Well, you can make pull requests for new features, and submit current issues, which would help improve the development process!
 
 ### When can I expect a fully-made version?
-Never- I mean, only when i die
+Never- I mean, yes
 
 ### When the project's development is complete, what will happen?
 I don't expect the project development to ever complete. But at some point, we might merge these changes with [isobot](https://github.com/PyBotDevs/isobot-python) sooner or later.
