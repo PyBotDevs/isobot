@@ -62,14 +62,14 @@ async def on_ready():
 
 @client.event
 async def on_message(ctx):
-    if (str(ctx.author.id) in currency['cash']):
+    if (str(ctx.author.id) in currency['wallet']):
         pass
     else:
-        currency['cash'][str(ctx.author.id)] = 5000
-    if (str(ctx.author.id) in currency['crypto']):
+        currency['wallet'][str(ctx.author.id)] = 5000
+    if (str(ctx.author.id) in currency['bank']):
         pass
     else:
-        currency['crypto'][str(ctx.author.id)] = 0
+        currency['bank'][str(ctx.author.id)] = 0
     if str(ctx.guild.id) in warnings:
         pass
     else:
@@ -154,14 +154,14 @@ async def balance(ctx:SlashContext, user=None):
     try:
         if user == None:
             e = discord.Embed(title=f'{ctx.author.display_name}\'s balance', color=color)
-            e.add_field(name='Cash', value=currency['cash'][str(ctx.author.id)], inline=True)
-            e.add_field(name='Crypto-currency', value=f'{currency["crypto"][str(ctx.author.id)]} ISOcoins', inline=True)
+            e.add_field(name='Cash in wallet', value=f'{currency["wallet"][str(ctx.author.id)]} coins', inline=True)
+            e.add_field(name='Cash in bank account', value=f'{currency["bank"][str(ctx.author.id)]} coins', inline=True)
             await ctx.send(embed=e)
         else:
             try:
                 e = discord.Embed(title=f'{user.display_name}\'s balance', color=color)
-                e.add_field(name='Cash', value=currency['cash'][str(user.id)], inline=True)
-                e.add_field(name='Crypto-currency', value=f'{currency["crypto"][str(user.id)]} ISOcoins', inline=True)
+                e.add_field(name='Cash in wallet', value=f'{currency["wallet"][str(user.id)]} coins', inline=True)
+                e.add_field(name='Cash in bank account', value=f'{currency["bank"][str(user.id)]} coins', inline=True)
                 await ctx.send(embed=e)
             except:
                 await ctx.reply('Looks like that user is not indexed in our server. Try again later.')
@@ -234,7 +234,7 @@ async def warn(ctx:SlashContext, user, reason):
         create_option(name='user', description='The person you want to remove warns from', option_type=6, required=True)
     ]
 )
-async def warn_clear(ctx:SlashContext, user):
+async def warn(ctx:SlashContext, user):
     if not ctx.author.guild_permissions.manage_messages:
         raise(MissingPermissions)
     warnings[str(ctx.guild.id)][str(user.id)] = []
