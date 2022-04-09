@@ -262,6 +262,7 @@ async def deposit(ctx:SlashContext, amount=None):
     currency["wallet"][str(user.id)] -= int(amount)
     currency["bank"][str(user.id)] += int(amount)
     await ctx.send(f'You deposited `{amount}` coins to your bank account.')
+    save()
     
 
 # Initialization
