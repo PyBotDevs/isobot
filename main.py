@@ -241,5 +241,28 @@ async def warn(ctx:SlashContext, user):
     save()
     await ctx.send(embed=discord.Embed(description=f'All warnings have been cleared for {user}.'))
 
+@slash.slash(
+    name='deposit',
+    description='Deposits a specified amount of cash into the bank.',
+    options=[
+        create_option(name='amount', description='Specify an amount to deposit (leave blank for max)', option_type=4, required=False)
+    ]
+)
+async def deposit(ctx:SlashContext, amount=None):
+    if amount == None:
+        amount = currency["wallet"][str(user.id)]
+    elif amount <= 0:
+        await ctx.reply('The amount you want to deposit must be more than `0` coins!', hidden=True)
+        return
+    elif amount > currency["wallet"][str(user.id)]:
+        await ctx.reply('The amount you want to deposit must not be more than what you have in your wallet!', hidden=True)
+        return
+    else:
+        pass
+    currency["wallet"][str(user.id)] -= int(amount)
+    currency["bank"][str(user.id)] += int(amount)
+    await ctx.send(f'You deposited `{amount}` coins to your bank account.')
+    
+
 # Initialization
 client.run(api.auth.token)
