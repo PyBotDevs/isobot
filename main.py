@@ -258,6 +258,29 @@ async def deposit(ctx:SlashContext, amount=None):
     currency["wallet"][str(user.id)] -= int(amount)
     currency["bank"][str(user.id)] += int(amount)
     await ctx.send(f'You deposited `{amount}` coins to your bank account.')
+   
+@slash.slash(
+    name='withdraw',
+    description='Withdraws a specified amount of cash from the bank.',
+    options=[
+        create_option(name='amount', description='Specify an amount to withdraw (leave blank for max)', option_type=4, required=False)
+    ]
+)
+async def withdraw(ctx:SlashContext, amount=None):
+    if amount == None:
+        amount = currency["bank"][str(user.id)]
+    elif amount <= 0:
+        await ctx.reply('The amount you want to withdraw must be more than `0` coins!', hidden=True)
+        return
+    elif amount > currency["bank"][str(user.id)]:
+        await ctx.reply('The amount you want to withdraw must not be more than what you have in your bank account!', hidden=True)
+        return
+    else:
+        pass
+    currency["wallet"][str(user.id)] += int(amount)
+    currency["bank"][str(user.id)] -= int(amount)
+    await ctx.send(f'You withdrew `{amount}` coins from your bank account.')
+    save()
 
 @slash.slash(
     name='daily',
