@@ -312,5 +312,15 @@ async def weekly(ctx:SlashContext):
     save()
     await ctx.reply(f'You claimed 45000 coins from this weekly. Check back in 7 days for your next one!')
 
+@slash.slash(
+    name='monthly',
+    description='Claim your monthly (every 31 days)'
+)
+@commands.cooldown(1, 31*(24*(60*60)), commands.BucketType.user)
+async def monthly(ctx:SlashContext):
+    currency['wallet'][str(ctx.author.id)] += 1000000
+    save()
+    await ctx.reply(f'You claimed 1000000 coins from this weekly. Check back in 1 month for your next one!')
+
 # Initialization
 client.run(api.auth.token)
