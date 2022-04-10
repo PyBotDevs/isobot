@@ -336,5 +336,19 @@ async def beg(ctx:SlashContext):
     else:
         await ctx.send(embed=discord.Embed(title='A random person', description='"lol no get a life"'))
 
+@slash.slash(
+    name='scout', 
+    description='Scout your area for coins'
+)
+async def scout(ctx:SlashContext):
+    chance:int = random.randint(1, 100)
+    if (chance <= 90):
+        x:int = random.randint(550, 2000)
+        currency[wallet][str(ctx.author.id)] += x
+        save()
+        await ctx.send(embed=discord.Embed(title='What you found', description=f'You searched your area and found {x} coins!'))
+    else:
+        await ctx.send(embed=discord.Embed(title='What you found', description='Unfortunately no coins for you :('))
+
 # Initialization
 client.run(api.auth.token)
