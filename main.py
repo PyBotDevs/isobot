@@ -255,6 +255,7 @@ async def deposit(ctx:SlashContext, amount=None):
     currency["wallet"][str(user.id)] -= int(amount)
     currency["bank"][str(user.id)] += int(amount)
     await ctx.send(f'You deposited `{amount}` coins to your bank account.')
+    save()
 
 @slash.slash(
     name='withdraw',
@@ -277,6 +278,7 @@ async def withdraw(ctx:SlashContext, amount=None):
     currency["wallet"][str(user.id)] += int(amount)
     currency["bank"][str(user.id)] -= int(amount)
     await ctx.send(f'You withdrew `{amount}` coins from your bank account.')
+    save()
 
 @slash.slash(
     name='work',
