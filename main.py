@@ -1,15 +1,12 @@
 #Imports
 import discord
-from discord.ext import commands
+from discord.ext import commands, tasks
 from discord.ext.commands import *
-from discord.ext import tasks
-import os
-import os.path
+import os, os.path
 import json
-import time
+import time, datetime
 import asyncio
 import random
-import datetime
 from discord_slash import SlashCommand, SlashContext
 from discord_slash.utils.manage_commands import create_choice, create_option
 import api.auth
