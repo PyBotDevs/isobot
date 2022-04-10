@@ -260,6 +260,39 @@ async def deposit(ctx:SlashContext, amount=None):
     await ctx.send(f'You deposited `{amount}` coins to your bank account.')
 
 @slash.slash(
+    name='withdraw',
+    description='Withdraws a specified amount of cash from the bank.',
+    options=[
+        create_option(name='amount', description='Specify an amount to withdraw (leave blank for max)', option_type=4, required=False)
+    ]
+)
+async def withdraw(ctx:SlashContext, amount=None):
+    if amount == None:
+        amount = currency["bank"][str(user.id)]
+    elif amount <= 0:
+        await ctx.reply('The amount you want to withdraw must be more than `0` coins!', hidden=True)
+        return
+    elif amount > currency["bank"][str(user.id)]:
+        await ctx.reply('The amount you want to withdraw must not be more than what you have in your bank account!', hidden=True)
+        return
+    else:
+        pass
+    currency["wallet"][str(user.id)] += int(amount)
+    currency["bank"][str(user.id)] -= int(amount)
+    await ctx.send(f'You withdrew `{amount}` coins from your bank account.')
+
+@slash.slash(
+    name='work',
+    description='Work for a 30-minute shift and earn cash.'
+)
+@commands.cooldown(1, (30*60), commands.BucketType.user)
+async def work(ctx:SlashContext):
+    i = random.randint(10000, 20000)
+    currency['wallet'][str(ctx.author.id)] += i
+    save()
+    await ctx.send(f'{ctx.author.mention} worked for a 30-minute shift and earned {i} coins.')
+
+@slash.slash(
     name='daily',
     description='Claim your daily (every 24 hours)'
 )
@@ -268,6 +301,16 @@ async def daily(ctx:SlashContext):
     currency['wallet'][str(ctx.author.id)] += 10000
     save()
     await ctx.reply(f'You claimed 10000 coins from this daily. Check back in 24 hours for your next one!')
+
+@slash.slash(
+    name='weekly',
+    description='Claim your weekly (every 7 days)'
+)
+@commands.cooldown(1, 7*(24*(60*60)), commands.BucketType.user)
+async def weekly(ctx:SlashContext):
+    currency['wallet'][str(ctx.author.id)] += 45000
+    save()
+    await ctx.reply(f'You claimed 45000 coins from this weekly. Check back in 7 days for your next one!')
 
 # Initialization
 client.run(api.auth.token)
