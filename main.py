@@ -143,10 +143,6 @@ async def on_command_error(ctx, error):
             print(f'[{current_time}] Ignoring exception at {colors.cyan}BadBoolArgument{colors.end}.')
         else:
             pass
-    else:
-        report_target = client.get_user(738290097170153472)
-        report_target.send(f'An unhandled exception occured during command execution: {error}')
-        await ctx.send(f'An unhandled exception occured: {error}. This has automatically been reported to the devs.')
 
 #Commands
 @slash.slash(name='balance', description='Shows your balance, or another user\'s balance.', options=[create_option(name='user', description='The user\'s balance you want to see.', option_type=6, required=False)])
@@ -242,6 +238,28 @@ async def warn(ctx:SlashContext, user):
     await ctx.send(embed=discord.Embed(description=f'All warnings have been cleared for {user}.'))
 
 @slash.slash(
+    name='deposit',
+    description='Deposits a specified amount of cash into the bank.',
+    options=[
+        create_option(name='amount', description='Specify an amount to deposit (leave blank for max)', option_type=4, required=False)
+    ]
+)
+async def deposit(ctx:SlashContext, amount=None):
+    if amount == None:
+        amount = currency["wallet"][str(user.id)]
+    elif amount <= 0:
+        await ctx.reply('The amount you want to deposit must be more than `0` coins!', hidden=True)
+        return
+    elif amount > currency["wallet"][str(user.id)]:
+        await ctx.reply('The amount you want to deposit must not be more than what you have in your wallet!', hidden=True)
+        return
+    else:
+        pass
+    currency["wallet"][str(user.id)] -= int(amount)
+    currency["bank"][str(user.id)] += int(amount)
+    await ctx.send(f'You deposited `{amount}` coins to your bank account.')
+   
+@slash.slash(
     name='withdraw',
     description='Withdraws a specified amount of cash from the bank.',
     options=[
@@ -263,7 +281,36 @@ async def withdraw(ctx:SlashContext, amount=None):
     currency["bank"][str(user.id)] -= int(amount)
     await ctx.send(f'You withdrew `{amount}` coins from your bank account.')
     save()
-    
+
+@slash.slash(
+    name='daily',
+    description='Claim your daily (every 24 hours)'
+)
+@commands.cooldown(1, 24*(60*60), commands.BucketType.user)
+async def daily(ctx:SlashContext):
+    currency['wallet'][str(ctx.author.id)] += 10000
+    save()
+    await ctx.reply(f'You claimed 10000 coins from this daily. Check back in 24 hours for your next one!')
+
+@slash.slash(
+    name='weekly',
+    description='Claim your weekly (every 7 days)'
+)
+@commands.cooldown(1, 7*(24*(60*60)), commands.BucketType.user)
+async def weekly(ctx:SlashContext):
+    currency['wallet'][str(ctx.author.id)] += 45000
+    save()
+    await ctx.reply(f'You claimed 45000 coins from this weekly. Check back in 7 days for your next one!')
+
+@slash.slash(
+    name='monthly',
+    description='Claim your monthly (every 31 days)'
+)
+@commands.cooldown(1, 31*(24*(60*60)), commands.BucketType.user)
+async def monthly(ctx:SlashContext):
+    currency['wallet'][str(ctx.author.id)] += 1000000
+    save()
+    await ctx.reply(f'You claimed 1000000 coins from this weekly. Check back in 1 month for your next one!')
 
 # Initialization
 client.run(api.auth.token)
