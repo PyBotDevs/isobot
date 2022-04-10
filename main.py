@@ -1,12 +1,15 @@
 #Imports
 import discord
-from discord.ext import commands, tasks
+from discord.ext import commands
 from discord.ext.commands import *
-import os, os.path
+from discord.ext import tasks
+import os
+import os.path
 import json
-import time, datetime
+import time
 import asyncio
 import random
+import datetime
 from discord_slash import SlashCommand, SlashContext
 from discord_slash.utils.manage_commands import create_choice, create_option
 import api.auth
@@ -255,7 +258,7 @@ async def deposit(ctx:SlashContext, amount=None):
     currency["wallet"][str(user.id)] -= int(amount)
     currency["bank"][str(user.id)] += int(amount)
     await ctx.send(f'You deposited `{amount}` coins to your bank account.')
-   
+
 @slash.slash(
     name='withdraw',
     description='Withdraws a specified amount of cash from the bank.',
@@ -277,7 +280,6 @@ async def withdraw(ctx:SlashContext, amount=None):
     currency["wallet"][str(user.id)] += int(amount)
     currency["bank"][str(user.id)] -= int(amount)
     await ctx.send(f'You withdrew `{amount}` coins from your bank account.')
-    save()
 
 @slash.slash(
     name='work',
@@ -319,6 +321,21 @@ async def monthly(ctx:SlashContext):
     currency['wallet'][str(ctx.author.id)] += 1000000
     save()
     await ctx.reply(f'You claimed 1000000 coins from this weekly. Check back in 1 month for your next one!')
+
+@slash.slash(
+    name='beg', 
+    description='Beg for some quick cash'
+)
+@commands.cooldown(1, 15, commands.BucketType.user)
+async def beg(ctx:SlashContext):
+    chance:int = random.randint(1, 100)
+    if (chance >= 50):
+        x:int = random.randint(10, 100)
+        currency[wallet][str(ctx.author.id)] += x
+        save()
+        await ctx.send(embed=discord.Embed(title='A random person', description=f'"Oh you poor beggar, here\'s {x} for you"'))
+    else:
+        await ctx.send(embed=discord.Embed(title='A random person', description='"lol no get a life"'))
 
 # Initialization
 client.run(api.auth.token)
