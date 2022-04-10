@@ -241,5 +241,16 @@ async def warn(ctx:SlashContext, user):
     save()
     await ctx.send(embed=discord.Embed(description=f'All warnings have been cleared for {user}.'))
 
+@slash.slash(
+    name='work',
+    description='Work for a 30-minute shift and earn cash.'
+)
+@commands.cooldown(1, (30*60), commands.BucketType.user)
+async def work(ctx:SlashContext):
+    i = random.randint(10000, 20000)
+    currency['wallet'][str(ctx.author.id)] += i
+    save()
+    await ctx.send(f'{ctx.author.mention} worked for a 30-minute shift and earned {i} coins.')
+
 # Initialization
 client.run(api.auth.token)
