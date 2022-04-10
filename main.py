@@ -143,10 +143,6 @@ async def on_command_error(ctx, error):
             print(f'[{current_time}] Ignoring exception at {colors.cyan}BadBoolArgument{colors.end}.')
         else:
             pass
-    else:
-        report_target = client.get_user(738290097170153472)
-        report_target.send(f'An unhandled exception occured during command execution: {error}')
-        await ctx.send(f'An unhandled exception occured: {error}. This has automatically been reported to the devs.')
 
 #Commands
 @slash.slash(name='balance', description='Shows your balance, or another user\'s balance.', options=[create_option(name='user', description='The user\'s balance you want to see.', option_type=6, required=False)])
@@ -262,8 +258,16 @@ async def deposit(ctx:SlashContext, amount=None):
     currency["wallet"][str(user.id)] -= int(amount)
     currency["bank"][str(user.id)] += int(amount)
     await ctx.send(f'You deposited `{amount}` coins to your bank account.')
+
+@slash.slash(
+    name='daily',
+    description='Claim your daily (every 24 hours)'
+)
+@commands.cooldown(1, 24*(60*60), commands.BucketType.user)
+async def daily(ctx:SlashContext):
+    currency['wallet'][str(ctx.author.id)] += 10000
     save()
-    
+    await ctx.reply(f'You claimed 10000 coins from this daily. Check back in 24 hours for your next one!')
 
 # Initialization
 client.run(api.auth.token)
