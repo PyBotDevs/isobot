@@ -356,5 +356,26 @@ async def scout(ctx:SlashContext):
     else:
         await ctx.send(embed=discord.Embed(title='What you found', description='Unfortunately no coins for you :('))
 
+@slash.slash(
+    name='give',
+    description='Lets you give any amount of cash to someone else',
+    options=[
+        create_option(name='user', description='Who do you want to give cash to?', option_type=6, required=True),
+        create_option(name='amount', description='How much do you want to give?', option_type=4, required=True)
+    ]
+)
+async def give(ctx:SlashContext, user:discord.User, amount:int):
+    if (amount <= 0):
+        await ctx.send('The amount you want to give must be greater than `0` coins!', hidden=True)
+        return
+    if (amount > int(currency['wallet'][str(ctx.author.id)])):
+        await ctx.send('You don\'t have enough coins in your wallet to do this.', hidden=True)
+        return
+    else:
+        currency['wallet'][str(ctx.author.id)] -= amount
+        currency['wallet'][str(user.id)] += amount
+        save()
+        await ctx.send(f':gift: {ctx.author.mention} just gifted {amount} coins to {user.display_name}!')
+
 # Initialization
 client.run(api.auth.token)
