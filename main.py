@@ -244,6 +244,9 @@ async def warn(ctx:SlashContext, user):
 async def deposit(ctx:SlashContext, amount=None):
     if amount == None:
         amount = currency["wallet"][str(ctx.author.id)]
+    elif currency['bank'] == 0:
+        await ctx.reply('You don\'t have anything in your bank account.', hidden=True)
+        return
     elif amount <= 0:
         await ctx.reply('The amount you want to deposit must be more than `0` coins!', hidden=True)
         return
@@ -267,6 +270,9 @@ async def deposit(ctx:SlashContext, amount=None):
 async def withdraw(ctx:SlashContext, amount=None):
     if amount == None:
         amount = currency["bank"][str(ctx.author.id)]
+    elif currency['bank'] == 0:
+        await ctx.reply('You don\'t have anything in your bank account.', hidden=True)
+        return
     elif amount <= 0:
         await ctx.reply('The amount you want to withdraw must be more than `0` coins!', hidden=True)
         return
