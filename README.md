@@ -8,7 +8,7 @@
 
 ![Stars](https://img.shields.io/github/stars/notsniped/isobot-lazer?style=social)
 
-Isobot lazer is a brand-new project developed by the PBD organization, as a version of isobot which is sharper than beta.
+Isobot lazer is a brand-new project developed by the [iso.dev team](https://github.com/PyBotDevs), as a version of isobot which is sharper than beta.
 
 This open-source project is supposed to represent what the next-generation of isobot will look like, and how it will progress into the future.
 
