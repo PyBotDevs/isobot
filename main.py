@@ -243,17 +243,17 @@ async def warn(ctx:SlashContext, user):
 )
 async def deposit(ctx:SlashContext, amount=None):
     if amount == None:
-        amount = currency["wallet"][str(user.id)]
+        amount = currency["wallet"][str(ctx.author.id)]
     elif amount <= 0:
         await ctx.reply('The amount you want to deposit must be more than `0` coins!', hidden=True)
         return
-    elif amount > currency["wallet"][str(user.id)]:
+    elif amount > currency["wallet"][str(ctx.author.id)]:
         await ctx.reply('The amount you want to deposit must not be more than what you have in your wallet!', hidden=True)
         return
     else:
         pass
-    currency["wallet"][str(user.id)] -= int(amount)
-    currency["bank"][str(user.id)] += int(amount)
+    currency["wallet"][str(ctx.author.id)] -= int(amount)
+    currency["bank"][str(ctx.author.id)] += int(amount)
     await ctx.send(f'You deposited `{amount}` coins to your bank account.')
     save()
 
@@ -266,17 +266,17 @@ async def deposit(ctx:SlashContext, amount=None):
 )
 async def withdraw(ctx:SlashContext, amount=None):
     if amount == None:
-        amount = currency["bank"][str(user.id)]
+        amount = currency["bank"][str(ctx.author.id)]
     elif amount <= 0:
         await ctx.reply('The amount you want to withdraw must be more than `0` coins!', hidden=True)
         return
-    elif amount > currency["bank"][str(user.id)]:
+    elif amount > currency["bank"][str(ctx.author.id)]:
         await ctx.reply('The amount you want to withdraw must not be more than what you have in your bank account!', hidden=True)
         return
     else:
         pass
-    currency["wallet"][str(user.id)] += int(amount)
-    currency["bank"][str(user.id)] -= int(amount)
+    currency["wallet"][str(ctx.author.id)] += int(amount)
+    currency["bank"][str(ctx.author.id)] -= int(amount)
     await ctx.send(f'You withdrew `{amount}` coins from your bank account.')
     save()
 
