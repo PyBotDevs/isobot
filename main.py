@@ -336,7 +336,7 @@ async def beg(ctx:SlashContext):
     chance:int = random.randint(1, 100)
     if (chance >= 50):
         x:int = random.randint(10, 100)
-        currency[wallet][str(ctx.author.id)] += x
+        currency["wallet"][str(ctx.author.id)] += x
         save()
         await ctx.send(embed=discord.Embed(title='A random person', description=f'"Oh you poor beggar, here\'s {x} for you"'))
     else:
@@ -350,7 +350,7 @@ async def scout(ctx:SlashContext):
     chance:int = random.randint(1, 100)
     if (chance <= 90):
         x:int = random.randint(550, 2000)
-        currency[wallet][str(ctx.author.id)] += x
+        currency["wallet"][str(ctx.author.id)] += x
         save()
         await ctx.send(embed=discord.Embed(title='What you found', description=f'You searched your area and found {x} coins!'))
     else:
