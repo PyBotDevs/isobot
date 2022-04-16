@@ -377,5 +377,32 @@ async def give(ctx:SlashContext, user:discord.User, amount:int):
         save()
         await ctx.send(f':gift: {ctx.author.mention} just gifted {amount} coins to {user.display_name}!')
 
+@slash.slash(
+    name='rob',
+    description='Rob someone for their money',
+    options=[
+        create_option(name='user', description='The person you want to rob', option_type=6, required=True)
+    ]
+)
+async def rob(ctx:SlashContext, user:discord.User):
+    chance:int = random.randint(1, 100)
+    if (currency['wallet'][str(user.id)] < 5000):
+        await ctx.reply('He has less than 5000 coins on him. Don\'t waste your time...')
+        return
+    elif (currency['wallet'][str(ctx.author.id)] < 5000):
+        await ctx.reply('You have less than 5k coins in your wallet. Play fair dude.')
+        return
+    if (chance <= 50):
+        x:int = random.randint(5000, currency['wallet'][str(user.id)])
+        currency['wallet'][str(ctx.author.id)] += x
+        currency['wallet'][str(user.id)] -= x
+        await ctx.reply(f'You just stole {x} coins from {user.display_name}! Feels good, doesn\'t it?')
+    else:
+        x:int = random.randint(5000, currency['wallet'][str(ctx.author.id)])
+        currency['wallet'][str(ctx.author.id)] -= x
+        currency['wallet'][str(user.id)] += x
+        await ctx.reply(f'LOL YOU GOT CAUGHT! You paid {user.display_name} {x} coins as compensation for your action.')
+    save()
+
 # Initialization
 client.run(api.auth.token)
