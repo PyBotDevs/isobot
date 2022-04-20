@@ -404,5 +404,30 @@ async def rob(ctx:SlashContext, user:discord.User):
         await ctx.reply(f'LOL YOU GOT CAUGHT! You paid {user.display_name} {x} coins as compensation for your action.')
     save()
 
+@slash.slash(
+    name='bankrob',
+    description='Raid someone\'s bank account',
+    options=[
+        create_option(name='user', description='Who\'s bank account you want to raid', option_type=6, required=True)
+    ]
+)
+async def bankrob(ctx:SlashContext, user:discord.User):
+    chance:int = random.randint(1, 100)
+    if (currency['wallet'][str(user.id)] < 10000):
+        await ctx.reply('You really want to risk losing your life to a broke person? (imagine robbing someone with < 10k net worth)')
+        return
+    elif (currency['wallet'][str(ctx.author.id)] < 5000):
+        await ctx.reply('You have less than 10k in your wallet. Don\'t be greedy')
+        return
+    if (chance <= 20):
+        x:int = random.randint(10000, currency['wallet'][str(user.id)])
+        currency['wallet'][str(ctx.author.id)] += x
+        currency['bank'][str(user.id)] -= x
+        await ctx.reply(f'You raided {user.display_name} bank and ended up looting {x} coins from them! Now thats whats I like to call, *success*.')
+    else:
+        x:int = 10000
+        currency['wallet'][str(ctx.author.id)] -= x
+        await ctx.reply(f'Didn\'t you think of this as the outcome? You failed AND ended up getting caught by the police. You just lost {x} coins, you absolute loser.')
+
 # Initialization
 client.run(api.auth.token)
