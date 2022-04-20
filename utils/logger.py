@@ -1,7 +1,7 @@
 import time
 import datetime
-log_path = "/home/notsniped/Desktop/Stock/logs/info-log.txt"
-error_path = "/home/notsniped/Desktop/Stock/logs/info-log.txt"
+log_path = "./Desktop/Stock/logs/info-log.txt"
+error_path = "./Desktop/Stock/logs/info-log.txt"
 def info(text:str):
     current_time = datetime.datetime.now().strftime("%H:%M:%S")
     f.write(f'[{current_time}/INFO] {text}.')
