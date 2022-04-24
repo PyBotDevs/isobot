@@ -49,6 +49,12 @@ class colors:
     green = '\033[92m'
     end = '\033[0m'
 
+class plugins:
+    economy:bool = True
+    moderation:bool = True
+    levelling:bool = False
+    music:bool = True
+
 #Events
 @client.event
 async def on_ready():
