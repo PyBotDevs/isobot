@@ -32,6 +32,9 @@ with open('./Desktop/Stock/database/currency.json', 'r') as f:
 with open('./Desktop/Stock/database/warnings.json', 'r') as f:
     global warnings
     warnings = json.load(f)
+with open('./Desktop/Stock/database/items.json', 'r') as f:
+    global items
+    items = json.load(f)
 
 #Pre-Initialization Commands
 def timenow(): 
@@ -41,6 +44,8 @@ def save():
         json.dump(currency, f, indent=4)
     with open(f'./Desktop/Stock/database/warnings.json', 'w+') as f:
         json.dump(warnings, f, indent=4)
+    with open(f'./Desktop/Stock/database/items.json', 'w+') as f:
+        json.dump(items, f, indent=4)
 
 #Classes
 class colors:
@@ -75,6 +80,13 @@ async def on_message(ctx):
         pass
     else:
         warnings[str(ctx.guild.id)][str(ctx.author.id)] = []
+    if str(ctx.author.id) in items:
+        pass
+    else:
+        items[str(ctx.author.id)] = {}
+        items[str(ctx.author.id)]['rifle'] = 0
+        items[str(ctx.author.id)]['fishingpole'] = 0
+        items[str(ctx.author.id)]['shovel'] = 0
     save()
 
 #Error handler
@@ -428,6 +440,21 @@ async def bankrob(ctx:SlashContext, user:discord.User):
         x:int = 10000
         currency['wallet'][str(ctx.author.id)] -= x
         await ctx.reply(f'Didn\'t you think of this as the outcome? You failed AND ended up getting caught by the police. You just lost {x} coins, you absolute loser.')
+
+@slash.slash(
+    name='inventory', 
+    description='See what items you (or someone else) own',
+    options = [
+        create_option(name='user', description='The person\'s inventory you want to view', option_type=6, required=False)
+    ]
+)
+async def inventory(ctx:SlashContext, user:discord.User = None):
+    if user == None:
+        e = discord.Embed(title=f'Inventory', description=f'is not quite ready for use yet. Please check back later!')
+        await ctx.send(embed=e)
+    else:
+        e = discord.Embed(title=f'Inventory', description=f'is not quite ready for use yet. Please check back later!')
+        await ctx.send(embed=e)
 
 # Initialization
 client.run(api.auth.token)
