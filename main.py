@@ -53,7 +53,7 @@ class plugins:
     economy:bool = True
     moderation:bool = True
     leveling:bool = False
-    music:bool = True
+    music:bool = False
 
 #Events
 @client.event
