@@ -429,5 +429,20 @@ async def bankrob(ctx:SlashContext, user:discord.User):
         currency['wallet'][str(ctx.author.id)] -= x
         await ctx.reply(f'Didn\'t you think of this as the outcome? You failed AND ended up getting caught by the police. You just lost {x} coins, you absolute loser.')
 
+@slash.slash(
+    name='inventory', 
+    description='See what items you (or someone else) own',
+    options = [
+        create_option(name='user', description='The person\'s inventory you want to view', option_type=6, required=False)
+    ]
+)
+async def inventory(ctx:SlashContext, user:discord.User = None):
+    if user == None:
+        e = discord.Embed(title=f'Inventory', description=f'is not quite ready for use yet. Please check back later!')
+        await ctx.send(embed=e)
+    else:
+        e = discord.Embed(title=f'Inventory', description=f'is not quite ready for use yet. Please check back later!')
+        await ctx.send(embed=e)
+
 # Initialization
 client.run(api.auth.token)
