@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="500px" src="https://github.com/PyBotDevs/isobot-resources/blob/isobot/lazer/icons/light-transparent.png">
+  <img width="500px" src="https://github.com/PyBotDevs/isobot-resources/blob/isobot/lazer/icons/grey-transparent.png">
 </p>
 
 # Isobot lazer, the future of isobot.
