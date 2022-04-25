@@ -32,6 +32,9 @@ with open('./Desktop/Stock/database/currency.json', 'r') as f:
 with open('./Desktop/Stock/database/warnings.json', 'r') as f:
     global warnings
     warnings = json.load(f)
+with open('./Desktop/Stock/database/items.json', 'r') as f:
+    global items
+    items = json.load(f)
 
 #Pre-Initialization Commands
 def timenow(): 
@@ -41,6 +44,8 @@ def save():
         json.dump(currency, f, indent=4)
     with open(f'./Desktop/Stock/database/warnings.json', 'w+') as f:
         json.dump(warnings, f, indent=4)
+    with open(f'./Desktop/Stock/database/items.json', 'w+') as f:
+        json.dump(items, f, indent=4)
 
 #Classes
 class colors:
@@ -52,7 +57,7 @@ class colors:
 class plugins:
     economy:bool = True
     moderation:bool = True
-    leveling:bool = False
+    levelling:bool = False
     music:bool = False
 
 #Events
@@ -60,7 +65,7 @@ class plugins:
 async def on_ready():
     print('Logged in as ' + client.user.name + '.')
     print('Ready to accept commands.')
-    await client.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name=f"Salad"), status=discord.Status.idle)
+    await client.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name=f"osu!"), status=discord.Status.idle)
     print(f'[main/LOG] {colors.green}Status set to IDLE. Rich presence set.{colors.end}')
 
 @client.event
@@ -81,6 +86,13 @@ async def on_message(ctx):
         pass
     else:
         warnings[str(ctx.guild.id)][str(ctx.author.id)] = []
+    if str(ctx.author.id) in items:
+        pass
+    else:
+        items[str(ctx.author.id)] = {}
+        items[str(ctx.author.id)]['rifle'] = 0
+        items[str(ctx.author.id)]['fishingpole'] = 0
+        items[str(ctx.author.id)]['shovel'] = 0
     save()
 
 #Error handler
@@ -177,6 +189,7 @@ async def balance(ctx:SlashContext, user=None):
     ]
 )
 async def kick(ctx:SlashContext, user, reason=None):
+    if plugins.moderation == False: pass
     if not ctx.author.guild_permissions.kick_members:
         raise(MissingPermissions)
     else:
@@ -196,6 +209,7 @@ async def kick(ctx:SlashContext, user, reason=None):
     ]
 )
 async def ban(ctx:SlashContext, user, reason=None):
+    if plugins.moderation == False: pass
     if not ctx.author.guild_permissions.ban_members:
         raise(MissingPermissions)
     else:
@@ -215,6 +229,7 @@ async def ban(ctx:SlashContext, user, reason=None):
     ]
 )
 async def warn(ctx:SlashContext, user, reason):
+    if plugins.moderation == False: pass
     if not ctx.author.guild_permissions.manage_messages:
         raise(MissingPermissions)
     warnings[str(ctx.guild.id)][str(user.id)].append('reason')
@@ -234,6 +249,7 @@ async def warn(ctx:SlashContext, user, reason):
     ]
 )
 async def warn(ctx:SlashContext, user):
+    if plugins.moderation == False: pass
     if not ctx.author.guild_permissions.manage_messages:
         raise(MissingPermissions)
     warnings[str(ctx.guild.id)][str(user.id)] = []
@@ -434,6 +450,21 @@ async def bankrob(ctx:SlashContext, user:discord.User):
         x:int = 10000
         currency['wallet'][str(ctx.author.id)] -= x
         await ctx.reply(f'Didn\'t you think of this as the outcome? You failed AND ended up getting caught by the police. You just lost {x} coins, you absolute loser.')
+
+@slash.slash(
+    name='inventory', 
+    description='See what items you (or someone else) own',
+    options = [
+        create_option(name='user', description='The person\'s inventory you want to view', option_type=6, required=False)
+    ]
+)
+async def inventory(ctx:SlashContext, user:discord.User = None):
+    if user == None:
+        e = discord.Embed(title=f'Inventory', description=f'is not quite ready for use yet. Please check back later!')
+        await ctx.send(embed=e)
+    else:
+        e = discord.Embed(title=f'Inventory', description=f'is not quite ready for use yet. Please check back later!')
+        await ctx.send(embed=e)
 
 # Initialization
 client.run(api.auth.token)
