@@ -32,9 +32,6 @@ with open('./Desktop/Stock/database/currency.json', 'r') as f:
 with open('./Desktop/Stock/database/warnings.json', 'r') as f:
     global warnings
     warnings = json.load(f)
-with open('./Desktop/Stock/database/items.json', 'r') as f:
-    global items
-    items = json.load(f)
 
 #Pre-Initialization Commands
 def timenow(): 
@@ -44,8 +41,6 @@ def save():
         json.dump(currency, f, indent=4)
     with open(f'./Desktop/Stock/database/warnings.json', 'w+') as f:
         json.dump(warnings, f, indent=4)
-    with open(f'./Desktop/Stock/database/items.json', 'w+') as f:
-        json.dump(items, f, indent=4)
 
 #Classes
 class colors:
@@ -65,7 +60,7 @@ class plugins:
 async def on_ready():
     print('Logged in as ' + client.user.name + '.')
     print('Ready to accept commands.')
-    await client.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name=f"osu!"), status=discord.Status.idle)
+    await client.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name=f"Salad"), status=discord.Status.idle)
     print(f'[main/LOG] {colors.green}Status set to IDLE. Rich presence set.{colors.end}')
 
 @client.event
@@ -86,13 +81,6 @@ async def on_message(ctx):
         pass
     else:
         warnings[str(ctx.guild.id)][str(ctx.author.id)] = []
-    if str(ctx.author.id) in items:
-        pass
-    else:
-        items[str(ctx.author.id)] = {}
-        items[str(ctx.author.id)]['rifle'] = 0
-        items[str(ctx.author.id)]['fishingpole'] = 0
-        items[str(ctx.author.id)]['shovel'] = 0
     save()
 
 #Error handler
