@@ -32,9 +32,6 @@ with open('./Desktop/Stock/database/currency.json', 'r') as f:
 with open('./Desktop/Stock/database/warnings.json', 'r') as f:
     global warnings
     warnings = json.load(f)
-with open('./Desktop/Stock/database/items.json', 'r') as f:
-    global items
-    items = json.load(f)
 
 #Pre-Initialization Commands
 def timenow(): 
@@ -44,8 +41,6 @@ def save():
         json.dump(currency, f, indent=4)
     with open(f'./Desktop/Stock/database/warnings.json', 'w+') as f:
         json.dump(warnings, f, indent=4)
-    with open(f'./Desktop/Stock/database/items.json', 'w+') as f:
-        json.dump(items, f, indent=4)
 
 #Classes
 class colors:
@@ -53,6 +48,12 @@ class colors:
     red = '\033[91m'
     green = '\033[92m'
     end = '\033[0m'
+
+class plugins:
+    economy:bool = True
+    moderation:bool = True
+    leveling:bool = False
+    music:bool = False
 
 #Events
 @client.event
@@ -80,13 +81,6 @@ async def on_message(ctx):
         pass
     else:
         warnings[str(ctx.guild.id)][str(ctx.author.id)] = []
-    if str(ctx.author.id) in items:
-        pass
-    else:
-        items[str(ctx.author.id)] = {}
-        items[str(ctx.author.id)]['rifle'] = 0
-        items[str(ctx.author.id)]['fishingpole'] = 0
-        items[str(ctx.author.id)]['shovel'] = 0
     save()
 
 #Error handler
@@ -183,6 +177,7 @@ async def balance(ctx:SlashContext, user=None):
     ]
 )
 async def kick(ctx:SlashContext, user, reason=None):
+    if plugins.moderation == False: pass
     if not ctx.author.guild_permissions.kick_members:
         raise(MissingPermissions)
     else:
@@ -202,6 +197,7 @@ async def kick(ctx:SlashContext, user, reason=None):
     ]
 )
 async def ban(ctx:SlashContext, user, reason=None):
+    if plugins.moderation == False: pass
     if not ctx.author.guild_permissions.ban_members:
         raise(MissingPermissions)
     else:
@@ -221,6 +217,7 @@ async def ban(ctx:SlashContext, user, reason=None):
     ]
 )
 async def warn(ctx:SlashContext, user, reason):
+    if plugins.moderation == False: pass
     if not ctx.author.guild_permissions.manage_messages:
         raise(MissingPermissions)
     warnings[str(ctx.guild.id)][str(user.id)].append('reason')
@@ -240,6 +237,7 @@ async def warn(ctx:SlashContext, user, reason):
     ]
 )
 async def warn(ctx:SlashContext, user):
+    if plugins.moderation == False: pass
     if not ctx.author.guild_permissions.manage_messages:
         raise(MissingPermissions)
     warnings[str(ctx.guild.id)][str(user.id)] = []
@@ -254,6 +252,7 @@ async def warn(ctx:SlashContext, user):
     ]
 )
 async def deposit(ctx:SlashContext, amount=None):
+    if plugins.economy == False: pass
     if amount == None:
         amount = currency["wallet"][str(ctx.author.id)]
     elif currency['bank'] == 0:
@@ -280,6 +279,7 @@ async def deposit(ctx:SlashContext, amount=None):
     ]
 )
 async def withdraw(ctx:SlashContext, amount=None):
+    if plugins.economy == False: pass
     if amount == None:
         amount = currency["bank"][str(ctx.author.id)]
     elif currency['bank'] == 0:
@@ -304,6 +304,7 @@ async def withdraw(ctx:SlashContext, amount=None):
 )
 @commands.cooldown(1, (30*60), commands.BucketType.user)
 async def work(ctx:SlashContext):
+    if plugins.economy == False: pass
     i = random.randint(10000, 20000)
     currency['wallet'][str(ctx.author.id)] += i
     save()
@@ -315,6 +316,7 @@ async def work(ctx:SlashContext):
 )
 @commands.cooldown(1, 24*(60*60), commands.BucketType.user)
 async def daily(ctx:SlashContext):
+    if plugins.economy == False: pass
     currency['wallet'][str(ctx.author.id)] += 10000
     save()
     await ctx.reply(f'You claimed 10000 coins from this daily. Check back in 24 hours for your next one!')
@@ -325,6 +327,7 @@ async def daily(ctx:SlashContext):
 )
 @commands.cooldown(1, 7*(24*(60*60)), commands.BucketType.user)
 async def weekly(ctx:SlashContext):
+    if plugins.economy == False: pass
     currency['wallet'][str(ctx.author.id)] += 45000
     save()
     await ctx.reply(f'You claimed 45000 coins from this weekly. Check back in 7 days for your next one!')
@@ -335,6 +338,7 @@ async def weekly(ctx:SlashContext):
 )
 @commands.cooldown(1, 31*(24*(60*60)), commands.BucketType.user)
 async def monthly(ctx:SlashContext):
+    if plugins.economy == False: pass
     currency['wallet'][str(ctx.author.id)] += 1000000
     save()
     await ctx.reply(f'You claimed 1000000 coins from this weekly. Check back in 1 month for your next one!')
@@ -345,6 +349,7 @@ async def monthly(ctx:SlashContext):
 )
 @commands.cooldown(1, 15, commands.BucketType.user)
 async def beg(ctx:SlashContext):
+    if plugins.economy == False: pass
     chance:int = random.randint(1, 100)
     if (chance >= 50):
         x:int = random.randint(10, 100)
@@ -359,6 +364,7 @@ async def beg(ctx:SlashContext):
     description='Scout your area for coins'
 )
 async def scout(ctx:SlashContext):
+    if plugins.economy == False: pass
     chance:int = random.randint(1, 100)
     if (chance <= 90):
         x:int = random.randint(550, 2000)
@@ -377,6 +383,7 @@ async def scout(ctx:SlashContext):
     ]
 )
 async def give(ctx:SlashContext, user:discord.User, amount:int):
+    if plugins.economy == False: pass
     if (amount <= 0):
         await ctx.send('The amount you want to give must be greater than `0` coins!', hidden=True)
         return
@@ -397,6 +404,7 @@ async def give(ctx:SlashContext, user:discord.User, amount:int):
     ]
 )
 async def rob(ctx:SlashContext, user:discord.User):
+    if plugins.economy == False: pass
     chance:int = random.randint(1, 100)
     if (currency['wallet'][str(user.id)] < 5000):
         await ctx.reply('He has less than 5000 coins on him. Don\'t waste your time...')
@@ -424,6 +432,7 @@ async def rob(ctx:SlashContext, user:discord.User):
     ]
 )
 async def bankrob(ctx:SlashContext, user:discord.User):
+    if plugins.economy == False: pass
     chance:int = random.randint(1, 100)
     if (currency['wallet'][str(user.id)] < 10000):
         await ctx.reply('You really want to risk losing your life to a broke person? (imagine robbing someone with < 10k net worth)')
@@ -449,6 +458,7 @@ async def bankrob(ctx:SlashContext, user:discord.User):
     ]
 )
 async def inventory(ctx:SlashContext, user:discord.User = None):
+    if plugins.economy == False: pass
     if user == None:
         e = discord.Embed(title=f'Inventory', description=f'is not quite ready for use yet. Please check back later!')
         await ctx.send(embed=e)
