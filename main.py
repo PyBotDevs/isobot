@@ -52,7 +52,7 @@ class colors:
 class plugins:
     economy:bool = True
     moderation:bool = True
-    levelling:bool = False
+    leveling:bool = False
     music:bool = False
 
 #Events
