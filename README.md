@@ -1,8 +1,8 @@
 <p align="center">
-  <img width="500px" src="https://github.com/notsniped/stock-webpage/blob/main/assets/Stock%20(Dark).jpg?raw=true">
+  <img width="500px" src="https://github.com/PyBotDevs/isobot-resources/blob/isobot/lazer/icons/grey-transparent.png">
 </p>
 
-# Isobot lazer, the future of isobot.
+<h1 align='center'>Isobot lazer, the future of isobot.</h1>
 ![LICENSE](https://img.shields.io/github/license/notsniped/isobot-lazer)
 [![Discord](https://img.shields.io/discord/880409977074888714?color=%235865F2&label=Discord&logo=discord&logoColor=%23fff)](https://discord.gg/b5pz8T6Yjr)
 
