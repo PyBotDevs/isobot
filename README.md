@@ -13,13 +13,13 @@ Isobot lazer is a brand-new project developed by the [iso.dev team](https://gith
 This open-source project is supposed to represent what the next-generation of isobot will look like, and how it will progress into the future.
 
 ## Why a new project?
-I wanted to make brand new, cutting-edge features for isobot. But in the process, I ran into some serious codeblocks which prevented me from doing so. This is why I decided to completely rewrite isobot as codename 'lazer' which is much more future-proof.
+I wanted to make brand new, cutting-edge features for isobot. But in the process, I ran into some codeblocks which prevented me from doing so efficiently. This is why I decided to completely rewrite isobot as codename 'lazer' which is meant to be more future-proof.
 
 ## How can I help?
 Well, you can make pull requests for new features, and submit current issues, which would help improve the development process!
 
 ## When can I expect a fully-made version?
-Never- I mean, yes
+dnk
 
 ## When the project's development is complete, what will happen?
 I don't expect the project development to ever fully complete. But at some point, we might merge these changes with [our main project](https://github.com/PyBotDevs/isobot-python) sooner or later.
