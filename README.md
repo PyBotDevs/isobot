@@ -17,7 +17,7 @@ This open-source project is supposed to represent what the next-generation of is
 I wanted to make brand new, cutting-edge features for isobot. But in the process, I ran into some codeblocks which prevented me from doing so efficiently. This is why I decided to completely rewrite isobot as codename 'lazer' which is meant to be more future-proof.
 
 ## How can I help?
-Well, you can make pull requests for new features, and submit current issues, which would help improve the development process!
+***PLEASE SUBMIT ISSUES AND PULL REQUESTS TO THE REPOSITORY!*** It helps us work on the project faster c:
 
 ## When can I expect a fully-made version?
 dnk
