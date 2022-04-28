@@ -3,6 +3,7 @@
 </p>
 
 <h1 align='center'>Isobot lazer, the future of isobot.</h1>
+
 ![LICENSE](https://img.shields.io/github/license/notsniped/isobot-lazer)
 [![Discord](https://img.shields.io/discord/880409977074888714?color=%235865F2&label=Discord&logo=discord&logoColor=%23fff)](https://discord.gg/b5pz8T6Yjr)
 
