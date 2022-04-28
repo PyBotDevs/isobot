@@ -248,7 +248,7 @@ async def warn(ctx:SlashContext, user, reason):
         create_option(name='user', description='The person you want to remove warns from', option_type=6, required=True)
     ]
 )
-async def warn(ctx:SlashContext, user):
+async def warns_clear(ctx:SlashContext, user):
     if plugins.moderation == False: pass
     if not ctx.author.guild_permissions.manage_messages:
         raise(MissingPermissions)
