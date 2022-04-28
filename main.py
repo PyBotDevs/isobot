@@ -35,6 +35,9 @@ with open('./Desktop/Stock/database/warnings.json', 'r') as f:
 with open('./Desktop/Stock/database/items.json', 'r') as f:
     global items
     items = json.load(f)
+with open('./Desktop/Stock/config/shop.json', 'r') as f:
+    global shopitem
+    shopitem = json.load(f)
 
 #Pre-Initialization Commands
 def timenow(): 
@@ -495,7 +498,19 @@ async def shop(ctx:SlashContext, item:str=None):
         localembed.set_footer(text='Page 1 | Tools | This command is in development. More items will be added soon!')
         await ctx.send(embed=localembed)
     else:
-        localembed = discord.Embed(title='Item lookup', description='isn\'t ready just yet. Please check back a bit later!')
+        #localembed = discord.Embed(title='Item lookup', description='isn\'t ready just yet. Please check back a bit later!')
+        try:
+            localembed = discord.Embed(
+                title=shopitem[item]['stylized name'],
+                description=shopitem[item]['description']
+            )
+            localembed.add_field(name='Buying price', value=shopitem[item]['buy price'], inline=True)
+            localembed.add_field(name='Selling price', value=shopitem[item]['sell price'], inline=True)
+            localembed.add_field(name='In-store', value=shopitem[item]['available'], inline=True)
+            localembed.add_field(name='ID', value=f'`{item}`', inline=True)
+            await ctx.send(embed=localembed)
+        except(KeyError):
+            await ctx.reply('That item isn\'t in the shop, do you are have stupid?')
 
 # Initialization
 client.run(api.auth.token)
