@@ -248,7 +248,7 @@ async def warn(ctx:SlashContext, user, reason):
         create_option(name='user', description='The person you want to remove warns from', option_type=6, required=True)
     ]
 )
-async def warns_clear(ctx:SlashContext, user):
+async def warn(ctx:SlashContext, user):
     if plugins.moderation == False: pass
     if not ctx.author.guild_permissions.manage_messages:
         raise(MissingPermissions)
@@ -477,6 +477,25 @@ async def inventory(ctx:SlashContext, user:discord.User = None):
     else:
         e = discord.Embed(title=f'Inventory', description=f'is not quite ready for use yet. Please check back later!')
         await ctx.send(embed=e)
+
+@slash.slash(
+    name='shop',
+    description='View and buy items from the shop',
+    options=[
+        create_option(name='item', description='A specific item you want to view', option_type=3, required=False)
+    ]
+)
+async def shop(ctx:SlashContext, item:str=None):
+    if plugins.economy == False: pass
+    if item == None:
+        localembed = discord.Embed(
+            title='The Shop!', 
+            description='**Tools**\n\n1) Hunting Rifle `ID: rifle`: A tool used for hunting animals. (10000 coins)\n2) Fishing Pole `ID: fishingpole`: A tool used fishing. This lets you use /fish command. (6500 coins)\n3) Shovel `ID: shovel`: You can use this tool to dig stuff from the ground. (3000 coins)'
+        )
+        localembed.set_footer(text='Page 1 | Tools | This command is in development. More items will be added soon!')
+        await ctx.send(embed=localembed)
+    else:
+        localembed = discord.Embed(title='Item lookup', description='isn\'t ready just yet. Please check back a bit later!')
 
 # Initialization
 client.run(api.auth.token)
