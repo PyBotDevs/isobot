@@ -1,0 +1,32 @@
+{
+    "rifle": {
+        "stylized name": "Hunting Rifle",
+        "buy price": 10000,
+        "sell price": 5000,
+        "description": "A tool used for hunting animals.",
+        "collection": null,
+        "available": true,
+        "giftable": true,
+        "sellable": true
+    },
+    "fishingpole": {
+        "stylized name": "Fishing Pole/Fishing Rod",
+        "buy price": 6500,
+        "sell price": 3250,
+        "description": "This lets you use /fish command.",
+        "collection": null,
+        "available": true,
+        "giftable": true,
+        "sellable": true
+    },
+    "shovel": {
+        "stylized name": "Shovel",
+        "buy price": 3000,
+        "sell price": 1500,
+        "description": "You can use this tool to dig stuff from the ground.",
+        "collection": null,
+        "available": true,
+        "giftable": true,
+        "sellable": true
+    }
+}
