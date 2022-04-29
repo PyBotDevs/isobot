@@ -13,7 +13,7 @@
         "stylized name": "Fishing Pole/Fishing Rod",
         "buy price": 6500,
         "sell price": 3250,
-        "description": "This lets you use /fish command.",
+        "description": "A tool used for fishing. It lets you use /fish command.",
         "collection": null,
         "available": true,
         "giftable": true,
