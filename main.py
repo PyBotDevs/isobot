@@ -485,7 +485,7 @@ async def inventory(ctx:SlashContext, user:discord.User = None):
     name='shop',
     description='View and buy items from the shop',
     options=[
-        create_option(name='item', description='Specific an item to view.', option_type=3, required=False)
+        create_option(name='item', description='Specify an item to view.', option_type=3, required=False)
     ]
 )
 async def shop(ctx:SlashContext, item:str=None):
