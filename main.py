@@ -422,7 +422,7 @@ async def rob(ctx:SlashContext, user:discord.User):
     if plugins.economy == False: pass
     chance:int = random.randint(1, 100)
     if (currency['wallet'][str(user.id)] < 5000):
-        await ctx.reply('He/she has less than 5000 coins on him/her. Don\'t waste your time...')
+        await ctx.reply('They has less than 5000 coins on them. Don\'t waste your time...')
         return
     elif (currency['wallet'][str(ctx.author.id)] < 5000):
         await ctx.reply('You have less than 5k coins in your wallet. Play fair dude.')
