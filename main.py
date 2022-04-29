@@ -493,7 +493,7 @@ async def shop(ctx:SlashContext, item:str=None):
     if item == None:
         localembed = discord.Embed(
             title='The Shop!', 
-            description='**Tools**\n\n1) Hunting Rifle `ID: rifle`: A tool used for hunting animals. (10000 coins)\n2) Fishing Pole `ID: fishingpole`: A tool used for fishing. It lets you to use /fish command. (6500 coins)\n3) Shovel `ID: shovel`: You can use this tool to dig stuff from the ground. (3000 coins)'
+            description='**Tools**\n\n1) Hunting Rifle `ID: rifle`: A tool used for hunting animals. (10000 coins)\n2) Fishing Pole `ID: fishingpole`: A tool used for fishing. It lets you use /fish command. (6500 coins)\n3) Shovel `ID: shovel`: You can use this tool to dig stuff from the ground. (3000 coins)'
         )
         localembed.set_footer(text='Page 1 | Tools | This command is in development. More items will be added soon!')
         await ctx.send(embed=localembed)
