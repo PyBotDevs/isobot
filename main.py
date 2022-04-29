@@ -66,7 +66,7 @@ class plugins:
 #Events
 @client.event
 async def on_ready():
-    print('Logged in as ' + client.user.name + '.')
+    print(f'Logged in as {client.user.name}.')
     print('Ready to accept commands.')
     await client.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name=f"Salad"), status=discord.Status.idle)
     print(f'[main/LOG] {colors.green}Status set to IDLE. Rich presence set.{colors.end}')
@@ -163,7 +163,7 @@ async def on_command_error(ctx, error):
             pass
 
 #Commands
-@slash.slash(name='balance', description='Shows your balance, or another user\'s balance.', options=[create_option(name='user', description='The user\'s balance you want to see.', option_type=6, required=False)])
+@slash.slash(name='balance', description='Shows your own or another user\'s balance.', options=[create_option(name='user', description='Which user?', option_type=6, required=False)])
 async def balance(ctx:SlashContext, user=None):
     try:
         if user == None:
@@ -187,8 +187,8 @@ async def balance(ctx:SlashContext, user=None):
     name='kick', 
     description='Kicks a member from this server.', 
     options=[
-        create_option(name='user', description='The user you will kick', option_type=6, required=True), 
-        create_option(name='reason', description='Why you want to kick the user', option_type=3, required=False)
+        create_option(name='user', description='Who do you want to kick?', option_type=6, required=True), 
+        create_option(name='reason', description='Why you want to kick the user?', option_type=3, required=False)
     ]
 )
 async def kick(ctx:SlashContext, user, reason=None):
@@ -207,8 +207,8 @@ async def kick(ctx:SlashContext, user, reason=None):
     name='ban', 
     description='Bans a member from this server.', 
     options=[
-        create_option(name='user', description='The user you will ban', option_type=6, required=True), 
-        create_option(name='reason', description='Why you want to ban the user', option_type=3, required=False)
+        create_option(name='user', description='Who do you want to ban?', option_type=6, required=True), 
+        create_option(name='reason', description='Why you want to ban the user?', option_type=3, required=False)
     ]
 )
 async def ban(ctx:SlashContext, user, reason=None):
@@ -227,8 +227,8 @@ async def ban(ctx:SlashContext, user, reason=None):
     name='warn',
     description='Warn someone in your server.',
     options=[
-        create_option(name='user', description='The person you want to warn', option_type=6, required=True),
-        create_option(name='reason', description='Why you are warning the user', option_type=3, required=True)
+        create_option(name='user', description='Who do you want to warn?', option_type=6, required=True),
+        create_option(name='reason', description='Why are you warning the user?', option_type=3, required=True)
     ]
 )
 async def warn(ctx:SlashContext, user, reason):
@@ -248,7 +248,7 @@ async def warn(ctx:SlashContext, user, reason):
     name='warns_clear',
     description='Clear someone\'s warnings.',
     options=[
-        create_option(name='user', description='The person you want to remove warns from', option_type=6, required=True)
+        create_option(name='user', description='Who do you want to remove warns from?', option_type=6, required=True)
     ]
 )
 async def warns_clear(ctx:SlashContext, user):
@@ -257,7 +257,7 @@ async def warns_clear(ctx:SlashContext, user):
         raise(MissingPermissions)
     warnings[str(ctx.guild.id)][str(user.id)] = []
     save()
-    await ctx.send(embed=discord.Embed(description=f'All warnings have been cleared for {user}.'))
+    await ctx.send(embed=discord.Embed(description=f'All {user}\'s warnings have been cleared.'))
 
 @slash.slash(
     name='deposit',
@@ -274,16 +274,16 @@ async def deposit(ctx:SlashContext, amount=None):
         await ctx.reply('You don\'t have anything in your bank account.', hidden=True)
         return
     elif amount <= 0:
-        await ctx.reply('The amount you want to deposit must be more than `0` coins!', hidden=True)
+        await ctx.reply('The amount to deposit must be more than `0` coins!', hidden=True)
         return
     elif amount > currency["wallet"][str(ctx.author.id)]:
-        await ctx.reply('The amount you want to deposit must not be more than what you have in your wallet!', hidden=True)
+        await ctx.reply('The amount to deposit must not be more than what you have in your wallet!', hidden=True)
         return
     else:
         pass
     currency["wallet"][str(ctx.author.id)] -= int(amount)
     currency["bank"][str(ctx.author.id)] += int(amount)
-    await ctx.send(f'You deposited `{amount}` coins to your bank account.')
+    await ctx.send(f'You deposited `{amount}` coin(s) to your bank account.')
     save()
 
 @slash.slash(
@@ -301,16 +301,16 @@ async def withdraw(ctx:SlashContext, amount=None):
         await ctx.reply('You don\'t have anything in your bank account.', hidden=True)
         return
     elif amount <= 0:
-        await ctx.reply('The amount you want to withdraw must be more than `0` coins!', hidden=True)
+        await ctx.reply('The amount to withdraw must be more than `0` coins!', hidden=True)
         return
     elif amount > currency["bank"][str(ctx.author.id)]:
-        await ctx.reply('The amount you want to withdraw must not be more than what you have in your bank account!', hidden=True)
+        await ctx.reply('The amount to withdraw must not be more than what you have in your bank account!', hidden=True)
         return
     else:
         pass
     currency["wallet"][str(ctx.author.id)] += int(amount)
     currency["bank"][str(ctx.author.id)] -= int(amount)
-    await ctx.send(f'You withdrew `{amount}` coins from your bank account.')
+    await ctx.send(f'You withdrew `{amount}` coin(s) from your bank account.')
     save()
 
 @slash.slash(
@@ -334,7 +334,7 @@ async def daily(ctx:SlashContext):
     if plugins.economy == False: pass
     currency['wallet'][str(ctx.author.id)] += 10000
     save()
-    await ctx.reply(f'You claimed 10000 coins from this daily. Check back in 24 hours for your next one!')
+    await ctx.reply(f'You claimed 10000 coins from the daily reward. Check back in 24 hours for your next one!')
 
 @slash.slash(
     name='weekly',
@@ -345,7 +345,7 @@ async def weekly(ctx:SlashContext):
     if plugins.economy == False: pass
     currency['wallet'][str(ctx.author.id)] += 45000
     save()
-    await ctx.reply(f'You claimed 45000 coins from this weekly. Check back in 7 days for your next one!')
+    await ctx.reply(f'You claimed 45000 coins from the weekly reward. Check back in 7 days for your next one!')
 
 @slash.slash(
     name='monthly',
@@ -356,7 +356,7 @@ async def monthly(ctx:SlashContext):
     if plugins.economy == False: pass
     currency['wallet'][str(ctx.author.id)] += 1000000
     save()
-    await ctx.reply(f'You claimed 1000000 coins from this weekly. Check back in 1 month for your next one!')
+    await ctx.reply(f'You claimed 1000000 coins from the monthly reward. Check back in 1 month for your next one!')
 
 @slash.slash(
     name='beg', 
@@ -391,7 +391,7 @@ async def scout(ctx:SlashContext):
 
 @slash.slash(
     name='give',
-    description='Lets you give any amount of cash to someone else',
+    description='Give any amount of cash to someone else',
     options=[
         create_option(name='user', description='Who do you want to give cash to?', option_type=6, required=True),
         create_option(name='amount', description='How much do you want to give?', option_type=4, required=True)
@@ -415,14 +415,14 @@ async def give(ctx:SlashContext, user:discord.User, amount:int):
     name='rob',
     description='Rob someone for their money',
     options=[
-        create_option(name='user', description='The person you want to rob', option_type=6, required=True)
+        create_option(name='user', description='Who do you want to rob?', option_type=6, required=True)
     ]
 )
 async def rob(ctx:SlashContext, user:discord.User):
     if plugins.economy == False: pass
     chance:int = random.randint(1, 100)
     if (currency['wallet'][str(user.id)] < 5000):
-        await ctx.reply('He has less than 5000 coins on him. Don\'t waste your time...')
+        await ctx.reply('They has less than 5000 coins on them. Don\'t waste your time...')
         return
     elif (currency['wallet'][str(ctx.author.id)] < 5000):
         await ctx.reply('You have less than 5k coins in your wallet. Play fair dude.')
@@ -443,33 +443,33 @@ async def rob(ctx:SlashContext, user:discord.User):
     name='bankrob',
     description='Raid someone\'s bank account',
     options=[
-        create_option(name='user', description='Who\'s bank account you want to raid', option_type=6, required=True)
+        create_option(name='user', description='Whose bank account you want to raid?', option_type=6, required=True)
     ]
 )
 async def bankrob(ctx:SlashContext, user:discord.User):
     if plugins.economy == False: pass
     chance:int = random.randint(1, 100)
     if (currency['wallet'][str(user.id)] < 10000):
-        await ctx.reply('You really want to risk losing your life to a broke person? (imagine robbing someone with < 10k net worth)')
+        await ctx.reply('You really want to risk losing your life to a poor person? (imagine robbing someone with < 10k net worth)')
         return
     elif (currency['wallet'][str(ctx.author.id)] < 5000):
-        await ctx.reply('You have less than 10k in your wallet. Don\'t be greedy')
+        await ctx.reply('You have less than 10k in your wallet. Don\'t be greedy.')
         return
     if (chance <= 20):
         x:int = random.randint(10000, currency['wallet'][str(user.id)])
         currency['wallet'][str(ctx.author.id)] += x
         currency['bank'][str(user.id)] -= x
-        await ctx.reply(f'You raided {user.display_name} bank and ended up looting {x} coins from them! Now thats whats I like to call, *success*.')
+        await ctx.reply(f'You raided {user.display_name}\'s bank and ended up looting {x} coins from them! Now thats what I like to call *success*.')
     else:
         x:int = 10000
         currency['wallet'][str(ctx.author.id)] -= x
-        await ctx.reply(f'Didn\'t you think of this as the outcome? You failed AND ended up getting caught by the police. You just lost {x} coins, you absolute loser.')
+        await ctx.reply(f'Have you ever thought of this as the outcome? You failed AND ended up getting caught by the police. You just lost {x} coins, you absolute loser.')
 
 @slash.slash(
     name='inventory', 
-    description='See what items you (or someone else) own',
+    description='Show the items you (or someone else) own',
     options = [
-        create_option(name='user', description='The person\'s inventory you want to view', option_type=6, required=False)
+        create_option(name='user', description='Whose inventory you want to view?', option_type=6, required=False)
     ]
 )
 async def inventory(ctx:SlashContext, user:discord.User = None):
@@ -485,7 +485,7 @@ async def inventory(ctx:SlashContext, user:discord.User = None):
     name='shop',
     description='View and buy items from the shop',
     options=[
-        create_option(name='item', description='A specific item you want to view', option_type=3, required=False)
+        create_option(name='item', description='Specify an item to view.', option_type=3, required=False)
     ]
 )
 async def shop(ctx:SlashContext, item:str=None):
@@ -493,7 +493,7 @@ async def shop(ctx:SlashContext, item:str=None):
     if item == None:
         localembed = discord.Embed(
             title='The Shop!', 
-            description='**Tools**\n\n1) Hunting Rifle `ID: rifle`: A tool used for hunting animals. (10000 coins)\n2) Fishing Pole `ID: fishingpole`: A tool used fishing. This lets you use /fish command. (6500 coins)\n3) Shovel `ID: shovel`: You can use this tool to dig stuff from the ground. (3000 coins)'
+            description='**Tools**\n\n1) Hunting Rifle `ID: rifle`: A tool used for hunting animals. (10000 coins)\n2) Fishing Pole `ID: fishingpole`: A tool used for fishing. It lets you use /fish command. (6500 coins)\n3) Shovel `ID: shovel`: You can use this tool to dig stuff from the ground. (3000 coins)'
         )
         localembed.set_footer(text='Page 1 | Tools | This command is in development. More items will be added soon!')
         await ctx.send(embed=localembed)
