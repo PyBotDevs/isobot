@@ -225,7 +225,7 @@ async def ban(ctx:SlashContext, user, reason=None):
 
 @slash.slash(
     name='warn',
-    description='Warn someone in your server.',
+    description='Warns someone in your server.',
     options=[
         create_option(name='user', description='Who do you want to warn?', option_type=6, required=True),
         create_option(name='reason', description='Why are you warning the user?', option_type=3, required=True)
@@ -246,7 +246,7 @@ async def warn(ctx:SlashContext, user, reason):
 
 @slash.slash(
     name='warns_clear',
-    description='Clear someone\'s warnings.',
+    description='Clears someone\'s warnings.',
     options=[
         create_option(name='user', description='Who do you want to remove warns from?', option_type=6, required=True)
     ]
@@ -315,7 +315,7 @@ async def withdraw(ctx:SlashContext, amount=None):
 
 @slash.slash(
     name='work',
-    description='Work for a 30-minute shift and earn cash.'
+    description='Works for a 30-minute shift and earn cash.'
 )
 @commands.cooldown(1, (30*60), commands.BucketType.user)
 async def work(ctx:SlashContext):
@@ -327,7 +327,7 @@ async def work(ctx:SlashContext):
 
 @slash.slash(
     name='daily',
-    description='Claim your daily (every 24 hours)'
+    description='Claims your daily (every 24 hours)'
 )
 @commands.cooldown(1, 24*(60*60), commands.BucketType.user)
 async def daily(ctx:SlashContext):
@@ -338,7 +338,7 @@ async def daily(ctx:SlashContext):
 
 @slash.slash(
     name='weekly',
-    description='Claim your weekly (every 7 days)'
+    description='Claims your weekly (every 7 days)'
 )
 @commands.cooldown(1, 7*(24*(60*60)), commands.BucketType.user)
 async def weekly(ctx:SlashContext):
@@ -349,7 +349,7 @@ async def weekly(ctx:SlashContext):
 
 @slash.slash(
     name='monthly',
-    description='Claim your monthly (every 31 days)'
+    description='Claims your monthly (every 31 days)'
 )
 @commands.cooldown(1, 31*(24*(60*60)), commands.BucketType.user)
 async def monthly(ctx:SlashContext):
@@ -360,7 +360,7 @@ async def monthly(ctx:SlashContext):
 
 @slash.slash(
     name='beg', 
-    description='Beg for some quick cash'
+    description='Begs for some quick cash'
 )
 @commands.cooldown(1, 15, commands.BucketType.user)
 async def beg(ctx:SlashContext):
@@ -376,7 +376,7 @@ async def beg(ctx:SlashContext):
 
 @slash.slash(
     name='scout', 
-    description='Scout your area for coins'
+    description='Scouts your area for coins'
 )
 async def scout(ctx:SlashContext):
     if plugins.economy == False: pass
@@ -391,7 +391,7 @@ async def scout(ctx:SlashContext):
 
 @slash.slash(
     name='give',
-    description='Give any amount of cash to someone else',
+    description='Gives any amount of cash to someone else',
     options=[
         create_option(name='user', description='Who do you want to give cash to?', option_type=6, required=True),
         create_option(name='amount', description='How much do you want to give?', option_type=4, required=True)
@@ -413,7 +413,7 @@ async def give(ctx:SlashContext, user:discord.User, amount:int):
 
 @slash.slash(
     name='rob',
-    description='Rob someone for their money',
+    description='Robs someone for their money',
     options=[
         create_option(name='user', description='Who do you want to rob?', option_type=6, required=True)
     ]
@@ -441,7 +441,7 @@ async def rob(ctx:SlashContext, user:discord.User):
 
 @slash.slash(
     name='bankrob',
-    description='Raid someone\'s bank account',
+    description='Raids someone\'s bank account',
     options=[
         create_option(name='user', description='Whose bank account you want to raid?', option_type=6, required=True)
     ]
@@ -467,7 +467,7 @@ async def bankrob(ctx:SlashContext, user:discord.User):
 
 @slash.slash(
     name='inventory', 
-    description='Show the items you (or someone else) own',
+    description='Shows the items you (or someone else) own',
     options = [
         create_option(name='user', description='Whose inventory you want to view?', option_type=6, required=False)
     ]
@@ -485,7 +485,7 @@ async def inventory(ctx:SlashContext, user:discord.User = None):
 
 @slash.slash(
     name='shop',
-    description='View and buy items from the shop',
+    description='Views and buy items from the shop',
     options=[
         create_option(name='item', description='Specify an item to view.', option_type=3, required=False)
     ]
@@ -516,7 +516,7 @@ async def shop(ctx:SlashContext, item:str=None):
 
 @slash.slash(
     name='buy',
-    description='Buy an item from the shop',
+    description='Buys an item from the shop',
     options=[
         create_option(name='name', description='What do you want to buy?', option_type=3, required=True),
         create_option(name='quantity', description='How many do you want to buy?', option_type=4, required=False)
