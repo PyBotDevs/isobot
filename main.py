@@ -474,12 +474,14 @@ async def bankrob(ctx:SlashContext, user:discord.User):
 )
 async def inventory(ctx:SlashContext, user:discord.User = None):
     if plugins.economy == False: pass
+    localembed = None
     if user == None:
-        e = discord.Embed(title=f'Inventory', description=f'is not quite ready for use yet. Please check back later!')
-        await ctx.send(embed=e)
+        localembed = discord.Embed(title='Your Inventory')
+        localembed.add_field(name='Utility', value=f'Hunting Rifle `ID: rifle`: {items[str(ctx.author.id)]["rifle"]}\nFishing Rod `ID: fishingpole`: {items[str(ctx.author.id)]["fishingpole"]}\nShovel `ID: shovel`: {items[str(ctx.author.id)]["shovel"]}\n')
     else:
-        e = discord.Embed(title=f'Inventory', description=f'is not quite ready for use yet. Please check back later!')
-        await ctx.send(embed=e)
+        localembed = discord.Embed(title=f'{user.display_name}\'s Inventory')
+        localembed.add_field(name='Utility', value=f'Hunting Rifle `ID: rifle`: {items[str(user.id)]["rifle"]}\nFishing Rod `ID: fishingpole`: {items[str(user.id)]["fishingpole"]}\nShovel `ID: shovel`: {items[str(user.id)]["shovel"]}\n')
+    await ctx.send(embed=localembed)
 
 @slash.slash(
     name='shop',
@@ -521,6 +523,7 @@ async def shop(ctx:SlashContext, item:str=None):
     ]
 )
 async def buy(ctx:SlashContext, name:str, quantity:int=1):
+    if plugins.economy == False: pass
     try:
         amt = shopitem[name]['buy price'] * quantity
         if (currency['wallet'][str(ctx.author.id)] < amt):
