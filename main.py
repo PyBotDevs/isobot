@@ -512,5 +512,32 @@ async def shop(ctx:SlashContext, item:str=None):
         except(KeyError):
             await ctx.reply('That item isn\'t in the shop, do you are have stupid?')
 
+@slash.slash(
+    name='buy',
+    description='Buy an item from the shop',
+    options=[
+        create_option(name='name', description='What do you want to buy?', option_type=3, required=True),
+        create_option(name='quantity', description='How many do you want to buy?', option_type=4, required=False)
+    ]
+)
+async def buy(ctx:SlashContext, name:str, quantity:int=1):
+    try:
+        amt = shopitem[name]['buy price'] * quantity
+        if (currency['wallet'][str(ctx.author.id)] < amt):
+            await ctx.reply('You don\'t have enough balance to buy this.')
+            return
+        if (shopitem[name]['available'] == False):
+            await ctx.reply('You can\'t buy this item **dood**')
+            return
+        if (quantity <= 0):
+            await ctx.reply('The specified quantity cannot be less than `1`!')
+            return
+        currency['wallet'][str(ctx.author.id)] -= int(amt)
+        items[str(ctx.author.id)][str(name)] += quantity
+        save()
+        await ctx.reply(embed=discord.Embed(title=f'You just bought {quantity} {shopitem[name]["stylized name"]}!', description='Thank you for your business.', color=discord.Color.green()))
+    except(KeyError):
+        await ctx.reply('That item doesn\'t exist.')
+
 # Initialization
 client.run(api.auth.token)
