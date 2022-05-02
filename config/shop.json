@@ -28,5 +28,65 @@
         "available": true,
         "giftable": true,
         "sellable": true
+    },
+    "rock": {
+        "stylized name": "Rock",
+        "buy price": 0,
+        "sell price": 500,
+        "description": "Literally just a rock. What do you think?",
+        "collection": null,
+        "available": false,
+        "giftable": true,
+        "sellable": true
+    },
+    "ant": {
+        "stylized name": "Ant",
+        "buy price": 0,
+        "sell price": 800,
+        "description": "A puny, little ant. You can find this while hunting.",
+        "collection": null,
+        "available": false,
+        "giftable": true,
+        "sellable": true
+    },
+    "skunk": {
+        "stylized name": "Skunk",
+        "buy price": 0,
+        "sell price": 1000,
+        "description": "Just a small skunk. You can find this while hunting.",
+        "collection": null,
+        "available": false,
+        "giftable": true,
+        "sellable": true
+    },
+    "boar": {
+        "stylized name": "Boar",
+        "buy price": 0,
+        "sell price": 5000,
+        "description": "Just a boar. You can find this while hunting.",
+        "collection": null,
+        "available": false,
+        "giftable": true,
+        "sellable": true
+    },
+    "deer": {
+        "stylized name": "Deer",
+        "buy price": 0,
+        "sell price": 10000,
+        "description": "Just a deer. You can find this while hunting.",
+        "collection": null,
+        "available": false,
+        "giftable": true,
+        "sellable": true
+    },
+    "dragon": {
+        "stylized name": "Dragon",
+        "buy price": 0,
+        "sell price": 50000,
+        "description": "An absolute beast, sells for very high prices!",
+        "collection": null,
+        "available": false,
+        "giftable": true,
+        "sellable": true
     }
 }

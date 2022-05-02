@@ -315,7 +315,7 @@ async def withdraw(ctx:SlashContext, amount=None):
 
 @slash.slash(
     name='work',
-    description='Works for a 30-minute shift and earn cash.'
+    description='Work for a 30-minute shift and earn cash.'
 )
 @commands.cooldown(1, (30*60), commands.BucketType.user)
 async def work(ctx:SlashContext):
@@ -478,14 +478,16 @@ async def inventory(ctx:SlashContext, user:discord.User = None):
     if user == None:
         localembed = discord.Embed(title='Your Inventory')
         localembed.add_field(name='Utility', value=f'Hunting Rifle `ID: rifle`: {items[str(ctx.author.id)]["rifle"]}\nFishing Rod `ID: fishingpole`: {items[str(ctx.author.id)]["fishingpole"]}\nShovel `ID: shovel`: {items[str(ctx.author.id)]["shovel"]}\n')
+        localembed.add_field(name='Sellables', value=f'Rock `ID: rock`: {items[str(ctx.author.id)]["rock"]}\nAnt `ID: ant`: {items[str(ctx.author.id)]["ant"]}\nSkunk `ID: skunk`: {items[str(ctx.author.id)]["skunk"]}\nBoar `ID: boar`: {items[str(ctx.author.id)]["boar"]}\nDeer `ID: deer`: {items[str(ctx.author.id)]["deer"]}\nDragon `ID: dragon`: {items[str(ctx.author.id)]["dragon"]}')
     else:
         localembed = discord.Embed(title=f'{user.display_name}\'s Inventory')
         localembed.add_field(name='Utility', value=f'Hunting Rifle `ID: rifle`: {items[str(user.id)]["rifle"]}\nFishing Rod `ID: fishingpole`: {items[str(user.id)]["fishingpole"]}\nShovel `ID: shovel`: {items[str(user.id)]["shovel"]}\n')
+        localembed.add_field(name='Sellables', value=f'Rock `ID: rock`: {items[str(user.id)]["rock"]}\nAnt `ID: ant`: {items[str(user.id)]["ant"]}\nSkunk `ID: skunk`: {items[str(user.id)]["skunk"]}\nBoar `ID: boar`: {items[str(user.id)]["boar"]}\nDeer `ID: deer`: {items[str(user.id)]["deer"]}\nDragon `ID: dragon`: {items[str(user.id)]["dragon"]}')
     await ctx.send(embed=localembed)
 
 @slash.slash(
     name='shop',
-    description='Views and buy items from the shop',
+    description='Views and buys items from the shop',
     options=[
         create_option(name='item', description='Specify an item to view.', option_type=3, required=False)
     ]
@@ -541,6 +543,57 @@ async def buy(ctx:SlashContext, name:str, quantity:int=1):
         await ctx.reply(embed=discord.Embed(title=f'You just bought {quantity} {shopitem[name]["stylized name"]}!', description='Thank you for your purchase.', color=discord.Color.green()))
     except KeyError:
         await ctx.reply('That item doesn\'t exist.')
+
+@slash.slash(
+    name='hunt',
+    description='Pull out your rifle and hunt down animals'
+)
+async def hunt(ctx:SlashContext):
+    if plugins.economy == False: pass
+    if (items[str(ctx.author.id)]['rifle'] == 0):
+        await ctx.reply('I\'d hate to see you hunt with your bare hands. Please buy a hunting rifle from the shop. ||/buy rifle||')
+        return
+    loot = [
+        'rock',
+        'ant',
+        'skunk',
+        'boar',
+        'deer',
+        'dragon',
+        'nothing',
+        'died'
+    ]
+    choice = random.choice(loot)
+    if (choice == "rock"):
+        items[str(ctx.author.id)]['rock'] += 1
+        save()
+        await ctx.reply(f'You found a {choice} while hunting!')
+    elif (choice == "ant"):
+        items[str(ctx.author.id)]['ant'] += 1
+        save()
+        await ctx.reply(f'You found an {choice} while hunting!')
+    elif (choice == "skunk"):
+        items[str(ctx.author.id)]['skunk'] += 1
+        save()
+        await ctx.reply(f'You found a {choice} while hunting!')
+    elif (choice == "boar"):
+        items[str(ctx.author.id)]['boar'] += 1
+        save()
+        await ctx.reply(f'You found a {choice} while hunting!')
+    elif (choice == "deer"):
+        items[str(ctx.author.id)]['deer'] += 1
+        save()
+        await ctx.reply(f'You found a {choice} while hunting!')
+    elif (choice == "dragon"):
+        items[str(ctx.author.id)]['dragon'] += 1
+        save()
+        await ctx.reply(f'You found a {choice} while hunting! Good job!')
+    elif (choice == "nothing"):
+        await ctx.reply('You found absolutely **nothing** while hunting.')
+    elif (choice == "died"):
+        currency[str(ctx.author.id)]['wallet'] += 1000
+        save()
+        await ctx.reply('Stupid, you died while hunting and lost 1000 coins...')
 
 # Initialization
 client.run(api.auth.token)
