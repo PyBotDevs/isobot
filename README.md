@@ -26,4 +26,4 @@ dnk
 I don't expect the project development to ever fully complete. But at some point, we might merge these changes with [our main project](https://github.com/PyBotDevs/isobot-python) sooner or later.
 
 # Invite link
-The project doesn't seem ready enough to add the link. We will update this when it is.
+Become a beta tester today! We would really appreciate and value your feedback! [Click here to invite](https://discord.com/api/oauth2/authorize?client_id=953278050135588905&permissions=8&scope=applications.commands%20bot)
