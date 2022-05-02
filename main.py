@@ -431,12 +431,12 @@ async def rob(ctx:SlashContext, user:discord.User):
         x:int = random.randint(5000, currency['wallet'][str(user.id)])
         currency['wallet'][str(ctx.author.id)] += x
         currency['wallet'][str(user.id)] -= x
-        await ctx.reply(f'You just stole {x} coin(s) from {user.display_name}! Feels good, doesn\'t it?')
+        await ctx.reply(f'You just stole {x} coins from {user.display_name}! Feels good, doesn\'t it?')
     else:
         x:int = random.randint(5000, currency['wallet'][str(ctx.author.id)])
         currency['wallet'][str(ctx.author.id)] -= x
         currency['wallet'][str(user.id)] += x
-        await ctx.reply(f'LOL YOU GOT CAUGHT! You paid {user.display_name} {x} coin(s) as compensation for your action.')
+        await ctx.reply(f'LOL YOU GOT CAUGHT! You paid {user.display_name} {x} coins as compensation for your action.')
     save()
 
 @slash.slash(
@@ -459,11 +459,11 @@ async def bankrob(ctx:SlashContext, user:discord.User):
         x:int = random.randint(10000, currency['wallet'][str(user.id)])
         currency['wallet'][str(ctx.author.id)] += x
         currency['bank'][str(user.id)] -= x
-        await ctx.reply(f'You raided {user.display_name}\'s bank and ended up looting {x} coin(s) from them! Now thats what I like to call *success*.')
+        await ctx.reply(f'You raided {user.display_name}\'s bank and ended up looting {x} coins from them! Now thats what I like to call *success*.')
     else:
         x:int = 10000
         currency['wallet'][str(ctx.author.id)] -= x
-        await ctx.reply(f'Have you ever thought of this as the outcome? You failed AND ended up getting caught by the police. You just lost {x} coin(s), you absolute loser.')
+        await ctx.reply(f'Have you ever thought of this as the outcome? You failed AND ended up getting caught by the police. You just lost {x} coins, you absolute loser.')
 
 @slash.slash(
     name='inventory', 
