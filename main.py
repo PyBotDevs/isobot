@@ -477,12 +477,12 @@ async def inventory(ctx:SlashContext, user:discord.User = None):
     localembed = None
     if user == None:
         localembed = discord.Embed(title='Your Inventory')
-        localembed.add_field(name='Utility', value=f'Hunting Rifle `ID: rifle`: {items[str(ctx.author.id)]["rifle"]}\nFishing Rod `ID: fishingpole`: {items[str(ctx.author.id)]["fishingpole"]}\nShovel `ID: shovel`: {items[str(ctx.author.id)]["shovel"]}\n')
-        localembed.add_field(name='Sellables', value=f'Rock `ID: rock`: {items[str(ctx.author.id)]["rock"]}\nAnt `ID: ant`: {items[str(ctx.author.id)]["ant"]}\nSkunk `ID: skunk`: {items[str(ctx.author.id)]["skunk"]}\nBoar `ID: boar`: {items[str(ctx.author.id)]["boar"]}\nDeer `ID: deer`: {items[str(ctx.author.id)]["deer"]}\nDragon `ID: dragon`: {items[str(ctx.author.id)]["dragon"]}')
+        localembed.add_field(name='Utility', value=f'Hunting Rifle `ID: rifle`: {items[str(ctx.author.id)]["rifle"]}\nFishing Rod `ID: fishingpole`: {items[str(ctx.author.id)]["fishingpole"]}\nShovel `ID: shovel`: {items[str(ctx.author.id)]["shovel"]}', inline=False)
+        localembed.add_field(name='Sellables', value=f'Rock `ID: rock`: {items[str(ctx.author.id)]["rock"]}\nAnt `ID: ant`: {items[str(ctx.author.id)]["ant"]}\nSkunk `ID: skunk`: {items[str(ctx.author.id)]["skunk"]}\nBoar `ID: boar`: {items[str(ctx.author.id)]["boar"]}\nDeer `ID: deer`: {items[str(ctx.author.id)]["deer"]}\nDragon `ID: dragon`: {items[str(ctx.author.id)]["dragon"]}', inline=False)
     else:
         localembed = discord.Embed(title=f'{user.display_name}\'s Inventory')
-        localembed.add_field(name='Utility', value=f'Hunting Rifle `ID: rifle`: {items[str(user.id)]["rifle"]}\nFishing Rod `ID: fishingpole`: {items[str(user.id)]["fishingpole"]}\nShovel `ID: shovel`: {items[str(user.id)]["shovel"]}\n')
-        localembed.add_field(name='Sellables', value=f'Rock `ID: rock`: {items[str(user.id)]["rock"]}\nAnt `ID: ant`: {items[str(user.id)]["ant"]}\nSkunk `ID: skunk`: {items[str(user.id)]["skunk"]}\nBoar `ID: boar`: {items[str(user.id)]["boar"]}\nDeer `ID: deer`: {items[str(user.id)]["deer"]}\nDragon `ID: dragon`: {items[str(user.id)]["dragon"]}')
+        localembed.add_field(name='Utility', value=f'Hunting Rifle `ID: rifle`: {items[str(user.id)]["rifle"]}\nFishing Rod `ID: fishingpole`: {items[str(user.id)]["fishingpole"]}\nShovel `ID: shovel`: {items[str(user.id)]["shovel"]}', inline=False)
+        localembed.add_field(name='Sellables', value=f'Rock `ID: rock`: {items[str(user.id)]["rock"]}\nAnt `ID: ant`: {items[str(user.id)]["ant"]}\nSkunk `ID: skunk`: {items[str(user.id)]["skunk"]}\nBoar `ID: boar`: {items[str(user.id)]["boar"]}\nDeer `ID: deer`: {items[str(user.id)]["deer"]}\nDragon `ID: dragon`: {items[str(user.id)]["dragon"]}', inline=False)
     await ctx.send(embed=localembed)
 
 @slash.slash(
