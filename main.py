@@ -194,7 +194,7 @@ async def balance(ctx:SlashContext, user=None):
 async def kick(ctx:SlashContext, user, reason=None):
     if plugins.moderation == False: pass
     if not ctx.author.guild_permissions.kick_members:
-        raise MissingPermissions
+        raise(MissingPermissions)
     else:
         try:
             if reason == None: await user.kick()
@@ -214,7 +214,7 @@ async def kick(ctx:SlashContext, user, reason=None):
 async def ban(ctx:SlashContext, user, reason=None):
     if plugins.moderation == False: pass
     if not ctx.author.guild_permissions.ban_members:
-        raise MissingPermissions
+        raise(MissingPermissions)
     else:
         try:
             if reason == None: await user.ban()
@@ -225,7 +225,7 @@ async def ban(ctx:SlashContext, user, reason=None):
 
 @slash.slash(
     name='warn',
-    description='Warns someone in your server.',
+    description='Warn someone in your server.',
     options=[
         create_option(name='user', description='Who do you want to warn?', option_type=6, required=True),
         create_option(name='reason', description='Why are you warning the user?', option_type=3, required=True)
@@ -234,7 +234,7 @@ async def ban(ctx:SlashContext, user, reason=None):
 async def warn(ctx:SlashContext, user, reason):
     if plugins.moderation == False: pass
     if not ctx.author.guild_permissions.manage_messages:
-        raise MissingPermissions
+        raise(MissingPermissions)
     warnings[str(ctx.guild.id)][str(user.id)].append('reason')
     save()
     target=client.get_user(user.id)
@@ -246,7 +246,7 @@ async def warn(ctx:SlashContext, user, reason):
 
 @slash.slash(
     name='warns_clear',
-    description='Clears someone\'s warnings.',
+    description='Clear someone\'s warnings.',
     options=[
         create_option(name='user', description='Who do you want to remove warns from?', option_type=6, required=True)
     ]
@@ -254,7 +254,7 @@ async def warn(ctx:SlashContext, user, reason):
 async def warns_clear(ctx:SlashContext, user):
     if plugins.moderation == False: pass
     if not ctx.author.guild_permissions.manage_messages:
-        raise MissingPermissions
+        raise(MissingPermissions)
     warnings[str(ctx.guild.id)][str(user.id)] = []
     save()
     await ctx.send(embed=discord.Embed(description=f'All {user}\'s warnings have been cleared.'))
@@ -315,7 +315,7 @@ async def withdraw(ctx:SlashContext, amount=None):
 
 @slash.slash(
     name='work',
-    description='Works for a 30-minute shift and earn cash.'
+    description='Work for a 30-minute shift and earn cash.'
 )
 @commands.cooldown(1, (30*60), commands.BucketType.user)
 async def work(ctx:SlashContext):
@@ -327,7 +327,7 @@ async def work(ctx:SlashContext):
 
 @slash.slash(
     name='daily',
-    description='Claims your daily (every 24 hours)'
+    description='Claim your daily (every 24 hours)'
 )
 @commands.cooldown(1, 24*(60*60), commands.BucketType.user)
 async def daily(ctx:SlashContext):
@@ -338,7 +338,7 @@ async def daily(ctx:SlashContext):
 
 @slash.slash(
     name='weekly',
-    description='Claims your weekly (every 7 days)'
+    description='Claim your weekly (every 7 days)'
 )
 @commands.cooldown(1, 7*(24*(60*60)), commands.BucketType.user)
 async def weekly(ctx:SlashContext):
@@ -349,7 +349,7 @@ async def weekly(ctx:SlashContext):
 
 @slash.slash(
     name='monthly',
-    description='Claims your monthly (every 31 days)'
+    description='Claim your monthly (every 31 days)'
 )
 @commands.cooldown(1, 31*(24*(60*60)), commands.BucketType.user)
 async def monthly(ctx:SlashContext):
@@ -360,7 +360,7 @@ async def monthly(ctx:SlashContext):
 
 @slash.slash(
     name='beg', 
-    description='Begs for some quick cash'
+    description='Beg for some quick cash'
 )
 @commands.cooldown(1, 15, commands.BucketType.user)
 async def beg(ctx:SlashContext):
@@ -376,7 +376,7 @@ async def beg(ctx:SlashContext):
 
 @slash.slash(
     name='scout', 
-    description='Scouts your area for coins'
+    description='Scout your area for coins'
 )
 async def scout(ctx:SlashContext):
     if plugins.economy == False: pass
@@ -391,7 +391,7 @@ async def scout(ctx:SlashContext):
 
 @slash.slash(
     name='give',
-    description='Gives any amount of cash to someone else',
+    description='Give any amount of cash to someone else',
     options=[
         create_option(name='user', description='Who do you want to give cash to?', option_type=6, required=True),
         create_option(name='amount', description='How much do you want to give?', option_type=4, required=True)
@@ -413,7 +413,7 @@ async def give(ctx:SlashContext, user:discord.User, amount:int):
 
 @slash.slash(
     name='rob',
-    description='Robs someone for their money',
+    description='Rob someone for their money',
     options=[
         create_option(name='user', description='Who do you want to rob?', option_type=6, required=True)
     ]
@@ -441,7 +441,7 @@ async def rob(ctx:SlashContext, user:discord.User):
 
 @slash.slash(
     name='bankrob',
-    description='Raids someone\'s bank account',
+    description='Raid someone\'s bank account',
     options=[
         create_option(name='user', description='Whose bank account you want to raid?', option_type=6, required=True)
     ]
@@ -467,7 +467,7 @@ async def bankrob(ctx:SlashContext, user:discord.User):
 
 @slash.slash(
     name='inventory', 
-    description='Shows the items you (or someone else) own',
+    description='Show the items you (or someone else) own',
     options = [
         create_option(name='user', description='Whose inventory you want to view?', option_type=6, required=False)
     ]
@@ -485,7 +485,7 @@ async def inventory(ctx:SlashContext, user:discord.User = None):
 
 @slash.slash(
     name='shop',
-    description='Views and buy items from the shop',
+    description='View and buy items from the shop',
     options=[
         create_option(name='item', description='Specify an item to view.', option_type=3, required=False)
     ]
@@ -511,12 +511,12 @@ async def shop(ctx:SlashContext, item:str=None):
             localembed.add_field(name='In-store', value=shopitem[item]['available'], inline=True)
             localembed.add_field(name='ID', value=f'`{item}`', inline=True)
             await ctx.send(embed=localembed)
-        except KeyError:
+        except(KeyError):
             await ctx.reply('That item isn\'t in the shop, do you are have stupid?')
 
 @slash.slash(
     name='buy',
-    description='Buys an item from the shop',
+    description='Buy an item from the shop',
     options=[
         create_option(name='name', description='What do you want to buy?', option_type=3, required=True),
         create_option(name='quantity', description='How many do you want to buy?', option_type=4, required=False)
@@ -539,8 +539,54 @@ async def buy(ctx:SlashContext, name:str, quantity:int=1):
         items[str(ctx.author.id)][str(name)] += quantity
         save()
         await ctx.reply(embed=discord.Embed(title=f'You just bought {quantity} {shopitem[name]["stylized name"]}!', description='Thank you for your purchase.', color=discord.Color.green()))
-    except KeyError:
+    except(KeyError):
         await ctx.reply('That item doesn\'t exist.')
+
+@slash.slash(
+    name='hunt',
+    description='Pull out your rifle and hunt down animals'
+)
+async def hunt(ctx:SlashContext):
+    if plugins.economy == False: pass
+    if (items[str(ctx.author.id)]['rifle'] == 0):
+        await ctx.reply('I\'d hate to see you hunt with your bare hands. Please buy a hunting rifle from the shop. ||/buy rifle||')
+        return
+    loot = [
+        'rock',
+        'ant',
+        'skunk',
+        'boar',
+        'deer',
+        'dragon',
+        'nothing',
+        'died'
+    ]
+    choice = random.choice(loot)
+    if (choice == "rock"):
+        items[str(ctx.author.id)]['rock'] += 1
+        save()
+        await ctx.reply('You found a {choice} while hunting!')
+    elif (choice == "ant"):
+        items[str(ctx.author.id)]['ant'] += 1
+        save()
+        await ctx.reply('You found an {choice} while hunting!')
+    elif (choice == "skunk"):
+        items[str(ctx.author.id)]['skunk'] += 1
+        save()
+        await ctx.reply('You found a {choice} while hunting!')
+    elif (choice == "boar"):
+        items[str(ctx.author.id)]['boar'] += 1
+        save()
+        await ctx.reply('You found a {choice} while hunting!')
+    elif (choice == "deer"):
+        items[str(ctx.author.id)]['deer'] += 1
+        save()
+        await ctx.reply('You found a {choice} while hunting!')
+    elif (choice == "dragon"):
+        items[str(ctx.author.id)]['dragon'] += 1
+        save()
+        await ctx.reply('You found a {choice} while hunting! Good job!')
+    
 
 # Initialization
 client.run(api.auth.token)
