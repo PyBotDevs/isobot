@@ -511,7 +511,7 @@ async def shop(ctx:SlashContext, item:str=None):
             localembed.add_field(name='In-store', value=shopitem[item]['available'], inline=True)
             localembed.add_field(name='ID', value=f'`{item}`', inline=True)
             await ctx.send(embed=localembed)
-        except(KeyError):
+        except KeyError:
             await ctx.reply('That item isn\'t in the shop, do you are have stupid?')
 
 @slash.slash(
@@ -539,7 +539,7 @@ async def buy(ctx:SlashContext, name:str, quantity:int=1):
         items[str(ctx.author.id)][str(name)] += quantity
         save()
         await ctx.reply(embed=discord.Embed(title=f'You just bought {quantity} {shopitem[name]["stylized name"]}!', description='Thank you for your purchase.', color=discord.Color.green()))
-    except(KeyError):
+    except KeyError:
         await ctx.reply('That item doesn\'t exist.')
 
 @slash.slash(
