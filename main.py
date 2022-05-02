@@ -194,7 +194,7 @@ async def balance(ctx:SlashContext, user=None):
 async def kick(ctx:SlashContext, user, reason=None):
     if plugins.moderation == False: pass
     if not ctx.author.guild_permissions.kick_members:
-        raise(MissingPermissions)
+        raise MissingPermissions
     else:
         try:
             if reason == None: await user.kick()
@@ -214,7 +214,7 @@ async def kick(ctx:SlashContext, user, reason=None):
 async def ban(ctx:SlashContext, user, reason=None):
     if plugins.moderation == False: pass
     if not ctx.author.guild_permissions.ban_members:
-        raise(MissingPermissions)
+        raise MissingPermissions
     else:
         try:
             if reason == None: await user.ban()
@@ -234,7 +234,7 @@ async def ban(ctx:SlashContext, user, reason=None):
 async def warn(ctx:SlashContext, user, reason):
     if plugins.moderation == False: pass
     if not ctx.author.guild_permissions.manage_messages:
-        raise(MissingPermissions)
+        raise MissingPermissions
     warnings[str(ctx.guild.id)][str(user.id)].append('reason')
     save()
     target=client.get_user(user.id)
@@ -254,7 +254,7 @@ async def warn(ctx:SlashContext, user, reason):
 async def warns_clear(ctx:SlashContext, user):
     if plugins.moderation == False: pass
     if not ctx.author.guild_permissions.manage_messages:
-        raise(MissingPermissions)
+        raise MissingPermissions
     warnings[str(ctx.guild.id)][str(user.id)] = []
     save()
     await ctx.send(embed=discord.Embed(description=f'All {user}\'s warnings have been cleared.'))
