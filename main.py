@@ -453,7 +453,7 @@ async def bankrob(ctx:SlashContext, user:discord.User):
         await ctx.reply('You really want to risk losing your life to a poor person? (imagine robbing someone with < 10k net worth)')
         return
     elif (currency['wallet'][str(ctx.author.id)] < 5000):
-        await ctx.reply('You have less than 10k coins in your wallet. Don\'t be greedy.')
+        await ctx.reply('You have less than 10k in your wallet. Don\'t be greedy.')
         return
     if (chance <= 20):
         x:int = random.randint(10000, currency['wallet'][str(user.id)])
