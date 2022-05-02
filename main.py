@@ -565,27 +565,27 @@ async def hunt(ctx:SlashContext):
     if (choice == "rock"):
         items[str(ctx.author.id)]['rock'] += 1
         save()
-        await ctx.reply('You found a {choice} while hunting!')
+        await ctx.reply(f'You found a {choice} while hunting!')
     elif (choice == "ant"):
         items[str(ctx.author.id)]['ant'] += 1
         save()
-        await ctx.reply('You found an {choice} while hunting!')
+        await ctx.reply(f'You found an {choice} while hunting!')
     elif (choice == "skunk"):
         items[str(ctx.author.id)]['skunk'] += 1
         save()
-        await ctx.reply('You found a {choice} while hunting!')
+        await ctx.reply(f'You found a {choice} while hunting!')
     elif (choice == "boar"):
         items[str(ctx.author.id)]['boar'] += 1
         save()
-        await ctx.reply('You found a {choice} while hunting!')
+        await ctx.reply(f'You found a {choice} while hunting!')
     elif (choice == "deer"):
         items[str(ctx.author.id)]['deer'] += 1
         save()
-        await ctx.reply('You found a {choice} while hunting!')
+        await ctx.reply(f'You found a {choice} while hunting!')
     elif (choice == "dragon"):
         items[str(ctx.author.id)]['dragon'] += 1
         save()
-        await ctx.reply('You found a {choice} while hunting! Good job!')
+        await ctx.reply(f'You found a {choice} while hunting! Good job!')
     elif (choice == "nothing"):
         await ctx.reply('You found absolutely **nothing** while hunting.')
     elif (choice == "died"):
