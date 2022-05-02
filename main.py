@@ -586,6 +586,8 @@ async def hunt(ctx:SlashContext):
         items[str(ctx.author.id)]['dragon'] += 1
         save()
         await ctx.reply('You found a {choice} while hunting! Good job!')
+    elif (choice == "nothing"):
+        await ctx.reply('You found absolutely **nothing** while hunting.')
     
 
 # Initialization
