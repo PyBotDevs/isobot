@@ -168,14 +168,14 @@ async def balance(ctx:SlashContext, user=None):
     try:
         if user == None:
             e = discord.Embed(title=f'{ctx.author.display_name}\'s balance', color=color)
-            e.add_field(name='Cash in wallet', value=f'{currency["wallet"][str(ctx.author.id)]} coins', inline=True)
-            e.add_field(name='Cash in bank account', value=f'{currency["bank"][str(ctx.author.id)]} coins', inline=True)
+            e.add_field(name='Cash in wallet', value=f'{currency["wallet"][str(ctx.author.id)]} coin(s)', inline=True)
+            e.add_field(name='Cash in bank account', value=f'{currency["bank"][str(ctx.author.id)]} coin(s)', inline=True)
             await ctx.send(embed=e)
         else:
             try:
                 e = discord.Embed(title=f'{user.display_name}\'s balance', color=color)
-                e.add_field(name='Cash in wallet', value=f'{currency["wallet"][str(user.id)]} coins', inline=True)
-                e.add_field(name='Cash in bank account', value=f'{currency["bank"][str(user.id)]} coins', inline=True)
+                e.add_field(name='Cash in wallet', value=f'{currency["wallet"][str(user.id)]} coin(s)', inline=True)
+                e.add_field(name='Cash in bank account', value=f'{currency["bank"][str(user.id)]} coin(s)', inline=True)
                 await ctx.send(embed=e)
             except:
                 await ctx.reply('Looks like that user is not indexed in our server. Try again later.')
@@ -370,7 +370,7 @@ async def beg(ctx:SlashContext):
         x:int = random.randint(10, 100)
         currency["wallet"][str(ctx.author.id)] += x
         save()
-        await ctx.send(embed=discord.Embed(title='A random person', description=f'"Oh you poor beggar, here\'s {x} for you"'))
+        await ctx.send(embed=discord.Embed(title='A random person', description=f'"Oh you poor beggar, here\'s {x} coin(s) for you"'))
     else:
         await ctx.send(embed=discord.Embed(title='A random person', description='"lol no get a life"'))
 
@@ -385,7 +385,7 @@ async def scout(ctx:SlashContext):
         x:int = random.randint(550, 2000)
         currency["wallet"][str(ctx.author.id)] += x
         save()
-        await ctx.send(embed=discord.Embed(title='What you found', description=f'You searched your area and found {x} coins!'))
+        await ctx.send(embed=discord.Embed(title='What you found', description=f'You searched your area and found {x} coin(s)!'))
     else:
         await ctx.send(embed=discord.Embed(title='What you found', description='Unfortunately no coins for you :('))
 
@@ -409,7 +409,7 @@ async def give(ctx:SlashContext, user:discord.User, amount:int):
         currency['wallet'][str(ctx.author.id)] -= amount
         currency['wallet'][str(user.id)] += amount
         save()
-        await ctx.send(f':gift: {ctx.author.mention} just gifted {amount} coins to {user.display_name}!')
+        await ctx.send(f':gift: {ctx.author.mention} just gifted {amount} coin(s) to {user.display_name}!')
 
 @slash.slash(
     name='rob',
@@ -538,7 +538,7 @@ async def buy(ctx:SlashContext, name:str, quantity:int=1):
         currency['wallet'][str(ctx.author.id)] -= int(amt)
         items[str(ctx.author.id)][str(name)] += quantity
         save()
-        await ctx.reply(embed=discord.Embed(title=f'You just bought {quantity} {shopitem[name]["stylized name"]}!', description='Thank you for your business.', color=discord.Color.green()))
+        await ctx.reply(embed=discord.Embed(title=f'You just bought {quantity} {shopitem[name]["stylized name"]}!', description='Thank you for your purchase.', color=discord.Color.green()))
     except KeyError:
         await ctx.reply('That item doesn\'t exist.')
 
