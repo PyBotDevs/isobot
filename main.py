@@ -588,7 +588,10 @@ async def hunt(ctx:SlashContext):
         await ctx.reply('You found a {choice} while hunting! Good job!')
     elif (choice == "nothing"):
         await ctx.reply('You found absolutely **nothing** while hunting.')
-    
+    elif (choice == "died"):
+        currency[str(ctx.author.id)]['wallet'] += 1000
+        save()
+        await ctx.reply('Stupid, you died while hunting and lost 1000 coins...')
 
 # Initialization
 client.run(api.auth.token)
