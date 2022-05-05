@@ -88,5 +88,65 @@
         "available": false,
         "giftable": true,
         "sellable": true
+    },
+    "shrimp": {
+        "stylized name": "Shrimp",
+        "buy price": 0,
+        "sell price": 1000,
+        "description": "",
+        "collection": null,
+        "available": false,
+        "giftable": true,
+        "sellable": true
+    },
+    "fish": {
+        "stylized name": "Fish",
+        "buy price": 0,
+        "sell price": 3542,
+        "description": "",
+        "collection": null,
+        "available": false,
+        "giftable": true,
+        "sellable": true
+    },
+    "rarefish": {
+        "stylized name": "Rare fish",
+        "buy price": 0,
+        "sell price": 6940,
+        "description": "",
+        "collection": null,
+        "available": false,
+        "giftable": true,
+        "sellable": true
+    },
+    "exoticfish": {
+        "stylized name": "Exotic fish",
+        "buy price": 0,
+        "sell price": 15250,
+        "description": "",
+        "collection": null,
+        "available": false,
+        "giftable": true,
+        "sellable": true
+    },
+    "jellyfish": {
+        "stylized name": "Jellyfish",
+        "buy price": 0,
+        "sell price": 45320,
+        "description": "",
+        "collection": null,
+        "available": false,
+        "giftable": true,
+        "sellable": true
+    },
+    "shark": {
+        "stylized name": "Shark",
+        "buy price": 0,
+        "sell price": 65980,
+        "description": "",
+        "collection": null,
+        "available": false,
+        "giftable": true,
+        "sellable": true
     }
 }
