@@ -623,11 +623,11 @@ async def fish(ctx:SlashContext):
         save()
         await ctx.reply(f'You found a {choice} while hunting!')
     elif (choice == "rare fish"):
-        items[str(ctx.author.id)]['rare fish'] += 1
+        items[str(ctx.author.id)]['rarefish'] += 1
         save()
         await ctx.reply(f'You found a {choice} while hunting!')
     elif (choice == "exotic fish"):
-        items[str(ctx.author.id)]['exotic fish'] += 1
+        items[str(ctx.author.id)]['exoticfish'] += 1
         save()
         await ctx.reply(f'You found a {choice} while hunting!')
     elif (choice == "jellyfish"):
