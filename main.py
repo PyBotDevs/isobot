@@ -163,7 +163,11 @@ async def on_command_error(ctx, error):
             pass
 
 #Commands
-@slash.slash(name='balance', description='Shows your own or another user\'s balance.', options=[create_option(name='user', description='Which user?', option_type=6, required=False)])
+@slash.slash(
+    name='balance',
+    description='Shows your own or another user\'s balance.',
+    options=[create_option(name='user', description='Which user?', option_type=6, required=False)]
+)
 async def balance(ctx:SlashContext, user=None):
     try:
         if user == None:
@@ -315,7 +319,7 @@ async def withdraw(ctx:SlashContext, amount=None):
 
 @slash.slash(
     name='work',
-    description='Work for a 30-minute shift and earn cash.'
+    description='Works for a 30-minute shift and earn cash.'
 )
 @commands.cooldown(1, (30*60), commands.BucketType.user)
 async def work(ctx:SlashContext):
@@ -546,7 +550,7 @@ async def buy(ctx:SlashContext, name:str, quantity:int=1):
 
 @slash.slash(
     name='hunt',
-    description='Pull out your rifle and hunt down animals'
+    description='Pulls out your rifle and hunts down animals'
 )
 async def hunt(ctx:SlashContext):
     if plugins.economy == False: pass
