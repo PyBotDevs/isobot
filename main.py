@@ -597,3 +597,8 @@ async def hunt(ctx:SlashContext):
 
 # Initialization
 client.run(api.auth.token)
+
+
+
+
+# btw i use arch
