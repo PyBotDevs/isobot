@@ -487,7 +487,7 @@ async def inventory(ctx:SlashContext, user:discord.User = None):
 
 @slash.slash(
     name='shop',
-    description='Views a specific or all items from the shop',
+    description='Views and buys items from the shop',
     options=[
         create_option(name='item', description='Specify an item to view.', option_type=3, required=False)
     ]
@@ -602,7 +602,7 @@ async def hunt(ctx:SlashContext):
 async def fish(ctx:SlashContext):
     if plugins.economy == False: pass
     if (items[str(ctx.author.id)]['fishingpole'] == 0):
-        await ctx.reply('I don\'t think you can fish with your bare hannds. Please buy a fishing pole from the shop. ||/buy fishingpole||')
+        await ctx.reply('I don\'t think you can fish with your bare hands. Please buy a fishing pole from the shop. ||/buy fishingpole||')
         return
     loot = [
         'shrimp',
