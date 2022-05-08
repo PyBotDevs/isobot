@@ -487,7 +487,7 @@ async def inventory(ctx:SlashContext, user:discord.User = None):
 
 @slash.slash(
     name='shop',
-    description='Views and buys items from the shop',
+    description='Views a specific or all items from the shop',
     options=[
         create_option(name='item', description='Specify an item to view.', option_type=3, required=False)
     ]
