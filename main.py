@@ -559,16 +559,18 @@ async def sell(ctx:SlashContext, name:str, quantity:int=1):
             return
         else:
             pass
+        if quantity > items[str(ctx.author.id)][str(name)]:
+            await ctx.reply('You can\'t sell more than you have.')
+        items[str(ctx.author.id)][str(name)] -= quantity
+        ttl = shopitem[name]["sell price"] * quantity
+        currency[str(ctx.author.id)]["wallet"] += int(ttl)
+        localembed = discord.Embed(title='Item sold', description=f'You successfully sold {quantity} {name} for {ttl} coins!', color=discord.Color.random())
+        localembed.set_footer(text='Thank you for your business.')
+        await ctx.reply(embed=localembed)
     except KeyError:
         await ctx.reply('what are you doing that item doesn\'t even exist')
-    if quantity > items[str(ctx.author.id)][str(name)]:
-        await ctx.reply('You can\'t sell more than you have.')
-    items[str(ctx.author.id)][str(name)] -= quantity
-    ttl = shopitem[name]["sell price"] * quantity
-    currency[str(ctx.author.id)]["wallet"] += int(ttl)
-    localembed = discord.Embed(title='Item sold', description=f'You successfully sold {quantity} {name} for {ttl} coins!', color=discord.Color.random())
-    localembed.set_footer(text='Thank you for your business.')
-    await ctx.reply(embed=localembed)
+    except Exception as e:
+        await ctx.send(f'An error occured while processing this request. ```{e}```')
 
 @slash.slash(
     name='hunt',
