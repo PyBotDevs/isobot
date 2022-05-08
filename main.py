@@ -487,7 +487,7 @@ async def inventory(ctx:SlashContext, user:discord.User = None):
 
 @slash.slash(
     name='shop',
-    description='Views a specific or all items from the shop',
+    description='Views and buys items from the shop',
     options=[
         create_option(name='item', description='Specify an item to view.', option_type=3, required=False)
     ]
@@ -594,6 +594,52 @@ async def hunt(ctx:SlashContext):
         currency[str(ctx.author.id)]['wallet'] += 1000
         save()
         await ctx.reply('Stupid, you died while hunting and lost 1000 coins...')
+
+@slash.slash(
+    name='fish',
+    description='Prepare your fishing rod and catch some fish'
+)
+async def fish(ctx:SlashContext):
+    if plugins.economy == False: pass
+    if (items[str(ctx.author.id)]['fishingpole'] == 0):
+        await ctx.reply('I don\'t think you can fish with your bare hands. Please buy a fishing pole from the shop. ||/buy fishingpole||')
+        return
+    loot = [
+        'shrimp',
+        'fish',
+        'rare fish',
+        'exotic fish',
+        'jellyfish',
+        'shark',
+        'nothing'
+    ]
+    choice = random.choice(loot)
+    if (choice == "shrimp"):
+        items[str(ctx.author.id)]['shrimp'] += 1
+        save()
+        await ctx.reply(f'You found a {choice} while hunting!')
+    elif (choice == "fish"):
+        items[str(ctx.author.id)]['fish'] += 1
+        save()
+        await ctx.reply(f'You found a {choice} while hunting!')
+    elif (choice == "rare fish"):
+        items[str(ctx.author.id)]['rarefish'] += 1
+        save()
+        await ctx.reply(f'You found a {choice} while hunting!')
+    elif (choice == "exotic fish"):
+        items[str(ctx.author.id)]['exoticfish'] += 1
+        save()
+        await ctx.reply(f'You found a {choice} while hunting!')
+    elif (choice == "jellyfish"):
+        items[str(ctx.author.id)]['jellyfish'] += 1
+        save()
+        await ctx.reply(f'You found a {choice} while hunting! Good job!')
+    elif (choice == "shark"):
+        items[str(ctx.author.id)]['shark'] += 1
+        save()
+        await ctx.reply(f'You found a {choice} while hunting! Great job!')
+    elif (choice == "nothing"):
+        await ctx.reply('Looks like the fish were weary of your rod. You caught nothing.')
 
 # Initialization
 client.run(api.auth.token)
