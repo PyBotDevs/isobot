@@ -545,6 +545,28 @@ async def buy(ctx:SlashContext, name:str, quantity:int=1):
         await ctx.reply('That item doesn\'t exist.')
 
 @slash.slash(
+    name='sell',
+    description='Sells an item from your inventory in exchange for cash',
+    options=[
+        create_option(name='name', description='What do you want to sell?', option_type=3, required=True),
+        create_option(name='quantity', description='How many do you want to sell?', option_type=4, required=False)
+    ]
+)
+async def sell(ctx:SlashContext, name:str, quantity:int=1):
+    try:
+        if shopitem[name]["sellable"] != True:
+            await ctx.reply('Dumb, you can\'t sell this item.')
+            return
+        else:
+            pass
+    except KeyError:
+        await ctx.reply('what are you doing that item doesn\'t even exist')
+    if quantity > items[str(ctx.author.id)][str(name)]:
+        await ctx.reply('You can\'t sell more than you have.')
+    items[str(ctx.author.id)][str(name)] -= quantity
+    currency[str(ctx.author.id)]["wallet"] += (shopitem[name]["sell price"] * quantity)
+
+@slash.slash(
     name='hunt',
     description='Pull out your rifle and hunt down animals'
 )
