@@ -564,7 +564,11 @@ async def sell(ctx:SlashContext, name:str, quantity:int=1):
     if quantity > items[str(ctx.author.id)][str(name)]:
         await ctx.reply('You can\'t sell more than you have.')
     items[str(ctx.author.id)][str(name)] -= quantity
-    currency[str(ctx.author.id)]["wallet"] += (shopitem[name]["sell price"] * quantity)
+    ttl = shopitem[name]["sell price"] * quantity
+    currency[str(ctx.author.id)]["wallet"] += int(ttl)
+    localembed = discord.Embed(title='Item sold', description=f'You successfully sold {quantity} {name} for {ttl} coins!', color=discord.Color.random())
+    localembed.set_footer(text='Thank you for your business.')
+    await ctx.reply(embed=localembed)
 
 @slash.slash(
     name='hunt',
