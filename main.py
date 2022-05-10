@@ -671,3 +671,8 @@ async def fish(ctx:SlashContext):
 
 # Initialization
 client.run(api.auth.token)
+
+
+
+
+# btw i use arch
