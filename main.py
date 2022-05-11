@@ -11,6 +11,7 @@ from discord_slash import SlashCommand, SlashContext
 from discord_slash.utils.manage_commands import create_choice, create_option
 import api.auth
 import utils.logger
+import utils.ping
 
 # Slash option types:
 # sub command: 1
@@ -670,6 +671,7 @@ async def fish(ctx:SlashContext):
         await ctx.reply('Looks like the fish were weary of your rod. You caught nothing.')
 
 # Initialization
+utils.ping.host()
 client.run(api.auth.token)
 
 
