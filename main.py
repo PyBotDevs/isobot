@@ -571,7 +571,8 @@ async def sell(ctx:SlashContext, name:str, quantity:int=1):
             return
         items[str(ctx.author.id)][str(name)] -= quantity
         ttl = shopitem[name]["sell price"] * quantity
-        currency[str(ctx.author.id)]["wallet"] += int(ttl)
+        currency["wallet"][str(ctx.author.id)] += int(ttl)
+        save()
         localembed = discord.Embed(title='Item sold', description=f'You successfully sold {quantity} {name} for {ttl} coins!', color=discord.Color.random())
         localembed.set_footer(text='Thank you for your business.')
         await ctx.reply(embed=localembed)
