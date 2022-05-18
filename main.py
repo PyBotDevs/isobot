@@ -568,6 +568,7 @@ async def sell(ctx:SlashContext, name:str, quantity:int=1):
             pass
         if quantity > items[str(ctx.author.id)][str(name)]:
             await ctx.reply('You can\'t sell more than you have.')
+            return
         items[str(ctx.author.id)][str(name)] -= quantity
         ttl = shopitem[name]["sell price"] * quantity
         currency[str(ctx.author.id)]["wallet"] += int(ttl)
