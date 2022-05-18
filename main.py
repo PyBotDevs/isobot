@@ -97,6 +97,12 @@ async def on_message(ctx):
         items[str(ctx.author.id)]['rifle'] = 0
         items[str(ctx.author.id)]['fishingpole'] = 0
         items[str(ctx.author.id)]['shovel'] = 0
+        items[str(ctx.author.id)]['rock'] = 0
+        items[str(ctx.author.id)]['ant'] = 0
+        items[str(ctx.author.id)]['skunk'] = 0
+        items[str(ctx.author.id)]['boar'] = 0
+        items[str(ctx.author.id)]['deer'] = 0
+        items[str(ctx.author.id)]['dragon'] = 0
     save()
 
 #Error handler
