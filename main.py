@@ -27,16 +27,16 @@ import utils.ping
 client = commands.Bot(command_prefix='s!', intents=discord.Intents.all())
 slash = SlashCommand(client, sync_commands=True)
 color = discord.Color.random()
-with open('./Desktop/Stock/database/currency.json', 'r') as f:
+with open('/home/runner/isobot-lazer/database/currency.json', 'r') as f:
     global currency
     currency = json.load(f)
-with open('./Desktop/Stock/database/warnings.json', 'r') as f:
+with open('/home/runner/isobot-lazer/database/warnings.json', 'r') as f:
     global warnings
     warnings = json.load(f)
-with open('./Desktop/Stock/database/items.json', 'r') as f:
+with open('/home/runner/isobot-lazer/database/items.json', 'r') as f:
     global items
     items = json.load(f)
-with open('./Desktop/Stock/config/shop.json', 'r') as f:
+with open('/home/runner/isobot-lazer/config/shop.json', 'r') as f:
     global shopitem
     shopitem = json.load(f)
 
@@ -44,11 +44,11 @@ with open('./Desktop/Stock/config/shop.json', 'r') as f:
 def timenow(): 
     datetime.datetime.now().strftime("%H:%M:%S")
 def save():
-    with open('./Desktop/Stock/database/currency.json', 'w+') as f:
+    with open('/home/runner/isobot-lazer/database/currency.json', 'w+') as f:
         json.dump(currency, f, indent=4)
-    with open(f'./Desktop/Stock/database/warnings.json', 'w+') as f:
+    with open(f'/home/runner/isobot-lazer/database/warnings.json', 'w+') as f:
         json.dump(warnings, f, indent=4)
-    with open(f'./Desktop/Stock/database/items.json', 'w+') as f:
+    with open(f'/home/runner/isobot-lazer/database/items.json', 'w+') as f:
         json.dump(items, f, indent=4)
 
 #Classes
