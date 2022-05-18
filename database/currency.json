@@ -1,8 +1,4 @@
 {
-    "wallet": {
-      
-    },
-    "bank": {
-      
-    }
+    "wallet": {},
+    "bank": {}
 }
