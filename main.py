@@ -11,6 +11,7 @@ from discord_slash import SlashCommand, SlashContext
 from discord_slash.utils.manage_commands import create_choice, create_option
 import api.auth
 import utils.logger
+import utils.ping
 
 # Slash option types:
 # sub command: 1
@@ -545,6 +546,34 @@ async def buy(ctx:SlashContext, name:str, quantity:int=1):
         await ctx.reply('That item doesn\'t exist.')
 
 @slash.slash(
+    name='sell',
+    description='Sells an item from your inventory in exchange for cash',
+    options=[
+        create_option(name='name', description='What do you want to sell?', option_type=3, required=True),
+        create_option(name='quantity', description='How many do you want to sell?', option_type=4, required=False)
+    ]
+)
+async def sell(ctx:SlashContext, name:str, quantity:int=1):
+    try:
+        if shopitem[name]["sellable"] != True:
+            await ctx.reply('Dumb, you can\'t sell this item.')
+            return
+        else:
+            pass
+        if quantity > items[str(ctx.author.id)][str(name)]:
+            await ctx.reply('You can\'t sell more than you have.')
+        items[str(ctx.author.id)][str(name)] -= quantity
+        ttl = shopitem[name]["sell price"] * quantity
+        currency[str(ctx.author.id)]["wallet"] += int(ttl)
+        localembed = discord.Embed(title='Item sold', description=f'You successfully sold {quantity} {name} for {ttl} coins!', color=discord.Color.random())
+        localembed.set_footer(text='Thank you for your business.')
+        await ctx.reply(embed=localembed)
+    except KeyError:
+        await ctx.reply('what are you doing that item doesn\'t even exist')
+    except Exception as e:
+        await ctx.send(f'An error occured while processing this request. ```{e}```')
+
+@slash.slash(
     name='hunt',
     description='Pull out your rifle and hunt down animals'
 )
@@ -595,5 +624,57 @@ async def hunt(ctx:SlashContext):
         save()
         await ctx.reply('Stupid, you died while hunting and lost 1000 coins...')
 
+@slash.slash(
+    name='fish',
+    description='Prepare your fishing rod and catch some fish'
+)
+async def fish(ctx:SlashContext):
+    if plugins.economy == False: pass
+    if (items[str(ctx.author.id)]['fishingpole'] == 0):
+        await ctx.reply('I don\'t think you can fish with your bare hands. Please buy a fishing pole from the shop. ||/buy fishingpole||')
+        return
+    loot = [
+        'shrimp',
+        'fish',
+        'rare fish',
+        'exotic fish',
+        'jellyfish',
+        'shark',
+        'nothing'
+    ]
+    choice = random.choice(loot)
+    if (choice == "shrimp"):
+        items[str(ctx.author.id)]['shrimp'] += 1
+        save()
+        await ctx.reply(f'You found a {choice} while hunting!')
+    elif (choice == "fish"):
+        items[str(ctx.author.id)]['fish'] += 1
+        save()
+        await ctx.reply(f'You found a {choice} while hunting!')
+    elif (choice == "rare fish"):
+        items[str(ctx.author.id)]['rarefish'] += 1
+        save()
+        await ctx.reply(f'You found a {choice} while hunting!')
+    elif (choice == "exotic fish"):
+        items[str(ctx.author.id)]['exoticfish'] += 1
+        save()
+        await ctx.reply(f'You found a {choice} while hunting!')
+    elif (choice == "jellyfish"):
+        items[str(ctx.author.id)]['jellyfish'] += 1
+        save()
+        await ctx.reply(f'You found a {choice} while hunting! Good job!')
+    elif (choice == "shark"):
+        items[str(ctx.author.id)]['shark'] += 1
+        save()
+        await ctx.reply(f'You found a {choice} while hunting! Great job!')
+    elif (choice == "nothing"):
+        await ctx.reply('Looks like the fish were weary of your rod. You caught nothing.')
+
 # Initialization
+utils.ping.host()
 client.run(api.auth.token)
+
+
+
+
+# btw i use arch

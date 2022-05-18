@@ -89,8 +89,78 @@
         "giftable": true,
         "sellable": true
     },
+    "shrimp": {
+        "stylized name": "Shrimp",
+        "buy price": 0,
+        "sell price": 1000,
+        "description": "",
+        "collection": null,
+        "available": false,
+        "giftable": true,
+        "sellable": true
+    },
+    "fish": {
+        "stylized name": "Fish",
+        "buy price": 0,
+        "sell price": 3542,
+        "description": "",
+        "collection": null,
+        "available": false,
+        "giftable": true,
+        "sellable": true
+    },
+    "rarefish": {
+        "stylized name": "Rare fish",
+        "buy price": 0,
+        "sell price": 6940,
+        "description": "",
+        "collection": null,
+        "available": false,
+        "giftable": true,
+        "sellable": true
+    },
+    "exoticfish": {
+        "stylized name": "Exotic fish",
+        "buy price": 0,
+        "sell price": 15250,
+        "description": "",
+        "collection": null,
+        "available": false,
+        "giftable": true,
+        "sellable": true
+    },
+    "jellyfish": {
+        "stylized name": "Jellyfish",
+        "buy price": 0,
+        "sell price": 45320,
+        "description": "",
+        "collection": null,
+        "available": false,
+        "giftable": true,
+        "sellable": true
+    },
+    "shark": {
+        "stylized name": "Shark",
+        "buy price": 0,
+        "sell price": 65980,
+        "description": "",
+        "collection": null,
+        "available": false,
+        "giftable": true,
+        "sellable": true
+    },
+    "binoculars": {
+        "stylized name": "Binoculars",
+        "buy price": 0,
+        "sell price": 5000,
+        "description": "Try scouting with this binoculars, maybe you can find more with it.",
+        "collection": null,
+        "avaliable": false,
+        "giftable": true,
+        "sellable": true
+    },
     "normal": {
-        "type": "Normal Box",
+        "stylized name": "Normal Box",
         "buy price": 0,
         "sell price": 0,
         "description": "A simple box that contains a small amount of items.",
@@ -100,7 +170,7 @@
         "sellable": false
     },
     "large": {
-        "type": "Large Box",
+        "stylized name": "Large Box",
         "buy price": 0,
         "sell price": 0,
         "description": "A larger box that contains more items inside.",
@@ -110,7 +180,7 @@
         "sellable": false
     },
     "special": {
-        "type": "Special Box",
+        "stylized name": "Special Box",
         "buy price": 0,
         "sell price": 0,
         "description": "A nice looking lootbox that contains rare items.",
