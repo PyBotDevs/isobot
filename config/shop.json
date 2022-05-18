@@ -151,11 +151,11 @@
     },
     "binoculars": {
         "stylized name": "Binoculars",
-        "buy price": 0,
-        "sell price": 5000,
+        "buy price": 14850,
+        "sell price": 9800,
         "description": "Try scouting with this binoculars, maybe you can find more with it.",
         "collection": null,
-        "avaliable": false,
+        "avaliable": true,
         "giftable": true,
         "sellable": true
     },
