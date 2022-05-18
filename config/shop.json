@@ -155,7 +155,7 @@
         "sell price": 9800,
         "description": "Try scouting with this binoculars, maybe you can find more with it.",
         "collection": null,
-        "avaliable": true,
+        "available": true,
         "giftable": true,
         "sellable": true
     },
