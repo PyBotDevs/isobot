@@ -103,6 +103,7 @@ async def on_message(ctx):
         items[str(ctx.author.id)]['boar'] = 0
         items[str(ctx.author.id)]['deer'] = 0
         items[str(ctx.author.id)]['dragon'] = 0
+        items[str(ctx.author.id)]['binoculars'] = 0
     save()
 
 #Error handler
@@ -390,6 +391,10 @@ async def scout(ctx:SlashContext):
     chance:int = random.randint(1, 100)
     if (chance <= 90):
         x:int = random.randint(550, 2000)
+        if items[str(ctx.author.id)]['binoculars'] >= 1:
+            x *= 1.425 
+        else:
+            pass
         currency["wallet"][str(ctx.author.id)] += x
         save()
         await ctx.send(embed=discord.Embed(title='What you found', description=f'You searched your area and found {x} coin(s)!'))
