@@ -7,6 +7,7 @@ import json
 import time, datetime
 import asyncio
 import random
+import math
 from discord_slash import SlashCommand, SlashContext
 from discord_slash.utils.manage_commands import create_choice, create_option
 import api.auth
@@ -390,9 +391,10 @@ async def scout(ctx:SlashContext):
     if plugins.economy == False: pass
     chance:int = random.randint(1, 100)
     if (chance <= 90):
-        x:int = random.randint(550, 2000)
+        x = random.randint(550, 2000)
         if items[str(ctx.author.id)]['binoculars'] >= 1:
-            x *= 1.425 
+            x *= 1.425
+            x = math.floor(x)
         else:
             pass
         currency["wallet"][str(ctx.author.id)] += x
