@@ -97,7 +97,7 @@
         "collection": null,
         "available": false,
         "giftable": true,
-        "sellable": true
+        "sellable": false
     },
     "large": {
         "type": "Large Box",
@@ -107,7 +107,7 @@
         "collection": null,
         "available": false,
         "giftable": true,
-        "sellable": true
+        "sellable": false
     },
     "special": {
         "type": "Special Box",
@@ -117,6 +117,6 @@
         "collection": null,
         "available": false,
         "giftable": true,
-        "sellable": true
+        "sellable": false
     }
 }
