@@ -619,8 +619,16 @@ async def open(ctx:SlashContext, lootbox:str, amount:int):
         return
     else:
         try:
-            #cant really finish the code by myself i need serious help
-        
+            n_loot = [
+                random.randint(10000, 25000)    
+            ]
+            l_loot = [
+                random.randint(50000, 75000)
+            ]
+            s_loot = [
+                random.randint(100000, 500000)
+            ]
+            #item outcomes tbd
 
 # Initialization
 client.run(api.auth.token)
