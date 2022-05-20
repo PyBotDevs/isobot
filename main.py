@@ -611,8 +611,12 @@ async def open(ctx:SlashContext, lootbox:str, amount:int):
         "special"
     ]
     #this is gucking bloated
-    if amount <= 0: await ctx.send("You can't open 0 or below lootboxes! Don't be stupid.")
-    elif lootbox not in types: await ctx.send("That lootbox doesn't even exist get a brain")
+    if amount <= 0:
+        await ctx.send("You can't open 0 or below lootboxes! Don't be stupid.")
+        return
+    elif lootbox not in types:
+        await ctx.send("That lootbox doesn't even exist get a brain")
+        return
     else:
         try:
             #cant really finish the code by myself i need serious help
