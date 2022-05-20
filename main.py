@@ -600,7 +600,7 @@ async def hunt(ctx:SlashContext):
     name='open',
     description='Opens lootbox(es) in your inventory',
     options=[
-        create_option(name='lootbox', description='Specify lootbox type.', option_type=3, required=True)
+        create_option(name='lootbox', description='What lootbox do you want to open?', option_type=3, required=True)
         create_option(name='amount', description='How many do you want to open?', option_type=4, required=True)
     ]
 )
@@ -611,10 +611,8 @@ async def open(ctx:SlashContext, lootbox:str, amount:int):
         "special"
     ]
     #this is gucking bloated
-    if amount <= 0:
-        await ctx.send("You can't open 0 or below lootboxes! Don't be stupid.")
-    elif lootbox not in types:
-        await ctx.send(f"What are you trying to open? What is a {lootbox} lootbox???")
+    if amount <= 0: await ctx.send("You can't open 0 or below lootboxes! Don't be stupid.")
+    elif lootbox not in types: await ctx.send("That lootbox doesn't even exist get a brain")
     else:
         try:
             #cant really finish the code by myself i need serious help
