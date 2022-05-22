@@ -52,6 +52,14 @@ def save():
     with open(f'/home/runner/isobot-lazer/database/items.json', 'w+') as f:
         json.dump(items, f, indent=4)
 
+if os.path.isdir('/home/runner/isobot-lazer/logs'): 
+  pass
+else:
+  try:
+    os.mkdir('/home/runner/isobot-lazer/logs')
+  except Exception as e:
+    utils.logger.error(f"Error while making logs directory: {e}")
+
 #Classes
 class colors:
     cyan = '\033[96m'
@@ -687,6 +695,36 @@ async def fish(ctx:SlashContext):
     elif (choice == "nothing"):
         await ctx.reply('Looks like the fish were weary of your rod. You caught nothing.')
 
+
+# DevTools commands
+@slash.slash(
+    name='sync',
+    description='Syncs all of the local databases with their latest version'
+)
+async def sync(ctx:SlashContext):
+    if ctx.author.id != 738290097170153472:
+        await ctx.reply('Sorry, this command is only for my developer\'s use.')
+        return
+    else:
+        pass
+    try:
+        with open('/home/runner/isobot-lazer/database/currency.json', 'r') as f:
+            global currency
+            currency = json.load(f)
+        with open('/home/runner/isobot-lazer/database/warnings.json', 'r') as f:
+            global warnings
+            warnings = json.load(f)
+        with open('/home/runner/isobot-lazer/database/items.json', 'r') as f:
+            global items
+            items = json.load(f)
+        with open('/home/runner/isobot-lazer/config/shop.json', 'r') as f:
+            global shopitem
+            shopitem = json.load(f)
+        await ctx.send('Databases resynced.', hidden=True)
+    except Exception as e:
+        print(e)
+        await ctx.reply('An error occured while resyncing. Check console.', hidden=True)
+      
 # Initialization
 utils.ping.host()
 client.run(api.auth.token)
