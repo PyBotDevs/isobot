@@ -1,0 +1,4 @@
+api/auth.py
+database/currency.json
+database/item.json
+database/warnings.json
