@@ -27,3 +27,9 @@ I don't expect the project development to ever fully complete. But at some point
 
 # Invite link
 Become a beta tester today! We would really appreciate and value your feedback! [Click here to invite](https://discord.com/api/oauth2/authorize?client_id=953278050135588905&permissions=8&scope=applications.commands%20bot)
+
+## Extras
+# Highlights
+Work command:
+
+![image](https://user-images.githubusercontent.com/72265661/170833960-7ce1acdf-7dc6-4933-8969-144ed2d57a93.png)
