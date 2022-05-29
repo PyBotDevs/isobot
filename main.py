@@ -52,6 +52,22 @@ def save():
     with open(f'/home/runner/isobot-lazer/database/items.json', 'w+') as f:
         json.dump(items, f, indent=4)
 
+if os.path.isdir('/home/runner/isobot-lazer/logs'): 
+  pass
+else:
+  try:
+    os.mkdir('/home/runner/isobot-lazer/logs')
+  except Exception as e:
+    utils.logger.error(f"Error while making logs directory: {e} (temporarily skipping dir creation)", nolog=True)
+  try:
+    open('/home/runner/isobot-lazer/logs/info-log.txt', 'x')
+    utils.logger.info("Created info log", nolog=True)
+    time.sleep(0.5)
+    open('/home/runner/isobot-lazer/logs/error-log.txt', 'x')
+    utils.logger.info("Created error log", nolog=True)
+  except Exception as e:
+    utils.logger.error(f"Failed to make log file: {e}", nolog=True)
+
 #Classes
 class colors:
     cyan = '\033[96m'
@@ -686,7 +702,7 @@ async def fish(ctx:SlashContext):
         await ctx.reply(f'You found a {choice} while hunting! Great job!')
     elif (choice == "nothing"):
         await ctx.reply('Looks like the fish were weary of your rod. You caught nothing.')
-
+      
 # Initialization
 utils.ping.host()
 client.run(api.auth.token)
