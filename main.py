@@ -59,14 +59,14 @@ else:
     os.mkdir('/home/runner/isobot-lazer/logs')
   except Exception as e:
     utils.logger.error(f"Error while making logs directory: {e} (temporarily skipping dir creation)", nolog=True)
-  #try:
-  open('/home/runner/isobot-lazer/logs/info-log.txt', 'x')
-  utils.logger.info("Created info log", nolog=True)
-  time.sleep(0.5)
-  open('/home/runner/isobot-lazer/logs/error-log.txt', 'x')
-  utils.logger.info("Created error log", nolog=True)
-  #except Exception as e:
-  #  utils.logger.error(f"Failed to make log file: {e}", nolog=True)
+  try:
+    open('/home/runner/isobot-lazer/logs/info-log.txt', 'x')
+    utils.logger.info("Created info log", nolog=True)
+    time.sleep(0.5)
+    open('/home/runner/isobot-lazer/logs/error-log.txt', 'x')
+    utils.logger.info("Created error log", nolog=True)
+  except Exception as e:
+    utils.logger.error(f"Failed to make log file: {e}", nolog=True)
 
 #Classes
 class colors:
