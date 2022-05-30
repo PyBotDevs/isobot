@@ -7,7 +7,7 @@
 3. enhancement of all commands (e.g. more creative way to hunt, different ways to work (like companies and guilds) etc.)
 4. i actually had a lot of different ideas on cmds but i sent them to archie, ask me if u also want some (maybe hes gonna say that u copy again....)
 5. add weapons (like isobot did) on bankrob and rob cmd, as u cant rob with ur bare hands (buy weapkns such as knife and pistols in shop, new items needed)
-6. add use cmd for lootboxes
+~~6. add use cmd for lootboxes~~
 7. maybe more items that can be used by use cmd
 
 (this list will be updated once i got more ideas)
