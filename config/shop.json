@@ -188,5 +188,35 @@
         "available": false,
         "giftable": true,
         "sellable": false
+    },
+    "stickbug": {
+        "stylized name": "Stickbug",
+        "buy price": 0,
+        "sell price": 1000,
+        "description": "Found by digging the area. This is meant to be sold, not to be used.",
+        "collection": null,
+        "available": false,
+        "giftable": true,
+        "sellable": true
+    },
+    "gold": {
+        "stylized name": "Gold",
+        "buy price": 15835,
+        "sell price": 11520,
+        "description": "Found by digging the area. You can flex this to people who can't afford it, or you can sell it, or you can even trade it... the possibilities are endless......",
+        "collection": null,
+        "available": true,
+        "giftable": true,
+        "sellable": true
+    },
+    "coinbomb": {
+        "stylized name": "Coinbomb",
+        "buy price": 15000,
+        "sell price": 10000,
+        "description": "Give money to the poor and needy!",
+        "collection": null,
+        "available": true,
+        "giftable": true,
+        "sellable": true
     }
 }
