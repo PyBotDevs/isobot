@@ -121,6 +121,7 @@ async def on_message(ctx):
         items[str(ctx.author.id)]['deer'] = 0
         items[str(ctx.author.id)]['dragon'] = 0
         items[str(ctx.author.id)]['binoculars'] = 0
+        items[str(ctx.author.id)]['shark'] = 0
     save()
 
 #Error handler
@@ -702,7 +703,7 @@ async def fish(ctx:SlashContext):
         await ctx.reply(f'You found a {choice} while hunting! Great job!')
     elif (choice == "nothing"):
         await ctx.reply('Looks like the fish were weary of your rod. You caught nothing.')
-      
+
 # Initialization
 utils.ping.host()
 client.run(api.auth.token)
