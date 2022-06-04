@@ -121,6 +121,7 @@ async def on_message(ctx):
         items[str(ctx.author.id)]['deer'] = 0
         items[str(ctx.author.id)]['dragon'] = 0
         items[str(ctx.author.id)]['binoculars'] = 0
+        items[str(ctx.author.id)]['shark'] = 0
     save()
 
 #Error handler
@@ -763,6 +764,35 @@ async def fish(ctx:SlashContext):
         currency['wallet'][str(ctx.author.id)] -= 2000
         save()
         await ctx.reply('YOU FELL INTO YOUR OWN TRAP AND DIED LMFAO\nYou lost 2000 coins in the process.')
+
+# DevTools commands
+@slash.slash(
+    name='sync',
+    description='Syncs all of the local databases with their latest version'
+)
+async def sync(ctx:SlashContext):
+    if ctx.author.id != 738290097170153472:
+        await ctx.reply('Sorry, this command is only for my developer\'s use.')
+        return
+    else:
+        pass
+    try:
+        with open('/home/runner/isobot-lazer/database/currency.json', 'r') as f:
+            global currency
+            currency = json.load(f)
+        with open('/home/runner/isobot-lazer/database/warnings.json', 'r') as f:
+            global warnings
+            warnings = json.load(f)
+        with open('/home/runner/isobot-lazer/database/items.json', 'r') as f:
+            global items
+            items = json.load(f)
+        with open('/home/runner/isobot-lazer/config/shop.json', 'r') as f:
+            global shopitem
+            shopitem = json.load(f)
+        await ctx.send('Databases resynced.', hidden=True)
+    except Exception as e:
+        print(e)
+        await ctx.reply('An error occured while resyncing. Check console.', hidden=True)
       
 # Initialization
 utils.ping.host()
