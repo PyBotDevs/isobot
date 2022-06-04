@@ -146,7 +146,6 @@ async def on_command_error(ctx, error):
         else:
             pass
     if isinstance(error, MissingRequiredArgument):
-        await ctx.send(':warning: Missing required argument(s)', delete_after=8)
         if os.name == 'nt':
             with open(errorHandler_path, 'a') as f:
                 f.write(f'[{current_time}] Ignoring exception at MissingRequiredArgument. Details: The command can\'t be executed because required arguments are missing.\n')
@@ -711,10 +710,10 @@ async def fish(ctx:SlashContext):
     name='dig',
     description='Take your shovel and dig in the ground for some cool stuff!'
 )
-async def fish(ctx:SlashContext):
+async def dig(ctx:SlashContext):
     if plugins.economy == False: pass
-    if (items[str(ctx.author.id)]['fishingpole'] == 0):
-        await ctx.reply('You\'re too good to have to dig with your bare hands. Please buy a shovel from the shop. ||/buy shovel||')
+    if (items[str(ctx.author.id)]['shovel'] == 0):
+        await ctx.reply('You\'re too good to have to dig with your bare hands..... at least I hope so. Please buy a shovel from the shop. ||/buy shovel||')
         return
     loot = [
         'coins',
