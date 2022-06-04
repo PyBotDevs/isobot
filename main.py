@@ -146,6 +146,7 @@ async def on_command_error(ctx, error):
         else:
             pass
     if isinstance(error, MissingRequiredArgument):
+        await ctx.send(':warning: Missing required argument(s)', delete_after=8)
         if os.name == 'nt':
             with open(errorHandler_path, 'a') as f:
                 f.write(f'[{current_time}] Ignoring exception at MissingRequiredArgument. Details: The command can\'t be executed because required arguments are missing.\n')
