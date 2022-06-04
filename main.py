@@ -221,6 +221,7 @@ async def kick(ctx:SlashContext, user, reason=None):
     if plugins.moderation == False: pass
     if not ctx.author.guild_permissions.kick_members:
         await ctx.reply('https://images-ext-1.discordapp.net/external/Iw-w417ErNcl6eO8_uOPU0LGX4JTqtHPfSNFNTD7zJ0/https/media.tenor.com/TY_AmszVhJIAAAPo/oh-yeah-high-kick.mp4')
+        return
     else:
         try:
             if reason == None: await user.kick()
@@ -241,6 +242,7 @@ async def ban(ctx:SlashContext, user, reason=None):
     if plugins.moderation == False: pass
     if not ctx.author.guild_permissions.ban_members:
         await ctx.reply('https://images-ext-2.discordapp.net/external/tD22WVX_FmMn4-fcGXJNHl4pl28nwO_8QsfM8W8PjiU/https/media.tenor.com/_rMM5ICPEukAAAPo/thor-strike.mp4')
+        return
     else:
         try:
             if reason == None: await user.ban()
