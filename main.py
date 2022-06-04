@@ -730,7 +730,7 @@ async def dig(ctx:SlashContext):
     ]
     choice = random.choice(loot)
     if (choice == "coins"):
-        currrency['wallet'][str(ctx.author.id)] += random.choice('1000', '5000')
+        currency['wallet'][str(ctx.author.id)] += random.choice('1000', '5000')
         save()
         await ctx.reply(f'You went digging and found a bunch of coins. Nice!')
     elif (choice == "shovel"):
