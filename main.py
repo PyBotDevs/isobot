@@ -122,6 +122,9 @@ async def on_message(ctx):
         items[str(ctx.author.id)]['dragon'] = 0
         items[str(ctx.author.id)]['binoculars'] = 0
         items[str(ctx.author.id)]['shark'] = 0
+        items[str(ctx.author.id)]['stickbug'] = 0
+        items[str(ctx.author.id)]['gold'] = 0
+        items[str(ctx.author.id)]['coinbomb'] = 0
     save()
 
 #Error handler
@@ -706,6 +709,66 @@ async def fish(ctx:SlashContext):
     elif (choice == "nothing"):
         await ctx.reply('Looks like the fish were weary of your rod. You caught nothing.')
 
+@slash.slash(
+    name='dig',
+    description='Take your shovel and dig in the ground for some cool stuff!'
+)
+async def dig(ctx:SlashContext):
+    if plugins.economy == False: pass
+    if (items[str(ctx.author.id)]['shovel'] == 0):
+        await ctx.reply('You\'re too good to have to dig with your bare hands..... at least I hope so. Please buy a shovel from the shop. ||/buy shovel||')
+        return
+    loot = [
+        'coins',
+        'shovel',
+        'ant',
+        'stickbug',
+        'rock',
+        'gold',
+        'coinbomb',
+        'rare lootbox',
+        'nothing',
+        'died',
+    ]
+    choice = random.choice(loot)
+    if (choice == "coins"):
+        currency['wallet'][str(ctx.author.id)] += random.choice('1000', '5000')
+        save()
+        await ctx.reply(f'You went digging and found a bunch of coins. Nice!')
+    elif (choice == "shovel"):
+        items[str(ctx.author.id)]['shovel'] += 1
+        save()
+        await ctx.reply(f'Looks like you found someone\'s lost {choice} while digging lmao')
+    elif (choice == "ant"):
+        items[str(ctx.author.id)]['ant'] += 1
+        save()
+        await ctx.reply(f'You found an {choice} while digging!')
+    elif (choice == "stickbug"):
+        items[str(ctx.author.id)]['stickbug'] += 1
+        save()
+        await ctx.reply(f'You found a {choice} while digging!')
+    elif (choice == "rock"):
+        items[str(ctx.author.id)]['rock'] += 1
+        save()
+        await ctx.reply(f'You found a {choice} while digging... Ok totally not sus')
+    elif (choice == "gold"):
+        items[str(ctx.author.id)]['gold'] += 1
+        save()
+        await ctx.reply(f'You found some {choice} while digging! Good job!')
+    elif (choice == "coinbomb"):
+        items[str(ctx.author.id)]['coinbomb'] += 1
+        save()
+        await ctx.reply(f'Looks like you found a pretty interesting {choice} while digging! Niceee')
+    elif (choice == "rare lootbox"):
+        items[str(ctx.author.id)]['rare lootbox'] += 1
+        save()
+        await ctx.reply(f'You found a {choice} while digging! Cool, right?')
+    elif (choice == "nothing"):
+        await ctx.reply('After some time of digging you eventually gave up. You got nothing.')
+    elif (choice == "died"):
+        currency['wallet'][str(ctx.author.id)] -= 2000
+        save()
+        await ctx.reply('YOU FELL INTO YOUR OWN TRAP AND DIED LMFAO\nYou lost 2000 coins in the process.')
 
 # DevTools commands
 @slash.slash(
