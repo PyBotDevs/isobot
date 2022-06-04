@@ -220,7 +220,8 @@ async def balance(ctx:SlashContext, user=None):
 async def kick(ctx:SlashContext, user, reason=None):
     if plugins.moderation == False: pass
     if not ctx.author.guild_permissions.kick_members:
-        raise MissingPermissions
+        await ctx.reply('https://tenor.com/view/oh-yeah-high-kick-take-down-fight-gif-14272509')
+        return
     else:
         try:
             if reason == None: await user.kick()
@@ -240,7 +241,8 @@ async def kick(ctx:SlashContext, user, reason=None):
 async def ban(ctx:SlashContext, user, reason=None):
     if plugins.moderation == False: pass
     if not ctx.author.guild_permissions.ban_members:
-        raise MissingPermissions
+        await ctx.reply('https://tenor.com/view/thor-strike-admin-ban-admin-ban-gif-22545175')
+        return
     else:
         try:
             if reason == None: await user.ban()
