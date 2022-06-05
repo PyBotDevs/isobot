@@ -4,10 +4,9 @@
 
 <h1 align='center'>Isobot lazer, the future of isobot.</h1>
 
-![LICENSE](https://img.shields.io/github/license/notsniped/isobot-lazer)
-[![Discord](https://img.shields.io/discord/880409977074888714?color=%235865F2&label=Discord&logo=discord&logoColor=%23fff)](https://discord.gg/b5pz8T6Yjr)
-
-![Stars](https://img.shields.io/github/stars/notsniped/isobot-lazer?style=social)
+![LICENSE](https://img.shields.io/github/license/notsniped/isobot-lazer?style=for-the-badge)
+[![Discord](https://img.shields.io/discord/880409977074888714?color=%235865F2&label=Discord&logo=discord&logoColor=%23fffz&style=for-the-badge)](https://discord.gg/b5pz8T6Yjr)
+![Stars](https://img.shields.io/github/stars/notsniped/isobot-lazer?style=for-the-badge)
 
 Isobot lazer is a brand-new project developed by the [iso.dev team](https://github.com/PyBotDevs), as a version of isobot which is sharper than beta.
 
