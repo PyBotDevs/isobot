@@ -616,6 +616,7 @@ async def sell(ctx:SlashContext, name:str, quantity:int=1):
     name='hunt',
     description='Pull out your rifle and hunt down animals'
 )
+@commands.cooldown(1, 30, commands.BucketType.user)
 async def hunt(ctx:SlashContext):
     if plugins.economy == False: pass
     if (items[str(ctx.author.id)]['rifle'] == 0):
@@ -667,6 +668,7 @@ async def hunt(ctx:SlashContext):
     name='fish',
     description='Prepare your fishing rod and catch some fish'
 )
+@commands.cooldown(1, 45, commands.BucketType.user)
 async def fish(ctx:SlashContext):
     if plugins.economy == False: pass
     if (items[str(ctx.author.id)]['fishingpole'] == 0):
@@ -713,6 +715,7 @@ async def fish(ctx:SlashContext):
     name='dig',
     description='Take your shovel and dig in the ground for some cool stuff!'
 )
+@commands.cooldown(1, 45, commands.BucketType.user)
 async def dig(ctx:SlashContext):
     if plugins.economy == False: pass
     if (items[str(ctx.author.id)]['shovel'] == 0):
