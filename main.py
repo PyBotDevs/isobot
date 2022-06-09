@@ -242,7 +242,7 @@ async def kick(ctx:SlashContext, user, reason=None):
         create_option(name='reason', description='Why you want to ban the user?', option_type=3, required=False)
     ]
 )
-@commands.cooldown(1, 3, commands.BucketType.user)
+@commands.cooldown(1, (30*60), commands.BucketType.user)
 async def ban(ctx:SlashContext, user, reason=None):
     if plugins.moderation == False: pass
     if not ctx.author.guild_permissions.ban_members:
@@ -412,6 +412,7 @@ async def beg(ctx:SlashContext):
     name='scout', 
     description='Scouts your area for coins'
 )
+@commands.cooldown(1, 30, commands.BucketType.user)
 async def scout(ctx:SlashContext):
     if plugins.economy == False: pass
     chance:int = random.randint(1, 100)
