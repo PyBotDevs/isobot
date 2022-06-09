@@ -457,6 +457,7 @@ async def give(ctx:SlashContext, user:discord.User, amount:int):
         create_option(name='user', description='Who do you want to rob?', option_type=6, required=True)
     ]
 )
+@commands.cooldown(1, 60, commands.BucketType.user)
 async def rob(ctx:SlashContext, user:discord.User):
     if plugins.economy == False: pass
     chance:int = random.randint(1, 100)
@@ -485,6 +486,7 @@ async def rob(ctx:SlashContext, user:discord.User):
         create_option(name='user', description='Whose bank account you want to raid?', option_type=6, required=True)
     ]
 )
+@commands.cooldown(1, (60*5), commands.BucketType.user)
 async def bankrob(ctx:SlashContext, user:discord.User):
     if plugins.economy == False: pass
     chance:int = random.randint(1, 100)
