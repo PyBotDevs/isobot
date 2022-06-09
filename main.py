@@ -412,6 +412,7 @@ async def beg(ctx:SlashContext):
     name='scout', 
     description='Scouts your area for coins'
 )
+@commands.cooldown(1, 30, commands.BucketType.user)
 async def scout(ctx:SlashContext):
     if plugins.economy == False: pass
     chance:int = random.randint(1, 100)
