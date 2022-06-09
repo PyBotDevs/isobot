@@ -220,6 +220,7 @@ async def balance(ctx:SlashContext, user=None):
         create_option(name='reason', description='Why you want to kick the user?', option_type=3, required=False)
     ]
 )
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def kick(ctx:SlashContext, user, reason=None):
     if plugins.moderation == False: pass
     if not ctx.author.guild_permissions.kick_members:
@@ -241,6 +242,7 @@ async def kick(ctx:SlashContext, user, reason=None):
         create_option(name='reason', description='Why you want to ban the user?', option_type=3, required=False)
     ]
 )
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def ban(ctx:SlashContext, user, reason=None):
     if plugins.moderation == False: pass
     if not ctx.author.guild_permissions.ban_members:
@@ -262,6 +264,7 @@ async def ban(ctx:SlashContext, user, reason=None):
         create_option(name='reason', description='Why are you warning the user?', option_type=3, required=True)
     ]
 )
+@commands.cooldown(1, 2, commands.BucketType.user)
 async def warn(ctx:SlashContext, user, reason):
     if plugins.moderation == False: pass
     if not ctx.author.guild_permissions.manage_messages:
