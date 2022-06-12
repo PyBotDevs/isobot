@@ -25,7 +25,8 @@ import utils.ping
 # role: 8
 
 #Variables
-client = commands.Bot(command_prefix='s!', intents=discord.Intents.all())
+#client = commands.Bot(command_prefix='s!', intents=discord.Intents.all())  Saving for later incase needed
+client = discord.Client()
 slash = SlashCommand(client, sync_commands=True)
 color = discord.Color.random()
 with open('/home/runner/isobot-lazer/database/currency.json', 'r') as f:
