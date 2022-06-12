@@ -126,6 +126,7 @@ async def on_message(ctx):
         items[str(ctx.author.id)]['stickbug'] = 0
         items[str(ctx.author.id)]['gold'] = 0
         items[str(ctx.author.id)]['coinbomb'] = 0
+        items[str(ctx.author.id)]['jellyfish'] = 0
     save()
 
 #Error handler
