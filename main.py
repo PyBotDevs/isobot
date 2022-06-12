@@ -795,6 +795,40 @@ async def echo(ctx:SlashContext, text:str):
     except Exception as e:
         await ctx.send(f"An error occured while processing this request. {e}", hidden=True)
 
+@slash.slash(
+    name='whoami',
+    description='Shows information on a user',
+    options=[
+        create_option(name='user', description='Who do you want to know about?', option_type=6, required=False)
+    ]
+)
+async def whoami(ctx:SlashContext, user:discord.User=None):
+    if user == None:
+        user = ctx.author
+    else:
+        pass
+    username = user
+    displayname = user.display_name
+    registered = user.joined_at.strftime("%b %d, %Y, %T")
+    pfp = user.avatar_url
+    localembed = discord.Embed(
+        title=f'User Info on {username}', 
+        description=f'`AKA` {displayname}'
+    )
+    localembed.set_thumbnail(url=pfp)
+    localembed.add_field(name='Username', value=username, inline=False)
+    localembed.add_field(name='Display Name', value=displayname, inline=False)
+    localembed.add_field(name='Joined Discord on', value=registered, inline=False)
+    localembed.add_field(name='Avatar URL', value=f"[here!]({pfp})", inline=False)
+    role_render = ""
+    for p in user.roles:
+        if p == "everyone":
+            pass
+        else:
+            role_render += f"<@&{p.id}> "
+    localembed.add_field(name='Roles', value=role_render, inline=False)
+    await ctx.send(embed=localembed)
+
 # DevTools commands
 @slash.slash(
     name='sync',
