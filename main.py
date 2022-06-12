@@ -781,6 +781,20 @@ async def dig(ctx:SlashContext):
         save()
         await ctx.reply('YOU FELL INTO YOUR OWN TRAP AND DIED LMFAO\nYou lost 2000 coins in the process.')
 
+@slash.slash(
+  name='echo',
+  description='Sends a bot message in the channel',
+  options=[
+    create_option(name='text', description='What do you want to send?', option_type=3, required=True)
+  ]
+)
+async def echo(ctx:SlashContext, text:str):
+    try:
+        await ctx.reply("Message echoed!", hidden=True)
+        await ctx.channel.send(text)
+    except Exception as e:
+        await ctx.send(f"An error occured while processing this request. {e}", hidden=True)
+
 # DevTools commands
 @slash.slash(
     name='sync',
