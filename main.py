@@ -392,14 +392,43 @@ async def monthly(ctx:SlashContext):
 @commands.cooldown(1, 15, commands.BucketType.user)
 async def beg(ctx:SlashContext):
     if plugins.economy == False: pass
+    names = [
+        "A random person",
+        "Your friend",
+        "Your boss",
+        "The quiet kid",
+        "Your mom",
+        "The fart you have been holding for way too long",
+        "Notch",
+        "Jeff Bezos",
+        "Elon Musk",
+        "peppy",
+        "Steve Jobs",
+        "MrBeast",
+        "Pewdiepie"
+    ]
+    fail_responses = [
+        "Maybe another day.",
+        "Hell nah.",
+        "Sorry I don't have any cash on me.",
+        "The atm was out of order.",
+        "I have nothing to spare.",
+        "I'd rather spend my money to buy some airpods rather than giving it to you.",
+        "Stop begging. It makes you look like a baby.",
+        "Go get a life.",
+        "Stop begging. Get a job.",
+        "I think I know what you're gonna do with that money."
+    ]
+    sel1 = random.choice(names)
+    sel2 = random.choice(fail_responses)
     chance:int = random.randint(1, 100)
     if (chance >= 50):
         x:int = random.randint(10, 100)
         currency["wallet"][str(ctx.author.id)] += x
         save()
-        await ctx.send(embed=discord.Embed(title='A random person', description=f'"Oh you poor beggar, here\'s {x} coin(s) for you"'))
+        await ctx.send(embed=discord.Embed(title=str(sel1), description=f'"Oh you poor beggar, here\'s {x} coin(s) for you. Hope it helps!"'))
     else:
-        await ctx.send(embed=discord.Embed(title='A random person', description='"lol no get a life"'))
+        await ctx.send(embed=discord.Embed(title=str(sel1), description=f'"{sel2}"'))
 
 @slash.slash(
     name='scout', 
