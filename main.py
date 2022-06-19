@@ -29,16 +29,17 @@ import utils.ping
 client = discord.Client()
 slash = SlashCommand(client, sync_commands=True)
 color = discord.Color.random()
-with open('/home/runner/isobot-lazer/database/currency.json', 'r') as f:
+wdir = os.getcwd()
+with open(f'{wdir}/database/currency.json', 'r') as f:
     global currency
     currency = json.load(f)
-with open('/home/runner/isobot-lazer/database/warnings.json', 'r') as f:
+with open(f'{wdir}/database/warnings.json', 'r') as f:
     global warnings
     warnings = json.load(f)
-with open('/home/runner/isobot-lazer/database/items.json', 'r') as f:
+with open(f'{wdir}/database/items.json', 'r') as f:
     global items
     items = json.load(f)
-with open('/home/runner/isobot-lazer/config/shop.json', 'r') as f:
+with open(f'{wdir}/config/shop.json', 'r') as f:
     global shopitem
     shopitem = json.load(f)
 
@@ -46,25 +47,25 @@ with open('/home/runner/isobot-lazer/config/shop.json', 'r') as f:
 def timenow(): 
     datetime.datetime.now().strftime("%H:%M:%S")
 def save():
-    with open('/home/runner/isobot-lazer/database/currency.json', 'w+') as f:
+    with open(f'{wdir}/database/currency.json', 'w+') as f:
         json.dump(currency, f, indent=4)
-    with open(f'/home/runner/isobot-lazer/database/warnings.json', 'w+') as f:
+    with open(f'{wdir}/database/warnings.json', 'w+') as f:
         json.dump(warnings, f, indent=4)
-    with open(f'/home/runner/isobot-lazer/database/items.json', 'w+') as f:
+    with open(f'{wdir}/database/items.json', 'w+') as f:
         json.dump(items, f, indent=4)
 
-if os.path.isdir('/home/runner/isobot-lazer/logs'): 
+if os.path.isdir(f'{wdir}/logs'): 
   pass
 else:
   try:
-    os.mkdir('/home/runner/isobot-lazer/logs')
+    os.mkdir(f'{wdir}/logs')
   except Exception as e:
     utils.logger.error(f"Error while making logs directory: {e} (temporarily skipping dir creation)", nolog=True)
   try:
-    open('/home/runner/isobot-lazer/logs/info-log.txt', 'x')
+    open(f'{wdir}/logs/info-log.txt', 'x')
     utils.logger.info("Created info log", nolog=True)
     time.sleep(0.5)
-    open('/home/runner/isobot-lazer/logs/error-log.txt', 'x')
+    open(f'{wdir}/logs/error-log.txt', 'x')
     utils.logger.info("Created error log", nolog=True)
   except Exception as e:
     utils.logger.error(f"Failed to make log file: {e}", nolog=True)
@@ -861,22 +862,40 @@ async def sync(ctx:SlashContext):
     else:
         pass
     try:
-        with open('/home/runner/isobot-lazer/database/currency.json', 'r') as f:
+        with open(f'{wdir}/database/currency.json', 'r') as f:
             global currency
             currency = json.load(f)
-        with open('/home/runner/isobot-lazer/database/warnings.json', 'r') as f:
+        with open(f'{wdir}/database/warnings.json', 'r') as f:
             global warnings
             warnings = json.load(f)
-        with open('/home/runner/isobot-lazer/database/items.json', 'r') as f:
+        with open(f'{wdir}/database/items.json', 'r') as f:
             global items
             items = json.load(f)
-        with open('/home/runner/isobot-lazer/config/shop.json', 'r') as f:
+        with open(f'{wdir}/config/shop.json', 'r') as f:
             global shopitem
             shopitem = json.load(f)
         await ctx.send('Databases resynced.', hidden=True)
     except Exception as e:
         print(e)
         await ctx.reply('An error occured while resyncing. Check console.', hidden=True)
+
+@slash.slash(
+    name='stroketranslate',
+    description='Gives you the ability to make full words and sentences from a cluster of letters',
+    options=[create_option(name='strok', description='What do you want to translate?', option_type=3, required=True)]
+)
+async def stroketranslate(ctx:SlashContext, strok: str):
+        try:
+            if len(strok) > 300: return await ctx.reply("Please use no more than `300` character length", hidden=True)
+            else:
+                with open(f"{os.getcwd()}/config/words.json", "r") as f: words = json.load(f)
+                var = str()
+                s = strok.lower()
+                for i, c in enumerate(s): var += random.choice(words[c])
+                return await ctx.send(f"{var}")
+        except Exception as e: return await ctx.send(f"{type(e).__name__}: {e}")
+        var = ''.join(arr)
+        await ctx.reply(f"{var}")
 
 # Initialization
 utils.ping.host()
