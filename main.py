@@ -852,8 +852,6 @@ async def sync(ctx:SlashContext):
         print(e)
         await ctx.reply('An error occured while resyncing. Check console.', hidden=True)
 
-# General utils
-
 # Initialization
 utils.ping.host()
 client.run(api.auth.token)
