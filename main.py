@@ -141,22 +141,13 @@ async def on_command_error(ctx, error):
             print(f'[{current_time}] Ignoring exception at {colors.cyan}CommandNotFound{colors.end}. Details: This command does not exist.')
         else:
             pass
-    if isinstance(error, CommandOnCooldown):
-        await ctx.send(f':stopwatch: Not now! Please try after **{str(datetime.timedelta(seconds=int(round(error.retry_after))))}**')
+    elif isinstance(error, commands.CommandOnCooldown):
+        await ctx.channel.send(f':stopwatch: Not now! Please try after **{str(datetime.timedelta(seconds=int(round(error.retry_after))))}**')
         if os.name == 'nt':
             print(f'[{current_time}] Ignoring exception at {colors.cyan}CommandOnCooldown{colors.end}. Details: This command is currently on cooldown.')
         else:
             pass
-    if isinstance(error, MissingRequiredArgument):
-        await ctx.send(':warning: Missing required argument(s)', delete_after=8)
-        if os.name == 'nt':
-            with open(errorHandler_path, 'a') as f:
-                f.write(f'[{current_time}] Ignoring exception at MissingRequiredArgument. Details: The command can\'t be executed because required arguments are missing.\n')
-                f.close()
-            print(f'[{current_time}] Ignoring exception at {colors.cyan}MissingRequiredArgument{colors.end}. Details: The command can\'t be executed because required arguments are missing.')
-        else:
-            pass
-    if isinstance(error, MissingPermissions):
+    elif isinstance(error, commands.MissingPermissions):
         await ctx.send('You don\'t have permission to do this!', hidden=True)
         if os.name == 'nt':
             with open(errorHandler_path, 'a') as f:
@@ -165,7 +156,7 @@ async def on_command_error(ctx, error):
             print(f'[{current_time}] Ignoring exception at {colors.cyan}MissingPermissions{colors.end}. Details: The user doesn\'t have the required permissions.')
         else:
             pass
-    if isinstance(error, BadArgument):
+    elif isinstance(error, commands.BadArgument):
         await ctx.send(':x: Invalid argument.', delete_after=8)
         if os.name == 'nt':
             with open(errorHandler_path, 'a') as f:
@@ -174,7 +165,7 @@ async def on_command_error(ctx, error):
             print(f'[{current_time}] Ignoring exception at {colors.cyan}BadArgument{colors.end}.')
         else:
             pass
-    if isinstance(error, BotMissingPermissions):
+    elif isinstance(error, commands.BotMissingPermissions):
         await ctx.send(':x: I don\'t have the required permissions to use this.')
         if os.name == 'nt':
             with open(errorHandler_path, 'a') as f:
@@ -183,7 +174,7 @@ async def on_command_error(ctx, error):
             print(f'[{current_time}] Ignoring exception at {colors.cyan}BotMissingPremissions{colors.end}. Details: The bot doesn\'t have the required permissions.')
         else:
             pass
-    if isinstance(error, BadBoolArgument):
+    elif isinstance(error, commands.BadBoolArgument):
         await ctx.send(':x: Invalid true/false argument.', delete_after=8)
         if os.name == 'nt':
             with open(errorHandler_path, 'a') as f:
@@ -355,11 +346,14 @@ async def withdraw(ctx:SlashContext, amount=None):
 )
 @commands.cooldown(1, (30*60), commands.BucketType.user)
 async def work(ctx:SlashContext):
-    if plugins.economy == False: pass
-    i = random.randint(10000, 20000)
-    currency['wallet'][str(ctx.author.id)] += i
-    save()
-    await ctx.send(f'{ctx.author.mention} worked for a 30-minute shift and earned {i} coins.')
+    try:
+        if plugins.economy == False: pass
+        i = random.randint(10000, 20000)
+        currency['wallet'][str(ctx.author.id)] += i
+        save()
+        await ctx.send(f'{ctx.author.mention} worked for a 30-minute shift and earned {i} coins.')
+    except commands.CommandOnCooldown:
+        await ctx.reply("no")
 
 @slash.slash(
     name='daily',
@@ -857,7 +851,9 @@ async def sync(ctx:SlashContext):
     except Exception as e:
         print(e)
         await ctx.reply('An error occured while resyncing. Check console.', hidden=True)
-      
+
+# General utils
+
 # Initialization
 utils.ping.host()
 client.run(api.auth.token)
