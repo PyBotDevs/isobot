@@ -346,14 +346,11 @@ async def withdraw(ctx:SlashContext, amount=None):
 )
 @commands.cooldown(1, (30*60), commands.BucketType.user)
 async def work(ctx:SlashContext):
-    try:
-        if plugins.economy == False: pass
-        i = random.randint(10000, 20000)
-        currency['wallet'][str(ctx.author.id)] += i
-        save()
-        await ctx.send(f'{ctx.author.mention} worked for a 30-minute shift and earned {i} coins.')
-    except commands.CommandOnCooldown:
-        await ctx.reply("no")
+    if plugins.economy == False: pass
+    i = random.randint(10000, 20000)
+    currency['wallet'][str(ctx.author.id)] += i
+    save()
+    await ctx.send(f'{ctx.author.mention} worked for a 30-minute shift and earned {i} coins.')
 
 @slash.slash(
     name='daily',
