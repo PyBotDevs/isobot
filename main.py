@@ -961,6 +961,20 @@ async def memes(ctx:SlashContext):
     embed.set_footer(text='Powered by PRAW')
     await ctx.send(embed = embed)
 
+@slash.slash(
+    name='linuxmemes',
+    description='Hands you a fabolous GNU/Linux meme from the r/linuxmemes subreddit.'
+)
+async def linuxmemes(ctx:SlashContext):
+    memes_submissions = reddit.subreddit('linuxmemes').hot()
+    post_to_pick = random.randint(1, 100)
+    for i in range(0, post_to_pick):
+        submission = next(x for x in memes_submissions if not x.stickied)
+    embed = discord.Embed(title=submission.title, color=color)
+    embed.set_image(url=submission.url)
+    embed.set_footer(text='Powered by PRAW')
+    await ctx.send(embed = embed)
+
 # Initialization
 utils.ping.host()
 client.run(api.auth.token)
