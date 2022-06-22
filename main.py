@@ -975,6 +975,34 @@ async def linuxmemes(ctx:SlashContext):
     embed.set_footer(text='Powered by PRAW')
     await ctx.send(embed = embed)
 
+@slash.slash(
+    name='ihadastroke',
+    description='I bet you\'ll have a stroke trying to see these. (JK ITS ABSOLUTELY SAFE FOR YOU DONT WORRY)'
+)
+async def ihadastroke(ctx:SlashContext):
+    memes_submissions = reddit.subreddit('ihadastroke').hot()
+    post_to_pick = random.randint(1, 100)
+    for i in range(0, post_to_pick):
+        submission = next(x for x in memes_submissions if not x.stickied)
+    embed = discord.Embed(title=submission.title, color=color)
+    embed.set_image(url=submission.url)
+    embed.set_footer(text='Powered by PRAW')
+    await ctx.send(embed = embed)
+
+@slash.slash(
+    name='engrish',
+    description='Features phuck ups in english of any kind!'
+)
+async def engrish(ctx:SlashContext):
+    memes_submissions = reddit.subreddit('engrish').hot()
+    post_to_pick = random.randint(1, 100)
+    for i in range(0, post_to_pick):
+        submission = next(x for x in memes_submissions if not x.stickied)
+    embed = discord.Embed(title=submission.title, color=color)
+    embed.set_image(url=submission.url)
+    embed.set_footer(text='Powered by PRAW')
+    await ctx.send(embed = embed)
+
 # Initialization
 utils.ping.host()
 client.run(api.auth.token)
