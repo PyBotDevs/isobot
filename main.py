@@ -897,6 +897,18 @@ async def stroketranslate(ctx:SlashContext, strok: str):
         var = ''.join(arr)
         await ctx.reply(f"{var}")
 
+@slash.slash(
+    name='prediction',
+    description='Randomly predicts a yes/no question.',
+    options=[create_option(name="question", description="What do you want to predict?", option_type=3, required=True)]
+)
+async def prediction(ctx:SlashContext, question:str): ## "question" argument is useless lol argument go BRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR XDDDDD
+    predict = random.randint(1, 2)
+    if predict == 1:
+        await ctx.reply("My prediction is... **Yes!**")
+    elif predict == 2:
+        await ctx.reply("My prediction is... **No!**")
+
 # Initialization
 utils.ping.host()
 client.run(api.auth.token)
