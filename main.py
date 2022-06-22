@@ -1017,6 +1017,20 @@ async def nothecker(ctx:SlashContext):
     embed.set_footer(text='Powered by PRAW')
     await ctx.send(embed = embed)
 
+@slash.slash(
+    name='osugame',
+    description='Features a post from the official osu! subreddit!'
+)
+async def osugame(ctx:SlashContext):
+    memes_submissions = reddit.subreddit('osugame').hot()
+    post_to_pick = random.randint(1, 100)  #Value eased/reduced to 10 as there arent many posts there! 
+    for i in range(0, post_to_pick):
+        submission = next(x for x in memes_submissions if not x.stickied)
+    embed = discord.Embed(title=submission.title, color=color)
+    embed.set_image(url=submission.url)
+    embed.set_footer(text='Powered by PRAW')
+    await ctx.send(embed = embed)
+
 # Initialization
 utils.ping.host()
 client.run(api.auth.token)
