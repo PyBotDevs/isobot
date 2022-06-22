@@ -947,6 +947,20 @@ async def prediction(ctx:SlashContext, question:str): ## "question" argument is 
     elif predict == 2:
         await ctx.reply("My prediction is... **No!**")
 
+@slash.slash(
+    name='memes',
+    description='Finely hand-picks a high-quality meme from the depths of reddit.'
+)
+async def memes(ctx:SlashContext):
+    memes_submissions = reddit.subreddit('memes').hot()
+    post_to_pick = random.randint(1, 100)
+    for i in range(0, post_to_pick):
+        submission = next(x for x in memes_submissions if not x.stickied)
+    embed = discord.Embed(title=submission.title, color=color)
+    embed.set_image(url=submission.url)
+    embed.set_footer(text='Powered by PRAW')
+    await ctx.send(embed = embed)
+
 # Initialization
 utils.ping.host()
 client.run(api.auth.token)
