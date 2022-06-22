@@ -8,6 +8,7 @@ import time, datetime
 import asyncio
 import random
 import math
+import praw
 from discord_slash import SlashCommand, SlashContext
 from discord_slash.utils.manage_commands import create_choice, create_option
 import api.auth
@@ -30,6 +31,7 @@ client = commands.Bot(command_prefix='s!', intents=discord.Intents.all())  #Savi
 slash = SlashCommand(client, sync_commands=True)
 color = discord.Color.random()
 wdir = os.getcwd()
+reddit = praw.Reddit(client_id='_pazwWZHi9JldA', client_secret='1tq1HM7UMEGIro6LlwtlmQYJ1jB4vQ', user_agent='idk', check_for_async=False)
 with open(f'{wdir}/database/currency.json', 'r') as f:
     global currency
     currency = json.load(f)
