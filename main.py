@@ -560,7 +560,7 @@ async def fish(ctx:SlashContext):
     loot = ['shrimp', 'fish', 'rare fish', 'exotic fish', 'jellyfish', 'shark', 'nothing']
     choice = random.choice(loot)
     if choice != "nothing":
-        items[str(ctx,author.id)][choice] += 1
+        items[str(ctx.author.id)][choice] += 1
         save()
         await ctx.reply(f'You found a {choice} while hunting!')
     else: await ctx.reply('Looks like the fish were weary of your rod. You caught nothing.')
