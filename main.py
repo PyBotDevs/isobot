@@ -115,21 +115,11 @@ async def on_message(ctx):
         pass
     else:
         items[str(ctx.author.id)] = {}
-        items[str(ctx.author.id)]['rifle'] = 0
-        items[str(ctx.author.id)]['fishingpole'] = 0
-        items[str(ctx.author.id)]['shovel'] = 0
-        items[str(ctx.author.id)]['rock'] = 0
-        items[str(ctx.author.id)]['ant'] = 0
-        items[str(ctx.author.id)]['skunk'] = 0
-        items[str(ctx.author.id)]['boar'] = 0
-        items[str(ctx.author.id)]['deer'] = 0
-        items[str(ctx.author.id)]['dragon'] = 0
-        items[str(ctx.author.id)]['binoculars'] = 0
-        items[str(ctx.author.id)]['shark'] = 0
-        items[str(ctx.author.id)]['stickbug'] = 0
-        items[str(ctx.author.id)]['gold'] = 0
-        items[str(ctx.author.id)]['coinbomb'] = 0
-        items[str(ctx.author.id)]['jellyfish'] = 0
+    for z in shopitem:
+        if z in str(ctx.author.id):
+            pass
+        else:
+            items[str(ctx.author.id)][str(z)] = 0
     save()
 
 #Error handler
