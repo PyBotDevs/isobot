@@ -84,7 +84,12 @@ async def on_message(ctx):
     if str(ctx.author.id) not in currency['bank']: currency['bank'][str(ctx.author.id)] = 0
     if str(ctx.author.id) not in warnings: warnings[str(ctx.guild.id)] = {}
     if str(ctx.author.id) not in warnings[str(ctx.guild.id)]: warnings[str(ctx.guild.id)][str(ctx.author.id)] = []
-    if str(ctx.author.id) not in items: items[str(ctx.author.id)] = {"rifle":0, "fishingpole":0, "shovel":0, "rock":0, "ant":0, "skunk":0, "boar":0, "deer":0, "dragon":0, "binoculars":0, "shark":0, "stickbug":0, "gold":0, "coinbomb":0, "jellyfish": 0}
+    if str(ctx.author.id) not in items: items[str(ctx.author.id)] = {}
+    for z in shopitem:
+        if z in str(ctx.author.id):
+            pass
+        else:
+            items[str(ctx.author.id)][str(z)] = 0
     save()
 
 #Error handler
