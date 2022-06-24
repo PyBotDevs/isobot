@@ -42,7 +42,7 @@ with open('database/items.json', 'r') as f: items = json.load(f)
 with open('config/shop.json', 'r') as f: shopitem = json.load(f)
 
 #Pre-Initialization Commands
-def timenow():  datetime.datetime.now().strftime("%H:%M:%S")
+def timenow(): datetime.datetime.now().strftime("%H:%M:%S")
 def save():
     with open('database/currency.json', 'w+') as f: json.dump(currency, f, indent=4)
     with open('database/warnings.json', 'w+') as f: json.dump(warnings, f, indent=4)
