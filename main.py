@@ -607,7 +607,9 @@ async def dig(ctx:SlashContext):
     create_option(name='text', description='What do you want to send?', option_type=3, required=True)
   ]
 )
-async def echo(ctx:SlashContext, text:str): await ctx.send(text)
+async def echo(ctx:SlashContext, text:str): 
+    await ctx.reply("Echoed!", hidden=True)
+    await ctx.channel.send(text)
 
 @slash.slash(
     name='whoami',
