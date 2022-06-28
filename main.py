@@ -1013,7 +1013,7 @@ async def nothecker(ctx:SlashContext):
 )
 async def osugame(ctx:SlashContext):
     memes_submissions = reddit.subreddit('osugame').hot()
-    post_to_pick = random.randint(1, 100)  #Value eased/reduced to 10 as there arent many posts there! 
+    post_to_pick = random.randint(1, 100)
     for i in range(0, post_to_pick):
         submission = next(x for x in memes_submissions if not x.stickied)
     embed = discord.Embed(title=submission.title, color=color)
