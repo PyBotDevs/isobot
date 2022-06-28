@@ -1021,6 +1021,37 @@ async def osugame(ctx:SlashContext):
     embed.set_footer(text='Powered by PRAW')
     await ctx.send(embed = embed)
 
+@slash.slash(
+    name='donate',
+    description="Donate money to whoever you want",
+    options=[
+        create_option(name='id', description="The ID of the user you are donating to", option_type=3, required=True),
+        create_option(name='amount', description="How much do you want to donate?", option_type=4, required=True)
+    ]
+)
+async def donate(ctx:SlashContext, id:str, amount):
+    if plugins.economy:
+        reciever_info = client.get_user(int(id))
+        if id not in currency["wallet"]: return await ctx.reply("Unfortunately, we couldn't find that user in our server. Try double-checking the ID you've provided.", hidden=True)
+        # Check for improper amount argument values
+        if amount < 1: return await ctx.reply("The amount has to be greater than `1`!", hidden=True)
+        elif amount > 1000000000: return await ctx.reply("You can only donate less than 1 billion coins!", hidden=True)
+        elif amount > currency["wallet"][str(ctx.author.id)]: return await ctx.reply("You're too poor to be donating that much money lmao")
+        # If no improper values, proceed with donation
+        try:
+            currency["wallet"][str(id)] += amount
+            currency["wallet"][str(ctx.author.id)] -= amount
+            save()
+        except Exception as e: return await ctx.reply(e) 
+        localembed = discord.Embed(title="Donation Successful", description=f"You successfully donated {amount} coins to {reciever_info.name}!", color=discord.Color.green())
+        localembed.add_field(name="Your ID", value=ctx.author.id, inline=True)
+        localembed.add_field(name="Reciever's ID", value=id, inline=True)
+        localembed2 = discord.Embed(title="You Recieved a Donation!", description=f"{ctx.author} donated {amount} coins to you!", color=discord.Color.green())
+        localembed2.add_field(name="Their ID", value=ctx.author.id, inline=True)
+        localembed2.add_field(name="Your ID", value=id, inline=True)
+        await ctx.send(embed=localembed)
+        await reciever_info.send(embed=localembed2)
+
 # Initialization
 utils.ping.host()
 client.run(api.auth.token)
