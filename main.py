@@ -1033,6 +1033,8 @@ async def donate(ctx:SlashContext, id:str, amount):
     if plugins.economy:
         reciever_info = client.get_user(int(id))
         if id not in currency["wallet"]: return await ctx.reply("Unfortunately, we couldn't find that user in our server. Try double-checking the ID you've provided.", hidden=True)
+        # Prevent self-donations
+        if id == ctx.author.id: return await ctx.reply("You can't donate to yourself stupid.", hidden=True)
         # Check for improper amount argument values
         if amount < 1: return await ctx.reply("The amount has to be greater than `1`!", hidden=True)
         elif amount > 1000000000: return await ctx.reply("You can only donate less than 1 billion coins!", hidden=True)
