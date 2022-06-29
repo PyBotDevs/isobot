@@ -1053,6 +1053,23 @@ async def donate(ctx:SlashContext, id:str, amount):
         localembed2.add_field(name="Your ID", value=id, inline=True)
         await ctx.send(embed=localembed)
         await reciever_info.send(embed=localembed2)
+    
+@slash.slash(
+    name='modify_balance',
+    description="Modifies user balance (Normal Digit: Adds Balance; Negative Digit: Removes Balance)",
+    options=[
+        create_option(name='user', description="Specify the user to change their balance", option_type=6, required=True),
+        create_option(name='modifier', description="Specify the balance to modifiy", option_type=4, required=True)
+    ]
+)
+async def modify_balance(ctx:SlashContext, user:discord.User, modifier:int):
+    if ctx.author.id != 738290097170153472: return ctx.send("Sorry, but this command is only for my developer's use.", hidden=True)
+    try:
+        currency["wallet"][str(user.id)] += modifier
+        save()
+        await ctx.send(f"{user.name}\'s balance has been modified by {modifier} coins.\n\n**New Balance:** {currency['wallet'][str(user.id)]} coins", hidden=True)
+    except KeyError:
+        await ctx.reply("That user doesn't exist in the database.", hidden=True)
 
 # Initialization
 utils.ping.host()
