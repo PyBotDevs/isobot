@@ -1073,7 +1073,7 @@ async def modify_balance(ctx:SlashContext, user:discord.User, modifier:int):
 
 # Initialization
 utils.ping.host()
-client.run(api.auth.token)
+client.run(api.auth.get_token())
 
 
 
