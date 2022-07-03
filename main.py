@@ -88,6 +88,13 @@ class plugins:
 #Events
 @client.event
 async def on_ready():
+    print("""Isobot-lazer  Copyright (C) 2022  PyBotDevs/NKA
+    This program comes with ABSOLUTELY NO WARRANTY; for details run `/w'.
+    This is free software, and you are welcome to redistribute it
+    under certain conditions; run `/c' for details.
+    __________________________________________________
+    """)
+    time.sleep(2)
     print(f'Logged in as {client.user.name}.')
     print('Ready to accept commands.')
     await client.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name=f"Salad"), status=discord.Status.idle)
