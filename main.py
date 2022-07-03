@@ -92,7 +92,8 @@ async def on_ready():
     This program comes with ABSOLUTELY NO WARRANTY; for details run `/w'.
     This is free software, and you are welcome to redistribute it
     under certain conditions; run `/c' for details.
-    __________________________________________________\n""")
+    __________________________________________________
+    """)
     time.sleep(2)
     print(f'Logged in as {client.user.name}.')
     print('Ready to accept commands.')
