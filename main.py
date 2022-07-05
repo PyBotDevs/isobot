@@ -1093,6 +1093,8 @@ async def client_info(ctx:SlashContext):
     localembed.add_field(name="RAM Available", value=sys_ram)
     localembed.add_field(name="CPU Usage", value=sys_cpu)
     localembed.add_field(name="Registered Users", value=f"{bot_users} users", inline=True)
+    localembed.add_field(name="Uptime History", value="[here](https://stats.uptimerobot.com/PlKOmI0Aw8)")
+    localembed.set_footer(text=f"Requested by {ctx.author.name}", icon_url=ctx.author.avatar_url)
     await ctx.send(embed=localembed)
 
 # Initialization
