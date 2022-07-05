@@ -2,7 +2,7 @@
 import discord
 from discord.ext import commands, tasks
 from discord.ext.commands import *
-import os, os.path
+import os, os.path, psutil
 import json
 import time, datetime
 import asyncio
@@ -1077,6 +1077,25 @@ async def modify_balance(ctx:SlashContext, user:discord.User, modifier:int):
         await ctx.send(f"{user.name}\'s balance has been modified by {modifier} coins.\n\n**New Balance:** {currency['wallet'][str(user.id)]} coins", hidden=True)
     except KeyError:
         await ctx.reply("That user doesn't exist in the database.", hidden=True)
+
+@slash.slash(
+    name="status",
+    description="Shows the current client info"
+)
+async def status(ctx:SlashContext):
+    os_name = os.name
+    sys_ram = str(f"{psutil.virtual_memory()[2]}GiB")
+    sys_cpu = str(f"{psutil.cpu_percent(1)}%")
+    bot_users = 0
+    for x in currency["wallet"].keys(): bot_users += 1
+    localembed = discord.Embed(title="Client Info")
+    localembed.add_field(name="OS Name", value=os_name)
+    localembed.add_field(name="RAM Available", value=sys_ram)
+    localembed.add_field(name="CPU Usage", value=sys_cpu)
+    localembed.add_field(name="Registered Users", value=f"{bot_users} users", inline=True)
+    localembed.add_field(name="Uptime History", value="[here](https://stats.uptimerobot.com/PlKOmI0Aw8)")
+    localembed.set_footer(text=f"Requested by {ctx.author.name}", icon_url=ctx.author.avatar_url)
+    await ctx.send(embed=localembed)
 
 # Initialization
 utils.ping.host()
