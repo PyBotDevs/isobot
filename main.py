@@ -1079,10 +1079,10 @@ async def modify_balance(ctx:SlashContext, user:discord.User, modifier:int):
         await ctx.reply("That user doesn't exist in the database.", hidden=True)
 
 @slash.slash(
-    name="client",
-    description="Shows the current server/client info"
+    name="status",
+    description="Shows the current client info"
 )
-async def client_info(ctx:SlashContext):
+async def status(ctx:SlashContext):
     os_name = os.name
     sys_ram = str(f"{psutil.virtual_memory()[2]}GiB")
     sys_cpu = str(f"{psutil.cpu_percent(1)}%")
