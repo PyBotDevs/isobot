@@ -1,0 +1,63 @@
+/* 
+    NKA (Formerly PyBotDevs) 2022. For enquiries contact PyBotDevs <pybotdevs@outlook.com>
+
+    ABOUT:
+        Bootstrap engine for isobot-lazer's webpage elements. 
+        Contains style attributes only for main body common elements and global elements.
+        If you dont know what you're doing, do NOT edit. Unknowingly editing or deleting style attributes could lead to visual bugs or glitches.
+*/ 
+
+.text-card {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-left: 20%;
+    margin-right: 20%;
+    padding: 15px;
+    border-radius: 8.5px;
+    color: white;
+    background-color: #343434;
+    /* box-shadow: 10px 5px 5px rgb(92, 23, 221); */
+    font-size: 17.5px;
+}
+.text-card #heading {
+    font-weight: bold;
+    font-size: 34px;
+}
+.promo-card {
+    font-size: 28px;
+    font-weight: bolder;
+    padding: 120px;
+    vertical-align: middle;
+}
+.promo-card .button-wide {
+    background-color: #be9be7;
+    border-radius: 9px;
+    box-shadow: none;
+    border: none;
+    color: #171d20;
+    width: 80%;
+}
+.promo-card .button-wide:hover {
+    background-color: #e3d6f8;
+}
+.line {
+    height: 6.55px;
+    background: linear-gradient(to right, white 0%, lightgrey 100%);
+    width: 100px; /* Overridable */
+    border-radius: 100px;
+}
+
+/* Global elements */
+button {
+    color: white;
+    background-color: #161616;
+    border-radius: 0px;
+    border: 2.5px solid #454545;
+    box-shadow: 10px 5px 5px rgb(92, 23, 221);
+    font-size: 19px;
+    padding: 6.45px;
+}
+button:hover {
+    cursor: pointer;
+    background-color: #505050;
+}
