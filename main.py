@@ -15,11 +15,13 @@
 #i got tired of removing () in statements
 
 #Imports
-import discord, os, json, time, datetime, asyncio, random, math, praw, api.auth, utils.logger, utils.ping
+import discord
 from discord.ext import commands, tasks
 from discord.ext.commands import *
+import os, os.path, psutil, json, time, datetime, asyncio, random, math, praw
 from discord_slash import SlashCommand, SlashContext
 from discord_slash.utils.manage_commands import create_choice, create_option
+import api.auth, utils.logger, utils.ping
 
 # Slash option types:
 # sub command: 1
