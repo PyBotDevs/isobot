@@ -1089,6 +1089,34 @@ async def status(ctx:SlashContext):
     localembed.set_footer(text=f"Requested by {ctx.author.name}", icon_url=ctx.author.avatar_url)
     await ctx.send(embed=localembed)
 
+@slash.slash(
+    name="gift",
+    description="Gifts a (giftable) item to anyone you want",
+    options=[
+        create_option(name="user", description="Who do you want to gift to?", option_type=6, required=True),
+        create_option(name="item", description="What do you want to gift?", option_type=3, required=True),
+        create_option(name="amount", description="How many of these do you want to gift?", option_type=4, required=False)
+    ]
+)
+async def gift(ctx:SlashContext, user:discord.User, item:str, amount:int=1):
+    try:
+        if amount < 1: return await ctx.reply("You can't gift less than 1 of those!", hidden=True)
+        elif items[str(ctx.author.id)][item] < amount: return await ctx.reply("You don't have enough of those to gift!", hidden=True)
+        elif shopitem[item]["giftable"] == False: return await ctx.reply("You can't sell that item!", hidden=True)
+        items[str(user.id)][item] += amount
+        items[str(ctx.author.id)][item] -= amount
+        save()
+        localembed = discord.Embed(
+            title="Gift successful!",
+            description=f"You just gifted {amount} **{item}**s to {user.display_name}!",
+            color=discord.Color.green()
+        )
+        localembed.add_field(name="Now they have", value=f"**{items[str(user.id)][item]} {item}**s")
+        localembed.add_field(name="and you have", value=f"**{items[str(ctx.author.id)][item]} {item}**s")
+        await ctx.reply(embed=localembed)
+    except KeyError as e: utils.logger.error(e); await ctx.reply(f"wtf is {item}?")
+        
+
 # Initialization
 utils.ping.host()
 client.run(api.auth.get_token())
