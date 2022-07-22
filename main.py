@@ -1086,6 +1086,7 @@ async def status(ctx:SlashContext):
     localembed.add_field(name="CPU Usage", value=sys_cpu)
     localembed.add_field(name="Registered Users", value=f"{bot_users} users", inline=True)
     localembed.add_field(name="Uptime History", value="[here](https://stats.uptimerobot.com/PlKOmI0Aw8)")
+    localembed.add_field(name="Release Notes", value="[latest](https://github.com/PyBotDevs/isobot-lazer/releases/latest)")
     localembed.set_footer(text=f"Requested by {ctx.author.name}", icon_url=ctx.author.avatar_url)
     await ctx.send(embed=localembed)
 
