@@ -84,20 +84,18 @@ class CurrencyAPI(colors):
     - add(user, amount)
     - remove(user, amount)
     - reset(user)"""
+
     def __init__(self, db_path:str):
         self.db_path = db_path
         print(f"[Framework/Loader] {colors.green}CurrencyAPI initialized.{colors.end}")
-    
     def add(user:discord.User, amount:int):
         """Adds balance to the specified user."""
         currency["wallet"][str(user.id)] += amount
         save()
-
     def remove(user:discord.User, amount:int):
         """Removes balance from the specified user."""
         currency["wallet"][str(user.id)] -= amount
         save()
-    
     def reset(user:discord.User):
         """Resets the specified user's balance."""
         currency["wallet"][str(user.id)] = 0
