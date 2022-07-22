@@ -13,11 +13,11 @@ function github()
     window.location = "https://github.com/" + git_author + "/" + git_repo;
 }
 
-client_id = 953278050135588905;
+client_id = "953278050135588905";
 /**
  * @name invite
  * @description Redirects to the bot's Discord OAuth2 link.
- * @param {number} client_id
+ * @param {string} client_id
  * @param {string} permissions
  * 
  */
