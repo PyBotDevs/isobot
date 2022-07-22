@@ -77,6 +77,36 @@ class plugins:
     levelling:bool = False
     music:bool = False
 
+class CurrencyAPI(colors):
+    """The isobot API used for managing currency.
+    
+    Valid commands:
+    - add(user, amount)
+    - remove(user, amount)
+    - reset(user)"""
+    def __init__(self, db_path:str):
+        self.db_path = db_path
+        print(f"[Framework/Loader] {colors.green}CurrencyAPI initialized.{colors.end}")
+    
+    def add(self, user:discord.User, amount:int):
+        """Adds balance to the specified user."""
+        currency["wallet"][str(user.id)] += amount
+        save()
+
+    def remove(self, user:discord.User, amount:int):
+        """Removes balance from the specified user."""
+        currency["wallet"][str(user.id)] -= amount
+        save()
+    
+    def reset(self, user:discord.User):
+        """Resets the specified user's balance."""
+        currency["wallet"][str(user.id)] = 0
+        currency["bank"][str(user.id)] = 0
+        save()
+        print(f"[Framework/CurrencyAPI] Currency data for \"{user.id}\" has been wiped.")
+
+currency_unused = CurrencyAPI(f'{wdir}/database/currency.json') # Initialize part of the framework (Currency)
+
 #Events
 @client.event
 async def on_ready():
@@ -1086,6 +1116,7 @@ async def status(ctx:SlashContext):
     localembed.add_field(name="CPU Usage", value=sys_cpu)
     localembed.add_field(name="Registered Users", value=f"{bot_users} users", inline=True)
     localembed.add_field(name="Uptime History", value="[here](https://stats.uptimerobot.com/PlKOmI0Aw8)")
+    localembed.add_field(name="Release Notes", value="[latest](https://github.com/PyBotDevs/isobot-lazer/releases/latest)")
     localembed.set_footer(text=f"Requested by {ctx.author.name}", icon_url=ctx.author.avatar_url)
     await ctx.send(embed=localembed)
 
@@ -1114,9 +1145,7 @@ async def gift(ctx:SlashContext, user:discord.User, item:str, amount:int=1):
         localembed.add_field(name="Now they have", value=f"**{items[str(user.id)][item]} {item}**s")
         localembed.add_field(name="and you have", value=f"**{items[str(ctx.author.id)][item]} {item}**s")
         await ctx.reply(embed=localembed)
-    except KeyError as e: 
-        utils.logger.error(e) 
-        await ctx.reply(f"wtf is {item}?")
+    except KeyError as e: utils.logger.error(e); await ctx.reply(f"wtf is {item}?")
         
 
 # Initialization
