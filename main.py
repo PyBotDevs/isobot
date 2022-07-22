@@ -1114,7 +1114,9 @@ async def gift(ctx:SlashContext, user:discord.User, item:str, amount:int=1):
         localembed.add_field(name="Now they have", value=f"**{items[str(user.id)][item]} {item}**s")
         localembed.add_field(name="and you have", value=f"**{items[str(ctx.author.id)][item]} {item}**s")
         await ctx.reply(embed=localembed)
-    except KeyError as e: utils.logger.error(e); await ctx.reply(f"wtf is {item}?")
+    except KeyError as e: 
+        utils.logger.error(e) 
+        await ctx.reply(f"wtf is {item}?")
         
 
 # Initialization
