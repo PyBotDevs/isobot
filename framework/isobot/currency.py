@@ -1,6 +1,12 @@
 import json
 import discord
-from colors import Colors
+
+class Colors():
+    """Contains general stdout colors."""
+    cyan = '\033[96m'
+    red = '\033[91m'
+    green = '\033[92m'
+    end = '\033[0m'
 
 class CurrencyAPI(Colors):
     """The isobot API used for managing currency.
