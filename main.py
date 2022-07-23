@@ -7,7 +7,7 @@ from discord_slash import SlashCommand, SlashContext
 from discord_slash.utils.manage_commands import create_choice, create_option
 import api.auth, utils.logger, utils.ping
 from framework import *
-from framework.isobot import currency, colors
+import framework.isobot.currency
 
 # Slash option types:
 # sub command: 1
@@ -79,7 +79,7 @@ class plugins:
     levelling:bool = False
     music:bool = False
 
-currency_unused = currency.CurrencyAPI(f'{wdir}/database/currency.json') # Initialize part of the framework (Currency)
+currency_unused = framework.isobot.currency.CurrencyAPI(f'{wdir}/database/currency.json') # Initialize part of the framework (Currency)
 
 #Events
 @client.event
