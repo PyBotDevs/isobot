@@ -6,6 +6,8 @@ import os, os.path, psutil, json, time, datetime, asyncio, random, math, praw
 from discord_slash import SlashCommand, SlashContext
 from discord_slash.utils.manage_commands import create_choice, create_option
 import api.auth, utils.logger, utils.ping
+from framework import *
+import framework.isobot.currency
 
 # Slash option types:
 # sub command: 1
@@ -77,33 +79,7 @@ class plugins:
     levelling:bool = False
     music:bool = False
 
-class CurrencyAPI(colors):
-    """The isobot API used for managing currency.
-    
-    Valid commands:
-    - add(user, amount)
-    - remove(user, amount)
-    - reset(user)"""
-
-    def __init__(self, db_path:str):
-        self.db_path = db_path
-        print(f"[Framework/Loader] {colors.green}CurrencyAPI initialized.{colors.end}")
-    def add(user:discord.User, amount:int):
-        """Adds balance to the specified user."""
-        currency["wallet"][str(user.id)] += amount
-        save()
-    def remove(user:discord.User, amount:int):
-        """Removes balance from the specified user."""
-        currency["wallet"][str(user.id)] -= amount
-        save()
-    def reset(user:discord.User):
-        """Resets the specified user's balance."""
-        currency["wallet"][str(user.id)] = 0
-        currency["bank"][str(user.id)] = 0
-        save()
-        print(f"[Framework/CurrencyAPI] Currency data for \"{user.id}\" has been wiped.")
-
-currency_unused = CurrencyAPI(f'{wdir}/database/currency.json') # Initialize part of the framework (Currency)
+currency_unused = framework.isobot.currency.CurrencyAPI(f'{wdir}/database/currency.json') # Initialize part of the framework (Currency)
 
 #Events
 @client.event
