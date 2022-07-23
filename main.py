@@ -79,7 +79,7 @@ class plugins:
     levelling:bool = False
     music:bool = False
 
-currency_unused = CurrencyAPI(f'{wdir}/database/currency.json') # Initialize part of the framework (Currency)
+currency_unused = currency.CurrencyAPI(f'{wdir}/database/currency.json') # Initialize part of the framework (Currency)
 
 #Events
 @client.event
