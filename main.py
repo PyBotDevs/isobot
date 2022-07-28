@@ -38,6 +38,9 @@ with open(f'{wdir}/database/items.json', 'r') as f:
 with open(f'{wdir}/config/shop.json', 'r') as f:
     global shopitem
     shopitem = json.load(f)
+with open(f'{wdir}/config/presence.json', 'r') as f:
+    global user_presence
+    user_presence = json.load(f)
 
 #Pre-Initialization Commands
 def timenow(): 
@@ -49,6 +52,8 @@ def save():
         json.dump(warnings, f, indent=4)
     with open(f'{wdir}/database/items.json', 'w+') as f:
         json.dump(items, f, indent=4)
+    with open(f'{wdir}/database/presence.json', 'w+') as f:
+        json.dump(user_presence, f, indent=4)
 
 if os.path.isdir(f'{wdir}/logs'): 
   pass
@@ -124,6 +129,10 @@ async def on_message(ctx):
         else:
             items[str(ctx.author.id)][str(z)] = 0
     save()
+    if str(ctx.author.id) in user_presence[str(ctx.guild.id)]:
+        del user_presence[str(ctx.guild.id)][str(ctx.author.id)]
+        save()
+        await ctx.send(f"Welcome back {ctx.author.mention}. Your AFK has been removed.")
 
 #Error handler
 @client.event
@@ -1123,6 +1132,48 @@ async def gift(ctx:SlashContext, user:discord.User, item:str, amount:int=1):
         utils.logger.error(e)
         await ctx.reply(f"wtf is {item}?")
         
+@slash.slash(
+    name="afk_set",
+    description="Sets your AFK status with a custom response",
+    options=[
+        create_option(name="response", description="What do you want your AFK response to be?", option_type=3, required=False)
+    ]
+)
+async def afk_set(ctx:SlashContext, response:str="I'm AFK"):
+    exctime = time.time()
+    if str(ctx.guild.id) not in user_presence: user_presence[str(ctx.guild.id)] = {}
+    user_presence[str(ctx.guild.id)][str(ctx.author.id)] = {"type": "afk", "time": exctime, "response": response}
+    save()
+    localembed = discord.Embed(title=f"{ctx.author.display_name} is now AFK.", description=f"Response: {response}", color=discord.Color.dark_orange())
+    await ctx.reply(embed=localembed)
+
+@slash.slash(
+    name="afk_remove",
+    description="Removes your AFK status"
+)
+async def afk_remove(ctx:SlashContext):
+    try: 
+        del user_presence[str(ctx.guild.id)][str(ctx.author.id)]
+        save()
+        await ctx.send(f"Alright {ctx.author.mention}, I've removed your AFK.")
+    except KeyError:
+        return await ctx.send("You weren't previously AFK.", hidden=True)
+
+@slash.slash(
+    name="afk_mod_remove",
+    description="Removes an AFK status for someone else",
+    options=[
+        create_option(name="user", description="Whose AFK status do you want to remove?", option_type=6, required=True)
+    ]
+)
+async def afk_mod_remove(ctx:SlashContext, user:discord.User):
+    if not ctx.author.guild_permissions.manage_messages: return await ctx.reply("You don't have the required permissions to use this.", hidden=True)
+    try: 
+        del user_presence[str(ctx.guild.id)][str(user.id)]
+        save()
+        await ctx.send(f"{user.display_name}'s AFK has been removed.")
+    except KeyError:
+        return await ctx.send("That user isn't AFK.", hidden=True)
 
 # Initialization
 utils.ping.host()
