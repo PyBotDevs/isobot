@@ -129,6 +129,10 @@ async def on_message(ctx):
         else:
             items[str(ctx.author.id)][str(z)] = 0
     save()
+    if str(ctx.author.id) in user_presence[str(ctx.guild.id)]:
+        del user_presence[str(ctx.guild.id)][str(ctx.author.id)]
+        save()
+        await ctx.send(f"Welcome back {ctx.author.mention}. Your AFK has been automatically removed.")
 
 #Error handler
 @client.event
