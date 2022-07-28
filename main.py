@@ -38,7 +38,7 @@ with open(f'{wdir}/database/items.json', 'r') as f:
 with open(f'{wdir}/config/shop.json', 'r') as f:
     global shopitem
     shopitem = json.load(f)
-with open(f'{wdir}/config/presence.json', 'r') as f:
+with open(f'{wdir}/database/presence.json', 'r') as f:
     global user_presence
     user_presence = json.load(f)
 
