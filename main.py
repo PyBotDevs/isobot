@@ -231,7 +231,7 @@ async def balance(ctx:SlashContext, user=None):
                 e.add_field(name='Cash in wallet', value=f'{currency["wallet"][str(user.id)]} coin(s)', inline=True)
                 e.add_field(name='Cash in bank account', value=f'{currency["bank"][str(user.id)]} coin(s)', inline=True)
                 await ctx.send(embed=e)
-            except:
+            except Exception:
                 await ctx.reply('Looks like that user is not indexed in our server. Try again later.')
                 return
     except Exception as e:
@@ -256,7 +256,7 @@ async def kick(ctx:SlashContext, user, reason=None):
             if reason == None: await user.kick()
             else: await user.kick(reason=reason)
             await ctx.send(embed=discord.Embed(title=f'{user} has been kicked.', description=f'Reason: {str(reason)}'))
-        except:
+        except Exception:
             await ctx.send(embed=discord.Embed(title='Well, something happened...', description='Either I don\'t have permission to do this, or my role isn\'t high enough.', color=discord.Colour.red()))
 
 @slash.slash(
@@ -278,7 +278,7 @@ async def ban(ctx:SlashContext, user, reason=None):
             if reason == None: await user.ban()
             else: await user.ban(reason=reason)
             await ctx.send(embed=discord.Embed(title=f'{user} has been banned.', description=f'Reason: {str(reason)}'))
-        except:
+        except Exception:
             await ctx.send(embed=discord.Embed(title='Well, something happened...', description='Either I don\'t have permission to do this, or my role isn\'t high enough.', color=discord.Colour.red()))
 
 @slash.slash(
@@ -300,7 +300,7 @@ async def warn(ctx:SlashContext, user, reason):
     try:
         await target.send(embed=discord.Embed(title=f':warning: You\'ve been warned in {ctx.guild} ({ctx.guild.id})', description=f'Reason {reason}'))
         await ctx.send(embed=discord.Embed(description=f'{user} has been warned.'))
-    except:
+    except Exception:
         await ctx.send(embed=discord.Embed(description=f'{user} has been warned. I couldn\'t DM them, but their warning is logged.'))
 
 @slash.slash(
