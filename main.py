@@ -1136,8 +1136,9 @@ async def gift(ctx:SlashContext, user:discord.User, item:str, amount:int=1):
     ]
 )
 async def afk_set(ctx:SlashContext, response:str="I'm AFK"):
+    exctime = time.time()
     if str(ctx.guild.id) not in user_presence: user_presence[str(ctx.guild.id)] = {}
-    user_presence[str(ctx.guild.id)][str(ctx.author.id)] = {"type": "afk", "response": response}
+    user_presence[str(ctx.guild.id)][str(ctx.author.id)] = {"type": "afk", "time": exctime, "response": response}
     save()
     localembed = discord.Embed(title=f"{ctx.author.display_name} is now AFK.", description=f"Response: {response}", color=discord.Color.dark_orange())
     await ctx.reply(embed=localembed)
