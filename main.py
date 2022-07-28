@@ -1142,6 +1142,17 @@ async def afk_set(ctx:SlashContext, response:str="I'm AFK"):
     localembed = discord.Embed(title=f"{ctx.author.display_name} is now AFK.", description=f"Response: {response}", color=discord.Color.dark_orange())
     await ctx.reply(embed=localembed)
 
+@slash.slash(
+    name="afk_remove",
+    description="Removes your AFK status"
+)
+async def afk_remove(ctx:SlashContext):
+    try: 
+        del user_presence[str(ctx.guild.id)][str(ctx.author.id)]
+        save()
+        await ctx.send(f"Alright {ctx.author.mention}, I've removed your AFK.")
+    except KeyError:
+        return await ctx.send("You weren't previously AFK.", hidden=True)
 
 # Initialization
 utils.ping.host()
