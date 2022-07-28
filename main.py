@@ -18,10 +18,11 @@
 import discord
 from discord.ext import commands, tasks
 from discord.ext.commands import *
+from framework import *
 import os, os.path, psutil, json, time, datetime, asyncio, random, math, praw
 from discord_slash import SlashCommand, SlashContext
 from discord_slash.utils.manage_commands import create_choice, create_option
-import api.auth, utils.logger, utils.ping
+import api.auth, utils.logger, utils.ping, framework.isobot.currency
 
 # Slash option types:
 # sub command: 1
@@ -74,9 +75,18 @@ class plugins:
     levelling = False
     music = False
 
+currency_unused = framework.isobot.currency.CurrencyAPI(f'{wdir}/database/currency.json') # Initialize part of the framework (Currency)
+
 #Events
 @client.event
 async def on_ready():
+    print("""Isobot-lazer  Copyright (C) 2022  PyBotDevs/NKA
+    This program comes with ABSOLUTELY NO WARRANTY; for details run `/w'.
+    This is free software, and you are welcome to redistribute it
+    under certain conditions; run `/c' for details.
+    __________________________________________________
+    """)
+    time.sleep(2)
     print(f'Logged in as {client.user.name}.')
     await client.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name=f"Salad"), status=discord.Status.idle)
 
@@ -181,7 +191,7 @@ async def kick(ctx:SlashContext, user, reason=None):
                 if reason == None: await user.kick()
                 else: await user.kick(reason=reason)
                 await ctx.send(embed=discord.Embed(title=f'{user} has been kicked.', description=f'Reason: {str(reason)}'))
-            except: await ctx.send(embed=discord.Embed(title='Well, something happened...', description='Either I don\'t have permission to do this, or my role isn\'t high enough.', color=discord.Colour.red()))
+            except Exception: await ctx.send(embed=discord.Embed(title='Well, something happened...', description='Either I don\'t have permission to do this, or my role isn\'t high enough.', color=discord.Colour.red()))
 
 @slash.slash(
     name='ban', 
@@ -200,7 +210,7 @@ async def ban(ctx:SlashContext, user, reason=None):
                 if reason == None: await user.ban()
                 else: await user.ban(reason=reason)
                 await ctx.send(embed=discord.Embed(title=f'{user} has been banned.', description=f'Reason: {str(reason)}'))
-            except: await ctx.send(embed=discord.Embed(title='Well, something happened...', description='Either I don\'t have permission to do this, or my role isn\'t high enough.', color=discord.Colour.red()))
+            except Exception: await ctx.send(embed=discord.Embed(title='Well, something happened...', description='Either I don\'t have permission to do this, or my role isn\'t high enough.', color=discord.Colour.red()))
 
 @slash.slash(
     name='warn',
@@ -220,7 +230,7 @@ async def warn(ctx:SlashContext, user, reason):
         try:
             await target.send(embed=discord.Embed(title=f':warning: You\'ve been warned in {ctx.guild} ({ctx.guild.id})', description=f'Reason {reason}'))
             await ctx.send(embed=discord.Embed(description=f'{user} has been warned.'))
-        except: await ctx.send(embed=discord.Embed(description=f'{user} has been warned. I couldn\'t DM them, but their warning is logged.'))
+        except Exception: await ctx.send(embed=discord.Embed(description=f'{user} has been warned. I couldn\'t DM them, but their warning is logged.'))
 
 @slash.slash(
     name='warns_clear',
@@ -754,9 +764,109 @@ async def osugame(ctx:SlashContext):
     embed.set_footer(text='Powered by PRAW')
     await ctx.send(embed = embed)
 
+@slash.slash(
+    name='donate',
+    description="Donate money to whoever you want",
+    options=[
+        create_option(name='id', description="The ID of the user you are donating to", option_type=3, required=True),
+        create_option(name='amount', description="How much do you want to donate?", option_type=4, required=True)
+    ]
+)
+async def donate(ctx:SlashContext, id:str, amount):
+    if plugins.economy:
+        reciever_info = client.get_user(int(id))
+        if id not in currency["wallet"]: return await ctx.reply("Unfortunately, we couldn't find that user in our server. Try double-checking the ID you've provided.", hidden=True)
+        # Prevent self-donations
+        if id == ctx.author.id: return await ctx.reply("You can't donate to yourself stupid.", hidden=True)
+        # Check for improper amount argument values
+        if amount < 1: return await ctx.reply("The amount has to be greater than `1`!", hidden=True)
+        elif amount > 1000000000: return await ctx.reply("You can only donate less than 1 billion coins!", hidden=True)
+        elif amount > currency["wallet"][str(ctx.author.id)]: return await ctx.reply("You're too poor to be donating that much money lmao")
+        # If no improper values, proceed with donation
+        try:
+            currency["wallet"][str(id)] += amount
+            currency["wallet"][str(ctx.author.id)] -= amount
+            save()
+        except Exception as e: return await ctx.reply(e) 
+        localembed = discord.Embed(title="Donation Successful", description=f"You successfully donated {amount} coins to {reciever_info.name}!", color=discord.Color.green())
+        localembed.add_field(name="Your ID", value=ctx.author.id, inline=True)
+        localembed.add_field(name="Reciever's ID", value=id, inline=True)
+        localembed2 = discord.Embed(title="You Recieved a Donation!", description=f"{ctx.author} donated {amount} coins to you!", color=discord.Color.green())
+        localembed2.add_field(name="Their ID", value=ctx.author.id, inline=True)
+        localembed2.add_field(name="Your ID", value=id, inline=True)
+        await ctx.send(embed=localembed)
+        await reciever_info.send(embed=localembed2)
+    
+@slash.slash(
+    name='modify_balance',
+    description="Modifies user balance (Normal Digit: Adds Balance; Negative Digit: Removes Balance)",
+    options=[
+        create_option(name='user', description="Specify the user to change their balance", option_type=6, required=True),
+        create_option(name='modifier', description="Specify the balance to modifiy", option_type=4, required=True)
+    ]
+)
+async def modify_balance(ctx:SlashContext, user:discord.User, modifier:int):
+    if ctx.author.id != 738290097170153472: return ctx.send("Sorry, but this command is only for my developer's use.", hidden=True)
+    try:
+        currency["wallet"][str(user.id)] += modifier
+        save()
+        await ctx.send(f"{user.name}\'s balance has been modified by {modifier} coins.\n\n**New Balance:** {currency['wallet'][str(user.id)]} coins", hidden=True)
+    except KeyError:
+        await ctx.reply("That user doesn't exist in the database.", hidden=True)
+
+@slash.slash(
+    name="status",
+    description="Shows the current client info"
+)
+async def status(ctx:SlashContext):
+    os_name = os.name
+    sys_ram = str(f"{psutil.virtual_memory()[2]}GiB")
+    sys_cpu = str(f"{psutil.cpu_percent(1)}%")
+    bot_users = 0
+    for x in currency["wallet"].keys(): bot_users += 1
+    localembed = discord.Embed(title="Client Info")
+    localembed.add_field(name="OS Name", value=os_name)
+    localembed.add_field(name="RAM Available", value=sys_ram)
+    localembed.add_field(name="CPU Usage", value=sys_cpu)
+    localembed.add_field(name="Registered Users", value=f"{bot_users} users", inline=True)
+    localembed.add_field(name="Uptime History", value="[here](https://stats.uptimerobot.com/PlKOmI0Aw8)")
+    localembed.add_field(name="Release Notes", value="[latest](https://github.com/PyBotDevs/isobot-lazer/releases/latest)")
+    localembed.set_footer(text=f"Requested by {ctx.author.name}", icon_url=ctx.author.avatar_url)
+    await ctx.send(embed=localembed)
+
+@slash.slash(
+    name="gift",
+    description="Gifts a (giftable) item to anyone you want",
+    options=[
+        create_option(name="user", description="Who do you want to gift to?", option_type=6, required=True),
+        create_option(name="item", description="What do you want to gift?", option_type=3, required=True),
+        create_option(name="amount", description="How many of these do you want to gift?", option_type=4, required=False)
+    ]
+)
+async def gift(ctx:SlashContext, user:discord.User, item:str, amount:int=1):
+    try:
+        if amount < 1: return await ctx.reply("You can't gift less than 1 of those!", hidden=True)
+        elif items[str(ctx.author.id)][item] < amount: return await ctx.reply("You don't have enough of those to gift!", hidden=True)
+        elif shopitem[item]["giftable"] == False: return await ctx.reply("You can't sell that item!", hidden=True)
+        items[str(user.id)][item] += amount
+        items[str(ctx.author.id)][item] -= amount
+        save()
+        localembed = discord.Embed(
+            title="Gift successful!",
+            description=f"You just gifted {amount} **{item}**s to {user.display_name}!",
+            color=discord.Color.green()
+        )
+        localembed.add_field(name="Now they have", value=f"**{items[str(user.id)][item]} {item}**s")
+        localembed.add_field(name="and you have", value=f"**{items[str(ctx.author.id)][item]} {item}**s")
+        await ctx.reply(embed=localembed)
+    except KeyError as e: 
+        utils.logger.error(e)
+        await ctx.reply(f"wtf is {item}?")
+        
+
 # Initialization
 utils.ping.host()
-client.run(api.auth.token)
+client.run(api.auth.get_token())
 
 
 

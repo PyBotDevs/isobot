@@ -8,6 +8,8 @@
 [![Discord](https://img.shields.io/discord/880409977074888714?color=%235865F2&label=Discord&logo=discord&logoColor=%23fffz&style=for-the-badge)](https://discord.gg/b5pz8T6Yjr)
 ![Stars](https://img.shields.io/github/stars/notsniped/isobot-lazer?style=for-the-badge)
 
+[![CodeFactor](https://www.codefactor.io/repository/github/pybotdevs/isobot-lazer/badge)](https://www.codefactor.io/repository/github/pybotdevs/isobot-lazer)
+
 Isobot lazer is a brand-new project developed by the [iso.dev team](https://github.com/PyBotDevs), as a version of isobot which is sharper than beta.
 
 This open-source project is supposed to represent what the next-generation of isobot will look like, and how it will progress into the future.
