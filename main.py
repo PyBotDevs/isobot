@@ -38,6 +38,9 @@ with open(f'{wdir}/database/items.json', 'r') as f:
 with open(f'{wdir}/config/shop.json', 'r') as f:
     global shopitem
     shopitem = json.load(f)
+with open(f'{wdir}/config/presence.json', 'r') as f:
+    global user_presence
+    user_presence = json.load(f)
 
 #Pre-Initialization Commands
 def timenow(): 
@@ -49,6 +52,8 @@ def save():
         json.dump(warnings, f, indent=4)
     with open(f'{wdir}/database/items.json', 'w+') as f:
         json.dump(items, f, indent=4)
+    with open(f'{wdir}/database/presence.json', 'w+') as f:
+        json.dump(user_presence, f, indent=4)
 
 if os.path.isdir(f'{wdir}/logs'): 
   pass
@@ -1123,6 +1128,20 @@ async def gift(ctx:SlashContext, user:discord.User, item:str, amount:int=1):
         utils.logger.error(e)
         await ctx.reply(f"wtf is {item}?")
         
+@slash.slash(
+    name="afk_set",
+    description="Sets your AFK status with a custom response",
+    options=[
+        create_option(name="response", description="What do you want your AFK response to be?", option_type=3, required=False)
+    ]
+)
+async def afk_set(ctx:SlashContext, response:str="I'm AFK"):
+    if str(ctx.guild.id) not in user_presence: user_presence[str(ctx.guild.id)] = {}
+    user_presence[str(ctx.guild.id)][str(ctx.author.id)] = {"type": "afk", "response": response}
+    save()
+    localembed = discord.Embed(title=f"{ctx.author.display_name} is now AFK.", description=f"Response: {response}", color=discord.Color.dark_orange())
+    await ctx.reply(embed=localembed)
+
 
 # Initialization
 utils.ping.host()
