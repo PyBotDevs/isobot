@@ -1155,6 +1155,22 @@ async def afk_remove(ctx:SlashContext):
     except KeyError:
         return await ctx.send("You weren't previously AFK.", hidden=True)
 
+@slash.slash(
+    name="afk_mod_remove",
+    description="Removes an AFK status for someone else",
+    options=[
+        create_option(name="user", description="Whose AFK status do you want to remove?", option_type=6, required=True)
+    ]
+)
+async def afk_mod_remove(ctx:SlashContext, user:discord.User):
+    if not ctx.author.guild_permissions.manage_messages: return await ctx.reply("You don't have the required permissions to use this.", hidden=True)
+    try: 
+        del user_presence[str(ctx.guild.id)][str(user.id)]
+        save()
+        await ctx.send(f"{user.display_name}'s AFK has been removed.")
+    except KeyError:
+        return await ctx.send("That user isn't AFK.", hidden=True)
+
 # Initialization
 utils.ping.host()
 client.run(api.auth.get_token())
