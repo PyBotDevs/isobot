@@ -8,7 +8,7 @@
             "name": "Python Built-In",
             "type": "python",
             "request": "launch",
-            "program": "${file}",
+            "program": "main.py",
             "console": "integratedTerminal",
             "justMyCode": true
         }
