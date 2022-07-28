@@ -132,7 +132,9 @@ async def on_message(ctx):
     if str(ctx.author.id) in user_presence[str(ctx.guild.id)]:
         del user_presence[str(ctx.guild.id)][str(ctx.author.id)]
         save()
-        await ctx.send(f"Welcome back {ctx.author.mention}. Your AFK has been removed.")
+        m1 = await ctx.channel.send(f"Welcome back {ctx.author.mention}. Your AFK has been removed.")
+        await asyncio.sleep(5)
+        await m1.delete()
 
 #Error handler
 @client.event
