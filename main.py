@@ -878,7 +878,7 @@ async def whoami(ctx:SlashContext, user:discord.User=None):
     if str(user.id) in user_presence[str(ctx.guild.id)]: localembed_desc.append(f"\n`:crescent_moon: AFK` {user_presence[str(ctx.guild.id)][str(user.id)]['response']} - <t:{user_presence[str(ctx.guild.id)][str(user.id)]['time']}>")
     localembed = discord.Embed(
         title=f'User Info on {username}', 
-        description=f'`AKA` {displayname}'
+        description=localembed_desc
     )
     localembed.set_thumbnail(url=pfp)
     localembed.add_field(name='Username', value=username, inline=False)
