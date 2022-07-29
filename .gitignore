@@ -1,4 +1,4 @@
-api/auth.py
+api/rumtimeconfig.json
 database/currency.json
 database/item.json
 database/warnings.json
