@@ -23,6 +23,7 @@ from framework import *
 client = commands.Bot(command_prefix='s!', intents=discord.Intents.all())  #Saving for later incase needed
 slash = SlashCommand(client, sync_commands=True)
 color = discord.Color.random()
+wdir = os.getcwd()
 reddit = praw.Reddit(client_id='_pazwWZHi9JldA', client_secret='1tq1HM7UMEGIro6LlwtlmQYJ1jB4vQ', user_agent='idk', check_for_async=False)
 with open('database/currency.json', 'r') as f: currency = json.load(f)
 with open('database/warnings.json', 'r') as f: warnings = json.load(f)
