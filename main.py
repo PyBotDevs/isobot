@@ -103,31 +103,19 @@ async def on_ready():
 
 @client.event
 async def on_message(ctx):
-    if (str(ctx.author.id) in currency['wallet']):
-        pass
-    else:
-        currency['wallet'][str(ctx.author.id)] = 5000
-    if (str(ctx.author.id) in currency['bank']):
-        pass
-    else:
-        currency['bank'][str(ctx.author.id)] = 0
-    if str(ctx.guild.id) in warnings:
-        pass
-    else:
-        warnings[str(ctx.guild.id)] = {}
-    if str(ctx.author.id) in warnings[str(ctx.guild.id)]:
-        pass
-    else:
-        warnings[str(ctx.guild.id)][str(ctx.author.id)] = []
-    if str(ctx.author.id) in items:
-        pass
-    else:
-        items[str(ctx.author.id)] = {}
+    if (str(ctx.author.id) in currency['wallet']): pass 
+    else: currency['wallet'][str(ctx.author.id)] = 5000
+    if (str(ctx.author.id) in currency['bank']): pass
+    else: currency['bank'][str(ctx.author.id)] = 0
+    if str(ctx.guild.id) in warnings: pass
+    else: warnings[str(ctx.guild.id)] = {}
+    if str(ctx.author.id) in warnings[str(ctx.guild.id)]: pass
+    else: warnings[str(ctx.guild.id)][str(ctx.author.id)] = []
+    if str(ctx.author.id) in items: pass
+    else: items[str(ctx.author.id)] = {}
     for z in shopitem:
-        if z in str(ctx.author.id):
-            pass
-        else:
-            items[str(ctx.author.id)][str(z)] = 0
+        if z in str(ctx.author.id): pass
+        else: items[str(ctx.author.id)][str(z)] = 0
     save()
     if str(ctx.author.id) in user_presence[str(ctx.guild.id)]:
         del user_presence[str(ctx.guild.id)][str(ctx.author.id)]
