@@ -15,14 +15,15 @@
 #i got tired of removing () in statements
 
 #Imports
+import os, os.path, psutil, json, time, datetime, asyncio, random, math, praw
+import api.auth, utils.logger, utils.ping
+import framework.isobot.currency
 import discord
 from discord.ext import commands, tasks
 from discord.ext.commands import *
-from framework import *
-import os, os.path, psutil, json, time, datetime, asyncio, random, math, praw
 from discord_slash import SlashCommand, SlashContext
 from discord_slash.utils.manage_commands import create_choice, create_option
-import api.auth, utils.logger, utils.ping, framework.isobot.currency
+from framework import *
 
 # Slash option types:
 # sub command: 1
@@ -43,6 +44,7 @@ with open('database/currency.json', 'r') as f: currency = json.load(f)
 with open('database/warnings.json', 'r') as f: warnings = json.load(f)
 with open('database/items.json', 'r') as f: items = json.load(f)
 with open('config/shop.json', 'r') as f: shopitem = json.load(f)
+with open('database/presence.json', 'r') as f: user_presence = json.load(f)
 
 #Pre-Initialization Commands
 def timenow(): datetime.datetime.now().strftime("%H:%M:%S")
@@ -50,7 +52,7 @@ def save():
     with open('database/currency.json', 'w+') as f: json.dump(currency, f, indent=4)
     with open('database/warnings.json', 'w+') as f: json.dump(warnings, f, indent=4)
     with open('database/items.json', 'w+') as f: json.dump(items, f, indent=4)
-
+    with open('database/presence.json', 'w+') as f: json.dump(user_presence, f, indent=4)
 
 if not os.path.isdir("logs"):
   os.mkdir('logs')
@@ -98,11 +100,15 @@ async def on_message(ctx):
     if str(ctx.author.id) not in warnings[str(ctx.guild.id)]: warnings[str(ctx.guild.id)][str(ctx.author.id)] = []
     if str(ctx.author.id) not in items: items[str(ctx.author.id)] = {}
     for z in shopitem:
-        if z in str(ctx.author.id):
-            pass
-        else:
-            items[str(ctx.author.id)][str(z)] = 0
+        if z in str(ctx.author.id): pass
+        else: items[str(ctx.author.id)][str(z)] = 0
     save()
+    if str(ctx.author.id) in user_presence[str(ctx.guild.id)]:
+        del user_presence[str(ctx.guild.id)][str(ctx.author.id)]
+        save()
+        m1 = await ctx.channel.send(f"Welcome back {ctx.author.mention}. Your AFK has been removed.")
+        await asyncio.sleep(5)
+        await m1.delete()
 
 #Error handler
 @client.event
@@ -637,9 +643,11 @@ async def whoami(ctx:SlashContext, user:discord.User=None):
     displayname = user.display_name
     registered = user.joined_at.strftime("%b %d, %Y, %T")
     pfp = user.avatar_url
+    localembed_desc = f"`AKA` {displayname}"
+    if str(user.id) in user_presence[str(ctx.guild.id)]: localembed_desc += f"\n`🌙 AFK` {user_presence[str(ctx.guild.id)][str(user.id)]['response']} - <t:{math.floor(user_presence[str(ctx.guild.id)][str(user.id)]['time'])}>"
     localembed = discord.Embed(
         title=f'User Info on {username}', 
-        description=f'`AKA` {displayname}'
+        description=localembed_desc
     )
     localembed.set_thumbnail(url=pfp)
     localembed.add_field(name='Username', value=username, inline=False)
@@ -863,6 +871,48 @@ async def gift(ctx:SlashContext, user:discord.User, item:str, amount:int=1):
         utils.logger.error(e)
         await ctx.reply(f"wtf is {item}?")
         
+@slash.slash(
+    name="afk_set",
+    description="Sets your AFK status with a custom response",
+    options=[
+        create_option(name="response", description="What do you want your AFK response to be?", option_type=3, required=False)
+    ]
+)
+async def afk_set(ctx:SlashContext, response:str="I'm AFK"):
+    exctime = time.time()
+    if str(ctx.guild.id) not in user_presence: user_presence[str(ctx.guild.id)] = {}
+    user_presence[str(ctx.guild.id)][str(ctx.author.id)] = {"type": "afk", "time": exctime, "response": response}
+    save()
+    localembed = discord.Embed(title=f"{ctx.author.display_name} is now AFK.", description=f"Response: {response}", color=discord.Color.dark_orange())
+    await ctx.reply(embed=localembed)
+
+@slash.slash(
+    name="afk_remove",
+    description="Removes your AFK status"
+)
+async def afk_remove(ctx:SlashContext):
+    try: 
+        del user_presence[str(ctx.guild.id)][str(ctx.author.id)]
+        save()
+        await ctx.send(f"Alright {ctx.author.mention}, I've removed your AFK.")
+    except KeyError:
+        return await ctx.send("You weren't previously AFK.", hidden=True)
+
+@slash.slash(
+    name="afk_mod_remove",
+    description="Removes an AFK status for someone else",
+    options=[
+        create_option(name="user", description="Whose AFK status do you want to remove?", option_type=6, required=True)
+    ]
+)
+async def afk_mod_remove(ctx:SlashContext, user:discord.User):
+    if not ctx.author.guild_permissions.manage_messages: return await ctx.reply("You don't have the required permissions to use this.", hidden=True)
+    try: 
+        del user_presence[str(ctx.guild.id)][str(user.id)]
+        save()
+        await ctx.send(f"{user.display_name}'s AFK has been removed.")
+    except KeyError:
+        return await ctx.send("That user isn't AFK.", hidden=True)
 
 # Initialization
 utils.ping.host()
