@@ -1,19 +1,6 @@
 #debloat notes:
 # lines 1041 -> 739 (without this comment)
 
-#you should use "not" in statements
-#no need to declare variables unless they are random and you use it more than once
-#if a == b: function()
-#return await ctx.send
-#declaring variable types is completely useless
-#python isnt javascript, you dont have to use () in statements or loops
-#an if statement doesnt need a corresponding else statement
-#[a, b, c, d, ...] in 1 line
-#import a, b, c, ... in 1 line
-#when you are opening a file that is a subdirectory of the cwd you dont need to type full path... unix logic
-
-#i got tired of removing () in statements
-
 #Imports
 import os, os.path, psutil, json, time, datetime, asyncio, random, math, praw
 import api.auth, utils.logger, utils.ping
