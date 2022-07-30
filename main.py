@@ -75,7 +75,9 @@ async def on_ready():
     """)
     time.sleep(2)
     print(f'Logged in as {client.user.name}.')
+    print('Ready to accept commands.')
     await client.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name=f"Salad"), status=discord.Status.idle)
+    print(f'[main/LOG] {colors.green}Status set to IDLE. Rich presence set.{colors.end}')
 
 @client.event
 async def on_message(ctx):
