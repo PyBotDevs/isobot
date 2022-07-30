@@ -1,6 +1,3 @@
-#debloat notes:
-# lines 1041 -> 739 (without this comment)
-
 #Imports
 import os, os.path, psutil, json, time, datetime, asyncio, random, math, praw
 import api.auth, utils.logger, utils.ping
