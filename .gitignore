@@ -3,3 +3,4 @@ database/currency.json
 database/item.json
 database/warnings.json
 *.pyc
+__pycache__
