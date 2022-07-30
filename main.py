@@ -1,13 +1,13 @@
 #Imports
+import os, os.path, psutil, json, time, datetime, asyncio, random, math, praw
+import api.auth, utils.logger, utils.ping
+import framework.isobot.currency
 import discord
 from discord.ext import commands, tasks
 from discord.ext.commands import *
-import os, os.path, psutil, json, time, datetime, asyncio, random, math, praw
 from discord_slash import SlashCommand, SlashContext
 from discord_slash.utils.manage_commands import create_choice, create_option
-import api.auth, utils.logger, utils.ping
 from framework import *
-import framework.isobot.currency
 
 # Slash option types:
 # sub command: 1
