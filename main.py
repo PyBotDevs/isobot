@@ -122,7 +122,7 @@ async def on_message(ctx):
     for i in uList:
         if i in ctx.content and not ctx.author.bot:
             user = client.get_user(i)
-            await ctx.channel.send(f"That user went AFK <t:{math.floor(user_presence[str(ctx.guild.id)][str(i)]['time'])}>: {user_presence[str(ctx.guild.id)][str(i)]['response']}")
+            await ctx.channel.send(f"That user went AFK <t:{math.floor(user_presence[str(ctx.guild.id)][str(i)]['time'])}:R>: {user_presence[str(ctx.guild.id)][str(i)]['response']}")
     if str(ctx.author.id) in user_presence[str(ctx.guild.id)]:
         del user_presence[str(ctx.guild.id)][str(ctx.author.id)]
         save()
