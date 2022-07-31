@@ -120,7 +120,7 @@ async def on_message(ctx):
     uList = list()
     for x in user_presence[str(ctx.guild.id)].keys(): uList.append(x)
     for i in uList:
-        if i in ctx.content and not message.author.bot:
+        if i in ctx.content and not ctx.author.bot:
             user = client.get_user(i)
             ctx.channel.send(f"{user.display_name} went AFK {math.floor(user_presence[str(ctx.guild.id)][str(ctx.author.id)]['exctime'])}: {user_presence[str(ctx.guild.id)][str(ctx.author.id)]['response']}")
     if str(ctx.author.id) in user_presence[str(ctx.guild.id)]:
