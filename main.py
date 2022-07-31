@@ -2,6 +2,7 @@
 import os, os.path, psutil, json, time, datetime, asyncio, random, math, praw
 import api.auth, utils.logger, utils.ping
 import framework.isobot.currency
+import framework.isobot.colors
 import discord
 from discord.ext import commands, tasks
 from discord.ext.commands import *
@@ -72,18 +73,13 @@ else:
     utils.logger.error(f"Failed to make log file: {e}", nolog=True)
 
 #Classes
-class colors:
-    cyan = '\033[96m'
-    red = '\033[91m'
-    green = '\033[92m'
-    end = '\033[0m'
-
 class plugins:
     economy:bool = True
     moderation:bool = True
     levelling:bool = False
     music:bool = False
 
+colors = framework.isobot.colors.Colors()
 currency_unused = framework.isobot.currency.CurrencyAPI(f'{wdir}/database/currency.json') # Initialize part of the framework (Currency)
 
 #Events
