@@ -25,6 +25,7 @@
     "x" : ["xorg ", "xbox "],
     "y" : ["why ", "you ", "your ", "youre ", "yes "],
     "z" : ["zip ", "zeta "],
+    " " : [" "],
     "~" : ["{tlide} "],
     "`" : ["{acute} "],
     "!" : ["{exclamination_mark} "],
