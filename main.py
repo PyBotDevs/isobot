@@ -2,6 +2,7 @@
 import os, os.path, psutil, json, time, datetime, asyncio, random, math, praw
 import api.auth, utils.logger, utils.ping
 import framework.isobot.currency
+import framework.isobot.colors
 import discord
 from discord.ext import commands, tasks
 from discord.ext.commands import *
@@ -50,18 +51,13 @@ if not os.path.isdir("logs"):
   except Exception as e: utils.logger.error(f"Failed to make log file: {e}", nolog=True)
 
 #Classes
-class colors:
-    cyan = '\033[96m'
-    red = '\033[91m'
-    green = '\033[92m'
-    end = '\033[0m'
-
 class plugins:
     economy = True
     moderation = True
     levelling = False
     music = False
 
+colors = framework.isobot.colors.Colors()
 currency_unused = framework.isobot.currency.CurrencyAPI(f'{wdir}/database/currency.json') # Initialize part of the framework (Currency)
 
 #Events
@@ -90,6 +86,12 @@ async def on_message(ctx):
         if z in str(ctx.author.id): pass
         else: items[str(ctx.author.id)][str(z)] = 0
     save()
+    uList = list()
+    for x in user_presence[str(ctx.guild.id)].keys(): uList.append(x)
+    for i in uList:
+        if i in ctx.content and not ctx.author.bot:
+            fetch_user = client.get_user(id(i))
+            await ctx.channel.send(f"{fetch_user.display_name} went AFK <t:{math.floor(user_presence[str(ctx.guild.id)][str(i)]['time'])}:R>: {user_presence[str(ctx.guild.id)][str(i)]['response']}")
     if str(ctx.author.id) in user_presence[str(ctx.guild.id)]:
         del user_presence[str(ctx.guild.id)][str(ctx.author.id)]
         save()
