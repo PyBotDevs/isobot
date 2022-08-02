@@ -437,7 +437,7 @@ async def rob(ctx:SlashContext, user:discord.User):
 async def bankrob(ctx:SlashContext, user:discord.User):
     if plugins.economy == False: pass
     if currency['wallet'][str(user.id)] < 10000: return await ctx.reply('You really want to risk losing your life to a poor person? (imagine robbing someone with < 10k net worth)')
-    elif currency['wallet'][str(ctx.author.id)] < 5000: return await ctx.reply('You have less than 10k in your wallet. Don\'t be greedy.')
+    elif currency['wallet'][str(ctx.author.id)] < 10000: return await ctx.reply('You have less than 10k in your wallet. Don\'t be greedy.')
     if random.randint(1, 100) <= 20:
         x = random.randint(10000, currency['wallet'][str(user.id)])
         currency['wallet'][str(ctx.author.id)] += x
