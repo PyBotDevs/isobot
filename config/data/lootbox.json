@@ -1,0 +1,32 @@
+{
+    "normal box": {
+        "type": "normal",
+        "buy price": 0,
+        "sell price": 0,
+        "description": "A simple box that contains a small amount of items.",
+        "collection": null,
+        "available": false,
+        "giftable": true,
+        "sellable": true
+    },
+    "large box": {
+        "type": "large",
+        "buy price": 0,
+        "sell price": 0,
+        "description": "A larger box that contains more items inside.",
+        "collection": null,
+        "available": false,
+        "giftable": true,
+        "sellable": true
+    },
+    "special box": {
+        "type": "special",
+        "buy price": 0,
+        "sell price": 0,
+        "description": "A nice looking lootbox that contains rare items.",
+        "collection": null,
+        "available": false,
+        "giftable": true,
+        "sellable": true
+    }
+}

@@ -4,10 +4,11 @@
 
 <h1 align='center'>Isobot lazer, the future of isobot.</h1>
 
-![LICENSE](https://img.shields.io/github/license/notsniped/isobot-lazer)
-[![Discord](https://img.shields.io/discord/880409977074888714?color=%235865F2&label=Discord&logo=discord&logoColor=%23fff)](https://discord.gg/b5pz8T6Yjr)
+![LICENSE](https://img.shields.io/github/license/notsniped/isobot-lazer?style=for-the-badge)
+[![Discord](https://img.shields.io/discord/880409977074888714?color=%235865F2&label=Discord&logo=discord&logoColor=%23fffz&style=for-the-badge)](https://discord.gg/b5pz8T6Yjr)
+![Stars](https://img.shields.io/github/stars/notsniped/isobot-lazer?style=for-the-badge)
 
-![Stars](https://img.shields.io/github/stars/notsniped/isobot-lazer?style=social)
+[![CodeFactor](https://www.codefactor.io/repository/github/pybotdevs/isobot-lazer/badge)](https://www.codefactor.io/repository/github/pybotdevs/isobot-lazer)
 
 Isobot lazer is a brand-new project developed by the [iso.dev team](https://github.com/PyBotDevs), as a version of isobot which is sharper than beta.
 
@@ -27,3 +28,9 @@ I don't expect the project development to ever fully complete. But at some point
 
 # Invite link
 Become a beta tester today! We would really appreciate and value your feedback! [Click here to invite](https://discord.com/api/oauth2/authorize?client_id=953278050135588905&permissions=8&scope=applications.commands%20bot)
+
+## Extras
+# Highlights
+Work command:
+
+![image](https://user-images.githubusercontent.com/72265661/170833960-7ce1acdf-7dc6-4933-8969-144ed2d57a93.png)
