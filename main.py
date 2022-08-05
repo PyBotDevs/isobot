@@ -613,7 +613,7 @@ async def dig(ctx:SlashContext):
     name='open',
     description='Opens lootbox(es) in your inventory',
     options=[
-        create_option(name='lootbox', description='What lootbox do you want to open?', option_type=3, required=True)
+        create_option(name='lootbox', description='What lootbox do you want to open?', option_type=3, required=True),
         create_option(name='amount', description='How many do you want to open?', option_type=4, required=True)
     ]
 )
