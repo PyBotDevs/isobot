@@ -77,11 +77,16 @@ __________________________________________________""")
 
 @client.event
 async def on_message(ctx):
-    if str(ctx.author.id) not in currency['wallet']: currency['wallet'][str(ctx.author.id)] = 5000
-    if str(ctx.author.id) not in currency['bank']: currency['bank'][str(ctx.author.id)] = 0
-    if str(ctx.author.id) not in warnings: warnings[str(ctx.guild.id)] = {}
-    if str(ctx.author.id) not in warnings[str(ctx.guild.id)]: warnings[str(ctx.guild.id)][str(ctx.author.id)] = []
-    if str(ctx.author.id) not in items: items[str(ctx.author.id)] = {}
+    if (str(ctx.author.id) in currency['wallet']): pass 
+    else: currency['wallet'][str(ctx.author.id)] = 5000
+    if (str(ctx.author.id) in currency['bank']): pass
+    else: currency['bank'][str(ctx.author.id)] = 0
+    if str(ctx.guild.id) in warnings: pass
+    else: warnings[str(ctx.guild.id)] = {}
+    if str(ctx.author.id) in warnings[str(ctx.guild.id)]: pass
+    else: warnings[str(ctx.guild.id)][str(ctx.author.id)] = []
+    if str(ctx.author.id) in items: pass
+    else: items[str(ctx.author.id)] = {}
     for z in shopitem:
         if z in str(ctx.author.id): pass
         else: items[str(ctx.author.id)][str(z)] = 0
