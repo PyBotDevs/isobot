@@ -83,7 +83,7 @@ async def on_message(ctx):
     if str(ctx.author.id) not in warnings[str(ctx.guild.id)]: warnings[str(ctx.guild.id)][str(ctx.author.id)] = []
     if str(ctx.author.id) not in items: items[str(ctx.author.id)] = {}
     for z in shopitem:
-        if z in str(ctx.author.id): pass
+        if z in items[str(ctx.author.id)]: pass
         else: items[str(ctx.author.id)][str(z)] = 0
     save()
     uList = list()
