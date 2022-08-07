@@ -948,7 +948,7 @@ async def autogrind(ctx:SlashContext):
 async def rank(ctx:SlashContext, user:discord.User=None):
     if user == None: user = ctx.author
     try:
-        localembed = discord.Embed(title="{user.display_name}'s rank", color=discord.Color.random())
+        localembed = discord.Embed(title=f"{user.display_name}'s rank", color=discord.Color.random())
         localembed.add_field(name="Level", value=levels[str(user.id)]["level"])
         localembed.add_field(name="XP", value=levels[str(user.id)]["xp"])
         localembed.set_footer(text="Keep chatting to earn levels!", icon_url=ctx.author.avatar_url)
