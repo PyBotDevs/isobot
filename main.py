@@ -481,7 +481,6 @@ async def shop(ctx:SlashContext, item:str=None):
         localembed.set_footer(text='Page 1 | Tools | This command is in development. More items will be added soon!')
         await ctx.send(embed=localembed)
     else:
-        #localembed = discord.Embed(title='Item lookup', description='isn\'t ready just yet. Please check back a bit later!')
         try:
             localembed = discord.Embed(
                 title=shopitem[item]['stylized name'],
