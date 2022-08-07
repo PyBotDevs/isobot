@@ -921,6 +921,22 @@ async def afk_mod_remove(ctx:SlashContext, user:discord.User):
     except KeyError:
         return await ctx.send("That user isn't AFK.", hidden=True)
 
+@slash.slash(
+    name="rank",
+    description="Shows your rank or another user's rank",
+    options=[
+        create_option(name="user", description="Who's rank do you want to view?", option_type=6, required=False)
+    ]
+)
+async def rank(ctx:SlashContext, user:discord.User=None):
+    if user == None: user = ctx.author.id
+    try:
+        localembed = discord.Embed(title="{user.display_name}'s rank", color=discord.Color.random())
+        localembed.add_field(name="Level", value=levels[str(user.id)]["level"])
+        localembed.add_field(name="XP", value=levels[str(user.id)]["xp"])
+        localembed.set_footer(text="Keep chatting to earn levels!", icon_url=ctx.author.avatar_url)
+    except KeyError: return await ctx.send("Looks like that user isn't indexed yet. Try again later.", hidden=True)
+
 # Initialization
 utils.ping.host()
 client.run(api.auth.get_token())
