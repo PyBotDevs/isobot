@@ -31,6 +31,7 @@ with open('database/warnings.json', 'r') as f: warnings = json.load(f)
 with open('database/items.json', 'r') as f: items = json.load(f)
 with open('config/shop.json', 'r') as f: shopitem = json.load(f)
 with open('database/presence.json', 'r') as f: user_presence = json.load(f)
+with open('database/levels.json', 'r') as f: levels = json.load(f)
 
 #Pre-Initialization Commands
 def timenow(): datetime.datetime.now().strftime("%H:%M:%S")
@@ -39,6 +40,7 @@ def save():
     with open('database/warnings.json', 'w+') as f: json.dump(warnings, f, indent=4)
     with open('database/items.json', 'w+') as f: json.dump(items, f, indent=4)
     with open('database/presence.json', 'w+') as f: json.dump(user_presence, f, indent=4)
+    with open('database/levels.json', 'w+') as f: json.dump(levels, f, indent=4)
 
 if not os.path.isdir("logs"):
   os.mkdir('logs')
@@ -82,6 +84,7 @@ async def on_message(ctx):
     if str(ctx.author.id) not in warnings: warnings[str(ctx.guild.id)] = {}
     if str(ctx.author.id) not in warnings[str(ctx.guild.id)]: warnings[str(ctx.guild.id)][str(ctx.author.id)] = []
     if str(ctx.author.id) not in items: items[str(ctx.author.id)] = {}
+    if str(ctx.author.id) not in levels: levels[str(ctx.author.id)] = {"xp": 0, "level": 0}
     for z in shopitem:
         if z in items[str(ctx.author.id)]: pass
         else: items[str(ctx.author.id)][str(z)] = 0
@@ -98,6 +101,22 @@ async def on_message(ctx):
         m1 = await ctx.channel.send(f"Welcome back {ctx.author.mention}. Your AFK has been removed.")
         await asyncio.sleep(5)
         await m1.delete()
+    if not ctx.author.bot:
+        levels[str(ctx.author.id)]["xp"] += randint(1, 5)
+        # if levelupchannel[str(message.guild.id)] == 0:
+        #     channelid = message.channel
+        # else:
+        #     channelid = client.get_channel(levelupchannel[str(message.guild.id)])
+        # ^ Saving for later when server-based leveling implementation is added
+        xpreq = 0
+        for level in range(int(levels[str(ctx.author.id)]["level"])):
+            xpreq += 50
+            if xpreq >= 5000: break
+        if levels[str(ctx.author.id)]["xp"] >= xpreq:
+            levels[str(ctx.author.id)]["xp"] = 0
+            levels[str(ctx.author.id)]["level"] += 1
+            await ctx.channel.send(f"{ctx.author.mention}, you are now level **{levels[str(message.guild.id)][str(message.author.id)]}**. Nice!")
+        save()
 
 #Error handler
 @client.event
