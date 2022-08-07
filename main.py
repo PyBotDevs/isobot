@@ -962,7 +962,7 @@ async def rank(ctx:SlashContext, user:discord.User=None):
         create_option(name="new_rank", description="The new rank you want to set for the user", option_type=4, required=True)
     ]
 )
-async def edit_rank(ctx:SlashContext, user:discord.User, new_rank:int):
+async def edit_xp(ctx:SlashContext, user:discord.User, new_rank:int):
     if ctx.author.id != 738290097170153472: return await ctx.send("This command isn't for you.", hidden=True)
     try:
         levels[str(user.id)]["level"] = new_rank
