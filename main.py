@@ -946,7 +946,7 @@ async def autogrind(ctx:SlashContext):
     ]
 )
 async def rank(ctx:SlashContext, user:discord.User=None):
-    if user == None: user = ctx.author.id
+    if user == None: user = ctx.author
     try:
         localembed = discord.Embed(title=f"{user.display_name}'s rank", color=discord.Color.random())
         localembed.add_field(name="Level", value=levels[str(user.id)]["level"])
