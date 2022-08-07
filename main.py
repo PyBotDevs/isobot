@@ -102,7 +102,7 @@ async def on_message(ctx):
         await asyncio.sleep(5)
         await m1.delete()
     if not ctx.author.bot:
-        levels[str(ctx.author.id)]["xp"] += randint(1, 5)
+        levels[str(ctx.author.id)]["xp"] += random.randint(1, 5)
         # if levelupchannel[str(message.guild.id)] == 0:
         #     channelid = message.channel
         # else:
