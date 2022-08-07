@@ -63,16 +63,16 @@ currency_unused = framework.isobot.currency.CurrencyAPI(f'{wdir}/database/curren
 #Events
 @client.event
 async def on_ready():
-    print("""Isobot-lazer  Copyright (C) 2022  PyBotDevs/NKA
-    This program comes with ABSOLUTELY NO WARRANTY; for details run `/w'.
-    This is free software, and you are welcome to redistribute it
-    under certain conditions; run `/c' for details.
-    __________________________________________________
-    """)
+    print("""
+Isobot-lazer  Copyright (C) 2022  PyBotDevs/NKA
+This program comes with ABSOLUTELY NO WARRANTY; for details run `/w'.
+This is free software, and you are welcome to redistribute it
+under certain conditions; run `/c' for details.
+__________________________________________________""")
     time.sleep(2)
     print(f'Logged in as {client.user.name}.')
     print('Ready to accept commands.')
-    await client.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name=f"Salad"), status=discord.Status.idle)
+    await client.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name=f"GitHub"), status=discord.Status.idle)
     print(f'[main/LOG] {colors.green}Status set to IDLE. Rich presence set.{colors.end}')
 
 @client.event
@@ -83,7 +83,7 @@ async def on_message(ctx):
     if str(ctx.author.id) not in warnings[str(ctx.guild.id)]: warnings[str(ctx.guild.id)][str(ctx.author.id)] = []
     if str(ctx.author.id) not in items: items[str(ctx.author.id)] = {}
     for z in shopitem:
-        if z in str(ctx.author.id): pass
+        if z in items[str(ctx.author.id)]: pass
         else: items[str(ctx.author.id)][str(z)] = 0
     save()
     uList = list()
@@ -457,7 +457,7 @@ async def bankrob(ctx:SlashContext, user:discord.User):
 )
 async def inventory(ctx:SlashContext, user:discord.User = None):
     if plugins.economy == False: pass
-    if user == None: user == ctx.author
+    if user == None: user = ctx.author
     localembed = discord.Embed(title=f'{user.display_name}\'s Inventory')
     localembed.add_field(name='Utility', value=f'Hunting Rifle `ID: rifle`: {items[str(user.id)]["rifle"]}\nFishing Rod `ID: fishingpole`: {items[str(user.id)]["fishingpole"]}\nShovel `ID: shovel`: {items[str(user.id)]["shovel"]}', inline=False)
     localembed.add_field(name='Sellables', value=f'Rock `ID: rock`: {items[str(user.id)]["rock"]}\nAnt `ID: ant`: {items[str(user.id)]["ant"]}\nStickbug `ID: stickbug`: {items[str(user.id)]["stickbug"]}\nSkunk `ID: skunk`: {items[str(user.id)]["skunk"]}\nBoar `ID: boar`: {items[str(user.id)]["boar"]}\nDeer `ID: deer`: {items[str(user.id)]["deer"]}\nDragon `ID: dragon`: {items[str(user.id)]["dragon"]}\nGold `ID: gold`: {items[str(user.id)]["gold"]}', inline=False)
