@@ -937,6 +937,36 @@ async def rank(ctx:SlashContext, user:discord.User=None):
         localembed.set_footer(text="Keep chatting to earn levels!", icon_url=ctx.author.avatar_url)
     except KeyError: return await ctx.send("Looks like that user isn't indexed yet. Try again later.", hidden=True)
 
+@slash.slash(
+    name="edit_rank",
+    description="Edits a user's rank. (DEV ONLY)",
+    options=[
+        create_option(name="user", description="Who's rank do you want to edit?", option_type=6, required=True),
+        create_option(name="new_rank", decription="The new rank you want to set for the user", option_type=4, required=True)
+    ]
+)
+async def edit_rank(ctx:SlashContext, user:discord.User, new_rank:int):
+    if ctx.author.id != 738290097170153472: return await ctx.send("This command isn't for you.", hidden=True)
+    try:
+        levels[str(user.id)]["level"] = new_rank
+        await ctx.reply(f"{user.display_name}\'s rank successfully edited. `New Rank: {levels[str(user.id)]['level']}`")
+    except KeyError: return await ctx.reply("That user isn't indexed yet.", hidden=True)
+
+@slash.slash(
+    name="edit_xp",
+    description="Edits a user's XP. (DEV ONLY)",
+    options=[
+        create_option(name="user", description="Who's rank do you want to edit?", option_type=6, required=True),
+        create_option(name="new_xp", decription="The new xp count you want to set for the user", option_type=4, required=True)
+    ]
+)
+async def edit_rank(ctx:SlashContext, user:discord.User, new_xp:int):
+    if ctx.author.id != 738290097170153472: return await ctx.send("This command isn't for you.", hidden=True)
+    try:
+        levels[str(user.id)]["xp"] = new_xp
+        await ctx.reply(f"{user.display_name}\'s XP count successfully edited. `New XP: {levels[str(user.id)]['xp']}`")
+    except KeyError: return await ctx.reply("That user isn't indexed yet.", hidden=True)
+
 # Initialization
 utils.ping.host()
 client.run(api.auth.get_token())
