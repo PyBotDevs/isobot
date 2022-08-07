@@ -959,7 +959,7 @@ async def rank(ctx:SlashContext, user:discord.User=None):
     description="Edits a user's rank. (DEV ONLY)",
     options=[
         create_option(name="user", description="Who's rank do you want to edit?", option_type=6, required=True),
-        create_option(name="new_rank", decription="The new rank you want to set for the user", option_type=4, required=True)
+        create_option(name="new_rank", description="The new rank you want to set for the user", option_type=4, required=True)
     ]
 )
 async def edit_rank(ctx:SlashContext, user:discord.User, new_rank:int):
@@ -974,7 +974,7 @@ async def edit_rank(ctx:SlashContext, user:discord.User, new_rank:int):
     description="Edits a user's XP. (DEV ONLY)",
     options=[
         create_option(name="user", description="Who's rank do you want to edit?", option_type=6, required=True),
-        create_option(name="new_xp", decription="The new xp count you want to set for the user", option_type=4, required=True)
+        create_option(name="new_xp", description="The new xp count you want to set for the user", option_type=4, required=True)
     ]
 )
 async def edit_rank(ctx:SlashContext, user:discord.User, new_xp:int):
