@@ -952,6 +952,7 @@ async def rank(ctx:SlashContext, user:discord.User=None):
         localembed.add_field(name="Level", value=levels[str(user.id)]["level"])
         localembed.add_field(name="XP", value=levels[str(user.id)]["xp"])
         localembed.set_footer(text="Keep chatting to earn levels!", icon_url=ctx.author.avatar_url)
+        await ctx.send(embed = localembed)
     except KeyError: return await ctx.send("Looks like that user isn't indexed yet. Try again later.", hidden=True)
 
 @slash.slash(
