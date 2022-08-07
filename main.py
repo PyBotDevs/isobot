@@ -936,7 +936,7 @@ async def autogrind(ctx:SlashContext):
     items[str(ctx.author.id)][items_reward[2]] += 1
     save()
     localembed = discord.Embed(title="Autogrind has completed!", description=f"**Your rewards**\n\nYou got **{coins_reward}** coins!\nYou got **1 {items_reward[0]}**!\nYou got **1 {items_reward[1]}**!\nYou got **1 {items_reward[2]}!**", color=discord.Color.greem())
-    ctx.author.send()
+    ctx.author.send(embed = localembed)
 
 @slash.slash(
     name="rank",
