@@ -115,7 +115,7 @@ async def on_message(ctx):
         if levels[str(ctx.author.id)]["xp"] >= xpreq:
             levels[str(ctx.author.id)]["xp"] = 0
             levels[str(ctx.author.id)]["level"] += 1
-            await ctx.channel.send(f"{ctx.author.mention}, you are now level **{levels[str(message.guild.id)][str(message.author.id)]}**. Nice!")
+            await ctx.channel.send(f"{ctx.author.mention}, you are now level **{levels[str(ctx.author.id)]['level']}**. Nice!")
         save()
 
 #Error handler
