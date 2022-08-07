@@ -925,6 +925,7 @@ async def afk_mod_remove(ctx:SlashContext, user:discord.User):
     name="autogrind",
     description="Automatically grinds coins and items for you"
 )
+@commands.cooldown(1, 3600, commands.BucketType.user)
 async def autogrind(ctx:SlashContext):
     await ctx.reply("Autogrind has started. Please check back in an hour for your rewards.")
     await asyncio.sleep(3600)
