@@ -934,14 +934,15 @@ async def autogrind(ctx:SlashContext):
     await ctx.reply("Autogrind has started. Please check back in an hour for your rewards.")
     await asyncio.sleep(3600)
     coins_reward = random.randint(10000, 35000)
-    items_reward = [random.choice(shopitem.keys()), random.choice(shopitem.keys()), random.choice(shopitem.keys())]
+    ie = shopitem.keys()
+    items_reward = [random.choice(list(ie)), random.choice(list(ie)), random.choice(list(ie))]
     currency["wallet"][str(ctx.author.id)] += coins_reward
     items[str(ctx.author.id)][items_reward[0]] += 1
     items[str(ctx.author.id)][items_reward[1]] += 1
     items[str(ctx.author.id)][items_reward[2]] += 1
     save()
-    localembed = discord.Embed(title="Autogrind has completed!", description=f"**Your rewards**\n\nYou got **{coins_reward}** coins!\nYou got **1 {items_reward[0]}**!\nYou got **1 {items_reward[1]}**!\nYou got **1 {items_reward[2]}!**", color=discord.Color.greem())
-    ctx.author.send(embed = localembed)
+    localembed = discord.Embed(title="Autogrind has completed!", description=f"**Your rewards**\n\nYou got **{coins_reward}** coins!\nYou got **1 {items_reward[0]}**!\nYou got **1 {items_reward[1]}**!\nYou got **1 {items_reward[2]}!**", color=discord.Color.green())
+    await ctx.author.send(embed = localembed)
 
 @slash.slash(
     name="rank",
