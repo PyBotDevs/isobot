@@ -31,6 +31,7 @@ with open('database/warnings.json', 'r') as f: warnings = json.load(f)
 with open('database/items.json', 'r') as f: items = json.load(f)
 with open('config/shop.json', 'r') as f: shopitem = json.load(f)
 with open('database/presence.json', 'r') as f: user_presence = json.load(f)
+with open('database/levels.json', 'r') as f: levels = json.load(f)
 
 #Pre-Initialization Commands
 def timenow(): datetime.datetime.now().strftime("%H:%M:%S")
@@ -39,6 +40,7 @@ def save():
     with open('database/warnings.json', 'w+') as f: json.dump(warnings, f, indent=4)
     with open('database/items.json', 'w+') as f: json.dump(items, f, indent=4)
     with open('database/presence.json', 'w+') as f: json.dump(user_presence, f, indent=4)
+    with open('database/levels.json', 'w+') as f: json.dump(levels, f, indent=4)
 
 if not os.path.isdir("logs"):
   os.mkdir('logs')
@@ -82,6 +84,7 @@ async def on_message(ctx):
     if str(ctx.author.id) not in warnings: warnings[str(ctx.guild.id)] = {}
     if str(ctx.author.id) not in warnings[str(ctx.guild.id)]: warnings[str(ctx.guild.id)][str(ctx.author.id)] = []
     if str(ctx.author.id) not in items: items[str(ctx.author.id)] = {}
+    if str(ctx.author.id) not in levels: levels[str(ctx.author.id)] = {"xp": 0, "level": 0}
     for z in shopitem:
         if z in items[str(ctx.author.id)]: pass
         else: items[str(ctx.author.id)][str(z)] = 0
@@ -98,6 +101,22 @@ async def on_message(ctx):
         m1 = await ctx.channel.send(f"Welcome back {ctx.author.mention}. Your AFK has been removed.")
         await asyncio.sleep(5)
         await m1.delete()
+    if not ctx.author.bot:
+        levels[str(ctx.author.id)]["xp"] += random.randint(1, 5)
+        # if levelupchannel[str(message.guild.id)] == 0:
+        #     channelid = message.channel
+        # else:
+        #     channelid = client.get_channel(levelupchannel[str(message.guild.id)])
+        # ^ Saving for later when server-based leveling implementation is added
+        xpreq = 0
+        for level in range(int(levels[str(ctx.author.id)]["level"])):
+            xpreq += 50
+            if xpreq >= 5000: break
+        if levels[str(ctx.author.id)]["xp"] >= xpreq:
+            levels[str(ctx.author.id)]["xp"] = 0
+            levels[str(ctx.author.id)]["level"] += 1
+            await ctx.channel.send(f"{ctx.author.mention}, you are now level **{levels[str(ctx.author.id)]['level']}**. Nice!")
+        save()
 
 #Error handler
 @client.event
@@ -481,7 +500,6 @@ async def shop(ctx:SlashContext, item:str=None):
         localembed.set_footer(text='Page 1 | Tools | This command is in development. More items will be added soon!')
         await ctx.send(embed=localembed)
     else:
-        #localembed = discord.Embed(title='Item lookup', description='isn\'t ready just yet. Please check back a bit later!')
         try:
             localembed = discord.Embed(
                 title=shopitem[item]['stylized name'],
@@ -937,6 +955,71 @@ async def afk_mod_remove(ctx:SlashContext, user:discord.User):
         await ctx.send(f"{user.display_name}'s AFK has been removed.")
     except KeyError:
         return await ctx.send("That user isn't AFK.", hidden=True)
+
+@slash.slash(
+    name="autogrind",
+    description="Automatically grinds coins and items for you"
+)
+@commands.cooldown(1, 3600, commands.BucketType.user)
+async def autogrind(ctx:SlashContext):
+    await ctx.reply("Autogrind has started. Please check back in an hour for your rewards.")
+    await asyncio.sleep(3600)
+    coins_reward = random.randint(10000, 35000)
+    items_reward = [random.choice(shopitem.keys()), random.choice(shopitem.keys()), random.choice(shopitem.keys())]
+    currency["wallet"][str(ctx.author.id)] += coins_reward
+    items[str(ctx.author.id)][items_reward[0]] += 1
+    items[str(ctx.author.id)][items_reward[1]] += 1
+    items[str(ctx.author.id)][items_reward[2]] += 1
+    save()
+    localembed = discord.Embed(title="Autogrind has completed!", description=f"**Your rewards**\n\nYou got **{coins_reward}** coins!\nYou got **1 {items_reward[0]}**!\nYou got **1 {items_reward[1]}**!\nYou got **1 {items_reward[2]}!**", color=discord.Color.greem())
+    ctx.author.send(embed = localembed)
+
+@slash.slash(
+    name="rank",
+    description="Shows your rank or another user's rank",
+    options=[
+        create_option(name="user", description="Who's rank do you want to view?", option_type=6, required=False)
+    ]
+)
+async def rank(ctx:SlashContext, user:discord.User=None):
+    if user == None: user = ctx.author
+    try:
+        localembed = discord.Embed(title=f"{user.display_name}'s rank", color=discord.Color.random())
+        localembed.add_field(name="Level", value=levels[str(user.id)]["level"])
+        localembed.add_field(name="XP", value=levels[str(user.id)]["xp"])
+        localembed.set_footer(text="Keep chatting to earn levels!", icon_url=ctx.author.avatar_url)
+        await ctx.send(embed = localembed)
+    except KeyError: return await ctx.send("Looks like that user isn't indexed yet. Try again later.", hidden=True)
+
+@slash.slash(
+    name="edit_rank",
+    description="Edits a user's rank. (DEV ONLY)",
+    options=[
+        create_option(name="user", description="Who's rank do you want to edit?", option_type=6, required=True),
+        create_option(name="new_rank", description="The new rank you want to set for the user", option_type=4, required=True)
+    ]
+)
+async def edit_rank(ctx:SlashContext, user:discord.User, new_rank:int):
+    if ctx.author.id != 738290097170153472: return await ctx.send("This command isn't for you.", hidden=True)
+    try:
+        levels[str(user.id)]["level"] = new_rank
+        await ctx.reply(f"{user.display_name}\'s rank successfully edited. `New Rank: {levels[str(user.id)]['level']}`")
+    except KeyError: return await ctx.reply("That user isn't indexed yet.", hidden=True)
+
+@slash.slash(
+    name="edit_xp",
+    description="Edits a user's XP. (DEV ONLY)",
+    options=[
+        create_option(name="user", description="Who's rank do you want to edit?", option_type=6, required=True),
+        create_option(name="new_xp", description="The new xp count you want to set for the user", option_type=4, required=True)
+    ]
+)
+async def edit_xp(ctx:SlashContext, user:discord.User, new_xp:int):
+    if ctx.author.id != 738290097170153472: return await ctx.send("This command isn't for you.", hidden=True)
+    try:
+        levels[str(user.id)]["xp"] = new_xp
+        await ctx.reply(f"{user.display_name}\'s XP count successfully edited. `New XP: {levels[str(user.id)]['xp']}`")
+    except KeyError: return await ctx.reply("That user isn't indexed yet.", hidden=True)
 
 # Initialization
 utils.ping.host()
