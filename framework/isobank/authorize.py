@@ -12,7 +12,7 @@ class IsobankAuth():
             global accounts
             accounts = json.load(f)
     def save(self):
-        with open(db_path, 'w+') as f: json.dump(accounts, indent=4)
+        with open(self.db_path, 'w+') as f: json.dump(accounts, indent=4)
     def register(self, discord_id:int, auth_id:int):
         if disabled: return "[!] IsoBank is currently disabled."
         if discord_id in accounts: return "[!] That user is already registered!"
