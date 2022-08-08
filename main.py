@@ -3,6 +3,7 @@ import os, os.path, psutil, json, time, datetime, asyncio, random, math, praw
 import api.auth, utils.logger, utils.ping
 import framework.isobot.currency
 import framework.isobot.colors
+import framework.isobank.authorize
 import discord
 from discord.ext import commands, tasks
 from discord.ext.commands import *
@@ -61,6 +62,7 @@ class plugins:
 
 colors = framework.isobot.colors.Colors()
 currency_unused = framework.isobot.currency.CurrencyAPI(f'{wdir}/database/currency.json') # Initialize part of the framework (Currency)
+isobankauth = framework.isobank.authorize.IsobankAuth(f"{wdir}/database/isobank/auth.json")
 
 #Events
 @client.event
