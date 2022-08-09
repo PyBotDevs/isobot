@@ -990,7 +990,8 @@ async def edit_xp(ctx:SlashContext, user:discord.User, new_xp:int):
     description="Shows the open-source code links for isobot."
 )
 async def repo(ctx:SlashContext):
-    localembed = discord.Embed(title="Source-code Repositories", description="See and contribute to **isobot lazer's ![GitHub repository](https://github.com/PyBotDevs/isobot-lazer)**\nSee our **![GitHub organization](https://github.com/PyBotDevs)**")
+    localembed = discord.Embed(title="Source-code Repositories", description="See and contribute to **isobot lazer's ![GitHub repository](https://github.com/PyBotDevs/isobot-lazer)**\nSee our **![GitHub organization](https://github.com/PyBotDevs)**", color=discord.Color.random())
+    await ctx.send(embed=localembed)
 
 # Initialization
 utils.ping.host()
