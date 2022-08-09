@@ -107,11 +107,6 @@ async def on_message(ctx):
         await m1.delete()
     if not ctx.author.bot:
         levels[str(ctx.author.id)]["xp"] += random.randint(1, 5)
-        # if levelupchannel[str(message.guild.id)] == 0:
-        #     channelid = message.channel
-        # else:
-        #     channelid = client.get_channel(levelupchannel[str(message.guild.id)])
-        # ^ Saving for later when server-based leveling implementation is added
         xpreq = 0
         for level in range(int(levels[str(ctx.author.id)]["level"])):
             xpreq += 50
@@ -119,7 +114,7 @@ async def on_message(ctx):
         if levels[str(ctx.author.id)]["xp"] >= xpreq:
             levels[str(ctx.author.id)]["xp"] = 0
             levels[str(ctx.author.id)]["level"] += 1
-            await ctx.channel.send(f"{ctx.author.mention}, you are now level **{levels[str(ctx.author.id)]['level']}**. Nice!")
+            await ctx.author.send(f"{ctx.author.mention}, you just ranked up to **level {levels[str(ctx.author.id)]['level']}**. Nice!")
         save()
 
 #Error handler
