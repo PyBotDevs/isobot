@@ -985,6 +985,13 @@ async def edit_xp(ctx:SlashContext, user:discord.User, new_xp:int):
         await ctx.reply(f"{user.display_name}\'s XP count successfully edited. `New XP: {levels[str(user.id)]['xp']}`")
     except KeyError: return await ctx.reply("That user isn't indexed yet.", hidden=True)
 
+@slash.slash(
+    name="repo",
+    description="Shows the open-source code links for isobot."
+)
+async def repo(ctx:SlashContext):
+    localembed = discord.Embed(title="Source-code Repositories", description="See and contribute to **isobot lazer's ![GitHub repository](https://github.com/PyBotDevs/isobot-lazer)**\nSee our **![GitHub organization](https://github.com/PyBotDevs)**")
+
 # Initialization
 utils.ping.host()
 client.run(api.auth.get_token())
