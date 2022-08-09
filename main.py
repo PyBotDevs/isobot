@@ -120,9 +120,8 @@ async def on_message(ctx):
 #Error handler
 @client.event
 async def on_command_error(ctx, error):
-    current_time = timenow() #path variable not defined so i deleted writing 
-    if isinstance(error, CommandNotFound): print(f'[{current_time}] Ignoring exception at {colors.cyan}CommandNotFound{colors.end}. Details: This command does not exist.')
-    elif isinstance(error, commands.CommandOnCooldown):
+    current_time = timenow() #path variable not defined so i deleted writing
+    if isinstance(error, commands.CommandOnCooldown):
         await ctx.channel.send(f':stopwatch: Not now! Please try after **{str(datetime.timedelta(seconds=int(round(error.retry_after))))}**')
         print(f'[{current_time}] Ignoring exception at {colors.cyan}CommandOnCooldown{colors.end}. Details: This command is currently on cooldown.')
     elif isinstance(error, commands.MissingPermissions):
