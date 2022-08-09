@@ -107,11 +107,6 @@ async def on_message(ctx):
         await m1.delete()
     if not ctx.author.bot:
         levels[str(ctx.author.id)]["xp"] += random.randint(1, 5)
-        # if levelupchannel[str(message.guild.id)] == 0:
-        #     channelid = message.channel
-        # else:
-        #     channelid = client.get_channel(levelupchannel[str(message.guild.id)])
-        # ^ Saving for later when server-based leveling implementation is added
         xpreq = 0
         for level in range(int(levels[str(ctx.author.id)]["level"])):
             xpreq += 50
