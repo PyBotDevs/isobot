@@ -120,22 +120,21 @@ async def on_message(ctx):
 #Error handler
 @client.event
 async def on_command_error(ctx, error):
-    current_time = timenow() #path variable not defined so i deleted writing 
-    if isinstance(error, CommandNotFound): print(f'[{current_time}] Ignoring exception at {colors.cyan}CommandNotFound{colors.end}. Details: This command does not exist.')
-    elif isinstance(error, commands.CommandOnCooldown):
+    current_time = math.floor(time.time()).strftime("%H:%M:%S") #path variable not defined so i deleted writing
+    if isinstance(error, commands.CommandOnCooldown):
         await ctx.channel.send(f':stopwatch: Not now! Please try after **{str(datetime.timedelta(seconds=int(round(error.retry_after))))}**')
         print(f'[{current_time}] Ignoring exception at {colors.cyan}CommandOnCooldown{colors.end}. Details: This command is currently on cooldown.')
     elif isinstance(error, commands.MissingPermissions):
-        await ctx.send('You don\'t have permission to do this!', hidden=True)
+        await ctx.channel.send('You don\'t have permission to do this!', hidden=True)
         print(f'[{current_time}] Ignoring exception at {colors.cyan}MissingPermissions{colors.end}. Details: The user doesn\'t have the required permissions.')
     elif isinstance(error, commands.BadArgument):
-        await ctx.send(':x: Invalid argument.', delete_after=8)
+        await ctx.channel.send(':x: Invalid argument.', delete_after=8)
         print(f'[{current_time}] Ignoring exception at {colors.cyan}BadArgument{colors.end}.')
     elif isinstance(error, commands.BotMissingPermissions):
-        await ctx.send(':x: I don\'t have the required permissions to use this.')
+        await ctx.channel.send(':x: I don\'t have the required permissions to use this.')
         print(f'[{current_time}] Ignoring exception at {colors.cyan}BotMissingPremissions{colors.end}. Details: The bot doesn\'t have the required permissions.')
     elif isinstance(error, commands.BadBoolArgument):
-        await ctx.send(':x: Invalid true/false argument.', delete_after=8)
+        await ctx.channel.send(':x: Invalid true/false argument.', delete_after=8)
         print(f'[{current_time}] Ignoring exception at {colors.cyan}BadBoolArgument{colors.end}.')
 
 #Commands
