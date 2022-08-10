@@ -37,5 +37,7 @@ class IsobankAuth():
         if disabled: return "[!] IsoBank is currently disabled."
         wacc = accounts[str(account_id)]
         if wacc["auth_id"] != auth_id: return "Incorrect auth ID"
-        if discord_id not in wacc["discord_ids"]: wacc["discord_ids"].append(discord_id)
+        if discord_id not in wacc["discord_ids"]:
+            wacc["discord_ids"].append(discord_id)
+            self.save()
         return wacc
