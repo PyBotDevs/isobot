@@ -993,6 +993,17 @@ async def repo(ctx:SlashContext):
     localembed = discord.Embed(title="Source-code Repositories", description="See and contribute to **isobot lazer's ![GitHub repository](https://github.com/PyBotDevs/isobot-lazer)**\nSee our **![GitHub organization](https://github.com/PyBotDevs)**", color=discord.Color.random())
     await ctx.send(embed=localembed)
 
+@slash.slash(
+    name="isobank_register",
+    description="Registers a new IsoBank account with your Discord ID",
+    options=[
+        create_option(name="pin", decription="Your new account's authentication ID. Must be a 6-digit integer.", option_type=4, required=True)
+    ]
+)
+async def isobank_register(ctx:SlashContext, pin:int):
+    e = isobankauth.register(ctx.author.id, pin)
+    await ctx.reply("Congratulations! Your new IsoBank account has been registered.", hidden=True)
+
 # Initialization
 utils.ping.host()
 client.run(api.auth.get_token())
