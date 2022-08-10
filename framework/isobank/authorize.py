@@ -26,7 +26,7 @@ class IsobankAuth():
         user_count = len(accounts.keys())
         new_id = user_count + 1
         if not str(auth_id).isdigit(): return "\"auth_id\" is not an integer."
-        if len(auth_id) != 6: return "\"auth_id\" must be passed as a 6-digit number."
+        if len(str(auth_id)) != 6: return "\"auth_id\" must be passed as a 6-digit number."
         accounts[str(new_id)] = {"discord_ids": [discord_id], "auth_id": auth_id}
         user_data[str(new_id)] = {"deposited": 0}
         self.save()
