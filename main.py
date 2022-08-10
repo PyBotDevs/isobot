@@ -997,7 +997,7 @@ async def repo(ctx:SlashContext):
     name="isobank_register",
     description="Registers a new IsoBank account with your Discord ID",
     options=[
-        create_option(name="pin", decription="Your new account's authentication ID. Must be a 6-digit integer.", option_type=4, required=True)
+        create_option(name="pin", description="Your new account's authentication ID. Must be a 6-digit integer.", option_type=4, required=True)
     ]
 )
 async def isobank_register(ctx:SlashContext, pin:int):
