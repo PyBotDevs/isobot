@@ -17,8 +17,8 @@ class IsobankAuth():
             user_data = json.load(f)
 
     def save(self):
-        with open(self.db_path, 'w+') as f: json.dump(accounts, indent=4)
-        with open(self.db_path, 'w+') as f: json.dump(user_data, indent=4)
+        with open(self.db_path, 'w+') as f: json.dump(accounts, f, indent=4)
+        with open(self.db_path, 'w+') as f: json.dump(user_data, f, indent=4)
 
     def register(self, discord_id:int, auth_id:int):
         if disabled: return "[!] IsoBank is currently disabled."
