@@ -4,6 +4,7 @@ import api.auth, utils.logger, utils.ping
 import framework.isobot.currency
 import framework.isobot.colors
 import framework.isobank.authorize
+import framework.isobank.manager
 import discord
 from discord.ext import commands, tasks
 from discord.ext.commands import *
@@ -62,7 +63,8 @@ class plugins:
 
 colors = framework.isobot.colors.Colors()
 currency_unused = framework.isobot.currency.CurrencyAPI(f'{wdir}/database/currency.json') # Initialize part of the framework (Currency)
-isobankauth = framework.isobank.authorize.IsobankAuth(f"{wdir}/database/isobank/auth.json")
+isobank = framework.isobank.manager.IsoBankManager(f"{wdir}/database/isobank/accounts.json", f"{wdir}/database/isobank/auth.json")
+isobankauth = framework.isobank.authorize.IsobankAuth(f"{wdir}/database/isobank/auth.json", f"{wdir}/database/isobank/accounts.json")
 
 #Events
 @client.event
@@ -105,11 +107,6 @@ async def on_message(ctx):
         await m1.delete()
     if not ctx.author.bot:
         levels[str(ctx.author.id)]["xp"] += random.randint(1, 5)
-        # if levelupchannel[str(message.guild.id)] == 0:
-        #     channelid = message.channel
-        # else:
-        #     channelid = client.get_channel(levelupchannel[str(message.guild.id)])
-        # ^ Saving for later when server-based leveling implementation is added
         xpreq = 0
         for level in range(int(levels[str(ctx.author.id)]["level"])):
             xpreq += 50
@@ -117,28 +114,27 @@ async def on_message(ctx):
         if levels[str(ctx.author.id)]["xp"] >= xpreq:
             levels[str(ctx.author.id)]["xp"] = 0
             levels[str(ctx.author.id)]["level"] += 1
-            await ctx.channel.send(f"{ctx.author.mention}, you are now level **{levels[str(ctx.author.id)]['level']}**. Nice!")
+            await ctx.author.send(f"{ctx.author.mention}, you just ranked up to **level {levels[str(ctx.author.id)]['level']}**. Nice!")
         save()
 
 #Error handler
 @client.event
 async def on_command_error(ctx, error):
-    current_time = timenow() #path variable not defined so i deleted writing 
-    if isinstance(error, CommandNotFound): print(f'[{current_time}] Ignoring exception at {colors.cyan}CommandNotFound{colors.end}. Details: This command does not exist.')
-    elif isinstance(error, commands.CommandOnCooldown):
+    current_time = math.floor(time.time()).strftime("%H:%M:%S") #path variable not defined so i deleted writing
+    if isinstance(error, commands.CommandOnCooldown):
         await ctx.channel.send(f':stopwatch: Not now! Please try after **{str(datetime.timedelta(seconds=int(round(error.retry_after))))}**')
         print(f'[{current_time}] Ignoring exception at {colors.cyan}CommandOnCooldown{colors.end}. Details: This command is currently on cooldown.')
     elif isinstance(error, commands.MissingPermissions):
-        await ctx.send('You don\'t have permission to do this!', hidden=True)
+        await ctx.channel.send('You don\'t have permission to do this!', hidden=True)
         print(f'[{current_time}] Ignoring exception at {colors.cyan}MissingPermissions{colors.end}. Details: The user doesn\'t have the required permissions.')
     elif isinstance(error, commands.BadArgument):
-        await ctx.send(':x: Invalid argument.', delete_after=8)
+        await ctx.channel.send(':x: Invalid argument.', delete_after=8)
         print(f'[{current_time}] Ignoring exception at {colors.cyan}BadArgument{colors.end}.')
     elif isinstance(error, commands.BotMissingPermissions):
-        await ctx.send(':x: I don\'t have the required permissions to use this.')
+        await ctx.channel.send(':x: I don\'t have the required permissions to use this.')
         print(f'[{current_time}] Ignoring exception at {colors.cyan}BotMissingPremissions{colors.end}. Details: The bot doesn\'t have the required permissions.')
     elif isinstance(error, commands.BadBoolArgument):
-        await ctx.send(':x: Invalid true/false argument.', delete_after=8)
+        await ctx.channel.send(':x: Invalid true/false argument.', delete_after=8)
         print(f'[{current_time}] Ignoring exception at {colors.cyan}BadBoolArgument{colors.end}.')
 
 #Commands
@@ -967,14 +963,15 @@ async def autogrind(ctx:SlashContext):
     await ctx.reply("Autogrind has started. Please check back in an hour for your rewards.")
     await asyncio.sleep(3600)
     coins_reward = random.randint(10000, 35000)
-    items_reward = [random.choice(shopitem.keys()), random.choice(shopitem.keys()), random.choice(shopitem.keys())]
+    ie = shopitem.keys()
+    items_reward = [random.choice(list(ie)), random.choice(list(ie)), random.choice(list(ie))]
     currency["wallet"][str(ctx.author.id)] += coins_reward
     items[str(ctx.author.id)][items_reward[0]] += 1
     items[str(ctx.author.id)][items_reward[1]] += 1
     items[str(ctx.author.id)][items_reward[2]] += 1
     save()
-    localembed = discord.Embed(title="Autogrind has completed!", description=f"**Your rewards**\n\nYou got **{coins_reward}** coins!\nYou got **1 {items_reward[0]}**!\nYou got **1 {items_reward[1]}**!\nYou got **1 {items_reward[2]}!**", color=discord.Color.greem())
-    ctx.author.send(embed = localembed)
+    localembed = discord.Embed(title="Autogrind has completed!", description=f"**Your rewards**\n\nYou got **{coins_reward}** coins!\nYou got **1 {shopitem[items_reward[0]]['stylized name']}**!\nYou got **1 {shopitem[items_reward[1]]['stylized name']}**!\nYou got **1 {shopitem[items_reward[2]]['stylized name']}!**", color=discord.Color.green())
+    await ctx.author.send(embed = localembed)
 
 @slash.slash(
     name="rank",
@@ -1022,6 +1019,14 @@ async def edit_xp(ctx:SlashContext, user:discord.User, new_xp:int):
         levels[str(user.id)]["xp"] = new_xp
         await ctx.reply(f"{user.display_name}\'s XP count successfully edited. `New XP: {levels[str(user.id)]['xp']}`")
     except KeyError: return await ctx.reply("That user isn't indexed yet.", hidden=True)
+
+@slash.slash(
+    name="repo",
+    description="Shows the open-source code links for isobot."
+)
+async def repo(ctx:SlashContext):
+    localembed = discord.Embed(title="Source-code Repositories", description="See and contribute to **isobot lazer's [GitHub repository](https://github.com/PyBotDevs/isobot-lazer)**\nSee our **[GitHub organization](https://github.com/PyBotDevs)**", color=discord.Color.random())
+    await ctx.send(embed=localembed)
 
 # Initialization
 utils.ping.host()
