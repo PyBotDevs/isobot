@@ -63,7 +63,7 @@ class plugins:
 
 colors = framework.isobot.colors.Colors()
 currency_unused = framework.isobot.currency.CurrencyAPI(f'{wdir}/database/currency.json') # Initialize part of the framework (Currency)
-isobank = framework.isobank.manager.IsoBankManager(f"{wdir}/database/isobank/accounts.json", f"{wdir}/database/isobank/auth.json")
+# isobank = framework.isobank.manager.IsoBankManager(f"{wdir}/database/isobank/accounts.json", f"{wdir}/database/isobank/auth.json")
 isobankauth = framework.isobank.authorize.IsobankAuth(f"{wdir}/database/isobank/auth.json", f"{wdir}/database/isobank/accounts.json")
 
 #Events
