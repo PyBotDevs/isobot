@@ -1001,7 +1001,7 @@ async def repo(ctx:SlashContext):
     ]
 )
 async def isobank_register(ctx:SlashContext, pin:int):
-    e = isobankauth.register(ctx.author.id, pin)
+    isobankauth.register(ctx.author.id, pin)
     await ctx.reply("Congratulations! Your new IsoBank account has been registered.", hidden=True)
 
 # Initialization
