@@ -345,7 +345,7 @@ async def monthly(ctx:SlashContext):
 )
 @commands.cooldown(1, 15, commands.BucketType.user)
 async def beg(ctx:SlashContext):
-    if plugins.economy == False: pass #not fixing this one cuz there are a lot of lines so tabs will be more bytes than " == False: pass"
+    if not plugins.economy: pass
     names = [
         "A random person",
         "Your friend",
@@ -387,7 +387,7 @@ async def beg(ctx:SlashContext):
 )
 @commands.cooldown(1, 30, commands.BucketType.user)
 async def scout(ctx:SlashContext):
-    if plugins.economy == False: pass
+    if not plugins.economy: pass
     chance = random.randint(1, 100)
     if (random.randint(1, 100) <= 90):
         x = random.randint(550, 2000)
@@ -410,7 +410,7 @@ async def scout(ctx:SlashContext):
     ]
 )
 async def give(ctx:SlashContext, user:discord.User, amount:int):
-    if plugins.economy == False: pass
+    if not plugins.economy: pass
     if amount <= 0: return await ctx.send('The amount you want to give must be greater than `0` coins!', hidden=True)
     if amount > int(currency['wallet'][str(ctx.author.id)]): return await ctx.send('You don\'t have enough coins in your wallet to do this.', hidden=True)
     else:
@@ -428,7 +428,7 @@ async def give(ctx:SlashContext, user:discord.User, amount:int):
 )
 @commands.cooldown(1, 60, commands.BucketType.user)
 async def rob(ctx:SlashContext, user:discord.User):
-    if plugins.economy == False: pass
+    if not plugins.economy: pass
     if currency['wallet'][str(user.id)] < 5000: return await ctx.reply('They has less than 5000 coins on them. Don\'t waste your time...') 
     elif currency['wallet'][str(ctx.author.id)] < 5000: return await ctx.reply('You have less than 5k coins in your wallet. Play fair dude.') #what..? wheres logic?? i mean irl you can rob someone without havin any money at all
     if random.randint(1, 100) <= 50:
@@ -452,7 +452,7 @@ async def rob(ctx:SlashContext, user:discord.User):
 )
 @commands.cooldown(1, (60*5), commands.BucketType.user)
 async def bankrob(ctx:SlashContext, user:discord.User):
-    if plugins.economy == False: pass
+    if not plugins.economy: pass
     if currency['wallet'][str(user.id)] < 10000: return await ctx.reply('You really want to risk losing your life to a poor person? (imagine robbing someone with < 10k net worth)')
     elif currency['wallet'][str(ctx.author.id)] < 10000: return await ctx.reply('You have less than 10k in your wallet. Don\'t be greedy.')
     if random.randint(1, 100) <= 20:
@@ -473,7 +473,7 @@ async def bankrob(ctx:SlashContext, user:discord.User):
     ]
 )
 async def inventory(ctx:SlashContext, user:discord.User = None):
-    if plugins.economy == False: pass
+    if not plugins.economy: pass
     if user == None: user = ctx.author
     localembed = discord.Embed(title=f'{user.display_name}\'s Inventory')
     localembed.add_field(name='Utility', value=f'Hunting Rifle `ID: rifle`: {items[str(user.id)]["rifle"]}\nFishing Rod `ID: fishingpole`: {items[str(user.id)]["fishingpole"]}\nShovel `ID: shovel`: {items[str(user.id)]["shovel"]}', inline=False)
@@ -489,7 +489,7 @@ async def inventory(ctx:SlashContext, user:discord.User = None):
     ]
 )
 async def shop(ctx:SlashContext, item:str=None):
-    if plugins.economy == False: pass
+    if not plugins.economy: pass
     if item == None:
         localembed = discord.Embed(
             title='The Shop!', 
@@ -519,7 +519,7 @@ async def shop(ctx:SlashContext, item:str=None):
     ]
 )
 async def buy(ctx:SlashContext, name:str, quantity:int=1):
-    if plugins.economy == False: pass
+    if not plugins.economy: pass
     try:
         amt = shopitem[name]['buy price'] * quantity
         if (currency['wallet'][str(ctx.author.id)] < amt): return await ctx.reply('You don\'t have enough balance to buy this.')
@@ -559,7 +559,7 @@ async def sell(ctx:SlashContext, name:str, quantity:int=1):
 )
 @commands.cooldown(1, 30, commands.BucketType.user)
 async def hunt(ctx:SlashContext):
-    if plugins.economy == False: pass
+    if not plugins.economy: pass
     if items[str(ctx.author.id)]['rifle'] == 0: return await ctx.reply('I\'d hate to see you hunt with your bare hands. Please buy a hunting rifle from the shop. ||/buy rifle||')
     loot = ['rock', 'ant', 'skunk', 'boar', 'deer', 'dragon', 'nothing', 'died']
     choice = random.choice(loot)
@@ -579,7 +579,7 @@ async def hunt(ctx:SlashContext):
 )
 @commands.cooldown(1, 45, commands.BucketType.user)
 async def fish(ctx:SlashContext):
-    if plugins.economy == False: pass
+    if not plugins.economy: pass
     if (items[str(ctx.author.id)]['fishingpole'] == 0): return await ctx.reply('I don\'t think you can fish with your bare hands. Please buy a fishing pole from the shop. ||/buy fishingpole||') #just put yo hands in the water bro **giga chad**
     loot = ['shrimp', 'fish', 'rare fish', 'exotic fish', 'jellyfish', 'shark', 'nothing']
     choice = random.choice(loot)
@@ -595,7 +595,7 @@ async def fish(ctx:SlashContext):
 )
 @commands.cooldown(1, 45, commands.BucketType.user)
 async def dig(ctx:SlashContext):
-    if plugins.economy == False: pass
+    if not plugins.economy: pass
     if (items[str(ctx.author.id)]['shovel'] == 0): return await ctx.reply('You\'re too good to have to dig with your bare hands..... at least I hope so. Please buy a shovel from the shop. ||/buy shovel||')
     loot = [
         'coins',
