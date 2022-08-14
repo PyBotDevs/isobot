@@ -17,16 +17,16 @@ class IsobankAuth():
             user_data = json.load(f)
 
     def save(self):
-        with open(self.db_path, 'w+') as f: json.dump(accounts, indent=4)
-        with open(self.db_path, 'w+') as f: json.dump(user_data, indent=4)
+        with open(self.db_path, 'w+') as f: json.dump(accounts, f, indent=4)
+        with open(self.account_db, 'w+') as f: json.dump(user_data, f, indent=4)
 
     def register(self, discord_id:int, auth_id:int):
         if disabled: return "[!] IsoBank is currently disabled."
         if discord_id in accounts: return "[!] That user is already registered!"
         user_count = len(accounts.keys())
         new_id = user_count + 1
-        if not auth_id.isdigit(): return "\"auth_id\" is not an integer."
-        if len(auth_id) != 6: return "\"auth_id\" must be passed as a 6-digit number."
+        if not str(auth_id).isdigit(): return "\"auth_id\" is not an integer."
+        if len(str(auth_id)) != 6: return "\"auth_id\" must be passed as a 6-digit number."
         accounts[str(new_id)] = {"discord_ids": [discord_id], "auth_id": auth_id}
         user_data[str(new_id)] = {"deposited": 0}
         self.save()
@@ -37,5 +37,7 @@ class IsobankAuth():
         if disabled: return "[!] IsoBank is currently disabled."
         wacc = accounts[str(account_id)]
         if wacc["auth_id"] != auth_id: return "Incorrect auth ID"
-        if discord_id not in wacc["discord_ids"]: wacc["discord_ids"].append(discord_id)
+        if discord_id not in wacc["discord_ids"]:
+            wacc["discord_ids"].append(discord_id)
+            self.save()
         return wacc

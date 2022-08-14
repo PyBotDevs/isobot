@@ -63,7 +63,7 @@ class plugins:
 
 colors = framework.isobot.colors.Colors()
 currency_unused = framework.isobot.currency.CurrencyAPI(f'{wdir}/database/currency.json') # Initialize part of the framework (Currency)
-isobank = framework.isobank.manager.IsoBankManager(f"{wdir}/database/isobank/accounts.json", f"{wdir}/database/isobank/auth.json")
+# isobank = framework.isobank.manager.IsoBankManager(f"{wdir}/database/isobank/accounts.json", f"{wdir}/database/isobank/auth.json")
 isobankauth = framework.isobank.authorize.IsobankAuth(f"{wdir}/database/isobank/auth.json", f"{wdir}/database/isobank/accounts.json")
 
 #Events
@@ -1027,6 +1027,17 @@ async def edit_xp(ctx:SlashContext, user:discord.User, new_xp:int):
 async def repo(ctx:SlashContext):
     localembed = discord.Embed(title="Source-code Repositories", description="See and contribute to **isobot lazer's [GitHub repository](https://github.com/PyBotDevs/isobot-lazer)**\nSee our **[GitHub organization](https://github.com/PyBotDevs)**", color=discord.Color.random())
     await ctx.send(embed=localembed)
+
+@slash.slash(
+    name="isobank_register",
+    description="Registers a new IsoBank account with your Discord ID",
+    options=[
+        create_option(name="pin", description="Your new account's authentication ID. Must be a 6-digit integer.", option_type=4, required=True)
+    ]
+)
+async def isobank_register(ctx:SlashContext, pin:int):
+    isobankauth.register(ctx.author.id, pin)
+    await ctx.reply("Congratulations! Your new IsoBank account has been registered.", hidden=True)
 
 # Initialization
 utils.ping.host()
