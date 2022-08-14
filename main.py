@@ -1002,7 +1002,7 @@ async def repo(ctx:SlashContext):
         create_option(name="description", description="The body of the embed", option_type=3, required=True),
         create_option(name="image_url", description="The main image you want to show for the embed (URL ONLY)", option_type=3, required=False),
         create_option(name="thumbnail_url", description="The thumbnail image you want to show for the embed (URL ONLY)", option_type=3, required=False),
-        create_option(name="color", description="The embed's accent color", option_type=4, required=False),
+        create_option(name="color", description="The embed's accent color (Use -1 for random color)", option_type=4, required=False),
         create_option(name="footer_text", description="The text at the footer of the embed", option_type=3, required=False),
         create_option(name="footer_icon_url", description="The icon you want to show in the embed (URL ONLY)", option_type=3, required=False)
     ]
