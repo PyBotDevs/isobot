@@ -14,7 +14,7 @@ def embed(title: str, desc: str, *, image: str = None, thumbnail: str = None, co
     Footer must be in a json format ONLY, otherwise it cannot be parsed.
     - Correct format: {"text": "something", "img" "an image url"}
     """
-    if color == "rand": color = Color.random()
+    if color == -1: color = Color.random()
     elif color == None: color = Color.blurple()
     local_embed = discord.Embed(
         title=title,
