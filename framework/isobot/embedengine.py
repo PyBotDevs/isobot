@@ -16,15 +16,15 @@ def embed(title: str, desc: str, *, image: str = None, thumbnail: str = None, co
     """
     if color == "rand":
         color = Color.random()
-    local_embed = discord.Embed()
-    local_embed.title(title)
-    local_embed.description(desc)
+    local_embed = discord.Embed(
+        title=title,
+        description=desc,
+        colour=color
+    )
     if image is not None:
         local_embed.set_image(url=image)
     if thumbnail is not None:
         local_embed.set_thumbnail(url=thumbnail)
-    if color is not None:
-        local_embed.colour(color)
     if footer is not None:
         try:
             local_embed.set_footer(text=footer["text"], icon_url=footer["img"])
