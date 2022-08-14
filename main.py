@@ -64,7 +64,7 @@ class plugins:
 
 colors = framework.isobot.colors.Colors()
 currency_unused = framework.isobot.currency.CurrencyAPI(f'{wdir}/database/currency.json') # Initialize part of the framework (Currency)
-isobank = framework.isobank.manager.IsoBankManager(f"{wdir}/database/isobank/accounts.json", f"{wdir}/database/isobank/auth.json")
+# isobank = framework.isobank.manager.IsoBankManager(f"{wdir}/database/isobank/accounts.json", f"{wdir}/database/isobank/auth.json")
 isobankauth = framework.isobank.authorize.IsobankAuth(f"{wdir}/database/isobank/auth.json", f"{wdir}/database/isobank/accounts.json")
 
 #Events
@@ -1010,6 +1010,17 @@ async def repo(ctx:SlashContext):
 async def embedbuilder(ctx:SlashContext, title: str, description: str, image_url: str = None, thumbnail_url: str = None, color: int = None, footer_text: str = None, footer_icon_url: str = None):
     await ctx.send("Embed Built!", hidden=True)
     await ctx.channel.send(embed=framework.isobot.embedengine.embed(title, description, image=image_url, thumbnail=thumbnail_url, color=color, footer_text=footer_text, footer_img=footer_icon_url))
+
+@slash.slash(
+    name="isobank_register",
+    description="Registers a new IsoBank account with your Discord ID",
+    options=[
+        create_option(name="pin", description="Your new account's authentication ID. Must be a 6-digit integer.", option_type=4, required=True)
+    ]
+)
+async def isobank_register(ctx:SlashContext, pin:int):
+    isobankauth.register(ctx.author.id, pin)
+    await ctx.reply("Congratulations! Your new IsoBank account has been registered.", hidden=True)
 
 # Initialization
 utils.ping.host()
