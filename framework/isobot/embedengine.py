@@ -9,13 +9,15 @@ def embed(title: str, desc: str, *, image: str = None, thumbnail: str = None, co
     The color argument is completely optional.
     - If a color is set, it will return the embed in that color only.
     - If the color is set as "rand", then it will return the embed with a random color.
-    - If a color is not set, it will appear as the Discord client's default embed color.
+    - If a color is not set, it will appear as Discord's blurple embed color.
 
     Footer must be in a json format ONLY, otherwise it cannot be parsed.
     - Correct format: {"text": "something", "img" "an image url"}
     """
     if color == "rand":
         color = Color.random()
+    elif color == None:
+        color = Color.blurple()
     local_embed = discord.Embed(
         title=title,
         description=desc,
