@@ -1006,7 +1006,7 @@ async def repo(ctx:SlashContext):
         create_option(name="footer", description="The footer of the embed | Syntax: {\"text\": text, \"img\": url}", option_type=3, required=False),
     ]
 )
-async def embedbuilder(ctx:SlashContext, title: str, description: str, image_url: str, thumbnail_url: str, color: str, footer: str):
+async def embedbuilder(ctx:SlashContext, title: str, description: str, image_url: str = None, thumbnail_url: str = None, color: str = None, footer: str = None):
     footer = dict(footer)
     await ctx.send("Embed Built!", hidden=True)
     await ctx.channel.send(embed=framework.isobot.embedengine.embed(title, description, image=image_url, thumbnail=thumbnail_url, color=color, footer=footer))
