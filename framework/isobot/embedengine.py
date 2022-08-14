@@ -3,7 +3,7 @@ import discord
 from discord import Color
 
 
-def embed(title: str, desc: str, *, image: str = None, thumbnail: str = None, color=None, footer: dict = None):
+def embed(title: str, desc: str, *, image: str = None, thumbnail: str = None, color:int=None, footer: dict = None):
     """Designs a Discord embed.
     -----------------------------------------------------------
     The color argument is completely optional.
