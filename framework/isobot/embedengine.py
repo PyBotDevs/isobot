@@ -3,7 +3,7 @@ import discord
 from discord import Color
 
 
-def embed(title: str, desc: str, *, image: str = None, thumbnail: str = None, color:int=None, footer: dict = None):
+def embed(title: str, desc: str, *, image: str = None, thumbnail: str = None, color:int=None, footer_text: str = None, footer_img: str = None):
     """Designs a Discord embed.
     -----------------------------------------------------------
     The color argument is completely optional.
@@ -14,22 +14,16 @@ def embed(title: str, desc: str, *, image: str = None, thumbnail: str = None, co
     Footer must be in a json format ONLY, otherwise it cannot be parsed.
     - Correct format: {"text": "something", "img" "an image url"}
     """
-    if color == "rand":
-        color = Color.random()
-    elif color == None:
-        color = Color.blurple()
+    if color == "rand": color = Color.random()
+    elif color == None: color = Color.blurple()
     local_embed = discord.Embed(
         title=title,
         description=desc,
         colour=color
     )
-    if image is not None:
-        local_embed.set_image(url=image)
-    if thumbnail is not None:
-        local_embed.set_thumbnail(url=thumbnail)
-    if footer is not None:
-        try:
-            local_embed.set_footer(text=footer["text"], icon_url=footer["img"])
-        except KeyError:
-            return "Unable to create embed: Failed to parse \"footer\" argument. Expected format: {\"text\": \"something\", \"img\" \"an image url\"}"
+    if image is not None: local_embed.set_image(url=image)
+    if thumbnail is not None: local_embed.set_thumbnail(url=thumbnail)
+    if footer_text is not None and footer_img is not None: local_embed.set_footer(text=footer_text, icon_url=footer_img)
+    elif footer_text is not None: local_embed.set_footer(text=footer_text)
+    elif footer_img is not None: local_embed.set_footer(icon_url=footer_img)
     return local_embed

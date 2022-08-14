@@ -1003,13 +1003,13 @@ async def repo(ctx:SlashContext):
         create_option(name="image_url", description="The main image you want to show for the embed (URL ONLY)", option_type=3, required=False),
         create_option(name="thumbnail_url", description="The thumbnail image you want to show for the embed (URL ONLY)", option_type=3, required=False),
         create_option(name="color", description="The embed's accent color", option_type=4, required=False),
-        create_option(name="footer", description="The footer of the embed | Syntax: {\"text\": text, \"img\": url}", option_type=3, required=False),
+        create_option(name="footer_text", description="The text at the footer of the embed", option_type=3, required=False),
+        create_option(name="footer_icon_url", description="The icon you want to show in the embed (URL ONLY)", option_type=3, required=False)
     ]
 )
-async def embedbuilder(ctx:SlashContext, title: str, description: str, image_url: str = None, thumbnail_url: str = None, color: int = None, footer: str = None):
-    if footer is not None: footer = dict(footer)
+async def embedbuilder(ctx:SlashContext, title: str, description: str, image_url: str = None, thumbnail_url: str = None, color: int = None, footer_text: str = None, footer_icon_url: str = None):
     await ctx.send("Embed Built!", hidden=True)
-    await ctx.channel.send(embed=framework.isobot.embedengine.embed(title, description, image=image_url, thumbnail=thumbnail_url, color=color, footer=footer))
+    await ctx.channel.send(embed=framework.isobot.embedengine.embed(title, description, image=image_url, thumbnail=thumbnail_url, color=color, footer_text=footer_text, footer_img=footer_icon_url))
 
 # Initialization
 utils.ping.host()
