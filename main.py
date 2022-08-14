@@ -5,6 +5,7 @@ import framework.isobot.currency
 import framework.isobot.colors
 import framework.isobank.authorize
 import framework.isobank.manager
+import framework.isobot.embedengine
 import discord
 from discord.ext import commands, tasks
 from discord.ext.commands import *
@@ -992,6 +993,23 @@ async def edit_xp(ctx:SlashContext, user:discord.User, new_xp:int):
 async def repo(ctx:SlashContext):
     localembed = discord.Embed(title="Source-code Repositories", description="See and contribute to **isobot lazer's [GitHub repository](https://github.com/PyBotDevs/isobot-lazer)**\nSee our **[GitHub organization](https://github.com/PyBotDevs)**", color=discord.Color.random())
     await ctx.send(embed=localembed)
+
+@slash.slash(
+    name="embedbuilder",
+    description="Builds a custom embed however you want",
+    options=[
+        create_option(name="title", description="The title of the embed", option_type=3, required=True),
+        create_option(name="description", description="The body of the embed", option_type=3, required=True),
+        create_option(name="image_url", description="The main image you want to show for the embed (URL ONLY)", option_type=3, required=False),
+        create_option(name="thumbnail_url", description="The thumbnail image you want to show for the embed (URL ONLY)", option_type=3, required=False),
+        create_option(name="color", description="The embed's accent color (Use -1 for random color)", option_type=4, required=False),
+        create_option(name="footer_text", description="The text at the footer of the embed", option_type=3, required=False),
+        create_option(name="footer_icon_url", description="The icon you want to show in the embed (URL ONLY)", option_type=3, required=False)
+    ]
+)
+async def embedbuilder(ctx:SlashContext, title: str, description: str, image_url: str = None, thumbnail_url: str = None, color: int = None, footer_text: str = None, footer_icon_url: str = None):
+    await ctx.send("Embed Built!", hidden=True)
+    await ctx.channel.send(embed=framework.isobot.embedengine.embed(title, description, image=image_url, thumbnail=thumbnail_url, color=color, footer_text=footer_text, footer_img=footer_icon_url))
 
 @slash.slash(
     name="isobank_register",
