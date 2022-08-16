@@ -635,30 +635,14 @@ async def dig(ctx:SlashContext):
     ]
 )
 async def open(ctx:SlashContext, lootbox:str, amount:int):
-    types = [
-        "normal",
-        "large",
-        "special"
-    ]
+    types = ["normal", "large", "special"]
     #this is gucking bloated
-    if amount <= 0:
-        await ctx.send("You can't open 0 or below lootboxes! Don't be stupid.")
-        return
-    elif lootbox not in types:
-        await ctx.send("That lootbox doesn't even exist get a brain")
-        return
-    else:
-        try:
-            n_loot = [
-                random.randint(10000, 25000)    
-            ]
-            l_loot = [
-                random.randint(50000, 75000)
-            ]
-            s_loot = [
-                random.randint(100000, 500000)
-            ]
-            #item outcomes tbd
+    if amount <= 0: return await ctx.send("You can't open 0 or below lootboxes! Don't be stupid.")
+    elif lootbox not in types: return await ctx.send("That lootbox doesn't even exist get a brain")
+    n_loot = [random.randint(10000, 25000)]
+    l_loot = [random.randint(50000, 75000)]
+    s_loot = [random.randint(100000, 500000)]
+    # ^ Make item rewards here
 
 @slash.slash(
   name='echo',
