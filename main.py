@@ -1030,6 +1030,7 @@ async def guessthenumber(ctx:SlashContext):
     number = random.randint(1, 10)
     localembed = discord.Embed(name="Guess the number!", description="I am currently thinking of a number from 1 to 10. Can you guess what it is?", color=discord.Color.random())
     localembed.set_footer(text="If you guess what it is, you will win 500 to 1000 coins!")
+    await ctx.send(embed=localembed)
     def check(msg): return msg.author == ctx.message.author and msg.channel == ctx.message.channel and msg.content
     msg = await client.wait_for("message", check=check)
     if int(msg.content) == number:
