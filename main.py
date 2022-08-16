@@ -1037,7 +1037,7 @@ async def guessthenumber(ctx:SlashContext):
         randcoins = random.randint(500, 1000)
         currency["wallet"][str(ctx.author.id)] += randcoins
         save()
-        await ctx.send("Correct! You've just won {} coins by guessing the correct number.")
+        await ctx.send(f"Correct! You've just won **{randcoins} coins** by guessing the correct number.")
     else: return await ctx.reply("Too bad bozo, you guessed the number wrong and you won nothing.")
 
 # Initialization
