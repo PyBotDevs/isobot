@@ -1057,6 +1057,25 @@ async def isobank_register(ctx:SlashContext, pin:int):
     isobankauth.register(ctx.author.id, pin)
     await ctx.reply("Congratulations! Your new IsoBank account has been registered.", hidden=True)
 
+@slash.slash(
+    name="guessthenumber",
+    description="Guess a random number from 1 to 10 that the bot is thinking about"
+)
+@commands.cooldown(1, 10, commands.BucketType.user)
+async def guessthenumber(ctx:SlashContext):
+    number = random.randint(1, 10)
+    localembed = discord.Embed(name="Guess the number!", description="I am currently thinking of a number from 1 to 10. Can you guess what it is?", color=discord.Color.random())
+    localembed.set_footer(text="If you guess what it is, you will win 500 to 1000 coins!")
+    await ctx.send(embed=localembed)
+    def check(msg): return msg.author == ctx.message.author and msg.channel == ctx.message.channel and msg.content
+    msg = await client.wait_for("message", check=check)
+    if int(msg.content) == number:
+        randcoins = random.randint(500, 1000)
+        currency["wallet"][str(ctx.author.id)] += randcoins
+        save()
+        await ctx.send(f"Correct! You've just won **{randcoins} coins** by guessing the correct number.")
+    else: return await ctx.reply("Too bad bozo, you guessed the number wrong and you won nothing.")
+
 # Initialization
 utils.ping.host()
 client.run(api.auth.get_token())
