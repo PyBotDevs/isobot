@@ -1026,6 +1026,7 @@ async def isobank_register(ctx:SlashContext, pin:int):
     name="guessthenumber",
     description="Guess a random number from 1 to 10 that the bot is thinking about"
 )
+@commands.cooldown(1, 10, commands.BucketType.user)
 async def guessthenumber(ctx:SlashContext):
     number = random.randint(1, 10)
     localembed = discord.Embed(name="Guess the number!", description="I am currently thinking of a number from 1 to 10. Can you guess what it is?", color=discord.Color.random())
