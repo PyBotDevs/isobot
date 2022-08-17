@@ -269,7 +269,7 @@ async def warns_clear(ctx:SlashContext, user):
 async def deposit(ctx:SlashContext, amount):
     if plugins.economy:
         if not amount.isdigit():
-            if amount == "max": amount = currency["wallet"][str(ctx.author.id)]
+            if str(amount) == "max": amount = currency["wallet"][str(ctx.author.id)]
             else: return await ctx.reply("The amount must be a number, or `max`.", hidden=True)
         elif currency['bank'] == 0: return await ctx.reply('You don\'t have anything in your bank account.', hidden=True)
         elif int(amount) <= 0: return await ctx.reply('The amount to deposit must be more than `0` coins!', hidden=True)
@@ -289,7 +289,7 @@ async def deposit(ctx:SlashContext, amount):
 async def withdraw(ctx:SlashContext, amount):
     if plugins.economy:
         if not amount.isdigit():
-            if amount == "max": amount = currency["wallet"][str(ctx.author.id)]
+            if str(amount) == "max": amount = currency["wallet"][str(ctx.author.id)]
             else: return await ctx.reply("The amount must be a number, or `max`.", hidden=True)
         elif currency['bank'] == 0: return await ctx.reply('You don\'t have anything in your bank account.', hidden=True)
         elif int(amount) <= 0: return await ctx.reply('The amount to withdraw must be more than `0` coins!', hidden=True)
