@@ -24,7 +24,7 @@ from framework import *
 # role: 8
 
 #Variables
-client = commands.Bot(command_prefix='s!', intents=discord.Intents.all())  #Saving for later incase needed
+client = commands.Bot(command_prefix='s!', intents=discord.Intents.all())
 slash = SlashCommand(client, sync_commands=True)
 color = discord.Color.random()
 wdir = os.getcwd()
@@ -121,7 +121,7 @@ async def on_message(ctx):
 #Error handler
 @client.event
 async def on_command_error(ctx, error):
-    current_time = math.floor(time.time()).strftime("%H:%M:%S") #path variable not defined so i deleted writing
+    current_time = math.floor(time.time()).strftime("%H:%M:%S")
     if isinstance(error, commands.CommandOnCooldown):
         await ctx.channel.send(f':stopwatch: Not now! Please try after **{str(datetime.timedelta(seconds=int(round(error.retry_after))))}**')
         print(f'[{current_time}] Ignoring exception at {colors.cyan}CommandOnCooldown{colors.end}. Details: This command is currently on cooldown.')
@@ -351,7 +351,7 @@ async def beg(ctx:SlashContext):
         "A random person",
         "Your friend",
         "Your boss",
-        "The quiet kid", #bruh i dont like giving money to others
+        "The quiet kid",  # bruh i dont like giving money to others
         "Your mom",
         "The fart you have been holding for way too long",
         "Notch",
@@ -431,7 +431,7 @@ async def give(ctx:SlashContext, user:discord.User, amount:int):
 async def rob(ctx:SlashContext, user:discord.User):
     if not plugins.economy: return
     if currency['wallet'][str(user.id)] < 5000: return await ctx.reply('They has less than 5000 coins on them. Don\'t waste your time...') 
-    elif currency['wallet'][str(ctx.author.id)] < 5000: return await ctx.reply('You have less than 5k coins in your wallet. Play fair dude.') #what..? wheres logic?? i mean irl you can rob someone without havin any money at all
+    elif currency['wallet'][str(ctx.author.id)] < 5000: return await ctx.reply('You have less than 5k coins in your wallet. Play fair dude.')
     if random.randint(1, 100) <= 50:
         x = random.randint(5000, currency['wallet'][str(user.id)])
         currency['wallet'][str(ctx.author.id)] += x
@@ -525,7 +525,7 @@ async def buy(ctx:SlashContext, name:str, quantity:int=1):
         amt = shopitem[name]['buy price'] * quantity
         if (currency['wallet'][str(ctx.author.id)] < amt): return await ctx.reply('You don\'t have enough balance to buy this.')
         if (shopitem[name]['available'] == False): return await ctx.reply('You can\'t buy this item **dood**')
-        if (quantity <= 0): return await ctx.reply('The specified quantity cannot be less than `1`!') #1! = 1 but still r/unexpectedfactorial
+        if (quantity <= 0): return await ctx.reply('The specified quantity cannot be less than `1`!')
         currency['wallet'][str(ctx.author.id)] -= int(amt)
         items[str(ctx.author.id)][str(name)] += quantity
         save()
@@ -570,7 +570,7 @@ async def hunt(ctx:SlashContext):
         save()
     elif (choice == "nothing"): await ctx.reply('You found absolutely **nothing** while hunting.')
     elif (choice == "died"):
-        currency[str(ctx.author.id)]['wallet'] -= 1000 #tf happened here
+        currency[str(ctx.author.id)]['wallet'] -= 1000
         save()
         await ctx.reply('Stupid, you died while hunting and lost 1000 coins...')
 
@@ -581,7 +581,7 @@ async def hunt(ctx:SlashContext):
 @commands.cooldown(1, 45, commands.BucketType.user)
 async def fish(ctx:SlashContext):
     if not plugins.economy: return
-    if (items[str(ctx.author.id)]['fishingpole'] == 0): return await ctx.reply('I don\'t think you can fish with your bare hands. Please buy a fishing pole from the shop. ||/buy fishingpole||') #just put yo hands in the water bro **giga chad**
+    if (items[str(ctx.author.id)]['fishingpole'] == 0): return await ctx.reply('I don\'t think you can fish with your bare hands... or you can just put yo hands in the water bro **giga chad moment**\nAnyway it\'s just better to buy a fishing pole from the shop. ||/buy fishingpole||')
     loot = ['shrimp', 'fish', 'rare fish', 'exotic fish', 'jellyfish', 'shark', 'nothing']
     choice = random.choice(loot)
     if choice != "nothing":
@@ -623,7 +623,7 @@ async def dig(ctx:SlashContext):
     elif (choice == "died"):
         currency['wallet'][str(ctx.author.id)] -= 2000
         save()
-        await ctx.reply('YOU FELL INTO YOUR OWN TRAP AND DIED LMFAO\nYou lost 2000 coins in the process.') #but you were digging??
+        await ctx.reply('YOU FELL INTO YOUR OWN TRAP AND DIED LMFAO\nYou lost 2000 coins in the process.')
 
 #need help cuz i only got the idea (aka the logic) and not the code detail and stuff
 @slash.slash(
@@ -707,7 +707,7 @@ async def sync(ctx:SlashContext):
     description='Gives you the ability to make full words and sentences from a cluster of letters',
     options=[create_option(name='strok', description='What do you want to translate?', option_type=3, required=True)]
 )
-async def stroketranslate(ctx:SlashContext, strok: str): #nothing to debloat in this command cuz its mine
+async def stroketranslate(ctx:SlashContext, strok: str):
         try:
             if len(strok) > 300: return await ctx.reply("Please use no more than `300` character length", hidden=True)
             else:
@@ -731,7 +731,7 @@ async def prediction(ctx:SlashContext, question:str): await ctx.reply(f"My predi
     name='memes',
     description='Finely hand-picks a high-quality meme from the depths of reddit.'
 )
-async def memes(ctx:SlashContext): #this command is also mine so nothing to debloat, same for every reddit command
+async def memes(ctx:SlashContext):
     memes_submissions = reddit.subreddit('memes').hot()
     post_to_pick = random.randint(1, 100)
     for i in range(0, post_to_pick):
@@ -1068,4 +1068,3 @@ client.run(api.auth.get_token())
 
 
 # btw i use arch
-#wait why is my file signature already there???????
