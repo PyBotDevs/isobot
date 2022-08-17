@@ -263,7 +263,7 @@ async def warns_clear(ctx:SlashContext, user):
     name='deposit',
     description='Deposits a specified amount of cash into the bank.',
     options=[
-        create_option(name='amount', description='Specify an amount to deposit (use max for everything)', option_type=4, required=True)
+        create_option(name='amount', description='Specify an amount to deposit (use max for everything)', option_type=3, required=True)
     ]
 )
 async def deposit(ctx:SlashContext, amount):
@@ -281,7 +281,7 @@ async def deposit(ctx:SlashContext, amount):
     name='withdraw',
     description='Withdraws a specified amount of cash from the bank.',
     options=[
-        create_option(name='amount', description='Specify an amount to withdraw (use max for everything)', option_type=4, required=True)
+        create_option(name='amount', description='Specify an amount to withdraw (use max for everything)', option_type=3, required=True)
     ]
 )
 async def withdraw(ctx:SlashContext, amount):
