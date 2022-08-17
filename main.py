@@ -263,12 +263,12 @@ async def warns_clear(ctx:SlashContext, user):
     name='deposit',
     description='Deposits a specified amount of cash into the bank.',
     options=[
-        create_option(name='amount', description='Specify an amount to deposit (leave blank for max)', option_type=4, required=False)
+        create_option(name='amount', description='Specify an amount to deposit (use max for everything)', option_type=4, required=True)
     ]
 )
-async def deposit(ctx:SlashContext, amount=None):
+async def deposit(ctx:SlashContext, amount):
     if plugins.economy:
-        if amount == None: amount = currency["wallet"][str(ctx.author.id)]
+        if amount in ["all", "max"]: amount = currency["wallet"][str(ctx.author.id)]
         elif currency['bank'] == 0: return await ctx.reply('You don\'t have anything in your bank account.', hidden=True)
         elif amount <= 0: return await ctx.reply('The amount to deposit must be more than `0` coins!', hidden=True)
         elif amount > currency["wallet"][str(ctx.author.id)]: return await ctx.reply('The amount to deposit must not be more than what you have in your wallet!', hidden=True)
