@@ -281,12 +281,12 @@ async def deposit(ctx:SlashContext, amount):
     name='withdraw',
     description='Withdraws a specified amount of cash from the bank.',
     options=[
-        create_option(name='amount', description='Specify an amount to withdraw (leave blank for max)', option_type=4, required=False)
+        create_option(name='amount', description='Specify an amount to withdraw (use max for everything)', option_type=4, required=True)
     ]
 )
-async def withdraw(ctx:SlashContext, amount=None):
+async def withdraw(ctx:SlashContext, amount):
     if plugins.economy:
-        if amount == None: amount = currency["bank"][str(ctx.author.id)]
+        if amount in ["all", "max"]: amount = currency["wallet"][str(ctx.author.id)]
         elif currency['bank'] == 0: return await ctx.reply('You don\'t have anything in your bank account.', hidden=True)
         elif amount <= 0: return await ctx.reply('The amount to withdraw must be more than `0` coins!', hidden=True)
         elif amount > currency["bank"][str(ctx.author.id)]: return await ctx.reply('The amount to withdraw must not be more than what you have in your bank account!', hidden=True)
