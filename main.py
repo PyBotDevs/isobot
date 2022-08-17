@@ -271,8 +271,8 @@ async def deposit(ctx:SlashContext, amount):
         if not amount.isnumeric() and amount == "max": amount = currency["wallet"][str(ctx.author.id)]
         if not amount.isnumeric() and amount != "max": return await ctx.reply("The amount must be a number, or `max`.", hidden=True)
         elif currency['bank'] == 0: return await ctx.reply('You don\'t have anything in your bank account.', hidden=True)
-        elif amount <= 0: return await ctx.reply('The amount to deposit must be more than `0` coins!', hidden=True)
-        elif amount > currency["wallet"][str(ctx.author.id)]: return await ctx.reply('The amount to deposit must not be more than what you have in your wallet!', hidden=True)
+        elif int(amount) <= 0: return await ctx.reply('The amount to deposit must be more than `0` coins!', hidden=True)
+        elif int(amount) > currency["wallet"][str(ctx.author.id)]: return await ctx.reply('The amount to deposit must not be more than what you have in your wallet!', hidden=True)
         currency["wallet"][str(ctx.author.id)] -= int(amount)
         currency["bank"][str(ctx.author.id)] += int(amount)
         await ctx.send(f'You deposited `{amount}` coin(s) to your bank account.')
@@ -290,8 +290,8 @@ async def withdraw(ctx:SlashContext, amount):
         if not amount.isnumeric() and amount == "max": amount = currency["wallet"][str(ctx.author.id)]
         if not amount.isnumeric() and amount != "max": return await ctx.reply("The amount must be a number, or `max`.", hidden=True)
         elif currency['bank'] == 0: return await ctx.reply('You don\'t have anything in your bank account.', hidden=True)
-        elif amount <= 0: return await ctx.reply('The amount to withdraw must be more than `0` coins!', hidden=True)
-        elif amount > currency["bank"][str(ctx.author.id)]: return await ctx.reply('The amount to withdraw must not be more than what you have in your bank account!', hidden=True)
+        elif int(amount) <= 0: return await ctx.reply('The amount to withdraw must be more than `0` coins!', hidden=True)
+        elif int(amount) > currency["bank"][str(ctx.author.id)]: return await ctx.reply('The amount to withdraw must not be more than what you have in your bank account!', hidden=True)
         currency["wallet"][str(ctx.author.id)] += int(amount)
         currency["bank"][str(ctx.author.id)] -= int(amount)
         await ctx.send(f'You withdrew `{amount}` coin(s) from your bank account.')
