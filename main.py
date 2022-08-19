@@ -1062,24 +1062,24 @@ async def highlow(ctx:SlashContext):
     msg = await client.wait_for("message", check=check)
     if msg.content == 'low':
         if numb > numb2:
-            await ctx.send(f'Congrats, your number was {numb2} and you earned {coins} coins')
+            await ctx.send(f'Congrats! Your number was {numb2} and you won **{coins} coins**.')
             currency["wallet"][ctx.author.id] += coins
             save()
-        elif numb < numb2: await ctx.send(f'Incorrect. The number was **{numb2}**')
-        elif numb == numb2: await ctx.send(f'You stupid! You could won 1 million coins if you choose jackpot!!!')
+        elif numb < numb2: await ctx.send(f'Wrong! The number was **{numb2}**.')
+        elif numb == numb2: await ctx.send(f'Rip bozo, you just missed your chance of winning 5 million coins because you didn\'t choose `jackpot` XD')
     if msg.content == 'jackpot':
         if numb == numb2:
-            await ctx.send(f'Congrats, your number was {numb2} and you earned **5 million** coins, GG!')
+            await ctx.send(f'Congrats! Your luck did you good because your number was {numb2} and you earned **5 million coins**. GG!')
             currency["wallet"][ctx.author.id] += 5000000
             save()
-        else: await ctx.send(f'Incorrect the number was {numb2}')
+        else: await ctx.send(f'Wrong! The number was {numb2}.')
     if msg.content == 'high':
         if numb < numb2:
-            await ctx.send(f'Congrats, your number was {numb2} and you earned {coins} coins')
+            await ctx.send(f'Congrats! Your number was {numb2} and you earned **{coins} coins**.')
             currency["wallet"][ctx.author.id] += coins
             save()
-        else: return await ctx.send(f'Incorrect your number was {numb2}')
-    else: await ctx.send(f'{msg.content} is not an option')
+        else: return await ctx.send(f'Wrong! The number was {numb2}.')
+    else: await ctx.send(f'wtf is {message.content}?')
 
 # Initialization
 utils.ping.host()
