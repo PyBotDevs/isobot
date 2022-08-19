@@ -1055,7 +1055,7 @@ async def highlow(ctx:SlashContext):
     numb = random.randint(1, 100)
     numb2 = random.randint(1, 100)
     coins = random.randint(300, 1000)
-    def check(msg): return msg.author == ctx.message.author and msg.channel == ctx.message.channel and (msg.content)
+    def check(msg): return msg.author == ctx.author and msg.channel == ctx.channel and (msg.content)
     await ctx.send(f'Your number is {numb}. Choose if the other is lower, higher or jackpot')
     msg = await client.wait_for("message", check=check)
     if msg.content == 'low':
