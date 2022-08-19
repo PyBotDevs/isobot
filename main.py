@@ -45,6 +45,12 @@ def save():
     with open('database/presence.json', 'w+') as f: json.dump(user_presence, f, indent=4)
     with open('database/levels.json', 'w+') as f: json.dump(levels, f, indent=4)
 
+def get_user_networth(user_id:int):
+    nw = currency["wallet"][str(user_id)] + currency["bank"][str(user_id)]
+    for e in items[str(user_id)]:
+        if e != 0: nw += shopitem[e]["sell price"]
+    return nw
+
 if not os.path.isdir("logs"):
   os.mkdir('logs')
   try:
