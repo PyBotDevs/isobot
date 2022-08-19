@@ -1056,7 +1056,9 @@ async def highlow(ctx:SlashContext):
     numb2 = random.randint(1, 100)
     coins = random.randint(300, 1000)
     def check(msg): return msg.author == ctx.author and msg.channel == ctx.channel and (msg.content)
-    await ctx.send(f'Your number is {numb}. Choose if the other is lower, higher or jackpot')
+    localembed = discord.Embed(title=f"Your number is {numb}.", description="Choose if the other number is lower, higher or jackpot.", color=discord.Color.random())
+    localembed.set_footer(text="Send your response in chat")
+    await ctx.send(embed=localembed)
     msg = await client.wait_for("message", check=check)
     if msg.content == 'low':
         if numb > numb2:
