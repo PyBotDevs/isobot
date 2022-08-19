@@ -1087,6 +1087,22 @@ async def highlow(ctx:SlashContext):
         else: return await ctx.send(f'Wrong! The number was {numb2}.')
     else: await ctx.send(f'wtf is {msg.content}?')
 
+@slash.slash(
+    name="networth",
+    description="Get your networth, or another user's networth",
+    options=[
+        create_option(name="user", description="Whose networth do you want to find?", option_type=6, required=False)
+    ]
+)
+async def networth(ctx:SlashContext, user:discord.User=None):
+    if user == None: user = ctx.author
+    try:
+        ntw = get_user_networth(user.id)
+        localembed = discord.Embed(name=f"{user.display_name}'s networth", description=f"{ntw} coins", color=discord.Color.random())
+        await ctx.send(embed=localembed)
+    except KeyError: return await ctx.reply("Looks like that user isn't cached yet. Please try again later.", hidden=True)
+
+
 # Initialization
 utils.ping.host()
 client.run(api.auth.get_token())
