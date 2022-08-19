@@ -1079,7 +1079,7 @@ async def highlow(ctx:SlashContext):
             currency["wallet"][ctx.author.id] += coins
             save()
         else: return await ctx.send(f'Wrong! The number was {numb2}.')
-    else: await ctx.send(f'wtf is {message.content}?')
+    else: await ctx.send(f'wtf is {msg.content}?')
 
 # Initialization
 utils.ping.host()
