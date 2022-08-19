@@ -189,6 +189,7 @@ async def balance(ctx:SlashContext, user=None):
             e = discord.Embed(title=f'{user.display_name}\'s balance', color=color)
             e.add_field(name='Cash in wallet', value=f'{currency["wallet"][str(user.id)]} coin(s)', inline=True)
             e.add_field(name='Cash in bank account', value=f'{currency["bank"][str(user.id)]} coin(s)', inline=True)
+            e.add_field(name="Networth", value=f"{get_user_networth(user.id)} coin(s)", inline=True)
             await ctx.send(embed=e)
         except: await ctx.reply('Looks like that user is not indexed in our server. Try again later.')
     except Exception as e: await ctx.send(f'An error occured: `{e}`. This has automatically been reported to the devs.')
