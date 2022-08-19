@@ -1026,6 +1026,7 @@ async def isobank_register(ctx:SlashContext, pin:int):
     isobankauth.register(ctx.author.id, pin)
     await ctx.reply("Congratulations! Your new IsoBank account has been registered.", hidden=True)
 
+# Minigames Commands
 @slash.slash(
     name="guessthenumber",
     description="Guess a random number from 1 to 10 that the bot is thinking about"
@@ -1044,6 +1045,41 @@ async def guessthenumber(ctx:SlashContext):
         save()
         await ctx.send(f"Correct! You've just won **{randcoins} coins** by guessing the correct number.")
     else: return await ctx.reply("Too bad bozo, you guessed the number wrong and you won nothing.")
+
+@slash.slash(
+    name="highlow",
+    description="Guess whether the actual number is higher or lower than the hint number"
+)
+@commands.cooldown(1, 40, commands.BucketType.user)
+async def highlow(ctx:SlashContext):
+    numb = random.randint(1, 100)
+    numb2 = random.randint(1, 100)
+    coins = random.randint(300, 1000)
+    def check(msg): return msg.author == ctx.author and msg.channel == ctx.channel and (msg.content)
+    localembed = discord.Embed(title=f"Your number is {numb}.", description="Choose if the other number is lower, higher or jackpot.", color=discord.Color.random())
+    localembed.set_footer(text="Send your response in chat")
+    await ctx.send(embed=localembed)
+    msg = await client.wait_for("message", check=check)
+    if msg.content == 'low':
+        if numb > numb2:
+            await ctx.send(f'Congrats! Your number was {numb2} and you won **{coins} coins**.')
+            currency["wallet"][ctx.author.id] += coins
+            save()
+        elif numb < numb2: await ctx.send(f'Wrong! The number was **{numb2}**.')
+        elif numb == numb2: await ctx.send(f'Rip bozo, you just missed your chance of winning 5 million coins because you didn\'t choose `jackpot` XD')
+    if msg.content == 'jackpot':
+        if numb == numb2:
+            await ctx.send(f'Congrats! Your luck did you good because your number was {numb2} and you earned **5 million coins**. GG!')
+            currency["wallet"][ctx.author.id] += 5000000
+            save()
+        else: await ctx.send(f'Wrong! The number was {numb2}.')
+    if msg.content == 'high':
+        if numb < numb2:
+            await ctx.send(f'Congrats! Your number was {numb2} and you earned **{coins} coins**.')
+            currency["wallet"][ctx.author.id] += coins
+            save()
+        else: return await ctx.send(f'Wrong! The number was {numb2}.')
+    else: await ctx.send(f'wtf is {msg.content}?')
 
 # Initialization
 utils.ping.host()
