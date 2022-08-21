@@ -19,6 +19,9 @@ class CurrencyAPI(Colors):
     - withdraw(user, amount)"""
     def __init__(self, db_path:str):
         self.db_path = db_path
+        with open(self.db_path, 'w+') as f:
+            global currency
+            currency = json.load(f)
         print(f"[Framework/Loader] {Colors.green}CurrencyAPI initialized.{Colors.end}")
     def save(self):
         """Saves databases cached on memory."""
