@@ -1,7 +1,7 @@
 import json
 import discord
 
-class Colors():
+class Colors:
     """Contains general stdout colors."""
     cyan = '\033[96m'
     red = '\033[91m'
