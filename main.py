@@ -263,15 +263,17 @@ async def warns_clear(ctx:SlashContext, user):
     name='deposit',
     description='Deposits a specified amount of cash into the bank.',
     options=[
-        create_option(name='amount', description='Specify an amount to deposit (leave blank for max)', option_type=4, required=False)
+        create_option(name='amount', description='Specify an amount to deposit (use max for everything)', option_type=3, required=True)
     ]
 )
-async def deposit(ctx:SlashContext, amount=None):
+async def deposit(ctx:SlashContext, amount):
     if plugins.economy:
-        if amount == None: amount = currency["wallet"][str(ctx.author.id)]
+        if not amount.isdigit():
+            if str(amount) == "max": amount = currency["wallet"][str(ctx.author.id)]
+            else: return await ctx.reply("The amount must be a number, or `max`.", hidden=True)
         elif currency['bank'] == 0: return await ctx.reply('You don\'t have anything in your bank account.', hidden=True)
-        elif amount <= 0: return await ctx.reply('The amount to deposit must be more than `0` coins!', hidden=True)
-        elif amount > currency["wallet"][str(ctx.author.id)]: return await ctx.reply('The amount to deposit must not be more than what you have in your wallet!', hidden=True)
+        elif int(amount) <= 0: return await ctx.reply('The amount to deposit must be more than `0` coins!', hidden=True)
+        elif int(amount) > currency["wallet"][str(ctx.author.id)]: return await ctx.reply('The amount to deposit must not be more than what you have in your wallet!', hidden=True)
         currency["wallet"][str(ctx.author.id)] -= int(amount)
         currency["bank"][str(ctx.author.id)] += int(amount)
         await ctx.send(f'You deposited `{amount}` coin(s) to your bank account.')
@@ -281,15 +283,17 @@ async def deposit(ctx:SlashContext, amount=None):
     name='withdraw',
     description='Withdraws a specified amount of cash from the bank.',
     options=[
-        create_option(name='amount', description='Specify an amount to withdraw (leave blank for max)', option_type=4, required=False)
+        create_option(name='amount', description='Specify an amount to withdraw (use max for everything)', option_type=3, required=True)
     ]
 )
-async def withdraw(ctx:SlashContext, amount=None):
+async def withdraw(ctx:SlashContext, amount):
     if plugins.economy:
-        if amount == None: amount = currency["bank"][str(ctx.author.id)]
+        if not amount.isdigit():
+            if str(amount) == "max": amount = currency["wallet"][str(ctx.author.id)]
+            else: return await ctx.reply("The amount must be a number, or `max`.", hidden=True)
         elif currency['bank'] == 0: return await ctx.reply('You don\'t have anything in your bank account.', hidden=True)
-        elif amount <= 0: return await ctx.reply('The amount to withdraw must be more than `0` coins!', hidden=True)
-        elif amount > currency["bank"][str(ctx.author.id)]: return await ctx.reply('The amount to withdraw must not be more than what you have in your bank account!', hidden=True)
+        elif int(amount) <= 0: return await ctx.reply('The amount to withdraw must be more than `0` coins!', hidden=True)
+        elif int(amount) > currency["bank"][str(ctx.author.id)]: return await ctx.reply('The amount to withdraw must not be more than what you have in your bank account!', hidden=True)
         currency["wallet"][str(ctx.author.id)] += int(amount)
         currency["bank"][str(ctx.author.id)] -= int(amount)
         await ctx.send(f'You withdrew `{amount}` coin(s) from your bank account.')
@@ -1041,6 +1045,7 @@ async def isobank_register(ctx:SlashContext, pin:int):
     isobankauth.register(ctx.author.id, pin)
     await ctx.reply("Congratulations! Your new IsoBank account has been registered.", hidden=True)
 
+# Minigames Commands
 @slash.slash(
     name="guessthenumber",
     description="Guess a random number from 1 to 10 that the bot is thinking about"
@@ -1051,7 +1056,7 @@ async def guessthenumber(ctx:SlashContext):
     localembed = discord.Embed(name="Guess the number!", description="I am currently thinking of a number from 1 to 10. Can you guess what it is?", color=discord.Color.random())
     localembed.set_footer(text="If you guess what it is, you will win 500 to 1000 coins!")
     await ctx.send(embed=localembed)
-    def check(msg): return msg.author == ctx.message.author and msg.channel == ctx.message.channel and msg.content
+    def check(msg): return msg.author == ctx.author and msg.channel == ctx.channel and msg.content
     msg = await client.wait_for("message", check=check)
     if int(msg.content) == number:
         randcoins = random.randint(500, 1000)
@@ -1059,6 +1064,41 @@ async def guessthenumber(ctx:SlashContext):
         save()
         await ctx.send(f"Correct! You've just won **{randcoins} coins** by guessing the correct number.")
     else: return await ctx.reply("Too bad bozo, you guessed the number wrong and you won nothing.")
+
+@slash.slash(
+    name="highlow",
+    description="Guess whether the actual number is higher or lower than the hint number"
+)
+@commands.cooldown(1, 40, commands.BucketType.user)
+async def highlow(ctx:SlashContext):
+    numb = random.randint(1, 100)
+    numb2 = random.randint(1, 100)
+    coins = random.randint(300, 1000)
+    def check(msg): return msg.author == ctx.author and msg.channel == ctx.channel and (msg.content)
+    localembed = discord.Embed(title=f"Your number is {numb}.", description="Choose if the other number is lower, higher or jackpot.", color=discord.Color.random())
+    localembed.set_footer(text="Send your response in chat")
+    await ctx.send(embed=localembed)
+    msg = await client.wait_for("message", check=check)
+    if msg.content == 'low':
+        if numb > numb2:
+            await ctx.send(f'Congrats! Your number was {numb2} and you won **{coins} coins**.')
+            currency["wallet"][ctx.author.id] += coins
+            save()
+        elif numb < numb2: await ctx.send(f'Wrong! The number was **{numb2}**.')
+        elif numb == numb2: await ctx.send(f'Rip bozo, you just missed your chance of winning 5 million coins because you didn\'t choose `jackpot` XD')
+    if msg.content == 'jackpot':
+        if numb == numb2:
+            await ctx.send(f'Congrats! Your luck did you good because your number was {numb2} and you earned **5 million coins**. GG!')
+            currency["wallet"][ctx.author.id] += 5000000
+            save()
+        else: await ctx.send(f'Wrong! The number was {numb2}.')
+    if msg.content == 'high':
+        if numb < numb2:
+            await ctx.send(f'Congrats! Your number was {numb2} and you earned **{coins} coins**.')
+            currency["wallet"][ctx.author.id] += coins
+            save()
+        else: return await ctx.send(f'Wrong! The number was {numb2}.')
+    else: await ctx.send(f'wtf is {msg.content}?')
 
 # Initialization
 utils.ping.host()
