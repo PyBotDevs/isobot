@@ -41,11 +41,11 @@ class CurrencyAPI(Colors):
         """Moves a specified amount of coins to the user's bank."""
         currency["bank"][str(user.id)] += amount
         currency["wallet"][str(user.id)] -= amount
-        save()
+        self.save()
         print(f"[Framework/CurrencyAPI] Moved {amount} coins to bank. User: {user} [{user.id}]")
     def withdraw(self, user:discord.User, amount:int):
         """Moves a specified amount of coins to the user's wallet."""
         currency["wallet"][str(user.id)] += amount
         currency["bank"][str(user.id)] -= amount
-        save()
+        self.save()
         print(f"[Framework/CurrencyAPI] Moved {amount} coins to wallet. User: {user} [{user.id}]")
