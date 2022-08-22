@@ -95,12 +95,14 @@ async def on_message(ctx):
         else: items[str(ctx.author.id)][str(z)] = 0
     save()
     uList = list()
-    for x in user_presence[str(ctx.guild.id)].keys(): uList.append(x)
+    if str(ctx.guild.id) in user_presence:
+        for x in user_presence[str(ctx.guild.id)].keys(): uList.append(x)
+    else: pass
     for i in uList:
         if i in ctx.content and not ctx.author.bot:
             fetch_user = client.get_user(id(i))
             await ctx.channel.send(f"{fetch_user.display_name} went AFK <t:{math.floor(user_presence[str(ctx.guild.id)][str(i)]['time'])}:R>: {user_presence[str(ctx.guild.id)][str(i)]['response']}")
-    if str(ctx.author.id) in user_presence[str(ctx.guild.id)]:
+    if str(ctx.guild.id) in user_presence and str(ctx.author.id) in user_presence[str(ctx.guild.id)]:
         del user_presence[str(ctx.guild.id)][str(ctx.author.id)]
         save()
         m1 = await ctx.channel.send(f"Welcome back {ctx.author.mention}. Your AFK has been removed.")
