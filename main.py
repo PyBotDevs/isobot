@@ -668,7 +668,7 @@ async def whoami(ctx:SlashContext, user:discord.User=None):
     localembed.add_field(name='Avatar URL', value=f"[here!]({pfp})", inline=False)
     role_render = ""
     for p in user.roles:
-        if p != "everyone": role_render += f"<@&{p.id}> "
+        if p != user.roles[0]: role_render += f"<@&{p.id}> "
     localembed.add_field(name='Roles', value=role_render, inline=False)
     await ctx.send(embed=localembed)
 
