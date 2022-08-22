@@ -667,14 +667,15 @@ async def whoami(ctx:SlashContext, user:discord.User=None):
         description=localembed_desc
     )
     localembed.set_thumbnail(url=pfp)
-    localembed.add_field(name='Username', value=username, inline=False)
-    localembed.add_field(name='Display Name', value=displayname, inline=False)
+    localembed.add_field(name='Username', value=username, inline=True)
+    localembed.add_field(name='Display Name', value=displayname, inline=True)
     localembed.add_field(name='Joined Discord on', value=registered, inline=False)
-    localembed.add_field(name='Avatar URL', value=f"[here!]({pfp})", inline=False)
+    localembed.add_field(name='Avatar URL', value=f"[here!]({pfp})", inline=True)
     role_render = ""
     for p in user.roles:
         if p != "everyone": role_render += f"<@&{p.id}> "
     localembed.add_field(name='Roles', value=role_render, inline=False)
+    localembed.add_field(name="Net worth", value=f"{get_user_networth(user.id)} coins", inline=False)
     await ctx.send(embed=localembed)
 
 # DevTools commands
