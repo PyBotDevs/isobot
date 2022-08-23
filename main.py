@@ -640,7 +640,6 @@ async def dig(ctx:SlashContext):
 )
 async def open(ctx:SlashContext, lootbox:str, amount:int):
     types = ["normal", "large", "special"]
-    #this is gucking bloated
     if amount <= 0: return await ctx.reply("You can't open 0 or below lootboxes! Don't be stupid.", hidden=True)
     elif lootbox not in types: return await ctx.reply("That lootbox doesn't even exist get a brain", hidden=True)
     n_loot = [random.randint(10000, 25000)]
