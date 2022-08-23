@@ -4,6 +4,8 @@
 
 <h1 align='center'>Isobot lazer, the future of isobot.</h1>
 
+### ***Make sure to add isobot to your Discord server! [Click here to invite](https://discord.com/api/oauth2/authorize?client_id=953278050135588905&permissions=8&scope=applications.commands%20bot)***
+
 ![LICENSE](https://img.shields.io/github/license/notsniped/isobot-lazer?style=for-the-badge)
 [![Discord](https://img.shields.io/discord/880409977074888714?color=%235865F2&label=Discord&logo=discord&logoColor=%23fffz&style=for-the-badge)](https://discord.gg/b5pz8T6Yjr)
 ![Stars](https://img.shields.io/github/stars/notsniped/isobot-lazer?style=for-the-badge)
