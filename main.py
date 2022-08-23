@@ -642,10 +642,26 @@ async def open(ctx:SlashContext, lootbox:str, amount:int):
     types = ["normal", "large", "special"]
     if amount <= 0: return await ctx.reply("You can't open 0 or below lootboxes! Don't be stupid.", hidden=True)
     if lootbox not in types: return await ctx.reply(f"wtf is {lootbox}?", hidden=True)
-    normal_loot = [random.randint(10000, 25000)]
-    large_loot = [random.randint(50000, 75000)]
-    special_loot = [random.randint(100000, 500000)]
-    # ^ Make item rewards here
+    ie = shopitem.keys()
+    normal_loot = [
+        random.randint(10000, 25000),
+        random.choice(list(ie)),
+        random.choice(list(ie))
+    ]
+    large_loot = [
+        random.randint(50000, 75000),
+        random.choice(list(ie)),
+        random.choice(list(ie)),
+        random.choice(list(ie))
+    ]
+    special_loot = [
+        random.randint(100000, 500000),
+        random.choice(list(ie)),
+        random.choice(list(ie)),
+        random.choice(list(ie)),
+        random.choice(list(ie)),
+        random.choice(list(ie))
+    ]
 
 @slash.slash(
   name='echo',
