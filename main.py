@@ -631,6 +631,65 @@ async def dig(ctx:SlashContext):
         save()
         await ctx.reply('YOU FELL INTO YOUR OWN TRAP AND DIED LMFAO\nYou lost 2000 coins in the process.')
 
+#need help cuz i only got the idea (aka the logic) and not the code detail and stuff
+@slash.slash(
+    name='open',
+    description='Opens lootbox(es) in your inventory',
+    options=[
+        create_option(name='lootbox', description='What lootbox do you want to open?', option_type=3, required=True),
+        create_option(name='amount', description='How many do you want to open?', option_type=4, required=True)
+    ]
+)
+async def open(ctx:SlashContext, lootbox:str, amount:int):
+    types = ["normal", "large", "special"]
+    if amount <= 0: return await ctx.reply("You can't open 0 or below lootboxes! Don't be stupid.", hidden=True)
+    if lootbox not in types: return await ctx.reply(f"wtf is {lootbox}?", hidden=True)
+    ie = shopitem.keys()
+    normal_loot = [
+        random.randint(10000, 25000),
+        random.choice(list(ie)),
+        random.choice(list(ie))
+    ]
+    large_loot = [
+        random.randint(50000, 75000),
+        random.choice(list(ie)),
+        random.choice(list(ie)),
+        random.choice(list(ie))
+    ]
+    special_loot = [
+        random.randint(100000, 500000),
+        random.choice(list(ie)),
+        random.choice(list(ie)),
+        random.choice(list(ie)),
+        random.choice(list(ie)),
+        random.choice(list(ie))
+    ]
+    localembed = discord.Embed(title="You opened a lootbox!", description=f"The amazing rewards of your {lootbox} lootbox behold you...", color=discord.Color.gold())
+    if lootbox == "normal":
+        currency["wallet"][str(ctx.author.id)] += normal_loot[0]
+        items[str(ctx.author.id)][normal_loot[1]] += 1
+        items[str(ctx.author.id)][normal_loot[2]] += 1
+        localembed.add_field(name="Coins gained", value=f"**{normal_loot[0]}** coins", inline=False)
+        localembed.add_field(name="Items recieved", value=f"You got **1 {normal_loot[1]}**!\nYou got **1 {normal_loot[2]}**!", inline=False)
+    if lootbox == "large":
+        currency["wallet"][str(ctx.author.id)] += large_loot[0]
+        items[str(ctx.author.id)][large_loot[1]] += 1
+        items[str(ctx.author.id)][large_loot[2]] += 1
+        items[str(ctx.author.id)][large_loot[3]] += 1
+        localembed.add_field(name="Coins gained", value=f"**{large_loot[0]}** coins", inline=False)
+        localembed.add_field(name="Items recieved", value=f"You got **1 {large_loot[1]}**!\nYou got **1 {large_loot[2]}**!\nYou got **1 {large_loot[3]}**!", inline=False)
+    if lootbox == "special":
+        currency["wallet"][str(ctx.author.id)] += special_loot[0]
+        items[str(ctx.author.id)][special_loot[1]] += 1
+        items[str(ctx.author.id)][special_loot[2]] += 1
+        items[str(ctx.author.id)][special_loot[3]] += 1
+        items[str(ctx.author.id)][special_loot[4]] += 1
+        items[str(ctx.author.id)][special_loot[5]] += 1
+        localembed.add_field(name="Coins gained", value=f"**{special_loot[0]}** coins", inline=False)
+        localembed.add_field(name="Items recieved", value=f"You got **1 {special_loot[1]}**!\nYou got **1 {special_loot[2]}**!\nYou got **1 {special_loot[3]}**!\nYou got **1 {special_loot[4]}**!\nYou got **1 {special_loot[5]}**!", inline=False)
+    await ctx.send(embed=localembed)
+    save()
+
 @slash.slash(
   name='echo',
   description='Sends a bot message in the channel',
