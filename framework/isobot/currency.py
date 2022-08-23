@@ -1,7 +1,7 @@
 import json
 import discord
 
-class Colors():
+class Colors:
     """Contains general stdout colors."""
     cyan = '\033[96m'
     red = '\033[91m'
@@ -19,6 +19,9 @@ class CurrencyAPI(Colors):
     - withdraw(user, amount)"""
     def __init__(self, db_path:str):
         self.db_path = db_path
+        with open(self.db_path, 'w+') as f:
+            global currency
+            currency = json.load(f)
         print(f"[Framework/Loader] {Colors.green}CurrencyAPI initialized.{Colors.end}")
     def save(self):
         """Saves databases cached on memory."""
@@ -41,11 +44,11 @@ class CurrencyAPI(Colors):
         """Moves a specified amount of coins to the user's bank."""
         currency["bank"][str(user.id)] += amount
         currency["wallet"][str(user.id)] -= amount
-        save()
+        self.save()
         print(f"[Framework/CurrencyAPI] Moved {amount} coins to bank. User: {user} [{user.id}]")
     def withdraw(self, user:discord.User, amount:int):
         """Moves a specified amount of coins to the user's wallet."""
         currency["wallet"][str(user.id)] += amount
         currency["bank"][str(user.id)] -= amount
-        save()
+        self.save()
         print(f"[Framework/CurrencyAPI] Moved {amount} coins to wallet. User: {user} [{user.id}]")
