@@ -662,6 +662,23 @@ async def open(ctx:SlashContext, lootbox:str, amount:int):
         random.choice(list(ie)),
         random.choice(list(ie))
     ]
+    if lootbox == "normal":
+        currency["wallet"][str(ctx.author.id)] += normal_loot[0]
+        items[str(ctx.author.id)][normal_loot[1]] += 1
+        items[str(ctx.author.id)][normal_loot[2]] += 1
+    if lootbox == "large":
+        currency["wallet"][str(ctx.author.id)] += normal_loot[0]
+        items[str(ctx.author.id)][normal_loot[1]] += 1
+        items[str(ctx.author.id)][normal_loot[2]] += 1
+        items[str(ctx.author.id)][normal_loot[3]] += 1
+    if lootbox == "special":
+        currency["wallet"][str(ctx.author.id)] += normal_loot[0]
+        items[str(ctx.author.id)][normal_loot[1]] += 1
+        items[str(ctx.author.id)][normal_loot[2]] += 1
+        items[str(ctx.author.id)][normal_loot[3]] += 1
+        items[str(ctx.author.id)][normal_loot[4]] += 1
+        items[str(ctx.author.id)][normal_loot[5]] += 1
+    save()
 
 @slash.slash(
   name='echo',
