@@ -664,15 +664,20 @@ async def open(ctx:SlashContext, lootbox:str, amount:int):
         random.choice(list(ie)),
         random.choice(list(ie))
     ]
+    localembed = discord.Embed(title="You opened a lootbox!", description=f"The amazing rewards of your {lootbox} lootbox behold you...", color=discord.Color.gold())
     if lootbox == "normal":
         currency["wallet"][str(ctx.author.id)] += normal_loot[0]
         items[str(ctx.author.id)][normal_loot[1]] += 1
         items[str(ctx.author.id)][normal_loot[2]] += 1
+        localembed.add_field(name="Coins gained", value=f"**{normal_loot[0]}** coins", inline=False)
+        localembed.add_field(name="Items recieved", value=f"You got **1 {normal_loot[1]}**!\nYou got **1 {normal_loot[2]}**!", inline=False)
     if lootbox == "large":
         currency["wallet"][str(ctx.author.id)] += normal_loot[0]
         items[str(ctx.author.id)][normal_loot[1]] += 1
         items[str(ctx.author.id)][normal_loot[2]] += 1
         items[str(ctx.author.id)][normal_loot[3]] += 1
+        localembed.add_field(name="Coins gained", value=f"**{large_loot[0]}** coins", inline=False)
+        localembed.add_field(name="Items recieved", value=f"You got **1 {large_loot[1]}**!\nYou got **1 {large_loot[2]}**!\nYou got **1 {large_loot[3]}**!", inline=False)
     if lootbox == "special":
         currency["wallet"][str(ctx.author.id)] += normal_loot[0]
         items[str(ctx.author.id)][normal_loot[1]] += 1
@@ -680,6 +685,9 @@ async def open(ctx:SlashContext, lootbox:str, amount:int):
         items[str(ctx.author.id)][normal_loot[3]] += 1
         items[str(ctx.author.id)][normal_loot[4]] += 1
         items[str(ctx.author.id)][normal_loot[5]] += 1
+        localembed.add_field(name="Coins gained", value=f"**{special_loot[0]}** coins", inline=False)
+        localembed.add_field(name="Items recieved", value=f"You got **1 {special_loot[1]}**!\nYou got **1 {special_loot[2]}**!\nYou got **1 {special_loot[3]}**!\nYou got **1 {special_loot[4]}**!\nYou got **1 {special_loot[5]}**!", inline=False)
+    await ctx.send(embed=localembed)
     save()
 
 @slash.slash(
