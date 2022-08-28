@@ -4,7 +4,7 @@
     "description": "",
     "type": "economy system",
     "cooldown": null,
-    "args": [],
+    "args": null,
     "usable_by": "everyone",
     "disabled": false,
     "bugged": false
@@ -15,7 +15,7 @@
       "description": "",
       "type": "economy system",
       "cooldown": null,
-      "args": [],
+      "args": null,
       "usable_by": "everyone",
       "disabled": false,
       "bugged": false
@@ -25,7 +25,7 @@
       "description": "",
       "type": "economy system",
       "cooldown": null,
-      "args": [],
+      "args": null,
       "usable_by": "everyone",
       "disabled": false,
       "bugged": false
@@ -35,7 +35,7 @@
       "description": "",
       "type": "economy system",
       "cooldown": null,
-      "args": [],
+      "args": null,
       "usable_by": "everyone",
       "disabled": false,
       "bugged": false
@@ -46,7 +46,7 @@
       "description": "",
       "type": "economy system",
       "cooldown": null,
-      "args": [],
+      "args": null,
       "usable_by": "everyone",
       "disabled": false,
       "bugged": false
@@ -56,7 +56,7 @@
       "description": "",
       "type": "economy system",
       "cooldown": null,
-      "args": [],
+      "args": null,
       "usable_by": "everyone",
       "disabled": false,
       "bugged": false
@@ -66,7 +66,7 @@
       "description": "",
       "type": "economy system",
       "cooldown": null,
-      "args": [],
+      "args": null,
       "usable_by": "everyone",
       "disabled": false,
       "bugged": false
@@ -97,7 +97,7 @@
       "description": "",
       "type": "DevTools",
       "cooldown": null,
-      "args": [],
+      "args": null,
       "usable_by": "the developer",
       "disabled": false,
       "bugged": false
@@ -192,7 +192,7 @@
       "description": "",
       "type": "economy system",
       "cooldown": null,
-      "args": [],
+      "args": null,
       "usable_by": "everyone",
       "disabled": false,
       "bugged": false
@@ -202,7 +202,7 @@
       "description": "",
       "type": "economy system",
       "cooldown": null,
-      "args": [],
+      "args": null,
       "usable_by": "everyone",
       "disabled": false,
       "bugged": false
@@ -287,7 +287,7 @@
       "description": "",
       "type": "economy system",
       "cooldown": null,
-      "args": [],
+      "args": null,
       "usable_by": "everyone",
       "disabled": true,
       "bugged": false
@@ -341,7 +341,7 @@
       "description": "",
       "type": "reddit media",
       "cooldown": null,
-      "args": [],
+      "args": null,
       "usable_by": "everyone",
       "disabled": false,
       "bugged": false
@@ -351,7 +351,7 @@
       "description": "",
       "type": "reddit media",
       "cooldown": null,
-      "args": [],
+      "args": null,
       "usable_by": "everyone",
       "disabled": false,
       "bugged": false
@@ -361,7 +361,7 @@
       "description": "",
       "type": "reddit media",
       "cooldown": null,
-      "args": [],
+      "args": null,
       "usable_by": "everyone",
       "disabled": false,
       "bugged": false
@@ -371,7 +371,7 @@
       "description": "",
       "type": "reddit media",
       "cooldown": null,
-      "args": [],
+      "args": null,
       "usable_by": "everyone",
       "disabled": false,
       "bugged": false
@@ -381,7 +381,7 @@
       "description": "",
       "type": "reddit media",
       "cooldown": null,
-      "args": [],
+      "args": null,
       "usable_by": "everyone",
       "disabled": false,
       "bugged": false
@@ -413,7 +413,7 @@
       "description": "",
       "type": "general utilities",
       "cooldown": null,
-      "args": [],
+      "args": null,
       "usable_by": "everyone",
       "disabled": false,
       "bugged": false
@@ -434,7 +434,7 @@
       "description": "",
       "type": "AFK system",
       "cooldown": null,
-      "args": [],
+      "args": null,
       "usable_by": "everyone",
       "disabled": false,
       "bugged": false
@@ -455,7 +455,7 @@
       "description": "",
       "type": "economy system",
       "cooldown": null,
-      "args": [],
+      "args": null,
       "usable_by": "everyone",
       "disabled": false,
       "bugged": false
@@ -497,7 +497,7 @@
       "description": "",
       "type": "general utilities",
       "cooldown": null,
-      "args": [],
+      "args": null,
       "usable_by": "everyone",
       "disabled": false,
       "bugged": false
@@ -530,7 +530,7 @@
       "description": "",
       "type": "minigames",
       "cooldown": null,
-      "args": [],
+      "args": null,
       "usable_by": "everyone",
       "disabled": false,
       "bugged": false
@@ -540,7 +540,7 @@
       "description": "",
       "type": "minigames",
       "cooldown": null,
-      "args": [],
+      "args": null,
       "usable_by": "everyone",
       "disabled": false,
       "bugged": false
