@@ -1,0 +1,548 @@
+{
+  "work": {
+    "name": "Work",
+    "description": "",
+    "type": "economy system",
+    "cooldown": null,
+    "args": [],
+    "usable_by": "everyone",
+    "disabled": false,
+    "bugged": false
+  },
+
+  "hunt": {
+      "name": "Hunt",
+      "description": "",
+      "type": "economy system",
+      "cooldown": null,
+      "args": [],
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+  "dig": {
+      "name": "Dig",
+      "description": "",
+      "type": "economy system",
+      "cooldown": null,
+      "args": [],
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+  "fish": {
+      "name": "Fish",
+      "description": "",
+      "type": "economy system",
+      "cooldown": null,
+      "args": [],
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+
+  "daily": {
+      "name": "Daily",
+      "description": "",
+      "type": "economy system",
+      "cooldown": null,
+      "args": [],
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+  "weekly": {
+      "name": "Weekly",
+      "description": "",
+      "type": "economy system",
+      "cooldown": null,
+      "args": [],
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+  "monthly": {
+      "name": "Monthly",
+      "description": "",
+      "type": "economy system",
+      "cooldown": null,
+      "args": [],
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+
+  "load": {
+      "name": "Load Module",
+      "description": "",
+      "type": "DevTools",
+      "cooldown": null,
+      "args": ["module"],
+      "usable_by": "the developer",
+      "disabled": false,
+      "bugged": false
+  },
+  "unload": {
+      "name": "Unload Module",
+      "description": "",
+      "type": "DevTools",
+      "cooldown": null,
+      "args": ["module"],
+      "usable_by": "the developer",
+      "disabled": false,
+      "bugged": false
+  },
+  "sync": {
+      "name": "Sync Databases",
+      "description": "",
+      "type": "DevTools",
+      "cooldown": null,
+      "args": [],
+      "usable_by": "the developer",
+      "disabled": false,
+      "bugged": false
+  },
+  "modify_balance": {
+      "name": "Modify Balance",
+      "description": "",
+      "type": "DevTools",
+      "cooldown": null,
+      "args": ["user", "modifier"],
+      "usable_by": "the developer",
+      "disabled": false,
+      "bugged": false
+  },
+
+  "balance": {
+      "name": "Show Balance",
+      "description": "",
+      "type": "economy system",
+      "cooldown": null,
+      "args": ["balance (optional)"],
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+
+  "kick": {
+      "name": "Kick Member",
+      "description": "",
+      "type": "moderation",
+      "cooldown": null,
+      "args": ["user", "reason (optional)"],
+      "usable_by": "moderators with `kick members` permissions",
+      "disabled": false,
+      "bugged": false
+  },
+  "ban": {
+      "name": "Ban Member",
+      "description": "",
+      "type": "moderation",
+      "cooldown": null,
+      "args": ["user", "reason (optional)"],
+      "usable_by": "moderators with `ban members` permissions",
+      "disabled": false,
+      "bugged": false
+  },
+
+  "warn": {
+      "name": "Warn Member",
+      "description": "",
+      "type": "moderation",
+      "cooldown": null,
+      "args": ["user", "reason"],
+      "usable_by": "moderators with `manage messages` permissions",
+      "disabled": false,
+      "bugged": false
+  },
+  "warns_clear": {
+      "name": "Clear Warnings",
+      "description": "",
+      "type": "moderation",
+      "cooldown": null,
+      "args": ["user"],
+      "usable_by": "moderators with `manage messages` permissions",
+      "disabled": false,
+      "bugged": false
+  },
+
+  "deposit": {
+      "name": "Deposit Coins",
+      "description": "",
+      "type": "economy system",
+      "cooldown": null,
+      "args": ["amount"],
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+  "withdraw": {
+      "name": "Withdraw Coins",
+      "description": "",
+      "type": "economy system",
+      "cooldown": null,
+      "args": ["amount"],
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+
+  "beg": {
+      "name": "Beg",
+      "description": "",
+      "type": "economy system",
+      "cooldown": null,
+      "args": [],
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+  "scout": {
+      "name": "Scout",
+      "description": "",
+      "type": "economy system",
+      "cooldown": null,
+      "args": [],
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+
+  "give": {
+      "name": "Give Coins",
+      "description": "",
+      "type": "economy system",
+      "cooldown": null,
+      "args": ["user", "amount"],
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+
+  "rob": {
+      "name": "Rob Member",
+      "description": "",
+      "type": "economy system",
+      "cooldown": null,
+      "args": ["user"],
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+  "bankrob": {
+      "name": "Rob Member Bank",
+      "description": "",
+      "type": "economy system",
+      "cooldown": null,
+      "args": ["user"],
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+
+  "inventory": {
+      "name": "Show Inventory",
+      "description": "",
+      "type": "economy system",
+      "cooldown": null,
+      "args": ["user (optional)"],
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+
+  "shop": {
+      "name": "Display Shop Items",
+      "description": "",
+      "type": "economy system",
+      "cooldown": null,
+      "args": ["item"],
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+
+  "buy": {
+      "name": "Buy Shop Item",
+      "description": "",
+      "type": "economy system",
+      "cooldown": null,
+      "args": ["name", "quantity (optional)"],
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+  "sell": {
+      "name": "Sell Item",
+      "description": "",
+      "type": "economy system",
+      "cooldown": null,
+      "args": ["name", "quantity (optional)"],
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+  "open": {
+      "name": "Open Lootbox",
+      "description": "",
+      "type": "economy system",
+      "cooldown": null,
+      "args": [],
+      "usable_by": "everyone",
+      "disabled": true,
+      "bugged": false
+  },
+
+  "echo": {
+      "name": "Echo",
+      "description": "",
+      "type": "general utilities",
+      "cooldown": null,
+      "args": ["text"],
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+
+  "whoami": {
+      "name": "User Info",
+      "description": "",
+      "type": "general utilities",
+      "cooldown": null,
+      "args": ["user"],
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+
+  "stroketranslate": {
+      "name": "Stroke Translate",
+      "description": "",
+      "type": "fun",
+      "cooldown": null,
+      "args": ["strok"],
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+  "prediction": {
+      "name": "Prediction",
+      "description": "",
+      "type": "fun",
+      "cooldown": null,
+      "args": ["question"],
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+
+  "memes": {
+      "name": "Memes",
+      "description": "",
+      "type": "reddit media",
+      "cooldown": null,
+      "args": [],
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+  "linuxmemes": {
+      "name": "r/linuxmemes",
+      "description": "",
+      "type": "reddit media",
+      "cooldown": null,
+      "args": [],
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+  "ihadastroke": {
+      "name": "r/ihadastroke",
+      "description": "",
+      "type": "reddit media",
+      "cooldown": null,
+      "args": [],
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+  "engrish": {
+      "name": "r/engrish",
+      "description": "",
+      "type": "reddit media",
+      "cooldown": null,
+      "args": [],
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+  "osugame": {
+      "name": "r/osugame",
+      "description": "",
+      "type": "reddit media",
+      "cooldown": null,
+      "args": [],
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+
+  "donate": {
+      "name": "Donate",
+      "description": "",
+      "type": "economy system",
+      "cooldown": null,
+      "args": ["id", "amount"],
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+  "gift": {
+      "name": "Gift Items",
+      "description": "",
+      "type": "economy system",
+      "cooldown": null,
+      "args": ["user", "item"],
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+
+  "status": {
+      "name": "Bot Status",
+      "description": "",
+      "type": "general utilities",
+      "cooldown": null,
+      "args": [],
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+
+  "afk_set": {
+      "name": "Set AFK Status",
+      "description": "",
+      "type": "AFK system",
+      "cooldown": null,
+      "args": ["response"],
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+  "afk_remove": {
+      "name": "Remove AFK Status",
+      "description": "",
+      "type": "AFK system",
+      "cooldown": null,
+      "args": [],
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+  "afk_mod_remove": {
+      "name": "Remove Member AFK",
+      "description": "",
+      "type": "AFK system",
+      "cooldown": null,
+      "args": ["user"],
+      "usable_by": "moderators",
+      "disabled": false,
+      "bugged": false
+  },
+
+  "autogrind": {
+      "name": "Autogrind",
+      "description": "",
+      "type": "economy system",
+      "cooldown": null,
+      "args": [],
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+
+  "rank": {
+      "name": "Rank",
+      "description": "",
+      "type": "leveling system",
+      "cooldown": null,
+      "args": ["user (optional)"],
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+  "edit_rank": {
+      "name": "Edit Member Rank",
+      "description": "",
+      "type": "leveling system/DevTools",
+      "cooldown": null,
+      "args": ["user", "new_rank"],
+      "usable_by": "the developer",
+      "disabled": false,
+      "bugged": false
+  },
+  "edit_xp": {
+      "name": "Edit Member XP",
+      "description": "",
+      "type": "leveling system/DevTools",
+      "cooldown": null,
+      "args": ["user", "new_xp"],
+      "usable_by": "the developer",
+      "disabled": false,
+      "bugged": false
+  },
+
+  "repo": {
+      "name": "GitHub Repo",
+      "description": "",
+      "type": "general utilities",
+      "cooldown": null,
+      "args": [],
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+
+  "embedbuilder": {
+      "name": "EmbedBuilder",
+      "description": "",
+      "type": "general utilities",
+      "cooldown": null,
+      "args": ["title", "description", "image_url (optional)", "thumbnail_url (optional)", "color (optional)", "footer_text (optional)", "footer_icon_url (optional)"],
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+
+  "isobank_register": {
+      "name": "IsoBank Register",
+      "description": "",
+      "type": "IsoBank system",
+      "cooldown": null,
+      "args": ["pin"],
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+
+  "guessthenumber": {
+      "name": "Guess-the-number",
+      "description": "",
+      "type": "minigames",
+      "cooldown": null,
+      "args": [],
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+  "highlow": {
+      "name": "High-low",
+      "description": "",
+      "type": "minigames",
+      "cooldown": null,
+      "args": [],
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  }
+}
