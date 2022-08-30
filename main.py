@@ -166,7 +166,7 @@ async def help(ctx:SlashContext, command:str=None):
         except KeyError: return await ctx.reply(f"The command you tried searching for (\"{command}\") does not exist.", hidden=True)
     else:
         r = ""
-        for x in helpdb: r += f"/{x}\n"
+        for x in helpdb: r += f"`/{x}`\n"
         localembed = discord.Embed(title="Isobot Command Help", description=f"**Bot Commands:**\n{r}", color = discord.Color.random())
         await ctx.send(embed=localembed)
 
