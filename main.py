@@ -167,7 +167,7 @@ async def help(ctx:SlashContext, command:str=None):
     else:
         r = ""
         for x in helpdb: r += f"/{x}\n"
-        localembed = discord.Embed(title="Isobot Command Help", description=r, color = discord.Color.random())
+        localembed = discord.Embed(title="Isobot Command Help", description=f"**Bot Commands:**\n{r}", color = discord.Color.random())
         await ctx.send(embed=localembed)
 
 @slash.slash(
