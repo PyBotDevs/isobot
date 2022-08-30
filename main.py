@@ -160,8 +160,8 @@ async def help(ctx:SlashContext, command:str=None):
                 r = ""
                 for x in helpdb[command]['args']: r += f"`{x}` "
                 localembed.add_field(name="Arguments", value=r, inline=False)
-            if helpdb[command]['disabled'] == True: localembed.set_footer(text="⚠ This command is currently disabled")
             if helpdb[command]['bugged'] == True: localembed.set_footer(text="⚠ This command might be bugged (experiencing issues), but will be fixed later.")
+            if helpdb[command]['disabled'] == True: localembed.set_footer(text="⚠ This command is currently disabled")
             await ctx.send(embed=localembed)
         except KeyError: return await ctx.reply(f"The command you tried searching for (\"{command}\") does not exist.", hidden=True)
     else:
