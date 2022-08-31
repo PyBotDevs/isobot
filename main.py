@@ -163,7 +163,7 @@ async def help(ctx:SlashContext, command:str=None):
             if helpdb[command]['bugged'] == True: localembed.set_footer(text="⚠ This command might be bugged (experiencing issues), but will be fixed later.")
             if helpdb[command]['disabled'] == True: localembed.set_footer(text="⚠ This command is currently disabled")
             await ctx.send(embed=localembed)
-        except KeyError: return await ctx.reply(f"The command you tried searching for (\"{command}\") does not exist.", hidden=True)
+        except KeyError: return await ctx.reply(embed=discord.Embed(description=f"No results found for `{command}`."), hidden=True)
     else:
         r = ""
         for x in helpdb: r += f"`/{x}`\n"
