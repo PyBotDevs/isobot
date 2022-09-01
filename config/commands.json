@@ -1,0 +1,548 @@
+{
+  "work": {
+    "name": "Work",
+    "description": "Work for a 30-minute shift and earn a paycheck.",
+    "type": "economy system",
+    "cooldown": 1800,
+    "args": null,
+    "usable_by": "everyone",
+    "disabled": false,
+    "bugged": false
+  },
+
+  "hunt": {
+      "name": "Hunt",
+      "description": "Take out your hunting rifle and hunt down insects or animals to sell.",
+      "type": "economy system",
+      "cooldown": 30,
+      "args": null,
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+  "dig": {
+      "name": "Dig",
+      "description": "Take out your shovel and dig in the ground to find some items.",
+      "type": "economy system",
+      "cooldown": 45,
+      "args": null,
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+  "fish": {
+      "name": "Fish",
+      "description": "Whip out your fishing rod and catch fish (and other things) from the sea.",
+      "type": "economy system",
+      "cooldown": 45,
+      "args": null,
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+
+  "daily": {
+      "name": "Daily",
+      "description": "Claim your daily reward! (Once every day)",
+      "type": "economy system",
+      "cooldown": 43200,
+      "args": null,
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+  "weekly": {
+      "name": "Weekly",
+      "description": "Claim your weekly reward! (Once every week)",
+      "type": "economy system",
+      "cooldown": 302400,
+      "args": null,
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+  "monthly": {
+      "name": "Monthly",
+      "description": "Claim your monthly reward! (Once every month)",
+      "type": "economy system",
+      "cooldown": 1339200,
+      "args": null,
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+
+  "load": {
+      "name": "Load Module",
+      "description": "Load an individual module to the bots runtime instance.",
+      "type": "DevTools",
+      "cooldown": null,
+      "args": ["module"],
+      "usable_by": "the developer",
+      "disabled": false,
+      "bugged": false
+  },
+  "unload": {
+      "name": "Unload Module",
+      "description": "Unload an individual module to the bots runtime instance.",
+      "type": "DevTools",
+      "cooldown": null,
+      "args": ["module"],
+      "usable_by": "the developer",
+      "disabled": false,
+      "bugged": false
+  },
+  "sync": {
+      "name": "Sync Databases",
+      "description": "Re-caches and reloads all of the bot databases on memory.",
+      "type": "DevTools",
+      "cooldown": null,
+      "args": null,
+      "usable_by": "the developer",
+      "disabled": false,
+      "bugged": false
+  },
+  "modify_balance": {
+      "name": "Modify Balance",
+      "description": "Modify a user's wallet balance.",
+      "type": "DevTools",
+      "cooldown": null,
+      "args": ["user", "modifier"],
+      "usable_by": "the developer",
+      "disabled": false,
+      "bugged": false
+  },
+
+  "balance": {
+      "name": "Show Balance",
+      "description": "See your own balance, or someone else's balance.",
+      "type": "economy system",
+      "cooldown": null,
+      "args": ["balance (optional)"],
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+
+  "kick": {
+      "name": "Kick Member",
+      "description": "Kick a member from your guild.",
+      "type": "moderation",
+      "cooldown": null,
+      "args": ["user", "reason (optional)"],
+      "usable_by": "moderators with `kick members` permissions",
+      "disabled": false,
+      "bugged": false
+  },
+  "ban": {
+      "name": "Ban Member",
+      "description": "Ban a member from your guild.",
+      "type": "moderation",
+      "cooldown": null,
+      "args": ["user", "reason (optional)"],
+      "usable_by": "moderators with `ban members` permissions",
+      "disabled": false,
+      "bugged": false
+  },
+
+  "warn": {
+      "name": "Warn Member",
+      "description": "Warn a member in your guild for a specific reason.",
+      "type": "moderation",
+      "cooldown": null,
+      "args": ["user", "reason"],
+      "usable_by": "moderators with `manage messages` permissions",
+      "disabled": false,
+      "bugged": false
+  },
+  "warns_clear": {
+      "name": "Clear Warnings",
+      "description": "Clear a member's warnings in your guild.",
+      "type": "moderation",
+      "cooldown": null,
+      "args": ["user"],
+      "usable_by": "moderators with `manage messages` permissions",
+      "disabled": false,
+      "bugged": false
+  },
+
+  "deposit": {
+      "name": "Deposit Coins",
+      "description": "Deposit some or all of your coins into your bank account.",
+      "type": "economy system",
+      "cooldown": null,
+      "args": ["amount"],
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+  "withdraw": {
+      "name": "Withdraw Coins",
+      "description": "Withdraw some or all of your coins into your wallet.",
+      "type": "economy system",
+      "cooldown": null,
+      "args": ["amount"],
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+
+  "beg": {
+      "name": "Beg",
+      "description": "Beg other people for quick money.",
+      "type": "economy system",
+      "cooldown": 15,
+      "args": null,
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+  "scout": {
+      "name": "Scout",
+      "description": "Scout your area for coins or possibly even items.",
+      "type": "economy system",
+      "cooldown": 30,
+      "args": null,
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+
+  "give": {
+      "name": "Give Coins",
+      "description": "Give coins to whoever you want.",
+      "type": "economy system",
+      "cooldown": null,
+      "args": ["user", "amount"],
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+
+  "rob": {
+      "name": "Rob Member",
+      "description": "Rob a user and loot them of their coins!",
+      "type": "economy system",
+      "cooldown": 60,
+      "args": ["user"],
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+  "bankrob": {
+      "name": "Rob Member Bank",
+      "description": "Rob a user's bank, and possibly steal and get all of their wealth for yourself!",
+      "type": "economy system",
+      "cooldown": 300,
+      "args": ["user"],
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+
+  "inventory": {
+      "name": "Show Inventory",
+      "description": "Shows the items you own, or the items someone else owns.",
+      "type": "economy system",
+      "cooldown": null,
+      "args": ["user (optional)"],
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+
+  "shop": {
+      "name": "Display Shop Items",
+      "description": "Shop for an individual item in the shop, and display its information.",
+      "type": "economy system",
+      "cooldown": null,
+      "args": ["item"],
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+
+  "buy": {
+      "name": "Buy Shop Item",
+      "description": "Buy an item from the shop with your coins.",
+      "type": "economy system",
+      "cooldown": null,
+      "args": ["name", "quantity (optional)"],
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+  "sell": {
+      "name": "Sell Item",
+      "description": "Sell an item in the shop for some profit.",
+      "type": "economy system",
+      "cooldown": null,
+      "args": ["name", "quantity (optional)"],
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+  "open": {
+      "name": "Open Lootbox",
+      "description": "Open a lootbox and get awesome coin and item rewards!",
+      "type": "economy system",
+      "cooldown": null,
+      "args": null,
+      "usable_by": "everyone",
+      "disabled": true,
+      "bugged": false
+  },
+
+  "echo": {
+      "name": "Echo",
+      "description": "Sends a message in the respective channel.",
+      "type": "general utilities",
+      "cooldown": null,
+      "args": ["text"],
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+
+  "whoami": {
+      "name": "User Info",
+      "description": "Show basic (and some detailed information) on you, or a specific user.",
+      "type": "general utilities",
+      "cooldown": null,
+      "args": ["user"],
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+
+  "stroketranslate": {
+      "name": "Stroke Translate",
+      "description": "Generate random strokes from random text!",
+      "type": "fun",
+      "cooldown": null,
+      "args": ["strok"],
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+  "prediction": {
+      "name": "Prediction",
+      "description": "Predict a yes/no question outcome.",
+      "type": "fun",
+      "cooldown": null,
+      "args": ["question"],
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+
+  "memes": {
+      "name": "Memes",
+      "description": "Get some high-quality memes from reddit. (Powered by PRAW, fetched from the /memes subreddit)",
+      "type": "reddit media",
+      "cooldown": null,
+      "args": null,
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+  "linuxmemes": {
+      "name": "r/linuxmemes",
+      "description": "Gets a meme from r/linuxmemes subreddit.",
+      "type": "reddit media",
+      "cooldown": null,
+      "args": null,
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+  "ihadastroke": {
+      "name": "r/ihadastroke",
+      "description": "Gets a post from r/ihadastroke subreddit.",
+      "type": "reddit media",
+      "cooldown": null,
+      "args": null,
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+  "engrish": {
+      "name": "r/engrish",
+      "description": "Gets a post from r/engrish subreddit.",
+      "type": "reddit media",
+      "cooldown": null,
+      "args": null,
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+  "osugame": {
+      "name": "r/osugame",
+      "description": "Gets a post from r/osugame subreddit.",
+      "type": "reddit media",
+      "cooldown": null,
+      "args": null,
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+
+  "donate": {
+      "name": "Donate",
+      "description": "Donate any amount of coins to another user (with a donation ID).",
+      "type": "economy system",
+      "cooldown": null,
+      "args": ["id", "amount"],
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+  "gift": {
+      "name": "Gift Items",
+      "description": "Gift any item to any user you want.",
+      "type": "economy system",
+      "cooldown": null,
+      "args": ["user", "item"],
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+
+  "status": {
+      "name": "Bot Status",
+      "description": "Returns general statistics on the current bot instance.",
+      "type": "general utilities",
+      "cooldown": null,
+      "args": null,
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+
+  "afk_set": {
+      "name": "Set AFK Status",
+      "description": "Going to be AFK? Use this command to set a AFK status so that people know when and why you are AFK.",
+      "type": "AFK system",
+      "cooldown": null,
+      "args": ["response"],
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+  "afk_remove": {
+      "name": "Remove AFK Status",
+      "description": "Remove your AFK status with this command.",
+      "type": "AFK system",
+      "cooldown": null,
+      "args": null,
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+  "afk_mod_remove": {
+      "name": "Remove Member AFK",
+      "description": "Remove an AFK status from a member (for example, if the AFK status breaks your server's rules).",
+      "type": "AFK system",
+      "cooldown": null,
+      "args": ["user"],
+      "usable_by": "moderators",
+      "disabled": false,
+      "bugged": false
+  },
+
+  "autogrind": {
+      "name": "Autogrind",
+      "description": "Use this command to automatically let the bot grind coins and items for you, while you're AFK or doing other things.",
+      "type": "economy system",
+      "cooldown": 3600,
+      "args": null,
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+
+  "rank": {
+      "name": "Rank",
+      "description": "Show your bot level/rank, or someone else's level/rank.",
+      "type": "leveling system",
+      "cooldown": null,
+      "args": ["user (optional)"],
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+  "edit_rank": {
+      "name": "Edit Member Rank",
+      "description": "Sets a new level/rank for a specified user.",
+      "type": "leveling system/DevTools",
+      "cooldown": null,
+      "args": ["user", "new_rank"],
+      "usable_by": "the developer",
+      "disabled": false,
+      "bugged": false
+  },
+  "edit_xp": {
+      "name": "Edit Member XP",
+      "description": "Sets a new XP amount for a specified user.",
+      "type": "leveling system/DevTools",
+      "cooldown": null,
+      "args": ["user", "new_xp"],
+      "usable_by": "the developer",
+      "disabled": false,
+      "bugged": false
+  },
+
+  "repo": {
+      "name": "GitHub Repo",
+      "description": "Shows the GitHub repository link of the bot. *Yes! Isobot is open-source.*",
+      "type": "general utilities",
+      "cooldown": null,
+      "args": null,
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+
+  "embedbuilder": {
+      "name": "EmbedBuilder",
+      "description": "Build an embed using a simple command and EmbedBuilder.",
+      "type": "general utilities",
+      "cooldown": null,
+      "args": ["title", "description", "image_url (optional)", "thumbnail_url (optional)", "color (optional)", "footer_text (optional)", "footer_icon_url (optional)"],
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+
+  "isobank_register": {
+      "name": "IsoBank Register",
+      "description": "Registers a new IsoBank account under your Discord account ID and your custom-set PIN.",
+      "type": "IsoBank system",
+      "cooldown": null,
+      "args": ["pin"],
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+
+  "guessthenumber": {
+      "name": "Guess-the-number",
+      "description": "Play a simple minigame to guess the number that the bot is thinking of, from 1 to 10.",
+      "type": "minigames",
+      "cooldown": 10,
+      "args": null,
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  },
+  "highlow": {
+      "name": "High-low",
+      "description": "Play a minigame to guess whether the second number is higher, lower, or equal to the first number, and if you guess it right you get coins.",
+      "type": "minigames",
+      "cooldown": 40,
+      "args": null,
+      "usable_by": "everyone",
+      "disabled": false,
+      "bugged": false
+  }
+}

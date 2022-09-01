@@ -35,6 +35,7 @@ with open('database/items.json', 'r') as f: items = json.load(f)
 with open('config/shop.json', 'r') as f: shopitem = json.load(f)
 with open('database/presence.json', 'r') as f: user_presence = json.load(f)
 with open('database/levels.json', 'r') as f: levels = json.load(f)
+with open('config/commands.json', 'r') as f: helpdb = json.load(f)
 
 #Pre-Initialization Commands
 def timenow(): datetime.datetime.now().strftime("%H:%M:%S")
@@ -141,6 +142,34 @@ async def on_command_error(ctx, error):
         print(f'[{current_time}] Ignoring exception at {colors.cyan}BadBoolArgument{colors.end}.')
 
 #Commands
+@slash.slash(
+    name="help",
+    description="Gives you help",
+    options=[
+        create_option(name="command", description="Which command do you need help with?", option_type=3, required=False)
+    ]
+)
+async def help(ctx:SlashContext, command:str=None):
+    if command is not None:
+        try:
+            localembed = discord.Embed(title=f"{helpdb[command]['name']} Command (/{command})", description=helpdb[command]['description'], color=discord.Color.random())
+            localembed.add_field(name="Command Type", value=helpdb[command]['type'], inline=False)
+            if helpdb[command]['cooldown'] is not None: localembed.add_field(name="Cooldown", value=f"{str(datetime.timedelta(seconds=helpdb[command]['cooldown']))}", inline=False)
+            localembed.add_field(name="Usable By", value=helpdb[command]['usable_by'], inline=False)
+            if helpdb[command]['args'] is not None:
+                r = ""
+                for x in helpdb[command]['args']: r += f"`{x}` "
+                localembed.add_field(name="Arguments", value=r, inline=False)
+            if helpdb[command]['bugged'] == True: localembed.set_footer(text="⚠ This command might be bugged (experiencing issues), but will be fixed later.")
+            if helpdb[command]['disabled'] == True: localembed.set_footer(text="⚠ This command is currently disabled")
+            await ctx.send(embed=localembed)
+        except KeyError: return await ctx.reply(embed=discord.Embed(description=f"No results found for {command}."), hidden=True)
+    else:
+        r = ""
+        for x in helpdb: r += f"`/{x}`\n"
+        localembed = discord.Embed(title="Isobot Command Help", description=f"**Bot Commands:**\n{r}", color = discord.Color.random())
+        await ctx.send(embed=localembed)
+
 @slash.slash(
     name='load',
     description='Loads the specified module to the bot',
