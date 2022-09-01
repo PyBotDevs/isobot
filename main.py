@@ -152,7 +152,7 @@ async def on_command_error(ctx, error):
 async def help(ctx:SlashContext, command:str=None):
     if command is not None:
         try:
-            localembed = discord.Embed(title=f"{helpdb[command]['name']} Command ({command})", description=helpdb[command]['description'], color=discord.Color.random())
+            localembed = discord.Embed(title=f"{helpdb[command]['name']} Command (/{command})", description=helpdb[command]['description'], color=discord.Color.random())
             localembed.add_field(name="Command Type", value=helpdb[command]['type'], inline=False)
             if helpdb[command]['cooldown'] is not None: localembed.add_field(name="Cooldown", value=f"{str(datetime.timedelta(seconds=helpdb[command]['cooldown']))}", inline=False)
             localembed.add_field(name="Usable By", value=helpdb[command]['usable_by'], inline=False)
