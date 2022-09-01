@@ -1,7 +1,7 @@
 {
   "work": {
     "name": "Work",
-    "description": "*A description for this command will be added later.*",
+    "description": "Work for a 30-minute shift and earn a paycheck.",
     "type": "economy system",
     "cooldown": 1800,
     "args": null,
@@ -12,7 +12,7 @@
 
   "hunt": {
       "name": "Hunt",
-      "description": "*A description for this command will be added later.*",
+      "description": "Take out your hunting rifle and hunt down insects or animals to sell.",
       "type": "economy system",
       "cooldown": 30,
       "args": null,
@@ -22,7 +22,7 @@
   },
   "dig": {
       "name": "Dig",
-      "description": "*A description for this command will be added later.*",
+      "description": "Take out your shovel and dig in the ground to find some items.",
       "type": "economy system",
       "cooldown": 45,
       "args": null,
@@ -32,7 +32,7 @@
   },
   "fish": {
       "name": "Fish",
-      "description": "*A description for this command will be added later.*",
+      "description": "Whip out your fishing rod and catch fish (and other things) from the sea.",
       "type": "economy system",
       "cooldown": 45,
       "args": null,
@@ -43,7 +43,7 @@
 
   "daily": {
       "name": "Daily",
-      "description": "*A description for this command will be added later.*",
+      "description": "Claim your daily reward! (Once every day)",
       "type": "economy system",
       "cooldown": 43200,
       "args": null,
@@ -53,7 +53,7 @@
   },
   "weekly": {
       "name": "Weekly",
-      "description": "*A description for this command will be added later.*",
+      "description": "Claim your weekly reward! (Once every week)",
       "type": "economy system",
       "cooldown": 302400,
       "args": null,
@@ -63,7 +63,7 @@
   },
   "monthly": {
       "name": "Monthly",
-      "description": "*A description for this command will be added later.*",
+      "description": "Claim your monthly reward! (Once every month)",
       "type": "economy system",
       "cooldown": 1339200,
       "args": null,
@@ -74,7 +74,7 @@
 
   "load": {
       "name": "Load Module",
-      "description": "*A description for this command will be added later.*",
+      "description": "Load an individual module to the bots runtime instance.",
       "type": "DevTools",
       "cooldown": null,
       "args": ["module"],
@@ -84,7 +84,7 @@
   },
   "unload": {
       "name": "Unload Module",
-      "description": "*A description for this command will be added later.*",
+      "description": "Unload an individual module to the bots runtime instance.",
       "type": "DevTools",
       "cooldown": null,
       "args": ["module"],
@@ -94,7 +94,7 @@
   },
   "sync": {
       "name": "Sync Databases",
-      "description": "*A description for this command will be added later.*",
+      "description": "Re-caches and reloads all of the bot databases on memory.",
       "type": "DevTools",
       "cooldown": null,
       "args": null,
@@ -104,7 +104,7 @@
   },
   "modify_balance": {
       "name": "Modify Balance",
-      "description": "*A description for this command will be added later.*",
+      "description": "Modify a user's wallet balance.",
       "type": "DevTools",
       "cooldown": null,
       "args": ["user", "modifier"],
@@ -115,7 +115,7 @@
 
   "balance": {
       "name": "Show Balance",
-      "description": "*A description for this command will be added later.*",
+      "description": "See your own balance, or someone else's balance.",
       "type": "economy system",
       "cooldown": null,
       "args": ["balance (optional)"],
@@ -126,7 +126,7 @@
 
   "kick": {
       "name": "Kick Member",
-      "description": "*A description for this command will be added later.*",
+      "description": "Kick a member from your guild.",
       "type": "moderation",
       "cooldown": null,
       "args": ["user", "reason (optional)"],
@@ -136,7 +136,7 @@
   },
   "ban": {
       "name": "Ban Member",
-      "description": "*A description for this command will be added later.*",
+      "description": "Ban a member from your guild.",
       "type": "moderation",
       "cooldown": null,
       "args": ["user", "reason (optional)"],
@@ -147,7 +147,7 @@
 
   "warn": {
       "name": "Warn Member",
-      "description": "*A description for this command will be added later.*",
+      "description": "Warn a member in your guild for a specific reason.",
       "type": "moderation",
       "cooldown": null,
       "args": ["user", "reason"],
@@ -157,7 +157,7 @@
   },
   "warns_clear": {
       "name": "Clear Warnings",
-      "description": "*A description for this command will be added later.*",
+      "description": "Clear a member's warnings in your guild.",
       "type": "moderation",
       "cooldown": null,
       "args": ["user"],
@@ -168,7 +168,7 @@
 
   "deposit": {
       "name": "Deposit Coins",
-      "description": "*A description for this command will be added later.*",
+      "description": "Deposit some or all of your coins into your bank account.",
       "type": "economy system",
       "cooldown": null,
       "args": ["amount"],
@@ -178,7 +178,7 @@
   },
   "withdraw": {
       "name": "Withdraw Coins",
-      "description": "*A description for this command will be added later.*",
+      "description": "Withdraw some or all of your coins into your wallet.",
       "type": "economy system",
       "cooldown": null,
       "args": ["amount"],
@@ -189,7 +189,7 @@
 
   "beg": {
       "name": "Beg",
-      "description": "*A description for this command will be added later.*",
+      "description": "Beg other people for quick money.",
       "type": "economy system",
       "cooldown": 15,
       "args": null,
@@ -199,7 +199,7 @@
   },
   "scout": {
       "name": "Scout",
-      "description": "*A description for this command will be added later.*",
+      "description": "Scout your area for coins or possibly even items.",
       "type": "economy system",
       "cooldown": 30,
       "args": null,
@@ -210,7 +210,7 @@
 
   "give": {
       "name": "Give Coins",
-      "description": "*A description for this command will be added later.*",
+      "description": "Give coins to whoever you want.",
       "type": "economy system",
       "cooldown": null,
       "args": ["user", "amount"],
@@ -221,7 +221,7 @@
 
   "rob": {
       "name": "Rob Member",
-      "description": "*A description for this command will be added later.*",
+      "description": "Rob a user and loot them of their coins!",
       "type": "economy system",
       "cooldown": 60,
       "args": ["user"],
@@ -231,7 +231,7 @@
   },
   "bankrob": {
       "name": "Rob Member Bank",
-      "description": "*A description for this command will be added later.*",
+      "description": "Rob a user's bank, and possibly steal and get all of their wealth for yourself!",
       "type": "economy system",
       "cooldown": 300,
       "args": ["user"],
@@ -242,7 +242,7 @@
 
   "inventory": {
       "name": "Show Inventory",
-      "description": "*A description for this command will be added later.*",
+      "description": "Shows the items you own, or the items someone else owns.",
       "type": "economy system",
       "cooldown": null,
       "args": ["user (optional)"],
@@ -253,7 +253,7 @@
 
   "shop": {
       "name": "Display Shop Items",
-      "description": "*A description for this command will be added later.*",
+      "description": "Shop for an individual item in the shop, and display its information.",
       "type": "economy system",
       "cooldown": null,
       "args": ["item"],
@@ -264,7 +264,7 @@
 
   "buy": {
       "name": "Buy Shop Item",
-      "description": "*A description for this command will be added later.*",
+      "description": "Buy an item from the shop with your coins.",
       "type": "economy system",
       "cooldown": null,
       "args": ["name", "quantity (optional)"],
@@ -274,7 +274,7 @@
   },
   "sell": {
       "name": "Sell Item",
-      "description": "*A description for this command will be added later.*",
+      "description": "Sell an item in the shop for some profit.",
       "type": "economy system",
       "cooldown": null,
       "args": ["name", "quantity (optional)"],
@@ -284,7 +284,7 @@
   },
   "open": {
       "name": "Open Lootbox",
-      "description": "*A description for this command will be added later.*",
+      "description": "Open a lootbox and get awesome coin and item rewards!",
       "type": "economy system",
       "cooldown": null,
       "args": null,
@@ -295,7 +295,7 @@
 
   "echo": {
       "name": "Echo",
-      "description": "*A description for this command will be added later.*",
+      "description": "Sends a message in the respective channel.",
       "type": "general utilities",
       "cooldown": null,
       "args": ["text"],
@@ -306,7 +306,7 @@
 
   "whoami": {
       "name": "User Info",
-      "description": "*A description for this command will be added later.*",
+      "description": "Show basic (and some detailed information) on you, or a specific user.",
       "type": "general utilities",
       "cooldown": null,
       "args": ["user"],
@@ -317,7 +317,7 @@
 
   "stroketranslate": {
       "name": "Stroke Translate",
-      "description": "*A description for this command will be added later.*",
+      "description": "Generate random strokes from random text!",
       "type": "fun",
       "cooldown": null,
       "args": ["strok"],
@@ -327,7 +327,7 @@
   },
   "prediction": {
       "name": "Prediction",
-      "description": "*A description for this command will be added later.*",
+      "description": "Predict a yes/no question outcome.",
       "type": "fun",
       "cooldown": null,
       "args": ["question"],
@@ -338,7 +338,7 @@
 
   "memes": {
       "name": "Memes",
-      "description": "*A description for this command will be added later.*",
+      "description": "Get some high-quality memes from reddit. (Powered by PRAW, fetched from the /memes subreddit)",
       "type": "reddit media",
       "cooldown": null,
       "args": null,
@@ -348,7 +348,7 @@
   },
   "linuxmemes": {
       "name": "r/linuxmemes",
-      "description": "*A description for this command will be added later.*",
+      "description": "Gets a meme from r/linuxmemes subreddit.",
       "type": "reddit media",
       "cooldown": null,
       "args": null,
@@ -358,7 +358,7 @@
   },
   "ihadastroke": {
       "name": "r/ihadastroke",
-      "description": "*A description for this command will be added later.*",
+      "description": "Gets a post from r/ihadastroke subreddit.",
       "type": "reddit media",
       "cooldown": null,
       "args": null,
@@ -368,7 +368,7 @@
   },
   "engrish": {
       "name": "r/engrish",
-      "description": "*A description for this command will be added later.*",
+      "description": "Gets a post from r/engrish subreddit.",
       "type": "reddit media",
       "cooldown": null,
       "args": null,
@@ -378,7 +378,7 @@
   },
   "osugame": {
       "name": "r/osugame",
-      "description": "*A description for this command will be added later.*",
+      "description": "Gets a post from r/osugame subreddit.",
       "type": "reddit media",
       "cooldown": null,
       "args": null,
@@ -389,7 +389,7 @@
 
   "donate": {
       "name": "Donate",
-      "description": "*A description for this command will be added later.*",
+      "description": "Donate any amount of coins to another user (with a donation ID).",
       "type": "economy system",
       "cooldown": null,
       "args": ["id", "amount"],
@@ -399,7 +399,7 @@
   },
   "gift": {
       "name": "Gift Items",
-      "description": "*A description for this command will be added later.*",
+      "description": "Gift any item to any user you want.",
       "type": "economy system",
       "cooldown": null,
       "args": ["user", "item"],
@@ -410,7 +410,7 @@
 
   "status": {
       "name": "Bot Status",
-      "description": "*A description for this command will be added later.*",
+      "description": "Returns general statistics on the current bot instance.",
       "type": "general utilities",
       "cooldown": null,
       "args": null,
@@ -421,7 +421,7 @@
 
   "afk_set": {
       "name": "Set AFK Status",
-      "description": "*A description for this command will be added later.*",
+      "description": "Going to be AFK? Use this command to set a AFK status so that people know when and why you are AFK.",
       "type": "AFK system",
       "cooldown": null,
       "args": ["response"],
@@ -431,7 +431,7 @@
   },
   "afk_remove": {
       "name": "Remove AFK Status",
-      "description": "*A description for this command will be added later.*",
+      "description": "Remove your AFK status with this command.",
       "type": "AFK system",
       "cooldown": null,
       "args": null,
@@ -441,7 +441,7 @@
   },
   "afk_mod_remove": {
       "name": "Remove Member AFK",
-      "description": "*A description for this command will be added later.*",
+      "description": "Remove an AFK status from a member (for example, if the AFK status breaks your server's rules).",
       "type": "AFK system",
       "cooldown": null,
       "args": ["user"],
@@ -452,7 +452,7 @@
 
   "autogrind": {
       "name": "Autogrind",
-      "description": "*A description for this command will be added later.*",
+      "description": "Use this command to automatically let the bot grind coins and items for you, while you're AFK or doing other things.",
       "type": "economy system",
       "cooldown": 3600,
       "args": null,
@@ -463,7 +463,7 @@
 
   "rank": {
       "name": "Rank",
-      "description": "*A description for this command will be added later.*",
+      "description": "Show your bot level/rank, or someone else's level/rank.",
       "type": "leveling system",
       "cooldown": null,
       "args": ["user (optional)"],
@@ -473,7 +473,7 @@
   },
   "edit_rank": {
       "name": "Edit Member Rank",
-      "description": "*A description for this command will be added later.*",
+      "description": "Sets a new level/rank for a specified user.",
       "type": "leveling system/DevTools",
       "cooldown": null,
       "args": ["user", "new_rank"],
@@ -483,7 +483,7 @@
   },
   "edit_xp": {
       "name": "Edit Member XP",
-      "description": "*A description for this command will be added later.*",
+      "description": "Sets a new XP amount for a specified user.",
       "type": "leveling system/DevTools",
       "cooldown": null,
       "args": ["user", "new_xp"],
@@ -494,7 +494,7 @@
 
   "repo": {
       "name": "GitHub Repo",
-      "description": "*A description for this command will be added later.*",
+      "description": "Shows the GitHub repository link of the bot. *Yes! Isobot is open-source.*",
       "type": "general utilities",
       "cooldown": null,
       "args": null,
@@ -505,7 +505,7 @@
 
   "embedbuilder": {
       "name": "EmbedBuilder",
-      "description": "*A description for this command will be added later.*",
+      "description": "Build an embed using a simple command and EmbedBuilder.",
       "type": "general utilities",
       "cooldown": null,
       "args": ["title", "description", "image_url (optional)", "thumbnail_url (optional)", "color (optional)", "footer_text (optional)", "footer_icon_url (optional)"],
@@ -516,7 +516,7 @@
 
   "isobank_register": {
       "name": "IsoBank Register",
-      "description": "*A description for this command will be added later.*",
+      "description": "Registers a new IsoBank account under your Discord account ID and your custom-set PIN.",
       "type": "IsoBank system",
       "cooldown": null,
       "args": ["pin"],
@@ -527,7 +527,7 @@
 
   "guessthenumber": {
       "name": "Guess-the-number",
-      "description": "*A description for this command will be added later.*",
+      "description": "Play a simple minigame to guess the number that the bot is thinking of, from 1 to 10.",
       "type": "minigames",
       "cooldown": 10,
       "args": null,
@@ -537,7 +537,7 @@
   },
   "highlow": {
       "name": "High-low",
-      "description": "*A description for this command will be added later.*",
+      "description": "Play a minigame to guess whether the second number is higher, lower, or equal to the first number, and if you guess it right you get coins.",
       "type": "minigames",
       "cooldown": 40,
       "args": null,
