@@ -78,3 +78,11 @@ class CurrencyAPI(Colors):
         with open(self.log_path, 'a') as f:
             f.write(f'{self.get_time()} framework.isobot.currency ({user}): Moved {amount} coins from bank to wallet\n')
             f.close()
+
+    def wallet(self, user: discord.User):
+        """Returns the amount of coins in the user's wallet."""
+        return int(currency["wallet"][str(user.id)])
+
+    def bank(self, user: discord.User):
+        """Returns the amount of coins in the user's bank account."""
+        return int(currency["bank"][str(user.id)])
