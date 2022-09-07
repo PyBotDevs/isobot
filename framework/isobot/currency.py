@@ -21,7 +21,7 @@ class CurrencyAPI(Colors):
     def __init__(self, db_path: str, log_path: str):
         self.db_path = db_path
         self.log_path = log_path
-        with open(self.db_path, 'w+') as f:
+        with open(self.db_path, 'r') as f:
             global currency
             currency = json.load(f)
         print(f"[Framework/Loader] {Colors.green}CurrencyAPI initialized.{Colors.end}")
