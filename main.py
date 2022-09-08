@@ -54,6 +54,9 @@ if not os.path.isdir("logs"):
     time.sleep(0.5)
     open('logs/error-log.txt', 'x')
     utils.logger.info("Created error log", nolog=True)
+    time.sleep(0.5)
+    open('logs/currency.log', 'x')
+    utils.logger.info("Created currency log", nolog=True)
   except Exception as e: utils.logger.error(f"Failed to make log file: {e}", nolog=True)
 
 #Classes
