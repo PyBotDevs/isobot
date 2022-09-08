@@ -35,7 +35,7 @@ class CurrencyAPI(Colors):
 
     def add(self, user: discord.User, amount: int):
         """Adds balance to the specified user."""
-        currency["wallet"][str(user)] += amount
+        currency["wallet"][str(user)] += int(amount)
         self.save()
         with open(self.log_path, 'a') as f:
             f.write(f'{self.get_time()} framework.isobot.currency ({user}): Added {amount} coins to wallet\n')
@@ -43,7 +43,7 @@ class CurrencyAPI(Colors):
 
     def remove(self, user: discord.User, amount: int):
         """Removes balance from the specified user."""
-        currency["wallet"][str(user)] -= amount
+        currency["wallet"][str(user)] -= int(amount)
         self.save()
         with open(self.log_path, 'a') as f:
             f.write(f'{self.get_time()} framework.isobot.currency ({user}): Removed {amount} coins from wallet\n')
@@ -61,8 +61,8 @@ class CurrencyAPI(Colors):
 
     def deposit(self, user: discord.User, amount: int):
         """Moves a specified amount of coins to the user's bank."""
-        currency["bank"][str(user)] += amount
-        currency["wallet"][str(user)] -= amount
+        currency["bank"][str(user)] += int(amount)
+        currency["wallet"][str(user)] -= int(amount)
         self.save()
         print(f"[Framework/CurrencyAPI] Moved {amount} coins to bank. User: {user} [{user}]")
         with open(self.log_path, 'a') as f:
@@ -71,8 +71,8 @@ class CurrencyAPI(Colors):
 
     def withdraw(self, user: discord.User, amount: int):
         """Moves a specified amount of coins to the user's wallet."""
-        currency["wallet"][str(user)] += amount
-        currency["bank"][str(user)] -= amount
+        currency["wallet"][str(user)] += int(amount)
+        currency["bank"][str(user)] -= int(amount)
         self.save()
         print(f"[Framework/CurrencyAPI] Moved {amount} coins to wallet. User: {user} [{user}]")
         with open(self.log_path, 'a') as f:
