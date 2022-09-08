@@ -47,14 +47,17 @@ def save():
     with open('database/levels.json', 'w+') as f: json.dump(levels, f, indent=4)
 
 if not os.path.isdir("logs"):
-  os.mkdir('logs')
-  try:
-    open('logs/info-log.txt', 'x')
-    utils.logger.info("Created info log", nolog=True)
-    time.sleep(0.5)
-    open('logs/error-log.txt', 'x')
-    utils.logger.info("Created error log", nolog=True)
-  except Exception as e: utils.logger.error(f"Failed to make log file: {e}", nolog=True)
+    os.mkdir('logs')
+    try:
+        open('logs/info-log.txt', 'x')
+        utils.logger.info("Created info log", nolog=True)
+        time.sleep(0.5)
+        open('logs/error-log.txt', 'x')
+        utils.logger.info("Created error log", nolog=True)
+        time.sleep(0.5)
+        open('logs/currency.log', 'x')
+        utils.logger.info("Created currency log", nolog=True)
+    except Exception as e: utils.logger.error(f"Failed to make log file: {e}", nolog=True)
 
 #Classes
 class plugins:
