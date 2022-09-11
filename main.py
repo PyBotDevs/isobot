@@ -1176,7 +1176,7 @@ async def highlow(ctx:SlashContext):
 
 @slash.slash(
     name="profile",
-    description="Shows basic stats about your isobot profile, or someone else's stats",
+    description="Shows basic stats about your isobot profile, or someone else's profile stats",
     options=[
         create_option(name="user", description="Whose isobot profile do you want to view?", option_type=6, required=False)
     ]
