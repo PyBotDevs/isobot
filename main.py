@@ -1193,7 +1193,6 @@ async def profile(ctx: SlashContext, user: discord.User = None):
     # Maybe I should make a userdat system for collecting statistical data to process and display here, coming in a future update.
     await ctx.send(embed=localembed)
 
-
 # Initialization
 utils.ping.host()
 client.run(api.auth.get_token())
