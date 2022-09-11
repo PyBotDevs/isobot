@@ -9,7 +9,6 @@
     "disabled": false,
     "bugged": false
   },
-
   "hunt": {
       "name": "Hunt",
       "description": "Take out your hunting rifle and hunt down insects or animals to sell.",
@@ -40,7 +39,6 @@
       "disabled": false,
       "bugged": false
   },
-
   "daily": {
       "name": "Daily",
       "description": "Claim your daily reward! (Once every day)",
@@ -71,7 +69,6 @@
       "disabled": false,
       "bugged": false
   },
-
   "load": {
       "name": "Load Module",
       "description": "Load an individual module to the bots runtime instance.",
@@ -112,7 +109,6 @@
       "disabled": false,
       "bugged": false
   },
-
   "balance": {
       "name": "Show Balance",
       "description": "See your own balance, or someone else's balance.",
@@ -123,7 +119,6 @@
       "disabled": false,
       "bugged": false
   },
-
   "kick": {
       "name": "Kick Member",
       "description": "Kick a member from your guild.",
@@ -144,7 +139,6 @@
       "disabled": false,
       "bugged": false
   },
-
   "warn": {
       "name": "Warn Member",
       "description": "Warn a member in your guild for a specific reason.",
@@ -165,7 +159,6 @@
       "disabled": false,
       "bugged": false
   },
-
   "deposit": {
       "name": "Deposit Coins",
       "description": "Deposit some or all of your coins into your bank account.",
@@ -186,7 +179,6 @@
       "disabled": false,
       "bugged": false
   },
-
   "beg": {
       "name": "Beg",
       "description": "Beg other people for quick money.",
@@ -207,7 +199,6 @@
       "disabled": false,
       "bugged": false
   },
-
   "give": {
       "name": "Give Coins",
       "description": "Give coins to whoever you want.",
@@ -218,7 +209,6 @@
       "disabled": false,
       "bugged": false
   },
-
   "rob": {
       "name": "Rob Member",
       "description": "Rob a user and loot them of their coins!",
@@ -239,7 +229,6 @@
       "disabled": false,
       "bugged": false
   },
-
   "inventory": {
       "name": "Show Inventory",
       "description": "Shows the items you own, or the items someone else owns.",
@@ -250,7 +239,6 @@
       "disabled": false,
       "bugged": false
   },
-
   "shop": {
       "name": "Display Shop Items",
       "description": "Shop for an individual item in the shop, and display its information.",
@@ -261,7 +249,6 @@
       "disabled": false,
       "bugged": false
   },
-
   "buy": {
       "name": "Buy Shop Item",
       "description": "Buy an item from the shop with your coins.",
@@ -292,7 +279,6 @@
       "disabled": true,
       "bugged": false
   },
-
   "echo": {
       "name": "Echo",
       "description": "Sends a message in the respective channel.",
@@ -303,7 +289,6 @@
       "disabled": false,
       "bugged": false
   },
-
   "whoami": {
       "name": "User Info",
       "description": "Show basic (and some detailed information) on you, or a specific user.",
@@ -314,7 +299,6 @@
       "disabled": false,
       "bugged": false
   },
-
   "stroketranslate": {
       "name": "Stroke Translate",
       "description": "Generate random strokes from random text!",
@@ -335,7 +319,6 @@
       "disabled": false,
       "bugged": false
   },
-
   "memes": {
       "name": "Memes",
       "description": "Get some high-quality memes from reddit. (Powered by PRAW, fetched from the /memes subreddit)",
@@ -386,7 +369,6 @@
       "disabled": false,
       "bugged": false
   },
-
   "donate": {
       "name": "Donate",
       "description": "Donate any amount of coins to another user (with a donation ID).",
@@ -407,7 +389,6 @@
       "disabled": false,
       "bugged": false
   },
-
   "status": {
       "name": "Bot Status",
       "description": "Returns general statistics on the current bot instance.",
@@ -418,7 +399,6 @@
       "disabled": false,
       "bugged": false
   },
-
   "afk_set": {
       "name": "Set AFK Status",
       "description": "Going to be AFK? Use this command to set a AFK status so that people know when and why you are AFK.",
@@ -449,7 +429,6 @@
       "disabled": false,
       "bugged": false
   },
-
   "autogrind": {
       "name": "Autogrind",
       "description": "Use this command to automatically let the bot grind coins and items for you, while you're AFK or doing other things.",
@@ -460,7 +439,6 @@
       "disabled": false,
       "bugged": false
   },
-
   "rank": {
       "name": "Rank",
       "description": "Show your bot level/rank, or someone else's level/rank.",
@@ -491,7 +469,6 @@
       "disabled": false,
       "bugged": false
   },
-
   "repo": {
       "name": "GitHub Repo",
       "description": "Shows the GitHub repository link of the bot. *Yes! Isobot is open-source.*",
@@ -502,7 +479,6 @@
       "disabled": false,
       "bugged": false
   },
-
   "embedbuilder": {
       "name": "EmbedBuilder",
       "description": "Build an embed using a simple command and EmbedBuilder.",
@@ -513,7 +489,6 @@
       "disabled": false,
       "bugged": false
   },
-
   "isobank_register": {
       "name": "IsoBank Register",
       "description": "Registers a new IsoBank account under your Discord account ID and your custom-set PIN.",
@@ -524,7 +499,6 @@
       "disabled": false,
       "bugged": false
   },
-
   "guessthenumber": {
       "name": "Guess-the-number",
       "description": "Play a simple minigame to guess the number that the bot is thinking of, from 1 to 10.",
