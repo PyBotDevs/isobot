@@ -1174,6 +1174,26 @@ async def highlow(ctx:SlashContext):
         else: return await ctx.send(f'Wrong! The number was {numb2}.')
     else: await ctx.send(f'wtf is {msg.content}?')
 
+@slash.slash(
+    name="profile",
+    description="Shows basic stats about your isobot profile, or someone else's stats",
+    options=[
+        create_option(name="user", description="Whose isobot profile do you want to view?", option_type=6, required=False)
+    ]
+)
+async def profile(ctx: SlashContext, user: discord.User = None):
+    if user == None: user = ctx.author
+    localembed = discord.Embed(title=f"{user.display_name}'s isobot stats", color=discord.Color.random())
+    localembed.set_thumbnail(url=user.avatar_url)
+    localembed.add_field(name="Level", value=f"Level {levels[str(user.id)]['level']} ({levels[str(user.id)]['xp']} XP)", inline=False)
+    localembed.add_field(name="Balance in Wallet", value=f"{currency['wallet'][str(user.id)]} coins", inline=True)
+    localembed.add_field(name="Balance in Bank Account", value=f"{currency['bank'][str(user.id)]} coins", inline=True)
+    localembed.add_field(name="Net-Worth", value=f"{currency['wallet'][str(user.id)] + currency['bank'][str(user.id)]} coins", inline=True)
+    # More stats will be added later
+    # Maybe I should make a userdat system for collecting statistical data to process and display here, coming in a future update.
+    await ctx.send(embed=localembed)
+
+
 # Initialization
 utils.ping.host()
 client.run(api.auth.get_token())
