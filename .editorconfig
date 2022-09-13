@@ -2,6 +2,9 @@
 
 root = true
 
+# Header
+file_header_template = NKA (Formerly PyBotDevs) 2022. For enquiries contact PyBotDevs <pybotdevs@outlook.com>
+
 [*]
 end_of_line = lf
 insert_final_newline = true
