@@ -4,6 +4,13 @@ import datetime
 
 disabled = False
 
+class Colors:
+    """Contains general stdout colors."""
+    cyan = '\033[96m'
+    red = '\033[91m'
+    green = '\033[92m'
+    end = '\033[0m'
+
 class IsobankAuth():
     """Use the auth database ONLY."""
     def __init__(self, db_path:str, account_db:str):
@@ -15,6 +22,7 @@ class IsobankAuth():
         with open(account_db, 'r') as f:
             global user_data
             user_data = json.load(f)
+        print(f"[Framework/Loader] {Colors.green}IsoBank Authorization API initialized.{Colors.end}")
 
     def save(self):
         with open(self.db_path, 'w+') as f: json.dump(accounts, f, indent=4)
