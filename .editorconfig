@@ -1,0 +1,19 @@
+# EditorConfig is awesome: https://EditorConfig.org
+
+root = true
+
+# Header
+file_header_template = NKA (Formerly PyBotDevs) 2022. For enquiries contact PyBotDevs <pybotdevs@outlook.com>
+
+[*]
+end_of_line = lf
+insert_final_newline = true
+
+[*.py]
+indent_style = space
+indent_size = 4
+charset = utf-8
+
+[*.{js,json}]
+indent_style = tab
+tab_width = 4
