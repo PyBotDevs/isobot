@@ -33,9 +33,9 @@ with open('database/currency.json', 'r') as f: currency = json.load(f)
 with open('database/warnings.json', 'r') as f: warnings = json.load(f)
 with open('database/items.json', 'r') as f: items = json.load(f)
 with open('config/shop.json', 'r') as f: shopitem = json.load(f)
-with open('database/presence.json', 'r') as f: user_presence = json.load(f)
+with open('database/presence.json', 'r') as f: presence = json.load(f)
 with open('database/levels.json', 'r') as f: levels = json.load(f)
-with open('config/commands.json', 'r') as f: helpdb = json.load(f)
+with open('config/commands.json', 'r') as f: commandsdb = json.load(f)
 
 #Pre-Initialization Commands
 def timenow(): datetime.datetime.now().strftime("%H:%M:%S")
@@ -43,7 +43,7 @@ def save():
     with open('database/currency.json', 'w+') as f: json.dump(currency, f, indent=4)
     with open('database/warnings.json', 'w+') as f: json.dump(warnings, f, indent=4)
     with open('database/items.json', 'w+') as f: json.dump(items, f, indent=4)
-    with open('database/presence.json', 'w+') as f: json.dump(user_presence, f, indent=4)
+    with open('database/presence.json', 'w+') as f: json.dump(presence, f, indent=4)
     with open('database/levels.json', 'w+') as f: json.dump(levels, f, indent=4)
 
 if not os.path.isdir("logs"):
@@ -99,15 +99,15 @@ async def on_message(ctx):
         else: items[str(ctx.author.id)][str(z)] = 0
     save()
     uList = list()
-    if str(ctx.guild.id) in user_presence:
-        for x in user_presence[str(ctx.guild.id)].keys(): uList.append(x)
+    if str(ctx.guild.id) in presence:
+        for x in presence[str(ctx.guild.id)].keys(): uList.append(x)
     else: pass
     for i in uList:
         if i in ctx.content and not ctx.author.bot:
             fetch_user = client.get_user(id(i))
-            await ctx.channel.send(f"{fetch_user.display_name} went AFK <t:{math.floor(user_presence[str(ctx.guild.id)][str(i)]['time'])}:R>: {user_presence[str(ctx.guild.id)][str(i)]['response']}")
-    if str(ctx.guild.id) in user_presence and str(ctx.author.id) in user_presence[str(ctx.guild.id)]:
-        del user_presence[str(ctx.guild.id)][str(ctx.author.id)]
+            await ctx.channel.send(f"{fetch_user.display_name} went AFK <t:{math.floor(presence[str(ctx.guild.id)][str(i)]['time'])}:R>: {presence[str(ctx.guild.id)][str(i)]['response']}")
+    if str(ctx.guild.id) in presence and str(ctx.author.id) in presence[str(ctx.guild.id)]:
+        del presence[str(ctx.guild.id)][str(ctx.author.id)]
         save()
         m1 = await ctx.channel.send(f"Welcome back {ctx.author.mention}. Your AFK has been removed.")
         await asyncio.sleep(5)
@@ -155,21 +155,21 @@ async def on_command_error(ctx, error):
 async def help(ctx:SlashContext, command:str=None):
     if command is not None:
         try:
-            localembed = discord.Embed(title=f"{helpdb[command]['name']} Command (/{command})", description=helpdb[command]['description'], color=discord.Color.random())
-            localembed.add_field(name="Command Type", value=helpdb[command]['type'], inline=False)
-            if helpdb[command]['cooldown'] is not None: localembed.add_field(name="Cooldown", value=f"{str(datetime.timedelta(seconds=helpdb[command]['cooldown']))}", inline=False)
-            localembed.add_field(name="Usable By", value=helpdb[command]['usable_by'], inline=False)
-            if helpdb[command]['args'] is not None:
+            localembed = discord.Embed(title=f"{commandsdb[command]['name']} Command (/{command})", description=commandsdb[command]['description'], color=discord.Color.random())
+            localembed.add_field(name="Command Type", value=commandsdb[command]['type'], inline=False)
+            if commandsdb[command]['cooldown'] is not None: localembed.add_field(name="Cooldown", value=f"{str(datetime.timedelta(seconds=commandsdb[command]['cooldown']))}", inline=False)
+            localembed.add_field(name="Usable By", value=commandsdb[command]['usable_by'], inline=False)
+            if commandsdb[command]['args'] is not None:
                 r = ""
-                for x in helpdb[command]['args']: r += f"`{x}` "
+                for x in commandsdb[command]['args']: r += f"`{x}` "
                 localembed.add_field(name="Arguments", value=r, inline=False)
-            if helpdb[command]['bugged'] == True: localembed.set_footer(text="⚠ This command might be bugged (experiencing issues), but will be fixed later.")
-            if helpdb[command]['disabled'] == True: localembed.set_footer(text="⚠ This command is currently disabled")
+            if commandsdb[command]['bugged'] == True: localembed.set_footer(text="⚠ This command might be bugged (experiencing issues), but will be fixed later.")
+            if commandsdb[command]['disabled'] == True: localembed.set_footer(text="⚠ This command is currently disabled")
             await ctx.send(embed=localembed)
         except KeyError: return await ctx.reply(embed=discord.Embed(description=f"No results found for {command}."), hidden=True)
     else:
         r = ""
-        for x in helpdb: r += f"`/{x}`\n"
+        for x in commandsdb: r += f"`/{x}`\n"
         localembed = discord.Embed(title="Isobot Command Help", description=f"**Bot Commands:**\n{r}", color = discord.Color.random())
         await ctx.send(embed=localembed)
 
@@ -747,7 +747,7 @@ async def whoami(ctx:SlashContext, user:discord.User=None):
     registered = user.joined_at.strftime("%b %d, %Y, %T")
     pfp = user.avatar_url
     localembed_desc = f"`AKA` {displayname}"
-    if str(user.id) in user_presence[str(ctx.guild.id)]: localembed_desc += f"\n`🌙 AFK` {user_presence[str(ctx.guild.id)][str(user.id)]['response']} - <t:{math.floor(user_presence[str(ctx.guild.id)][str(user.id)]['time'])}>"
+    if str(user.id) in presence[str(ctx.guild.id)]: localembed_desc += f"\n`🌙 AFK` {presence[str(ctx.guild.id)][str(user.id)]['response']} - <t:{math.floor(presence[str(ctx.guild.id)][str(user.id)]['time'])}>"
     localembed = discord.Embed(
         title=f'User Info on {username}', 
         description=localembed_desc
@@ -983,8 +983,8 @@ async def gift(ctx:SlashContext, user:discord.User, item:str, amount:int=1):
 )
 async def afk_set(ctx:SlashContext, response:str="I'm AFK"):
     exctime = time.time()
-    if str(ctx.guild.id) not in user_presence: user_presence[str(ctx.guild.id)] = {}
-    user_presence[str(ctx.guild.id)][str(ctx.author.id)] = {"type": "afk", "time": exctime, "response": response}
+    if str(ctx.guild.id) not in presence: presence[str(ctx.guild.id)] = {}
+    presence[str(ctx.guild.id)][str(ctx.author.id)] = {"type": "afk", "time": exctime, "response": response}
     save()
     localembed = discord.Embed(title=f"{ctx.author.display_name} is now AFK.", description=f"Response: {response}", color=discord.Color.dark_orange())
     await ctx.reply(embed=localembed)
@@ -995,7 +995,7 @@ async def afk_set(ctx:SlashContext, response:str="I'm AFK"):
 )
 async def afk_remove(ctx:SlashContext):
     try: 
-        del user_presence[str(ctx.guild.id)][str(ctx.author.id)]
+        del presence[str(ctx.guild.id)][str(ctx.author.id)]
         save()
         await ctx.send(f"Alright {ctx.author.mention}, I've removed your AFK.")
     except KeyError:
@@ -1011,7 +1011,7 @@ async def afk_remove(ctx:SlashContext):
 async def afk_mod_remove(ctx:SlashContext, user:discord.User):
     if not ctx.author.guild_permissions.manage_messages: return await ctx.reply("You don't have the required permissions to use this.", hidden=True)
     try: 
-        del user_presence[str(ctx.guild.id)][str(user.id)]
+        del presence[str(ctx.guild.id)][str(user.id)]
         save()
         await ctx.send(f"{user.display_name}'s AFK has been removed.")
     except KeyError:
