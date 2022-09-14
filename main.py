@@ -665,14 +665,14 @@ async def dig(ctx:SlashContext):
 
 #need help cuz i only got the idea (aka the logic) and not the code detail and stuff
 @slash.slash(
-    name='open',
+    name='openlootbox',
     description='Opens lootbox(es) in your inventory',
     options=[
         create_option(name='lootbox', description='What lootbox do you want to open?', option_type=3, required=True),
         create_option(name='amount', description='How many do you want to open?', option_type=4, required=True)
     ]
 )
-async def open(ctx:SlashContext, lootbox:str, amount:int):
+async def openlootbox(ctx:SlashContext, lootbox:str, amount:int):
     types = ["normal", "large", "special"]
     if amount <= 0: return await ctx.reply("You can't open 0 or below lootboxes! Don't be stupid.", hidden=True)
     if lootbox not in types: return await ctx.reply(f"wtf is {lootbox}?", hidden=True)
