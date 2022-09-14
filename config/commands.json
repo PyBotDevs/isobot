@@ -269,7 +269,7 @@
       "disabled": false,
       "bugged": false
   },
-  "open": {
+  "openlootbox": {
       "name": "Open Lootbox",
       "description": "Open a lootbox and get awesome coin and item rewards!",
       "type": "economy system",
