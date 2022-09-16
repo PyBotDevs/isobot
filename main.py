@@ -1211,7 +1211,7 @@ async def profile(ctx: SlashContext, user: discord.User = None):
     localembed.add_field(name="Level", value=f"Level {levels[str(user.id)]['level']} ({levels[str(user.id)]['xp']} XP)", inline=False)
     localembed.add_field(name="Balance in Wallet", value=f"{currency['wallet'][str(user.id)]} coins", inline=True)
     localembed.add_field(name="Balance in Bank Account", value=f"{currency['bank'][str(user.id)]} coins", inline=True)
-    localembed.add_field(name="Net-Worth", value=f"{currency['wallet'][str(user.id)] + currency['bank'][str(user.id)]} coins", inline=True)
+    localembed.add_field(name="Net-Worth", value=f"{get_user_networth(user.id)} coins", inline=True)
     # More stats will be added later
     # Maybe I should make a userdat system for collecting statistical data to process and display here, coming in a future update.
     await ctx.send(embed=localembed)
