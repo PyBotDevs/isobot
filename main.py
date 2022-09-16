@@ -107,6 +107,7 @@ async def on_message(ctx):
         "swear_filter": {
             "enabled": False,
             "keywords": {
+                "use_default": True,
                 "default": ["fuck", "shit", "pussy", "penis", "cock", "vagina", "sex", "moan", "bitch", "hoe", "nigga", "nigger", "xxx", "porn"],
                 "custom": []
             }
@@ -1255,6 +1256,20 @@ async def automod_swearfilter(ctx:SlashContext, toggle:bool):
     loaded_config["swear_filter"]["enabled"] = toggle
     if toggle == True: await ctx.reply("Swear-filter successfully **enabled**.", hidden=True)
     elif toggle == False: await ctx.reply("Swear-filter successfully **disabled**.", hidden=True)
+
+@slash.slash(
+    name="automod_use_default_keywords",
+    description="Choose whether or not you want to use the default keywords for automod's swear-filter",
+    options=[
+        create_option(name="toggle", description="Do you want to turn it on or off?", option_type=5, required=True)
+    ]
+)
+async def automod_use_default_keywords(ctx:SlashContext, toggle:bool):
+    if not ctx.author.guild_permissions.administrator: return await ctx.reply("You cannot use this command. If you think this is a mistake, please contact your server owner/administrator.", hidden=True)
+    if loaded_config["swear_filter"]["keywords"]["use_default"] == toggle: return await ctx.reply(f"That automod option is already set to `{toggle}`.", hidden=True)
+    loaded_config["swear_filter"]["keywords"]["use_default"] = toggle
+    if toggle == True: await ctx.reply("Using default swear-filter keywords successfully **enabled**.", hidden=True)
+    elif toggle == False: await ctx.reply("Using default swear-filter keywords successfully **disabled**.", hidden=True)
 
 # Initialization
 utils.ping.host()
