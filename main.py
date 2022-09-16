@@ -1228,6 +1228,20 @@ async def profile(ctx: SlashContext, user: discord.User = None):
     # Maybe I should make a userdat system for collecting statistical data to process and display here, coming in a future update.
     await ctx.send(embed=localembed)
 
+# Automod commands
+@slash.slash(
+    name="automod",
+    description="Shows the current automod configuration for your server"
+)
+async def automod(ctx:SlashContext):
+    loaded_config = automod_config[str(ctx.guild.id)]
+    localembed = discord.Embed(title=f"{ctx.guild.name}\'s automod configuration", descripton="Use the `/automod_set` command to change your server's automod configuration.", color=discord.Color.random())
+    localembed.set_thumbnail(url=ctx.guild.icon_url)
+    localembed.add_field(name="Swear-filter", value=loaded_config["swear_filter"]["enabled"])
+    localembed.add_field(name="Swear-filter Keywords Count", value=f"{int(len(loaded_config['swear_filter']['default'])) + int(len(loaded_config['swear_filter']['custom']))} words")
+    localembed.set_footer(text="More automod features will come soon!")
+    await ctx.send(embed=localembed)
+
 # Initialization
 utils.ping.host()
 client.run(api.auth.get_token())
