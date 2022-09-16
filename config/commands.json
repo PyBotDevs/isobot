@@ -519,6 +519,16 @@
       "disabled": false,
       "bugged": false
   },
+  "networth": {
+    "name": "Show Networth",
+    "description": "Shows your networth, or someone else's networth.",
+    "type": "economy system",
+    "cooldown": 0,
+    "args": ["user (optional)"],
+    "usable_by": "everyone",
+    "disabled": false,
+    "bugged": false
+  },
   "profile": {
     "name": "Show Isobot Profile Stats",
     "description": "Shows basic stats about your isobot profile, or someone else's profile stats.",
