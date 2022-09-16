@@ -1249,8 +1249,8 @@ async def automod(ctx:SlashContext):
         create_option(name="toggle", description="Do you want to turn it on or off?", option_type=5, required=True)
     ]
 )
-@commands.has_permissions("administrator")
 async def automod_swearfilter(ctx:SlashContext, toggle:bool):
+    if not ctx.author.guild_permissions.administrator: return await ctx.reply("You cannot use this command. If you think this is a mistake, please contact your server owner/administrator.", hidden=True)
     if loaded_config["swear_filter"]["enabled"] == toggle: return await ctx.reply(f"That automod option is already set to `{toggle}`.", hidden=True)
     loaded_config["swear_filter"]["enabled"] = toggle
     if toggle == True: await ctx.reply("Swear-filter successfully **enabled**.", hidden=True)
