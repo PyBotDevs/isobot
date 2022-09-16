@@ -46,6 +46,12 @@ def save():
     with open('database/presence.json', 'w+') as f: json.dump(presence, f, indent=4)
     with open('database/levels.json', 'w+') as f: json.dump(levels, f, indent=4)
 
+def get_user_networth(user_id:int):
+    nw = currency["wallet"][str(user_id)] + currency["bank"][str(user_id)]
+    #for e in items[str(user_id)]:
+    #    if e != 0: nw += shopitem[e]["sell price"]
+    return nw
+
 if not os.path.isdir("logs"):
     os.mkdir('logs')
     try:
@@ -217,6 +223,7 @@ async def balance(ctx:SlashContext, user=None):
             e = discord.Embed(title=f'{user.display_name}\'s balance', color=color)
             e.add_field(name='Cash in wallet', value=f'{currency["wallet"][str(user.id)]} coin(s)', inline=True)
             e.add_field(name='Cash in bank account', value=f'{currency["bank"][str(user.id)]} coin(s)', inline=True)
+            e.add_field(name="Networth", value=f"{get_user_networth(user.id)} coin(s)", inline=True)
             await ctx.send(embed=e)
         except: await ctx.reply('Looks like that user is not indexed in our server. Try again later.')
     except Exception as e: await ctx.send(f'An error occured: `{e}`. This has automatically been reported to the devs.')
@@ -753,14 +760,15 @@ async def whoami(ctx:SlashContext, user:discord.User=None):
         description=localembed_desc
     )
     localembed.set_thumbnail(url=pfp)
-    localembed.add_field(name='Username', value=username, inline=False)
-    localembed.add_field(name='Display Name', value=displayname, inline=False)
+    localembed.add_field(name='Username', value=username, inline=True)
+    localembed.add_field(name='Display Name', value=displayname, inline=True)
     localembed.add_field(name='Joined Discord on', value=registered, inline=False)
-    localembed.add_field(name='Avatar URL', value=f"[here!]({pfp})", inline=False)
+    localembed.add_field(name='Avatar URL', value=f"[here!]({pfp})", inline=True)
     role_render = ""
     for p in user.roles:
         if p != user.roles[0]: role_render += f"<@&{p.id}> "
     localembed.add_field(name='Roles', value=role_render, inline=False)
+    localembed.add_field(name="Net worth", value=f"{get_user_networth(user.id)} coins", inline=False)
     await ctx.send(embed=localembed)
 
 # DevTools commands
@@ -1175,6 +1183,21 @@ async def highlow(ctx:SlashContext):
     else: await ctx.send(f'wtf is {msg.content}?')
 
 @slash.slash(
+    name="networth",
+    description="Get your networth, or another user's networth",
+    options=[
+        create_option(name="user", description="Whose networth do you want to find?", option_type=6, required=False)
+    ]
+)
+async def networth(ctx:SlashContext, user:discord.User=None):
+    if user == None: user = ctx.author
+    try:
+        ntw = get_user_networth(user.id)
+        localembed = discord.Embed(name=f"{user.display_name}'s networth", description=f"{ntw} coins", color=discord.Color.random())
+        await ctx.send(embed=localembed)
+    except KeyError: return await ctx.reply("Looks like that user isn't cached yet. Please try again later.", hidden=True)
+
+@slash.slash(
     name="profile",
     description="Shows basic stats about your isobot profile, or someone else's profile stats",
     options=[
@@ -1188,7 +1211,7 @@ async def profile(ctx: SlashContext, user: discord.User = None):
     localembed.add_field(name="Level", value=f"Level {levels[str(user.id)]['level']} ({levels[str(user.id)]['xp']} XP)", inline=False)
     localembed.add_field(name="Balance in Wallet", value=f"{currency['wallet'][str(user.id)]} coins", inline=True)
     localembed.add_field(name="Balance in Bank Account", value=f"{currency['bank'][str(user.id)]} coins", inline=True)
-    localembed.add_field(name="Net-Worth", value=f"{currency['wallet'][str(user.id)] + currency['bank'][str(user.id)]} coins", inline=True)
+    localembed.add_field(name="Net-Worth", value=f"{get_user_networth(user.id)} coins", inline=True)
     # More stats will be added later
     # Maybe I should make a userdat system for collecting statistical data to process and display here, coming in a future update.
     await ctx.send(embed=localembed)
