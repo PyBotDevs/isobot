@@ -36,6 +36,7 @@ with open('config/shop.json', 'r') as f: shopitem = json.load(f)
 with open('database/presence.json', 'r') as f: presence = json.load(f)
 with open('database/levels.json', 'r') as f: levels = json.load(f)
 with open('config/commands.json', 'r') as f: commandsdb = json.load(f)
+with open('database/automod.json', 'r') as f: automod_config = json.load(f)
 
 #Pre-Initialization Commands
 def timenow(): datetime.datetime.now().strftime("%H:%M:%S")
@@ -45,6 +46,7 @@ def save():
     with open('database/items.json', 'w+') as f: json.dump(items, f, indent=4)
     with open('database/presence.json', 'w+') as f: json.dump(presence, f, indent=4)
     with open('database/levels.json', 'w+') as f: json.dump(levels, f, indent=4)
+    with open('database/automod.json', 'w+') as f: json.dump(automod_config, f, indent=4)
 
 def get_user_networth(user_id:int):
     nw = currency["wallet"][str(user_id)] + currency["bank"][str(user_id)]
