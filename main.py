@@ -1242,6 +1242,19 @@ async def automod(ctx:SlashContext):
     localembed.set_footer(text="More automod features will come soon!")
     await ctx.send(embed=localembed)
 
+@slash.slash(
+    name="automod_swearfilter",
+    description="Turn on or off automod's swear-filter in your server",
+    options=[
+        create_option(name="toggle", description="Do you want to turn it on or off?", option_type=5, required=True)
+    ]
+)
+async def automod_swearfilter(ctx:SlashContext, toggle:bool):
+    if loaded_config["swear_filter"]["enabled"] == toggle: return await ctx.reply(f"That automod option is already set to `{toggle}`.", hidden=True)
+    loaded_config["swear_filter"]["enabled"] = toggle
+    if toggle == True: await ctx.reply("Swear-filter successfully **enabled**.", hidden=True)
+    elif toggle == False: await ctx.reply("Swear-filter successfully **disabled**.", hidden=True)
+
 # Initialization
 utils.ping.host()
 client.run(api.auth.get_token())
