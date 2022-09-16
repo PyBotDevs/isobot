@@ -33,8 +33,9 @@ with open('database/currency.json', 'r') as f: currency = json.load(f)
 with open('database/warnings.json', 'r') as f: warnings = json.load(f)
 with open('database/items.json', 'r') as f: items = json.load(f)
 with open('config/shop.json', 'r') as f: shopitem = json.load(f)
-with open('database/presence.json', 'r') as f: user_presence = json.load(f)
+with open('database/presence.json', 'r') as f: presence = json.load(f)
 with open('database/levels.json', 'r') as f: levels = json.load(f)
+with open('config/commands.json', 'r') as f: commandsdb = json.load(f)
 
 #Pre-Initialization Commands
 def timenow(): datetime.datetime.now().strftime("%H:%M:%S")
@@ -42,7 +43,7 @@ def save():
     with open('database/currency.json', 'w+') as f: json.dump(currency, f, indent=4)
     with open('database/warnings.json', 'w+') as f: json.dump(warnings, f, indent=4)
     with open('database/items.json', 'w+') as f: json.dump(items, f, indent=4)
-    with open('database/presence.json', 'w+') as f: json.dump(user_presence, f, indent=4)
+    with open('database/presence.json', 'w+') as f: json.dump(presence, f, indent=4)
     with open('database/levels.json', 'w+') as f: json.dump(levels, f, indent=4)
 
 def get_user_networth(user_id:int):
@@ -52,14 +53,17 @@ def get_user_networth(user_id:int):
     return nw
 
 if not os.path.isdir("logs"):
-  os.mkdir('logs')
-  try:
-    open('logs/info-log.txt', 'x')
-    utils.logger.info("Created info log", nolog=True)
-    time.sleep(0.5)
-    open('logs/error-log.txt', 'x')
-    utils.logger.info("Created error log", nolog=True)
-  except Exception as e: utils.logger.error(f"Failed to make log file: {e}", nolog=True)
+    os.mkdir('logs')
+    try:
+        open('logs/info-log.txt', 'x')
+        utils.logger.info("Created info log", nolog=True)
+        time.sleep(0.5)
+        open('logs/error-log.txt', 'x')
+        utils.logger.info("Created error log", nolog=True)
+        time.sleep(0.5)
+        open('logs/currency.log', 'x')
+        utils.logger.info("Created currency log", nolog=True)
+    except Exception as e: utils.logger.error(f"Failed to make log file: {e}", nolog=True)
 
 #Classes
 class plugins:
@@ -69,7 +73,7 @@ class plugins:
     music = False
 
 colors = framework.isobot.colors.Colors()
-currency_unused = framework.isobot.currency.CurrencyAPI(f'{wdir}/database/currency.json') # Initialize part of the framework (Currency)
+currency_unused = framework.isobot.currency.CurrencyAPI(f'{wdir}/database/currency.json', f"{wdir}/logs/currency.log")  # Initialize part of the framework (Currency)
 # isobank = framework.isobank.manager.IsoBankManager(f"{wdir}/database/isobank/accounts.json", f"{wdir}/database/isobank/auth.json")
 isobankauth = framework.isobank.authorize.IsobankAuth(f"{wdir}/database/isobank/auth.json", f"{wdir}/database/isobank/accounts.json")
 
@@ -101,13 +105,15 @@ async def on_message(ctx):
         else: items[str(ctx.author.id)][str(z)] = 0
     save()
     uList = list()
-    for x in user_presence[str(ctx.guild.id)].keys(): uList.append(x)
+    if str(ctx.guild.id) in presence:
+        for x in presence[str(ctx.guild.id)].keys(): uList.append(x)
+    else: pass
     for i in uList:
         if i in ctx.content and not ctx.author.bot:
             fetch_user = client.get_user(id(i))
-            await ctx.channel.send(f"{fetch_user.display_name} went AFK <t:{math.floor(user_presence[str(ctx.guild.id)][str(i)]['time'])}:R>: {user_presence[str(ctx.guild.id)][str(i)]['response']}")
-    if str(ctx.author.id) in user_presence[str(ctx.guild.id)]:
-        del user_presence[str(ctx.guild.id)][str(ctx.author.id)]
+            await ctx.channel.send(f"{fetch_user.display_name} went AFK <t:{math.floor(presence[str(ctx.guild.id)][str(i)]['time'])}:R>: {presence[str(ctx.guild.id)][str(i)]['response']}")
+    if str(ctx.guild.id) in presence and str(ctx.author.id) in presence[str(ctx.guild.id)]:
+        del presence[str(ctx.guild.id)][str(ctx.author.id)]
         save()
         m1 = await ctx.channel.send(f"Welcome back {ctx.author.mention}. Your AFK has been removed.")
         await asyncio.sleep(5)
@@ -145,6 +151,34 @@ async def on_command_error(ctx, error):
         print(f'[{current_time}] Ignoring exception at {colors.cyan}BadBoolArgument{colors.end}.')
 
 #Commands
+@slash.slash(
+    name="help",
+    description="Gives you help",
+    options=[
+        create_option(name="command", description="Which command do you need help with?", option_type=3, required=False)
+    ]
+)
+async def help(ctx:SlashContext, command:str=None):
+    if command is not None:
+        try:
+            localembed = discord.Embed(title=f"{commandsdb[command]['name']} Command (/{command})", description=commandsdb[command]['description'], color=discord.Color.random())
+            localembed.add_field(name="Command Type", value=commandsdb[command]['type'], inline=False)
+            if commandsdb[command]['cooldown'] is not None: localembed.add_field(name="Cooldown", value=f"{str(datetime.timedelta(seconds=commandsdb[command]['cooldown']))}", inline=False)
+            localembed.add_field(name="Usable By", value=commandsdb[command]['usable_by'], inline=False)
+            if commandsdb[command]['args'] is not None:
+                r = ""
+                for x in commandsdb[command]['args']: r += f"`{x}` "
+                localembed.add_field(name="Arguments", value=r, inline=False)
+            if commandsdb[command]['bugged'] == True: localembed.set_footer(text="⚠ This command might be bugged (experiencing issues), but will be fixed later.")
+            if commandsdb[command]['disabled'] == True: localembed.set_footer(text="⚠ This command is currently disabled")
+            await ctx.send(embed=localembed)
+        except KeyError: return await ctx.reply(embed=discord.Embed(description=f"No results found for {command}."), hidden=True)
+    else:
+        r = ""
+        for x in commandsdb: r += f"`/{x}`\n"
+        localembed = discord.Embed(title="Isobot Command Help", description=f"**Bot Commands:**\n{r}", color = discord.Color.random())
+        await ctx.send(embed=localembed)
+
 @slash.slash(
     name='load',
     description='Loads the specified module to the bot',
@@ -636,6 +670,65 @@ async def dig(ctx:SlashContext):
         save()
         await ctx.reply('YOU FELL INTO YOUR OWN TRAP AND DIED LMFAO\nYou lost 2000 coins in the process.')
 
+#need help cuz i only got the idea (aka the logic) and not the code detail and stuff
+@slash.slash(
+    name='openlootbox',
+    description='Opens lootbox(es) in your inventory',
+    options=[
+        create_option(name='lootbox', description='What lootbox do you want to open?', option_type=3, required=True),
+        create_option(name='amount', description='How many do you want to open?', option_type=4, required=True)
+    ]
+)
+async def openlootbox(ctx:SlashContext, lootbox:str, amount:int):
+    types = ["normal", "large", "special"]
+    if amount <= 0: return await ctx.reply("You can't open 0 or below lootboxes! Don't be stupid.", hidden=True)
+    if lootbox not in types: return await ctx.reply(f"wtf is {lootbox}?", hidden=True)
+    ie = shopitem.keys()
+    normal_loot = [
+        random.randint(10000, 25000),
+        random.choice(list(ie)),
+        random.choice(list(ie))
+    ]
+    large_loot = [
+        random.randint(50000, 75000),
+        random.choice(list(ie)),
+        random.choice(list(ie)),
+        random.choice(list(ie))
+    ]
+    special_loot = [
+        random.randint(100000, 500000),
+        random.choice(list(ie)),
+        random.choice(list(ie)),
+        random.choice(list(ie)),
+        random.choice(list(ie)),
+        random.choice(list(ie))
+    ]
+    localembed = discord.Embed(title="You opened a lootbox!", description=f"The amazing rewards of your {lootbox} lootbox behold you...", color=discord.Color.gold())
+    if lootbox == "normal":
+        currency["wallet"][str(ctx.author.id)] += normal_loot[0]
+        items[str(ctx.author.id)][normal_loot[1]] += 1
+        items[str(ctx.author.id)][normal_loot[2]] += 1
+        localembed.add_field(name="Coins gained", value=f"**{normal_loot[0]}** coins", inline=False)
+        localembed.add_field(name="Items recieved", value=f"You got **1 {normal_loot[1]}**!\nYou got **1 {normal_loot[2]}**!", inline=False)
+    if lootbox == "large":
+        currency["wallet"][str(ctx.author.id)] += large_loot[0]
+        items[str(ctx.author.id)][large_loot[1]] += 1
+        items[str(ctx.author.id)][large_loot[2]] += 1
+        items[str(ctx.author.id)][large_loot[3]] += 1
+        localembed.add_field(name="Coins gained", value=f"**{large_loot[0]}** coins", inline=False)
+        localembed.add_field(name="Items recieved", value=f"You got **1 {large_loot[1]}**!\nYou got **1 {large_loot[2]}**!\nYou got **1 {large_loot[3]}**!", inline=False)
+    if lootbox == "special":
+        currency["wallet"][str(ctx.author.id)] += special_loot[0]
+        items[str(ctx.author.id)][special_loot[1]] += 1
+        items[str(ctx.author.id)][special_loot[2]] += 1
+        items[str(ctx.author.id)][special_loot[3]] += 1
+        items[str(ctx.author.id)][special_loot[4]] += 1
+        items[str(ctx.author.id)][special_loot[5]] += 1
+        localembed.add_field(name="Coins gained", value=f"**{special_loot[0]}** coins", inline=False)
+        localembed.add_field(name="Items recieved", value=f"You got **1 {special_loot[1]}**!\nYou got **1 {special_loot[2]}**!\nYou got **1 {special_loot[3]}**!\nYou got **1 {special_loot[4]}**!\nYou got **1 {special_loot[5]}**!", inline=False)
+    await ctx.send(embed=localembed)
+    save()
+
 @slash.slash(
   name='echo',
   description='Sends a bot message in the channel',
@@ -661,7 +754,7 @@ async def whoami(ctx:SlashContext, user:discord.User=None):
     registered = user.joined_at.strftime("%b %d, %Y, %T")
     pfp = user.avatar_url
     localembed_desc = f"`AKA` {displayname}"
-    if str(user.id) in user_presence[str(ctx.guild.id)]: localembed_desc += f"\n`🌙 AFK` {user_presence[str(ctx.guild.id)][str(user.id)]['response']} - <t:{math.floor(user_presence[str(ctx.guild.id)][str(user.id)]['time'])}>"
+    if str(user.id) in presence[str(ctx.guild.id)]: localembed_desc += f"\n`🌙 AFK` {presence[str(ctx.guild.id)][str(user.id)]['response']} - <t:{math.floor(presence[str(ctx.guild.id)][str(user.id)]['time'])}>"
     localembed = discord.Embed(
         title=f'User Info on {username}', 
         description=localembed_desc
@@ -673,7 +766,7 @@ async def whoami(ctx:SlashContext, user:discord.User=None):
     localembed.add_field(name='Avatar URL', value=f"[here!]({pfp})", inline=True)
     role_render = ""
     for p in user.roles:
-        if p != "everyone": role_render += f"<@&{p.id}> "
+        if p != user.roles[0]: role_render += f"<@&{p.id}> "
     localembed.add_field(name='Roles', value=role_render, inline=False)
     localembed.add_field(name="Net worth", value=f"{get_user_networth(user.id)} coins", inline=False)
     await ctx.send(embed=localembed)
@@ -898,8 +991,8 @@ async def gift(ctx:SlashContext, user:discord.User, item:str, amount:int=1):
 )
 async def afk_set(ctx:SlashContext, response:str="I'm AFK"):
     exctime = time.time()
-    if str(ctx.guild.id) not in user_presence: user_presence[str(ctx.guild.id)] = {}
-    user_presence[str(ctx.guild.id)][str(ctx.author.id)] = {"type": "afk", "time": exctime, "response": response}
+    if str(ctx.guild.id) not in presence: presence[str(ctx.guild.id)] = {}
+    presence[str(ctx.guild.id)][str(ctx.author.id)] = {"type": "afk", "time": exctime, "response": response}
     save()
     localembed = discord.Embed(title=f"{ctx.author.display_name} is now AFK.", description=f"Response: {response}", color=discord.Color.dark_orange())
     await ctx.reply(embed=localembed)
@@ -910,7 +1003,7 @@ async def afk_set(ctx:SlashContext, response:str="I'm AFK"):
 )
 async def afk_remove(ctx:SlashContext):
     try: 
-        del user_presence[str(ctx.guild.id)][str(ctx.author.id)]
+        del presence[str(ctx.guild.id)][str(ctx.author.id)]
         save()
         await ctx.send(f"Alright {ctx.author.mention}, I've removed your AFK.")
     except KeyError:
@@ -926,7 +1019,7 @@ async def afk_remove(ctx:SlashContext):
 async def afk_mod_remove(ctx:SlashContext, user:discord.User):
     if not ctx.author.guild_permissions.manage_messages: return await ctx.reply("You don't have the required permissions to use this.", hidden=True)
     try: 
-        del user_presence[str(ctx.guild.id)][str(user.id)]
+        del presence[str(ctx.guild.id)][str(user.id)]
         save()
         await ctx.send(f"{user.display_name}'s AFK has been removed.")
     except KeyError:
@@ -1104,6 +1197,24 @@ async def networth(ctx:SlashContext, user:discord.User=None):
         await ctx.send(embed=localembed)
     except KeyError: return await ctx.reply("Looks like that user isn't cached yet. Please try again later.", hidden=True)
 
+@slash.slash(
+    name="profile",
+    description="Shows basic stats about your isobot profile, or someone else's profile stats",
+    options=[
+        create_option(name="user", description="Whose isobot profile do you want to view?", option_type=6, required=False)
+    ]
+)
+async def profile(ctx: SlashContext, user: discord.User = None):
+    if user == None: user = ctx.author
+    localembed = discord.Embed(title=f"{user.display_name}'s isobot stats", color=discord.Color.random())
+    localembed.set_thumbnail(url=user.avatar_url)
+    localembed.add_field(name="Level", value=f"Level {levels[str(user.id)]['level']} ({levels[str(user.id)]['xp']} XP)", inline=False)
+    localembed.add_field(name="Balance in Wallet", value=f"{currency['wallet'][str(user.id)]} coins", inline=True)
+    localembed.add_field(name="Balance in Bank Account", value=f"{currency['bank'][str(user.id)]} coins", inline=True)
+    localembed.add_field(name="Net-Worth", value=f"{currency['wallet'][str(user.id)] + currency['bank'][str(user.id)]} coins", inline=True)
+    # More stats will be added later
+    # Maybe I should make a userdat system for collecting statistical data to process and display here, coming in a future update.
+    await ctx.send(embed=localembed)
 
 # Initialization
 utils.ping.host()
