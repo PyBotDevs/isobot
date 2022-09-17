@@ -1278,9 +1278,9 @@ async def automod_use_default_keywords(ctx:SlashContext, toggle:bool):
 async def automod_view_custom_keywords(ctx:SlashContext):
     loaded_config = automod_config[str(ctx.guild.id)]
     out = ""
-    if loaded_config["keywords"]["custom"] != []:
+    if loaded_config["swear_filter"]["keywords"]["custom"] != []:
         i = 0
-        for x in loaded_config["keywords"]["custom"]:
+        for x in loaded_config["swear_filter"]["keywords"]["custom"]:
             i += 1
             out += f"**{i})** {x}\n"
     else: out = "*No custom keywords are set for your server.*"
