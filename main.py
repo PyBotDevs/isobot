@@ -1271,6 +1271,23 @@ async def automod_use_default_keywords(ctx:SlashContext, toggle:bool):
     if toggle == True: await ctx.reply("Using default swear-filter keywords successfully **enabled**.", hidden=True)
     elif toggle == False: await ctx.reply("Using default swear-filter keywords successfully **disabled**.", hidden=True)
 
+@slash.slash(
+    name="automod_view_custom_keywords",
+    description="Shows a list of the custom automod swear-filter keywords set for your server",
+)
+async def automod_view_custom_keywords(ctx:SlashContext):
+    loaded_config = automod_config[str(ctx.guild.id)]
+    out = ""
+    if loaded_config["keywords"]["custom"] != []:
+        i = 0
+        for x in loaded_config["keywords"]["custom"]:
+            i += 1
+            out += f"**{i})** {x}\n"
+    else: out = "*No custom keywords are set for your server.*"
+    localembed = discord.Embed(title=f"Custom Swear-filter keywords for {ctx.guild.name}", description="out", color=discord.Color.random())
+    localembed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested by {ctx.author}")
+    await ctx.send(embed=localembed)
+
 # Initialization
 utils.ping.host()
 client.run(api.auth.get_token())
