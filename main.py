@@ -1256,6 +1256,7 @@ async def automod_swearfilter(ctx:SlashContext, toggle:bool):
     loaded_config["swear_filter"]["enabled"] = toggle
     if toggle == True: await ctx.reply("Swear-filter successfully **enabled**.", hidden=True)
     elif toggle == False: await ctx.reply("Swear-filter successfully **disabled**.", hidden=True)
+    save()
 
 @slash.slash(
     name="automod_use_default_keywords",
@@ -1270,6 +1271,7 @@ async def automod_use_default_keywords(ctx:SlashContext, toggle:bool):
     loaded_config["swear_filter"]["keywords"]["use_default"] = toggle
     if toggle == True: await ctx.reply("Using default swear-filter keywords successfully **enabled**.", hidden=True)
     elif toggle == False: await ctx.reply("Using default swear-filter keywords successfully **disabled**.", hidden=True)
+    save()
 
 @slash.slash(
     name="automod_view_custom_keywords",
