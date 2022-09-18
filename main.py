@@ -1286,7 +1286,7 @@ async def automod_view_custom_keywords(ctx:SlashContext):
             i += 1
             out += f"**{i})** {x}\n"
     else: out = "*No custom keywords are set for your server.*"
-    localembed = discord.Embed(title=f"Custom Swear-filter keywords for {ctx.guild.name}", description="out", color=discord.Color.random())
+    localembed = discord.Embed(title=f"Custom Swear-filter keywords for {ctx.guild.name}", description=out, color=discord.Color.random())
     localembed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested by {ctx.author}")
     await ctx.send(embed=localembed)
 
