@@ -1290,6 +1290,24 @@ async def automod_view_custom_keywords(ctx:SlashContext):
     localembed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested by {ctx.author}")
     await ctx.send(embed=localembed)
 
+@slash.slash(
+    name="automod_add_custom_keyword",
+    description="Adds a custom keyword to your server's swear-filter",
+    options=[
+        create_option(name="keyword", description="What keyword do you want to add?", option_type=3, required=True)
+    ]
+)
+async def automod_add_custom_keyword(ctx:SlashContext, keyword:str):
+    if not ctx.author.guild_permissions.administrator: return await ctx.reply("You cannot use this command. If you think this is a mistake, please contact your server owner/administrator.", hidden=True)
+    loaded_config = automod_config[str(ctx.guild.id)]
+    if keyword not in loaded_config["swear_filter"]["keywords"]["custom"]:
+        loaded_config["swear_filter"]["keywords"]["custom"].append(keyword)
+        save()
+        localembed = discord.Embed(description=f"New swear-filter keyword `{keyword}` successfully added to configuration.", color=discord.Color.green())
+        await ctx.reply(embed=localembed, hidden=True)
+    else: return await ctx.reply("That keyword is already added in your automod configuration.", hidden=True)
+
+
 # Initialization
 utils.ping.host()
 client.run(api.auth.get_token())
