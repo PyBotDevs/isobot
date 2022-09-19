@@ -1316,6 +1316,22 @@ async def automod_add_custom_keyword(ctx:SlashContext, keyword:str):
         await ctx.reply(embed=localembed, hidden=True)
     else: return await ctx.reply("That keyword is already added in your automod configuration.", hidden=True)
 
+@slash.slash(
+    name="automod_remove_custom_keyword",
+    description="Removes a custom keyword (matching its id) from your server's swear-filter",
+    options=[
+        create_option(name="id", description="What's the id of the keyword to remove (can be found in bold through /automod_view_custom_keywords", option_type=4, required=True)
+    ]
+)
+async def automod_remove_custom_keyword(ctx:SlashContext, id:int):
+    loaded_config = automod_config[str(ctx.guild.id)]
+    try:
+        data = loaded_config["swear_filter"]["keywords"]["custom"][id]
+        del data
+        save()
+        return await ctx.reply(f"Keyword (id: `{id}`) successfully removed from swear-filter configuration.")
+    except IndexError: await ctx.reply("That keyword id doesn't exist. Please specify a valid id and try again.", hidden=True)
+
 
 # Initialization
 utils.ping.host()
