@@ -142,6 +142,13 @@ async def on_message(ctx):
             levels[str(ctx.author.id)]["level"] += 1
             await ctx.author.send(f"{ctx.author.mention}, you just ranked up to **level {levels[str(ctx.author.id)]['level']}**. Nice!")
         save()
+        if automod_config[str(ctx.guild.id)]["swear_filter"]["enabled"] == True:
+            if automod_config[str(ctx.guild.id)]["swear_filter"]["keywords"]["use_default"] and any(x in ctx.content.lower() for x in automod_config[str(ctx.guild.id)]["swear_filter"]["keywords"]["default"]):
+                await ctx.delete()
+                await message.channel.send(f'{message.author.mention} watch your language.', delete_after=5)
+            elif automod_config[str(ctx.guild.id)]["swear_filter"]["keywords"]["custom"] is not [] and any(x in ctx.content.lower() for x in automod_config[str(ctx.guild.id)]["swear_filter"]["keywords"]["custom"]):
+                await ctx.delete()
+                await message.channel.send(f'{message.author.mention} watch your language.', delete_after=5)
 
 #Error handler
 @client.event
