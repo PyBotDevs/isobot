@@ -1246,7 +1246,7 @@ async def automod(ctx:SlashContext):
     localembed = discord.Embed(title=f"{ctx.guild.name}\'s automod configuration", descripton="Use the `/automod_set` command to change your server's automod configuration.", color=discord.Color.random())
     localembed.set_thumbnail(url=ctx.guild.icon_url)
     localembed.add_field(name="Swear-filter", value=loaded_config["swear_filter"]["enabled"])
-    localembed.add_field(name="Swear-filter Keywords Count", value=f"{int(len(loaded_config['swear_filter']['default'])) + int(len(loaded_config['swear_filter']['custom']))} words")
+    localembed.add_field(name="Swear-filter Keywords Count", value=f"{int(len(loaded_config['swear_filter']['keywords']['default'])) + int(len(loaded_config['swear_filter']['keywords']['custom']))} words")
     localembed.set_footer(text="More automod features will come soon!")
     await ctx.send(embed=localembed)
 
