@@ -1258,6 +1258,7 @@ async def automod(ctx:SlashContext):
     ]
 )
 async def automod_swearfilter(ctx:SlashContext, toggle:bool):
+    loaded_config = automod_config[str(ctx.guild.id)]
     if not ctx.author.guild_permissions.administrator: return await ctx.reply("You cannot use this command. If you think this is a mistake, please contact your server owner/administrator.", hidden=True)
     if loaded_config["swear_filter"]["enabled"] == toggle: return await ctx.reply(f"That automod option is already set to `{toggle}`.", hidden=True)
     loaded_config["swear_filter"]["enabled"] = toggle
@@ -1273,6 +1274,7 @@ async def automod_swearfilter(ctx:SlashContext, toggle:bool):
     ]
 )
 async def automod_use_default_keywords(ctx:SlashContext, toggle:bool):
+    loaded_config = automod_config[str(ctx.guild.id)]
     if not ctx.author.guild_permissions.administrator: return await ctx.reply("You cannot use this command. If you think this is a mistake, please contact your server owner/administrator.", hidden=True)
     if loaded_config["swear_filter"]["keywords"]["use_default"] == toggle: return await ctx.reply(f"That automod option is already set to `{toggle}`.", hidden=True)
     loaded_config["swear_filter"]["keywords"]["use_default"] = toggle
