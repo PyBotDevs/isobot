@@ -83,7 +83,7 @@ isobankauth = framework.isobank.authorize.IsobankAuth(f"{wdir}/database/isobank/
 @client.event
 async def on_ready():
     print("""
-Isobot-lazer  Copyright (C) 2022  PyBotDevs/NKA
+Isobot  Copyright (C) 2022  PyBotDevs/NKA
 This program comes with ABSOLUTELY NO WARRANTY; for details run `/w'.
 This is free software, and you are welcome to redistribute it
 under certain conditions; run `/c' for details.
@@ -969,7 +969,7 @@ async def status(ctx:SlashContext):
     localembed.add_field(name="CPU Usage", value=sys_cpu)
     localembed.add_field(name="Registered Users", value=f"{bot_users} users", inline=True)
     localembed.add_field(name="Uptime History", value="[here](https://stats.uptimerobot.com/PlKOmI0Aw8)")
-    localembed.add_field(name="Release Notes", value="[latest](https://github.com/PyBotDevs/isobot-lazer/releases/latest)")
+    localembed.add_field(name="Release Notes", value="[latest](https://github.com/PyBotDevs/isobot/releases/latest)")
     localembed.set_footer(text=f"Requested by {ctx.author.name}", icon_url=ctx.author.avatar_url)
     await ctx.send(embed=localembed)
 
@@ -1116,7 +1116,7 @@ async def edit_xp(ctx:SlashContext, user:discord.User, new_xp:int):
     description="Shows the open-source code links for isobot."
 )
 async def repo(ctx:SlashContext):
-    localembed = discord.Embed(title="Source-code Repositories", description="See and contribute to **isobot lazer's [GitHub repository](https://github.com/PyBotDevs/isobot-lazer)**\nSee our **[GitHub organization](https://github.com/PyBotDevs)**", color=discord.Color.random())
+    localembed = discord.Embed(title="Source-code Repositories", description="See and contribute to **isobot's [GitHub repository](https://github.com/PyBotDevs/isobot)**\nSee our **[GitHub organization](https://github.com/PyBotDevs)**", color=discord.Color.random())
     await ctx.send(embed=localembed)
 
 @slash.slash(

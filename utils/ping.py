@@ -6,8 +6,8 @@ app = Flask('')
 @app.route('/')
 def main():
   return """
-Isobot lazer is online. Redirecting to homepage...
-<script>window.location.replace("https://PyBotDevs.github.io/isobot-lazer")</script>
+Isobot is online. Redirecting to homepage...
+<script>window.location.replace("https://PyBotDevs.github.io/isobot")</script>
 """, 200
 
 def run():
