@@ -1326,7 +1326,7 @@ async def automod_add_custom_keyword(ctx:SlashContext, keyword:str):
 async def automod_remove_custom_keyword(ctx:SlashContext, id:int):
     loaded_config = automod_config[str(ctx.guild.id)]
     try:
-        data = loaded_config["swear_filter"]["keywords"]["custom"][id]
+        data = loaded_config["swear_filter"]["keywords"]["custom"][id-1]
         del data
         save()
         return await ctx.reply(f"Keyword (id: `{id}`) successfully removed from swear-filter configuration.")
