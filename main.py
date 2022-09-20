@@ -1326,8 +1326,8 @@ async def automod_add_custom_keyword(ctx:SlashContext, keyword:str):
 async def automod_remove_custom_keyword(ctx:SlashContext, id:int):
     loaded_config = automod_config[str(ctx.guild.id)]
     try:
-        data = loaded_config["swear_filter"]["keywords"]["custom"][id-1]
-        del data
+        data = loaded_config["swear_filter"]["keywords"]["custom"]
+        data.pop(id-1)
         save()
         return await ctx.reply(f"Keyword (id: `{id}`) successfully removed from swear-filter configuration.")
     except IndexError: await ctx.reply("That keyword id doesn't exist. Please specify a valid id and try again.", hidden=True)
