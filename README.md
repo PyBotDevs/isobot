@@ -4,7 +4,7 @@
 
 <h1 align='center'>Isobot lazer, the future of isobot.</h1>
 
-### ***Make sure to add isobot to your Discord server! [Click here to invite](https://discord.com/api/oauth2/authorize?client_id=953278050135588905&permissions=8&scope=applications.commands%20bot)***
+### ***Make sure to add isobot to your Discord server! [Click here to invite](https://discord.com/api/oauth2/authorize?client_id=896437848176230411&permissions=8&scope=bot%20applications.commands)***
 
 ![LICENSE](https://img.shields.io/github/license/notsniped/isobot-lazer?style=for-the-badge)
 [![Discord](https://img.shields.io/discord/880409977074888714?color=%235865F2&label=Discord&logo=discord&logoColor=%23fffz&style=for-the-badge)](https://discord.gg/b5pz8T6Yjr)
@@ -29,7 +29,7 @@ dnk
 I don't expect the project development to ever fully complete. But at some point, we might merge these changes with [our main project](https://github.com/PyBotDevs/isobot-python) sooner or later.
 
 # Invite link
-Become a beta tester today! We would really appreciate and value your feedback! [Click here to invite](https://discord.com/api/oauth2/authorize?client_id=953278050135588905&permissions=8&scope=applications.commands%20bot)
+Become a beta tester today! We would really appreciate and value your feedback! [Click here to invite](https://discord.com/api/oauth2/authorize?client_id=896437848176230411&permissions=8&scope=bot%20applications.commands)
 
 ## Extras
 # Highlights
