@@ -7,7 +7,7 @@ app = Flask('')
 def main():
   return """
 Isobot lazer is online. Redirecting to homepage...
-<script>window.location.replace("https://PyBotDevs.github.io/isobot-lazer")</script>
+<script>window.location.replace("https://PyBotDevs.github.io/isobot")</script>
 """, 200
 
 def run():
