@@ -2,7 +2,7 @@
   <img width="500px" src="https://github.com/PyBotDevs/isobot-resources/blob/base/lazer/icons/grey-transparent.png?raw=true">
 </p>
 
-<h1 align='center'>Isobot lazer, the future of isobot.</h1>
+<h1 align='center'>Isobot, the bot to make your server better.</h1>
 
 ### ***Make sure to add isobot to your Discord server! [Click here to invite](https://discord.com/api/oauth2/authorize?client_id=896437848176230411&permissions=8&scope=bot%20applications.commands)***
 
@@ -12,24 +12,24 @@
 
 [![CodeFactor](https://www.codefactor.io/repository/github/pybotdevs/isobot-lazer/badge)](https://www.codefactor.io/repository/github/pybotdevs/isobot-lazer)
 
-Isobot lazer is a brand-new project developed by the [iso.dev team](https://github.com/PyBotDevs), as a version of isobot which is sharper than beta.
+Isobot lazer is a brand-new rewrite of the original isobot codebase made by the [NKA Development Team](https://github.com/PyBotDevs), as a version of isobot which is even sharper than before.
 
-This open-source project is supposed to represent what the next-generation of isobot will look like, and how it will progress into the future.
+This open-source project was supposed to represent what the next-generation of isobot will look like, and now it's finally in the present.
 
 ## Why a new project?
-I wanted to make brand new, cutting-edge features for isobot. But in the process, I ran into some codeblocks which prevented me from doing so efficiently. This is why I decided to completely rewrite isobot as codename 'lazer' which is meant to be more future-proof.
+At that time, I wanted to make brand new, cutting-edge features for the old isobot codebase. But in the process, I ran into some codeblocks which prevented me from doing so efficiently. This is why I decided to completely rewrite isobot as codename 'lazer' which is meant to be more future-proof. And it sure was.
 
 ## How can I help?
-***PLEASE SUBMIT ISSUES AND PULL REQUESTS TO THE REPOSITORY!*** It helps us work on the project faster c:
+***PLEASE SUBMIT ISSUES AND PULL REQUESTS TO THE REPOSITORY!*** It helps us make our work easier c:
 
 ## When can I expect a fully-made version?
-dnk
+Maybe not anytime soon...
 
 ## When the project's development is complete, what will happen?
-I don't expect the project development to ever fully complete. But at some point, we might merge these changes with [our main project](https://github.com/PyBotDevs/isobot-python) sooner or later.
+***Our project development is complete!*** We will still however update our project and add a **load** of features to it for the coming years. So, make sure to follow along in our Discord server for updates!
 
 # Invite link
-Become a beta tester today! We would really appreciate and value your feedback! [Click here to invite](https://discord.com/api/oauth2/authorize?client_id=896437848176230411&permissions=8&scope=bot%20applications.commands)
+Become an isobot user today! You being a user in isobot and your feedback helps us make isobot better! [Click here to invite](https://discord.com/api/oauth2/authorize?client_id=896437848176230411&permissions=8&scope=bot%20applications.commands)
 
 ## Extras
 # Highlights
