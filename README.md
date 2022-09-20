@@ -14,7 +14,7 @@
 
 Isobot lazer is a brand-new rewrite of the original isobot codebase made by the [NKA Development Team](https://github.com/PyBotDevs), as a version of isobot which is even sharper than before.
 
-This open-source project was supposed to represent what the next-generation of isobot will look like, and now it's finally in the present.
+This open-source project was supposed to represent what the next-generation of isobot will look like, and now it's finally here.
 
 ## Why a new project?
 At that time, I wanted to make brand new, cutting-edge features for the old isobot codebase. But in the process, I ran into some codeblocks which prevented me from doing so efficiently. This is why I decided to completely rewrite isobot as codename 'lazer' which is meant to be more future-proof. And it sure was.
