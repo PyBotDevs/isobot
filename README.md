@@ -31,8 +31,9 @@ Maybe not anytime soon...
 # Invite link
 Become an isobot user today! You being a user in isobot and your feedback helps us make isobot better! [Click here to invite](https://discord.com/api/oauth2/authorize?client_id=896437848176230411&permissions=8&scope=bot%20applications.commands)
 
-## Extras
+<!--## Extras
 # Highlights
 Work command:
 
 ![image](https://user-images.githubusercontent.com/72265661/170833960-7ce1acdf-7dc6-4933-8969-144ed2d57a93.png)
+-->
