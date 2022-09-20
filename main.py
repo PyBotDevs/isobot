@@ -36,6 +36,7 @@ with open('config/shop.json', 'r') as f: shopitem = json.load(f)
 with open('database/presence.json', 'r') as f: presence = json.load(f)
 with open('database/levels.json', 'r') as f: levels = json.load(f)
 with open('config/commands.json', 'r') as f: commandsdb = json.load(f)
+with open('database/automod.json', 'r') as f: automod_config = json.load(f)
 
 #Pre-Initialization Commands
 def timenow(): datetime.datetime.now().strftime("%H:%M:%S")
@@ -45,6 +46,7 @@ def save():
     with open('database/items.json', 'w+') as f: json.dump(items, f, indent=4)
     with open('database/presence.json', 'w+') as f: json.dump(presence, f, indent=4)
     with open('database/levels.json', 'w+') as f: json.dump(levels, f, indent=4)
+    with open('database/automod.json', 'w+') as f: json.dump(automod_config, f, indent=4)
 
 def get_user_networth(user_id:int):
     nw = currency["wallet"][str(user_id)] + currency["bank"][str(user_id)]
@@ -100,6 +102,17 @@ async def on_message(ctx):
     if str(ctx.author.id) not in warnings[str(ctx.guild.id)]: warnings[str(ctx.guild.id)][str(ctx.author.id)] = []
     if str(ctx.author.id) not in items: items[str(ctx.author.id)] = {}
     if str(ctx.author.id) not in levels: levels[str(ctx.author.id)] = {"xp": 0, "level": 0}
+    if str(ctx.guild.id) not in automod_config: automod_config[str(ctx.guild.id)] = \
+    {
+        "swear_filter": {
+            "enabled": False,
+            "keywords": {
+                "use_default": True,
+                "default": ["fuck", "shit", "pussy", "penis", "cock", "vagina", "sex", "moan", "bitch", "hoe", "nigga", "nigger", "xxx", "porn"],
+                "custom": []
+            }
+        }
+    }
     for z in shopitem:
         if z in items[str(ctx.author.id)]: pass
         else: items[str(ctx.author.id)][str(z)] = 0
@@ -129,6 +142,13 @@ async def on_message(ctx):
             levels[str(ctx.author.id)]["level"] += 1
             await ctx.author.send(f"{ctx.author.mention}, you just ranked up to **level {levels[str(ctx.author.id)]['level']}**. Nice!")
         save()
+        if automod_config[str(ctx.guild.id)]["swear_filter"]["enabled"] == True:
+            if automod_config[str(ctx.guild.id)]["swear_filter"]["keywords"]["use_default"] and any(x in ctx.content.lower() for x in automod_config[str(ctx.guild.id)]["swear_filter"]["keywords"]["default"]):
+                await ctx.delete()
+                await ctx.channel.send(f'{message.author.mention} watch your language.', delete_after=5)
+            elif automod_config[str(ctx.guild.id)]["swear_filter"]["keywords"]["custom"] is not [] and any(x in ctx.content.lower() for x in automod_config[str(ctx.guild.id)]["swear_filter"]["keywords"]["custom"]):
+                await ctx.delete()
+                await ctx.channel.send(f'{message.author.mention} watch your language.', delete_after=5)
 
 #Error handler
 @client.event
@@ -1215,6 +1235,103 @@ async def profile(ctx: SlashContext, user: discord.User = None):
     # More stats will be added later
     # Maybe I should make a userdat system for collecting statistical data to process and display here, coming in a future update.
     await ctx.send(embed=localembed)
+
+# Automod commands
+@slash.slash(
+    name="automod",
+    description="Shows the current automod configuration for your server"
+)
+async def automod(ctx:SlashContext):
+    loaded_config = automod_config[str(ctx.guild.id)]
+    localembed = discord.Embed(title=f"{ctx.guild.name}\'s automod configuration", descripton="Use the `/automod_set` command to change your server's automod configuration.", color=discord.Color.random())
+    localembed.set_thumbnail(url=ctx.guild.icon_url)
+    localembed.add_field(name="Swear-filter", value=loaded_config["swear_filter"]["enabled"])
+    localembed.add_field(name="Swear-filter Keywords Count", value=f"{int(len(loaded_config['swear_filter']['keywords']['default'])) + int(len(loaded_config['swear_filter']['keywords']['custom']))} words")
+    localembed.set_footer(text="More automod features will come soon!")
+    await ctx.send(embed=localembed)
+
+@slash.slash(
+    name="automod_swearfilter",
+    description="Turn on or off automod's swear-filter in your server",
+    options=[
+        create_option(name="toggle", description="Do you want to turn it on or off?", option_type=5, required=True)
+    ]
+)
+async def automod_swearfilter(ctx:SlashContext, toggle:bool):
+    loaded_config = automod_config[str(ctx.guild.id)]
+    if not ctx.author.guild_permissions.administrator: return await ctx.reply("You cannot use this command. If you think this is a mistake, please contact your server owner/administrator.", hidden=True)
+    if loaded_config["swear_filter"]["enabled"] == toggle: return await ctx.reply(f"That automod option is already set to `{toggle}`.", hidden=True)
+    loaded_config["swear_filter"]["enabled"] = toggle
+    if toggle == True: await ctx.reply("Swear-filter successfully **enabled**.", hidden=True)
+    elif toggle == False: await ctx.reply("Swear-filter successfully **disabled**.", hidden=True)
+    save()
+
+@slash.slash(
+    name="automod_use_default_keywords",
+    description="Choose whether or not you want to use the default keywords for automod's swear-filter",
+    options=[
+        create_option(name="toggle", description="Do you want to turn it on or off?", option_type=5, required=True)
+    ]
+)
+async def automod_use_default_keywords(ctx:SlashContext, toggle:bool):
+    loaded_config = automod_config[str(ctx.guild.id)]
+    if not ctx.author.guild_permissions.administrator: return await ctx.reply("You cannot use this command. If you think this is a mistake, please contact your server owner/administrator.", hidden=True)
+    if loaded_config["swear_filter"]["keywords"]["use_default"] == toggle: return await ctx.reply(f"That automod option is already set to `{toggle}`.", hidden=True)
+    loaded_config["swear_filter"]["keywords"]["use_default"] = toggle
+    if toggle == True: await ctx.reply("Using default swear-filter keywords successfully **enabled**.", hidden=True)
+    elif toggle == False: await ctx.reply("Using default swear-filter keywords successfully **disabled**.", hidden=True)
+    save()
+
+@slash.slash(
+    name="automod_view_custom_keywords",
+    description="Shows a list of the custom automod swear-filter keywords set for your server",
+)
+async def automod_view_custom_keywords(ctx:SlashContext):
+    loaded_config = automod_config[str(ctx.guild.id)]
+    out = ""
+    if loaded_config["swear_filter"]["keywords"]["custom"] != []:
+        i = 0
+        for x in loaded_config["swear_filter"]["keywords"]["custom"]:
+            i += 1
+            out += f"**{i})** {x}\n"
+    else: out = "*No custom keywords are set for your server.*"
+    localembed = discord.Embed(title=f"Custom Swear-filter keywords for {ctx.guild.name}", description=out, color=discord.Color.random())
+    localembed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested by {ctx.author}")
+    await ctx.send(embed=localembed)
+
+@slash.slash(
+    name="automod_add_custom_keyword",
+    description="Adds a custom keyword to your server's swear-filter",
+    options=[
+        create_option(name="keyword", description="What keyword do you want to add?", option_type=3, required=True)
+    ]
+)
+async def automod_add_custom_keyword(ctx:SlashContext, keyword:str):
+    if not ctx.author.guild_permissions.administrator: return await ctx.reply("You cannot use this command. If you think this is a mistake, please contact your server owner/administrator.", hidden=True)
+    loaded_config = automod_config[str(ctx.guild.id)]
+    if keyword not in loaded_config["swear_filter"]["keywords"]["custom"]:
+        loaded_config["swear_filter"]["keywords"]["custom"].append(keyword)
+        save()
+        localembed = discord.Embed(description=f"New swear-filter keyword `{keyword}` successfully added to configuration.", color=discord.Color.green())
+        await ctx.reply(embed=localembed, hidden=True)
+    else: return await ctx.reply("That keyword is already added in your automod configuration.", hidden=True)
+
+@slash.slash(
+    name="automod_remove_custom_keyword",
+    description="Removes a custom keyword (matching its id) from your server's swear-filter",
+    options=[
+        create_option(name="id", description="What's the id of the keyword to remove (can be found in bold through /automod_view_custom_keywords", option_type=4, required=True)
+    ]
+)
+async def automod_remove_custom_keyword(ctx:SlashContext, id:int):
+    loaded_config = automod_config[str(ctx.guild.id)]
+    try:
+        data = loaded_config["swear_filter"]["keywords"]["custom"]
+        data.pop(id-1)
+        save()
+        return await ctx.reply(f"Keyword (id: `{id}`) successfully removed from swear-filter configuration.")
+    except IndexError: await ctx.reply("That keyword id doesn't exist. Please specify a valid id and try again.", hidden=True)
+
 
 # Initialization
 utils.ping.host()

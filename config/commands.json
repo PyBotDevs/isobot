@@ -538,5 +538,25 @@
     "usable_by": "everyone",
     "disabled": false,
     "bugged": false
+  },
+  "automod": {
+	"name": "Show Automod Server Configuration",
+	"description": "Shows the current configuration of your server's automod system.",
+	"type": "automod",
+	"cooldown": null,
+	"args": null,
+	"usable_by": "everyone",
+	"disabled": false,
+	"bugged": false
+  },
+  "automod_swearfilter": {
+	"name": "Toggle Automod Swear-filter",
+	"description": "Lets you turn on or off the automod swear-filter for your server.",
+	"type": "automod",
+	"cooldown": null,
+	"args": ["toggle"],
+	"usable_by": "server admins",
+	"disabled": false,
+	"bugged": false
   }
 }
