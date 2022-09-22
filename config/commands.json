@@ -76,7 +76,7 @@
       "cooldown": null,
       "args": ["module"],
       "usable_by": "the developer",
-      "disabled": false,
+      "disabled": true,
       "bugged": false
   },
   "unload": {
@@ -86,7 +86,7 @@
       "cooldown": null,
       "args": ["module"],
       "usable_by": "the developer",
-      "disabled": false,
+      "disabled": true,
       "bugged": false
   },
   "sync": {
