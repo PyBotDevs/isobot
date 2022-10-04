@@ -74,10 +74,19 @@ class plugins:
     levelling = False
     music = False
 
+#Framework Module Loader
 colors = framework.isobot.colors.Colors()
 currency_unused = framework.isobot.currency.CurrencyAPI(f'{wdir}/database/currency.json', f"{wdir}/logs/currency.log")  # Initialize part of the framework (Currency)
 # isobank = framework.isobank.manager.IsoBankManager(f"{wdir}/database/isobank/accounts.json", f"{wdir}/database/isobank/auth.json")
 isobankauth = framework.isobank.authorize.IsobankAuth(f"{wdir}/database/isobank/auth.json", f"{wdir}/database/isobank/accounts.json")
+
+#Theme Loader
+with open("themes/halloween.theme.json", 'r') as f:
+    theme = json.load(f)
+    try: color = int(theme["theme"]["embed_color"])
+    except KeyError:
+        print(f"{colors.red}The theme file being loaded might be broken. Rolling back to default configuration...{colors.end}")
+        color = discord.Color.random()
 
 #Events
 @client.event
@@ -181,7 +190,7 @@ async def on_command_error(ctx, error):
 async def help(ctx:SlashContext, command:str=None):
     if command is not None:
         try:
-            localembed = discord.Embed(title=f"{commandsdb[command]['name']} Command (/{command})", description=commandsdb[command]['description'], color=discord.Color.random())
+            localembed = discord.Embed(title=f"{commandsdb[command]['name']} Command (/{command})", description=commandsdb[command]['description'], color=color)
             localembed.add_field(name="Command Type", value=commandsdb[command]['type'], inline=False)
             if commandsdb[command]['cooldown'] is not None: localembed.add_field(name="Cooldown", value=f"{str(datetime.timedelta(seconds=commandsdb[command]['cooldown']))}", inline=False)
             localembed.add_field(name="Usable By", value=commandsdb[command]['usable_by'], inline=False)
@@ -196,7 +205,7 @@ async def help(ctx:SlashContext, command:str=None):
     else:
         r = ""
         for x in commandsdb: r += f"`/{x}`\n"
-        localembed = discord.Embed(title="Isobot Command Help", description=f"**Bot Commands:**\n{r}", color = discord.Color.random())
+        localembed = discord.Embed(title="Isobot Command Help", description=f"**Bot Commands:**\n{r}", color = color)
         await ctx.send(embed=localembed)
 
 #@slash.slash(
@@ -613,7 +622,7 @@ async def sell(ctx:SlashContext, name:str, quantity:int=1):
         ttl = shopitem[name]["sell price"]*quantity
         currency["wallet"][str(ctx.author.id)] += int(ttl)
         save()
-        localembed = discord.Embed(title='Item sold', description=f'You successfully sold {quantity} {name} for {ttl} coins!', color=discord.Color.random())
+        localembed = discord.Embed(title='Item sold', description=f'You successfully sold {quantity} {name} for {ttl} coins!', color=color)
         localembed.set_footer(text='Thank you for your business.')
         await ctx.reply(embed=localembed)
     except KeyError: await ctx.reply('what are you doing that item doesn\'t even exist')
@@ -1074,7 +1083,7 @@ async def autogrind(ctx:SlashContext):
 async def rank(ctx:SlashContext, user:discord.User=None):
     if user == None: user = ctx.author
     try:
-        localembed = discord.Embed(title=f"{user.display_name}'s rank", color=discord.Color.random())
+        localembed = discord.Embed(title=f"{user.display_name}'s rank", color=color)
         localembed.add_field(name="Level", value=levels[str(user.id)]["level"])
         localembed.add_field(name="XP", value=levels[str(user.id)]["xp"])
         localembed.set_footer(text="Keep chatting to earn levels!", icon_url=ctx.author.avatar_url)
@@ -1116,7 +1125,7 @@ async def edit_xp(ctx:SlashContext, user:discord.User, new_xp:int):
     description="Shows the open-source code links for isobot."
 )
 async def repo(ctx:SlashContext):
-    localembed = discord.Embed(title="Source-code Repositories", description="See and contribute to **isobot's [GitHub repository](https://github.com/PyBotDevs/isobot)**\nSee our **[GitHub organization](https://github.com/PyBotDevs)**", color=discord.Color.random())
+    localembed = discord.Embed(title="Source-code Repositories", description="See and contribute to **isobot's [GitHub repository](https://github.com/PyBotDevs/isobot)**\nSee our **[GitHub organization](https://github.com/PyBotDevs)**", color=color)
     await ctx.send(embed=localembed)
 
 @slash.slash(
@@ -1155,7 +1164,7 @@ async def isobank_register(ctx:SlashContext, pin:int):
 @commands.cooldown(1, 10, commands.BucketType.user)
 async def guessthenumber(ctx:SlashContext):
     number = random.randint(1, 10)
-    localembed = discord.Embed(name="Guess the number!", description="I am currently thinking of a number from 1 to 10. Can you guess what it is?", color=discord.Color.random())
+    localembed = discord.Embed(name="Guess the number!", description="I am currently thinking of a number from 1 to 10. Can you guess what it is?", color=color)
     localembed.set_footer(text="If you guess what it is, you will win 500 to 1000 coins!")
     await ctx.send(embed=localembed)
     def check(msg): return msg.author == ctx.author and msg.channel == ctx.channel and msg.content
@@ -1177,7 +1186,7 @@ async def highlow(ctx:SlashContext):
     numb2 = random.randint(1, 100)
     coins = random.randint(300, 1000)
     def check(msg): return msg.author == ctx.author and msg.channel == ctx.channel and (msg.content)
-    localembed = discord.Embed(title=f"Your number is {numb}.", description="Choose if the other number is lower, higher or jackpot.", color=discord.Color.random())
+    localembed = discord.Embed(title=f"Your number is {numb}.", description="Choose if the other number is lower, higher or jackpot.", color=color)
     localembed.set_footer(text="Send your response in chat")
     await ctx.send(embed=localembed)
     msg = await client.wait_for("message", check=check)
@@ -1213,7 +1222,7 @@ async def networth(ctx:SlashContext, user:discord.User=None):
     if user == None: user = ctx.author
     try:
         ntw = get_user_networth(user.id)
-        localembed = discord.Embed(name=f"{user.display_name}'s networth", description=f"{ntw} coins", color=discord.Color.random())
+        localembed = discord.Embed(name=f"{user.display_name}'s networth", description=f"{ntw} coins", color=color)
         await ctx.send(embed=localembed)
     except KeyError: return await ctx.reply("Looks like that user isn't cached yet. Please try again later.", hidden=True)
 
@@ -1226,7 +1235,7 @@ async def networth(ctx:SlashContext, user:discord.User=None):
 )
 async def profile(ctx: SlashContext, user: discord.User = None):
     if user == None: user = ctx.author
-    localembed = discord.Embed(title=f"{user.display_name}'s isobot stats", color=discord.Color.random())
+    localembed = discord.Embed(title=f"{user.display_name}'s isobot stats", color=color)
     localembed.set_thumbnail(url=user.avatar_url)
     localembed.add_field(name="Level", value=f"Level {levels[str(user.id)]['level']} ({levels[str(user.id)]['xp']} XP)", inline=False)
     localembed.add_field(name="Balance in Wallet", value=f"{currency['wallet'][str(user.id)]} coins", inline=True)
@@ -1243,7 +1252,7 @@ async def profile(ctx: SlashContext, user: discord.User = None):
 )
 async def automod(ctx:SlashContext):
     loaded_config = automod_config[str(ctx.guild.id)]
-    localembed = discord.Embed(title=f"{ctx.guild.name}\'s automod configuration", descripton="Use the `/automod_set` command to change your server's automod configuration.", color=discord.Color.random())
+    localembed = discord.Embed(title=f"{ctx.guild.name}\'s automod configuration", descripton="Use the `/automod_set` command to change your server's automod configuration.", color=color)
     localembed.set_thumbnail(url=ctx.guild.icon_url)
     localembed.add_field(name="Swear-filter", value=loaded_config["swear_filter"]["enabled"])
     localembed.add_field(name="Swear-filter Keywords Count", value=f"{int(len(loaded_config['swear_filter']['keywords']['default'])) + int(len(loaded_config['swear_filter']['keywords']['custom']))} words")
@@ -1295,7 +1304,7 @@ async def automod_view_custom_keywords(ctx:SlashContext):
             i += 1
             out += f"**{i})** {x}\n"
     else: out = "*No custom keywords are set for your server.*"
-    localembed = discord.Embed(title=f"Custom Swear-filter keywords for {ctx.guild.name}", description=out, color=discord.Color.random())
+    localembed = discord.Embed(title=f"Custom Swear-filter keywords for {ctx.guild.name}", description=out, color=color)
     localembed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested by {ctx.author}")
     await ctx.send(embed=localembed)
 

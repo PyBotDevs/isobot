@@ -1,0 +1,6 @@
+{
+  "name": "Halloween Theme",
+  "description": "The official isobot Halloween 2022 theme!",
+  "version": "v1.0",
+  "theme": {"embed_color": "0xeb6123"}
+}
