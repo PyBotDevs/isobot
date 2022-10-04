@@ -208,42 +208,6 @@ async def help(ctx:SlashContext, command:str=None):
         localembed = discord.Embed(title="Isobot Command Help", description=f"**Bot Commands:**\n{r}", color = color)
         await ctx.send(embed=localembed)
 
-#@slash.slash(
-#    name='load',
-#    description='Loads the specified module to the bot',
-#    options=[
-#        create_option(name='module', description='Which module do you want to load? (only in cogs folder)', option_type=3, required=True)
-#    ]
-#)
-#async def load(ctx:SlashContext, module:str):
-#    if ctx.author.id != 738290097170153472: return ctx.send("Sorry, but this command is only for my developer's use.", hidden=True)
-#    try:
-#        utils.logger.info(f"Attempting to load module \"{module}\".")
-#        client.load_extension(module)
-#        utils.logger.info("Success loading module!")
-#        await ctx.reply("Module loaded!")
-#    except Exception as e:
-#        utils.logger.error(f"Error while loading module: {e}")
-#        await ctx.reply("Module failed to load. Check console for info.")
-
-#@slash.slash(
-#    name='unload',
-#    description='Removes the specified module from the bot',
-#    options=[
-#        create_option(name='module', description='Which module do you want to unload? (only in cogs folder)', option_type=3, required=True)
-#    ]
-#)
-#async def unload(ctx:SlashContext, module:str):
-#    if ctx.author.id != 738290097170153472: return ctx.send("Sorry, but this command is only for my developer's use.", hidden=True)
-#    try:
-#        utils.logger.info(f"Attempting to unload module \"{module}\".")
-#        client.unload_extension(module)
-#        utils.logger.info("Success removing module!")
-#        await ctx.reply("Module unloaded!")
-#    except Exception as e:
-#        utils.logger.error(f"Error while unloading module: {e}")
-#        await ctx.reply("Module failed to unload. Check console for info.")
-
 @slash.slash(name='balance', description='Shows your own or another user\'s balance.', options=[create_option(name='user', description='Which user?', option_type=6, required=False)])
 async def balance(ctx:SlashContext, user=None):
     try:
