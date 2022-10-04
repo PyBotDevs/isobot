@@ -10,7 +10,7 @@
 [![Discord](https://img.shields.io/discord/880409977074888714?color=%235865F2&label=Discord&logo=discord&logoColor=%23fffz&style=for-the-badge)](https://discord.gg/b5pz8T6Yjr)
 ![Stars](https://img.shields.io/github/stars/notsniped/isobot-lazer?style=for-the-badge)
 
-[![CodeFactor](https://www.codefactor.io/repository/github/pybotdevs/isobot-lazer/badge)](https://www.codefactor.io/repository/github/pybotdevs/isobot-lazer)
+[![CodeFactor](https://www.codefactor.io/repository/github/pybotdevs/isobot/badge)](https://www.codefactor.io/repository/github/pybotdevs/isobot)
 
 Isobot lazer is a brand-new rewrite of the original isobot codebase made by the [NKA Development Team](https://github.com/PyBotDevs), as a version of isobot which is even sharper than before.
 
