@@ -83,7 +83,10 @@ isobankauth = framework.isobank.authorize.IsobankAuth(f"{wdir}/database/isobank/
 #Theme Loader
 with open("themes/halloween.theme.json", 'r') as f:
     theme = json.load(f)
-    try: color = int(theme["theme"]["embed_color"])
+    try:
+        color_loaded = theme["theme"]["embed_color"]
+        color_raw = int(color_loaded, 16)
+        color = hex(color_raw)
     except KeyError:
         print(f"{colors.red}The theme file being loaded might be broken. Rolling back to default configuration...{colors.end}")
         color = discord.Color.random()
