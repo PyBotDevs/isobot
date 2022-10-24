@@ -6,11 +6,10 @@
 
 ### ***Make sure to add isobot to your Discord server! [Click here to invite](https://discord.com/api/oauth2/authorize?client_id=896437848176230411&permissions=8&scope=bot%20applications.commands)***
 
-![LICENSE](https://img.shields.io/github/license/notsniped/isobot-lazer?style=for-the-badge)
-[![Discord](https://img.shields.io/discord/880409977074888714?color=%235865F2&label=Discord&logo=discord&logoColor=%23fffz&style=for-the-badge)](https://discord.gg/b5pz8T6Yjr)
-![Stars](https://img.shields.io/github/stars/notsniped/isobot-lazer?style=for-the-badge)
-
+![LICENSE](https://img.shields.io/github/license/PyBotDevs/isobot)
+![Stars](https://img.shields.io/github/stars/PyBotDevs/isobot)
 [![CodeFactor](https://www.codefactor.io/repository/github/pybotdevs/isobot/badge)](https://www.codefactor.io/repository/github/pybotdevs/isobot)
+[![Discord](https://img.shields.io/discord/880409977074888714?color=%235865F2&label=Discord&logo=discord&logoColor=%23FFFFFF)](https://discord.gg/b5pz8T6Yjr)
 
 Isobot lazer is a brand-new rewrite of the original isobot codebase made by the [NKA Development Team](https://github.com/PyBotDevs), as a version of isobot which is even sharper than before.
 
