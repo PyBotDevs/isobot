@@ -191,7 +191,7 @@ async def on_command_error(ctx, error):
         create_option(name="command", description="Which command do you need help with?", option_type=3, required=False)
     ]
 )
-async def help(ctx:SlashContext, command:str=None):
+async def help(ctx: ApplicationContext, command:str=None):
     if command is not None:
         try:
             localembed = discord.Embed(title=f"{commandsdb[command]['name']} Command (/{command})", description=commandsdb[command]['description'], color=color)
@@ -213,7 +213,7 @@ async def help(ctx:SlashContext, command:str=None):
         await ctx.send(embed=localembed)
 
 @slash.slash(name='balance', description='Shows your own or another user\'s balance.', options=[create_option(name='user', description='Which user?', option_type=6, required=False)])
-async def balance(ctx:SlashContext, user=None):
+async def balance(ctx: ApplicationContext, user=None):
     try:
         if user == None: user = ctx.author
         try:
@@ -234,7 +234,7 @@ async def balance(ctx:SlashContext, user=None):
     ]
 )
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def kick(ctx:SlashContext, user, reason=None):
+async def kick(ctx: ApplicationContext, user, reason=None):
     if plugins.moderation:
         if not ctx.author.guild_permissions.kick_members: return await ctx.reply('https://tenor.com/view/oh-yeah-high-kick-take-down-fight-gif-14272509')
         else:
@@ -253,7 +253,7 @@ async def kick(ctx:SlashContext, user, reason=None):
     ]
 )
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def ban(ctx:SlashContext, user, reason=None):
+async def ban(ctx: ApplicationContext, user, reason=None):
     if plugins.moderation:
         if not ctx.author.guild_permissions.ban_members: return await ctx.reply('https://tenor.com/view/thor-strike-admin-ban-admin-ban-gif-22545175')
         else:
@@ -272,7 +272,7 @@ async def ban(ctx:SlashContext, user, reason=None):
     ]
 )
 @commands.cooldown(1, 2, commands.BucketType.user)
-async def warn(ctx:SlashContext, user, reason):
+async def warn(ctx: ApplicationContext, user, reason):
     if plugins.moderation:
         if not ctx.author.guild_permissions.manage_messages: raise MissingPermissions
         warnings[str(ctx.guild.id)][str(user.id)].append('reason')
@@ -290,7 +290,7 @@ async def warn(ctx:SlashContext, user, reason):
         create_option(name='user', description='Who do you want to remove warns from?', option_type=6, required=True)
     ]
 )
-async def warns_clear(ctx:SlashContext, user):
+async def warns_clear(ctx: ApplicationContext, user):
     if plugins.moderation:
         if not ctx.author.guild_permissions.manage_messages: raise MissingPermissions
         warnings[str(ctx.guild.id)][str(user.id)] = []
@@ -304,7 +304,7 @@ async def warns_clear(ctx:SlashContext, user):
         create_option(name='amount', description='Specify an amount to deposit (use max for everything)', option_type=3, required=True)
     ]
 )
-async def deposit(ctx:SlashContext, amount):
+async def deposit(ctx: ApplicationContext, amount):
     if plugins.economy:
         if not amount.isdigit():
             if str(amount) == "max": amount = currency["wallet"][str(ctx.author.id)]
@@ -324,7 +324,7 @@ async def deposit(ctx:SlashContext, amount):
         create_option(name='amount', description='Specify an amount to withdraw (use max for everything)', option_type=3, required=True)
     ]
 )
-async def withdraw(ctx:SlashContext, amount):
+async def withdraw(ctx: ApplicationContext, amount):
     if plugins.economy:
         if not amount.isdigit():
             if str(amount) == "max": amount = currency["wallet"][str(ctx.author.id)]
@@ -342,7 +342,7 @@ async def withdraw(ctx:SlashContext, amount):
     description='Work for a 30-minute shift and earn cash.'
 )
 @commands.cooldown(1, 1800, commands.BucketType.user)
-async def work(ctx:SlashContext):
+async def work(ctx: ApplicationContext):
     if plugins.economy:
         i = random.randint(10000, 20000)
         currency['wallet'][str(ctx.author.id)] += i
@@ -354,7 +354,7 @@ async def work(ctx:SlashContext):
     description='Claims your daily (every 24 hours)'
 )
 @commands.cooldown(1, 43200, commands.BucketType.user)
-async def daily(ctx:SlashContext):
+async def daily(ctx: ApplicationContext):
     if plugins.economy:
         currency['wallet'][str(ctx.author.id)] += 10000
         save()
@@ -365,7 +365,7 @@ async def daily(ctx:SlashContext):
     description='Claims your weekly (every 7 days)'
 )
 @commands.cooldown(1, 302400, commands.BucketType.user)
-async def weekly(ctx:SlashContext):
+async def weekly(ctx: ApplicationContext):
     if plugins.economy:
         currency['wallet'][str(ctx.author.id)] += 45000
         save()
@@ -376,7 +376,7 @@ async def weekly(ctx:SlashContext):
     description='Claims your monthly (every 31 days)'
 )
 @commands.cooldown(1, 1339200, commands.BucketType.user)
-async def monthly(ctx:SlashContext):
+async def monthly(ctx: ApplicationContext):
     if plugins.economy:
         currency['wallet'][str(ctx.author.id)] += 1000000
         save()
@@ -387,7 +387,7 @@ async def monthly(ctx:SlashContext):
     description='Begs for some quick cash'
 )
 @commands.cooldown(1, 15, commands.BucketType.user)
-async def beg(ctx:SlashContext):
+async def beg(ctx: ApplicationContext):
     if not plugins.economy: return
     names = [
         "A random person",
@@ -429,7 +429,7 @@ async def beg(ctx:SlashContext):
     description='Scouts your area for coins'
 )
 @commands.cooldown(1, 30, commands.BucketType.user)
-async def scout(ctx:SlashContext):
+async def scout(ctx: ApplicationContext):
     if not plugins.economy: return
     chance = random.randint(1, 100)
     if (random.randint(1, 100) <= 90):
@@ -452,7 +452,7 @@ async def scout(ctx:SlashContext):
         create_option(name='amount', description='How much do you want to give?', option_type=4, required=True)
     ]
 )
-async def give(ctx:SlashContext, user:discord.User, amount:int):
+async def give(ctx: ApplicationContext, user:discord.User, amount:int):
     if not plugins.economy: return
     if amount <= 0: return await ctx.send('The amount you want to give must be greater than `0` coins!', hidden=True)
     if amount > int(currency['wallet'][str(ctx.author.id)]): return await ctx.send('You don\'t have enough coins in your wallet to do this.', hidden=True)
@@ -470,7 +470,7 @@ async def give(ctx:SlashContext, user:discord.User, amount:int):
     ]
 )
 @commands.cooldown(1, 60, commands.BucketType.user)
-async def rob(ctx:SlashContext, user:discord.User):
+async def rob(ctx: ApplicationContext, user:discord.User):
     if not plugins.economy: return
     if currency['wallet'][str(user.id)] < 5000: return await ctx.reply('They has less than 5000 coins on them. Don\'t waste your time...') 
     elif currency['wallet'][str(ctx.author.id)] < 5000: return await ctx.reply('You have less than 5k coins in your wallet. Play fair dude.')
@@ -494,7 +494,7 @@ async def rob(ctx:SlashContext, user:discord.User):
     ]
 )
 @commands.cooldown(1, (60*5), commands.BucketType.user)
-async def bankrob(ctx:SlashContext, user:discord.User):
+async def bankrob(ctx: ApplicationContext, user:discord.User):
     if not plugins.economy: return
     if currency['wallet'][str(user.id)] < 10000: return await ctx.reply('You really want to risk losing your life to a poor person? (imagine robbing someone with < 10k net worth)')
     elif currency['wallet'][str(ctx.author.id)] < 10000: return await ctx.reply('You have less than 10k in your wallet. Don\'t be greedy.')
@@ -515,7 +515,7 @@ async def bankrob(ctx:SlashContext, user:discord.User):
         create_option(name='user', description='Whose inventory you want to view?', option_type=6, required=False)
     ]
 )
-async def inventory(ctx:SlashContext, user:discord.User = None):
+async def inventory(ctx: ApplicationContext, user:discord.User = None):
     if not plugins.economy: return
     if user == None: user = ctx.author
     localembed = discord.Embed(title=f'{user.display_name}\'s Inventory')
@@ -531,7 +531,7 @@ async def inventory(ctx:SlashContext, user:discord.User = None):
         create_option(name='item', description='Specify an item to view.', option_type=3, required=False)
     ]
 )
-async def shop(ctx:SlashContext, item:str=None):
+async def shop(ctx: ApplicationContext, item:str=None):
     if not plugins.economy: return
     if item == None:
         localembed = discord.Embed(
@@ -561,7 +561,7 @@ async def shop(ctx:SlashContext, item:str=None):
         create_option(name='quantity', description='How many do you want to buy?', option_type=4, required=False)
     ]
 )
-async def buy(ctx:SlashContext, name:str, quantity:int=1):
+async def buy(ctx: ApplicationContext, name:str, quantity:int=1):
     if not plugins.economy: return
     try:
         amt = shopitem[name]['buy price'] * quantity
@@ -582,7 +582,7 @@ async def buy(ctx:SlashContext, name:str, quantity:int=1):
         create_option(name='quantity', description='How many do you want to sell?', option_type=4, required=False)
     ]
 )
-async def sell(ctx:SlashContext, name:str, quantity:int=1):
+async def sell(ctx: ApplicationContext, name:str, quantity:int=1):
     try:
         if shopitem[name]["sellable"] != True: return await ctx.reply('Dumb, you can\'t sell this item.')
         if quantity > items[str(ctx.author.id)][str(name)]: return await ctx.reply('You can\'t sell more than you have.')
@@ -601,7 +601,7 @@ async def sell(ctx:SlashContext, name:str, quantity:int=1):
     description='Pull out your rifle and hunt down animals'
 )
 @commands.cooldown(1, 30, commands.BucketType.user)
-async def hunt(ctx:SlashContext):
+async def hunt(ctx: ApplicationContext):
     if not plugins.economy: return
     if items[str(ctx.author.id)]['rifle'] == 0: return await ctx.reply('I\'d hate to see you hunt with your bare hands. Please buy a hunting rifle from the shop. ||/buy rifle||')
     loot = ['rock', 'ant', 'skunk', 'boar', 'deer', 'dragon', 'nothing', 'died']
@@ -621,7 +621,7 @@ async def hunt(ctx:SlashContext):
     description='Prepare your fishing rod and catch some fish'
 )
 @commands.cooldown(1, 45, commands.BucketType.user)
-async def fish(ctx:SlashContext):
+async def fish(ctx: ApplicationContext):
     if not plugins.economy: return
     if (items[str(ctx.author.id)]['fishingpole'] == 0): return await ctx.reply('I don\'t think you can fish with your bare hands... or you can just put yo hands in the water bro **giga chad moment**\nAnyway it\'s just better to buy a fishing pole from the shop. ||/buy fishingpole||')
     loot = ['shrimp', 'fish', 'rare fish', 'exotic fish', 'jellyfish', 'shark', 'nothing']
@@ -637,7 +637,7 @@ async def fish(ctx:SlashContext):
     description='Take your shovel and dig in the ground for some cool stuff!'
 )
 @commands.cooldown(1, 45, commands.BucketType.user)
-async def dig(ctx:SlashContext):
+async def dig(ctx: ApplicationContext):
     if not plugins.economy: return
     if (items[str(ctx.author.id)]['shovel'] == 0): return await ctx.reply('You\'re too good to have to dig with your bare hands..... at least I hope so. Please buy a shovel from the shop. ||/buy shovel||')
     loot = [
@@ -676,7 +676,7 @@ async def dig(ctx:SlashContext):
         create_option(name='amount', description='How many do you want to open?', option_type=4, required=True)
     ]
 )
-async def openlootbox(ctx:SlashContext, lootbox:str, amount:int):
+async def openlootbox(ctx: ApplicationContext, lootbox:str, amount:int):
     types = ["normal", "large", "special"]
     if amount <= 0: return await ctx.reply("You can't open 0 or below lootboxes! Don't be stupid.", hidden=True)
     if lootbox not in types: return await ctx.reply(f"wtf is {lootbox}?", hidden=True)
@@ -733,7 +733,7 @@ async def openlootbox(ctx:SlashContext, lootbox:str, amount:int):
     create_option(name='text', description='What do you want to send?', option_type=3, required=True)
   ]
 )
-async def echo(ctx:SlashContext, text:str): 
+async def echo(ctx: ApplicationContext, text:str): 
     await ctx.reply("Echoed!", hidden=True)
     await ctx.channel.send(text)
 
@@ -744,7 +744,7 @@ async def echo(ctx:SlashContext, text:str):
         create_option(name='user', description='Who do you want to know about?', option_type=6, required=False)
     ]
 )
-async def whoami(ctx:SlashContext, user:discord.User=None):
+async def whoami(ctx: ApplicationContext, user:discord.User=None):
     if user == None: user = ctx.author
     username = user
     displayname = user.display_name
@@ -773,7 +773,7 @@ async def whoami(ctx:SlashContext, user:discord.User=None):
     name='sync',
     description='Syncs all of the local databases with their latest version'
 )
-async def sync(ctx:SlashContext):
+async def sync(ctx: ApplicationContext):
     if ctx.author.id != 738290097170153472: return await ctx.reply('Sorry, this command is only for my developer\'s use.')
     try:
         with open('database/currency.json', 'r') as f: currency = json.load(f)
@@ -790,7 +790,7 @@ async def sync(ctx:SlashContext):
     description='Gives you the ability to make full words and sentences from a cluster of letters',
     options=[create_option(name='strok', description='What do you want to translate?', option_type=3, required=True)]
 )
-async def stroketranslate(ctx:SlashContext, strok: str):
+async def stroketranslate(ctx: ApplicationContext, strok: str):
         try:
             if len(strok) > 300: return await ctx.reply("Please use no more than `300` character length", hidden=True)
             else:
@@ -808,13 +808,13 @@ async def stroketranslate(ctx:SlashContext, strok: str):
     description='Randomly predicts a yes/no question.',
     options=[create_option(name="question", description="What do you want to predict?", option_type=3, required=True)]
 )
-async def prediction(ctx:SlashContext, question:str): await ctx.reply(f"My prediction is... **{random.choice(['Yes', 'No'])}!**")
+async def prediction(ctx: ApplicationContext, question:str): await ctx.reply(f"My prediction is... **{random.choice(['Yes', 'No'])}!**")
 
 @slash.slash(
     name='memes',
     description='Finely hand-picks a high-quality meme from the depths of reddit.'
 )
-async def memes(ctx:SlashContext):
+async def memes(ctx: ApplicationContext):
     memes_submissions = reddit.subreddit('memes').hot()
     post_to_pick = random.randint(1, 100)
     for i in range(0, post_to_pick):
@@ -828,7 +828,7 @@ async def memes(ctx:SlashContext):
     name='linuxmemes',
     description='Hands you a fabolous GNU/Linux meme from the r/linuxmemes subreddit.'
 )
-async def linuxmemes(ctx:SlashContext):
+async def linuxmemes(ctx: ApplicationContext):
     memes_submissions = reddit.subreddit('linuxmemes').hot()
     post_to_pick = random.randint(1, 100)
     for i in range(0, post_to_pick):
@@ -842,7 +842,7 @@ async def linuxmemes(ctx:SlashContext):
     name='ihadastroke',
     description='I bet you\'ll have a stroke trying to see these. (JK ITS ABSOLUTELY SAFE FOR YOU DONT WORRY)'
 )
-async def ihadastroke(ctx:SlashContext):
+async def ihadastroke(ctx: ApplicationContext):
     memes_submissions = reddit.subreddit('ihadastroke').hot()
     post_to_pick = random.randint(1, 100)
     for i in range(0, post_to_pick):
@@ -856,7 +856,7 @@ async def ihadastroke(ctx:SlashContext):
     name='engrish',
     description='Features phuck ups in english of any kind!'
 )
-async def engrish(ctx:SlashContext):
+async def engrish(ctx: ApplicationContext):
     memes_submissions = reddit.subreddit('engrish').hot()
     post_to_pick = random.randint(1, 100)
     for i in range(0, post_to_pick):
@@ -870,7 +870,7 @@ async def engrish(ctx:SlashContext):
     name='osugame',
     description='Features a post from the official osu! subreddit!'
 )
-async def osugame(ctx:SlashContext):
+async def osugame(ctx: ApplicationContext):
     memes_submissions = reddit.subreddit('osugame').hot()
     post_to_pick = random.randint(1, 100)
     for i in range(0, post_to_pick):
@@ -888,7 +888,7 @@ async def osugame(ctx:SlashContext):
         create_option(name='amount', description="How much do you want to donate?", option_type=4, required=True)
     ]
 )
-async def donate(ctx:SlashContext, id:str, amount):
+async def donate(ctx: ApplicationContext, id:str, amount):
     if plugins.economy:
         reciever_info = client.get_user(int(id))
         if id not in currency["wallet"]: return await ctx.reply("Unfortunately, we couldn't find that user in our server. Try double-checking the ID you've provided.", hidden=True)
@@ -921,7 +921,7 @@ async def donate(ctx:SlashContext, id:str, amount):
         create_option(name='modifier', description="Specify the balance to modifiy", option_type=4, required=True)
     ]
 )
-async def modify_balance(ctx:SlashContext, user:discord.User, modifier:int):
+async def modify_balance(ctx: ApplicationContext, user:discord.User, modifier:int):
     if ctx.author.id != 738290097170153472: return ctx.send("Sorry, but this command is only for my developer's use.", hidden=True)
     try:
         currency["wallet"][str(user.id)] += modifier
@@ -934,7 +934,7 @@ async def modify_balance(ctx:SlashContext, user:discord.User, modifier:int):
     name="status",
     description="Shows the current client info"
 )
-async def status(ctx:SlashContext):
+async def status(ctx: ApplicationContext):
     os_name = os.name
     sys_ram = str(f"{psutil.virtual_memory()[2]}GiB")
     sys_cpu = str(f"{psutil.cpu_percent(1)}%")
@@ -959,7 +959,7 @@ async def status(ctx:SlashContext):
         create_option(name="amount", description="How many of these do you want to gift?", option_type=4, required=False)
     ]
 )
-async def gift(ctx:SlashContext, user:discord.User, item:str, amount:int=1):
+async def gift(ctx: ApplicationContext, user:discord.User, item:str, amount:int=1):
     try:
         if amount < 1: return await ctx.reply("You can't gift less than 1 of those!", hidden=True)
         elif items[str(ctx.author.id)][item] < amount: return await ctx.reply("You don't have enough of those to gift!", hidden=True)
@@ -986,7 +986,7 @@ async def gift(ctx:SlashContext, user:discord.User, item:str, amount:int=1):
         create_option(name="response", description="What do you want your AFK response to be?", option_type=3, required=False)
     ]
 )
-async def afk_set(ctx:SlashContext, response:str="I'm AFK"):
+async def afk_set(ctx: ApplicationContext, response:str="I'm AFK"):
     exctime = time.time()
     if str(ctx.guild.id) not in presence: presence[str(ctx.guild.id)] = {}
     presence[str(ctx.guild.id)][str(ctx.author.id)] = {"type": "afk", "time": exctime, "response": response}
@@ -998,7 +998,7 @@ async def afk_set(ctx:SlashContext, response:str="I'm AFK"):
     name="afk_remove",
     description="Removes your AFK status"
 )
-async def afk_remove(ctx:SlashContext):
+async def afk_remove(ctx: ApplicationContext):
     try: 
         del presence[str(ctx.guild.id)][str(ctx.author.id)]
         save()
@@ -1013,7 +1013,7 @@ async def afk_remove(ctx:SlashContext):
         create_option(name="user", description="Whose AFK status do you want to remove?", option_type=6, required=True)
     ]
 )
-async def afk_mod_remove(ctx:SlashContext, user:discord.User):
+async def afk_mod_remove(ctx: ApplicationContext, user:discord.User):
     if not ctx.author.guild_permissions.manage_messages: return await ctx.reply("You don't have the required permissions to use this.", hidden=True)
     try: 
         del presence[str(ctx.guild.id)][str(user.id)]
@@ -1027,7 +1027,7 @@ async def afk_mod_remove(ctx:SlashContext, user:discord.User):
     description="Automatically grinds coins and items for you"
 )
 @commands.cooldown(1, 3600, commands.BucketType.user)
-async def autogrind(ctx:SlashContext):
+async def autogrind(ctx: ApplicationContext):
     await ctx.reply("Autogrind has started. Please check back in an hour for your rewards.")
     await asyncio.sleep(3600)
     coins_reward = random.randint(10000, 35000)
@@ -1048,7 +1048,7 @@ async def autogrind(ctx:SlashContext):
         create_option(name="user", description="Who's rank do you want to view?", option_type=6, required=False)
     ]
 )
-async def rank(ctx:SlashContext, user:discord.User=None):
+async def rank(ctx: ApplicationContext, user:discord.User=None):
     if user == None: user = ctx.author
     try:
         localembed = discord.Embed(title=f"{user.display_name}'s rank", color=color)
@@ -1066,7 +1066,7 @@ async def rank(ctx:SlashContext, user:discord.User=None):
         create_option(name="new_rank", description="The new rank you want to set for the user", option_type=4, required=True)
     ]
 )
-async def edit_rank(ctx:SlashContext, user:discord.User, new_rank:int):
+async def edit_rank(ctx: ApplicationContext, user:discord.User, new_rank:int):
     if ctx.author.id != 738290097170153472: return await ctx.send("This command isn't for you.", hidden=True)
     try:
         levels[str(user.id)]["level"] = new_rank
@@ -1081,7 +1081,7 @@ async def edit_rank(ctx:SlashContext, user:discord.User, new_rank:int):
         create_option(name="new_xp", description="The new xp count you want to set for the user", option_type=4, required=True)
     ]
 )
-async def edit_xp(ctx:SlashContext, user:discord.User, new_xp:int):
+async def edit_xp(ctx: ApplicationContext, user:discord.User, new_xp:int):
     if ctx.author.id != 738290097170153472: return await ctx.send("This command isn't for you.", hidden=True)
     try:
         levels[str(user.id)]["xp"] = new_xp
@@ -1092,7 +1092,7 @@ async def edit_xp(ctx:SlashContext, user:discord.User, new_xp:int):
     name="repo",
     description="Shows the open-source code links for isobot."
 )
-async def repo(ctx:SlashContext):
+async def repo(ctx: ApplicationContext):
     localembed = discord.Embed(title="Source-code Repositories", description="See and contribute to **isobot's [GitHub repository](https://github.com/PyBotDevs/isobot)**\nSee our **[GitHub organization](https://github.com/PyBotDevs)**", color=color)
     await ctx.send(embed=localembed)
 
@@ -1109,7 +1109,7 @@ async def repo(ctx:SlashContext):
         create_option(name="footer_icon_url", description="The icon you want to show in the embed (URL ONLY)", option_type=3, required=False)
     ]
 )
-async def embedbuilder(ctx:SlashContext, title: str, description: str, image_url: str = None, thumbnail_url: str = None, color: int = None, footer_text: str = None, footer_icon_url: str = None):
+async def embedbuilder(ctx: ApplicationContext, title: str, description: str, image_url: str = None, thumbnail_url: str = None, color: int = None, footer_text: str = None, footer_icon_url: str = None):
     await ctx.send("Embed Built!", hidden=True)
     await ctx.channel.send(embed=framework.isobot.embedengine.embed(title, description, image=image_url, thumbnail=thumbnail_url, color=color, footer_text=footer_text, footer_img=footer_icon_url))
 
@@ -1120,7 +1120,7 @@ async def embedbuilder(ctx:SlashContext, title: str, description: str, image_url
         create_option(name="pin", description="Your new account's authentication ID. Must be a 6-digit integer.", option_type=4, required=True)
     ]
 )
-async def isobank_register(ctx:SlashContext, pin:int):
+async def isobank_register(ctx: ApplicationContext, pin:int):
     isobankauth.register(ctx.author.id, pin)
     await ctx.reply("Congratulations! Your new IsoBank account has been registered.", hidden=True)
 
@@ -1130,7 +1130,7 @@ async def isobank_register(ctx:SlashContext, pin:int):
     description="Guess a random number from 1 to 10 that the bot is thinking about"
 )
 @commands.cooldown(1, 10, commands.BucketType.user)
-async def guessthenumber(ctx:SlashContext):
+async def guessthenumber(ctx: ApplicationContext):
     number = random.randint(1, 10)
     localembed = discord.Embed(name="Guess the number!", description="I am currently thinking of a number from 1 to 10. Can you guess what it is?", color=color)
     localembed.set_footer(text="If you guess what it is, you will win 500 to 1000 coins!")
@@ -1149,7 +1149,7 @@ async def guessthenumber(ctx:SlashContext):
     description="Guess whether the actual number is higher or lower than the hint number"
 )
 @commands.cooldown(1, 40, commands.BucketType.user)
-async def highlow(ctx:SlashContext):
+async def highlow(ctx: ApplicationContext):
     numb = random.randint(1, 100)
     numb2 = random.randint(1, 100)
     coins = random.randint(300, 1000)
@@ -1186,7 +1186,7 @@ async def highlow(ctx:SlashContext):
         create_option(name="user", description="Whose networth do you want to find?", option_type=6, required=False)
     ]
 )
-async def networth(ctx:SlashContext, user:discord.User=None):
+async def networth(ctx: ApplicationContext, user:discord.User=None):
     if user == None: user = ctx.author
     try:
         ntw = get_user_networth(user.id)
@@ -1201,7 +1201,7 @@ async def networth(ctx:SlashContext, user:discord.User=None):
         create_option(name="user", description="Whose isobot profile do you want to view?", option_type=6, required=False)
     ]
 )
-async def profile(ctx: SlashContext, user: discord.User = None):
+async def profile(ctx:  ApplicationContext, user: discord.User = None):
     if user == None: user = ctx.author
     localembed = discord.Embed(title=f"{user.display_name}'s isobot stats", color=color)
     localembed.set_thumbnail(url=user.avatar_url)
@@ -1218,7 +1218,7 @@ async def profile(ctx: SlashContext, user: discord.User = None):
     name="automod",
     description="Shows the current automod configuration for your server"
 )
-async def automod(ctx:SlashContext):
+async def automod(ctx: ApplicationContext):
     loaded_config = automod_config[str(ctx.guild.id)]
     localembed = discord.Embed(title=f"{ctx.guild.name}\'s automod configuration", descripton="Use the `/automod_set` command to change your server's automod configuration.", color=color)
     localembed.set_thumbnail(url=ctx.guild.icon_url)
@@ -1234,7 +1234,7 @@ async def automod(ctx:SlashContext):
         create_option(name="toggle", description="Do you want to turn it on or off?", option_type=5, required=True)
     ]
 )
-async def automod_swearfilter(ctx:SlashContext, toggle:bool):
+async def automod_swearfilter(ctx: ApplicationContext, toggle:bool):
     loaded_config = automod_config[str(ctx.guild.id)]
     if not ctx.author.guild_permissions.administrator: return await ctx.reply("You cannot use this command. If you think this is a mistake, please contact your server owner/administrator.", hidden=True)
     if loaded_config["swear_filter"]["enabled"] == toggle: return await ctx.reply(f"That automod option is already set to `{toggle}`.", hidden=True)
@@ -1250,7 +1250,7 @@ async def automod_swearfilter(ctx:SlashContext, toggle:bool):
         create_option(name="toggle", description="Do you want to turn it on or off?", option_type=5, required=True)
     ]
 )
-async def automod_use_default_keywords(ctx:SlashContext, toggle:bool):
+async def automod_use_default_keywords(ctx: ApplicationContext, toggle:bool):
     loaded_config = automod_config[str(ctx.guild.id)]
     if not ctx.author.guild_permissions.administrator: return await ctx.reply("You cannot use this command. If you think this is a mistake, please contact your server owner/administrator.", hidden=True)
     if loaded_config["swear_filter"]["keywords"]["use_default"] == toggle: return await ctx.reply(f"That automod option is already set to `{toggle}`.", hidden=True)
@@ -1263,7 +1263,7 @@ async def automod_use_default_keywords(ctx:SlashContext, toggle:bool):
     name="automod_view_custom_keywords",
     description="Shows a list of the custom automod swear-filter keywords set for your server",
 )
-async def automod_view_custom_keywords(ctx:SlashContext):
+async def automod_view_custom_keywords(ctx: ApplicationContext):
     loaded_config = automod_config[str(ctx.guild.id)]
     out = ""
     if loaded_config["swear_filter"]["keywords"]["custom"] != []:
@@ -1283,7 +1283,7 @@ async def automod_view_custom_keywords(ctx:SlashContext):
         create_option(name="keyword", description="What keyword do you want to add?", option_type=3, required=True)
     ]
 )
-async def automod_add_custom_keyword(ctx:SlashContext, keyword:str):
+async def automod_add_custom_keyword(ctx: ApplicationContext, keyword:str):
     if not ctx.author.guild_permissions.administrator: return await ctx.reply("You cannot use this command. If you think this is a mistake, please contact your server owner/administrator.", hidden=True)
     loaded_config = automod_config[str(ctx.guild.id)]
     if keyword not in loaded_config["swear_filter"]["keywords"]["custom"]:
@@ -1300,7 +1300,7 @@ async def automod_add_custom_keyword(ctx:SlashContext, keyword:str):
         create_option(name="id", description="What's the id of the keyword to remove (can be found in bold through /automod_view_custom_keywords", option_type=4, required=True)
     ]
 )
-async def automod_remove_custom_keyword(ctx:SlashContext, id:int):
+async def automod_remove_custom_keyword(ctx: ApplicationContext, id:int):
     loaded_config = automod_config[str(ctx.guild.id)]
     try:
         data = loaded_config["swear_filter"]["keywords"]["custom"]
