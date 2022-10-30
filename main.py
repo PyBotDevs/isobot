@@ -7,10 +7,12 @@ import framework.isobank.authorize
 import framework.isobank.manager
 import framework.isobot.embedengine
 import discord
+from discord import ApplicationContext
+from discord import option
 from discord.ext import commands, tasks
 from discord.ext.commands import *
-from discord_slash import SlashCommand, SlashContext
-from discord_slash.utils.manage_commands import create_choice, create_option
+# from discord_slash import SlashCommand, SlashContext
+# from discord_slash.utils.manage_commands import create_choice, create_option
 from framework import *
 
 # Slash option types:
