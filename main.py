@@ -183,7 +183,7 @@ async def on_command_error(ctx, error):
         print(f'[{current_time}] Ignoring exception at {colors.cyan}BadBoolArgument{colors.end}.')
 
 #Commands
-@slash.slash(
+@client.slash_command(
     name="help",
     description="Gives you help",
     options=[
@@ -211,7 +211,7 @@ async def help(ctx: ApplicationContext, command:str=None):
         localembed = discord.Embed(title="Isobot Command Help", description=f"**Bot Commands:**\n{r}", color = color)
         await ctx.send(embed=localembed)
 
-@slash.slash(name='balance', description='Shows your own or another user\'s balance.', options=[create_option(name='user', description='Which user?', option_type=6, required=False)])
+@client.slash_command(name='balance', description='Shows your own or another user\'s balance.', options=[create_option(name='user', description='Which user?', option_type=6, required=False)])
 async def balance(ctx: ApplicationContext, user=None):
     try:
         if user == None: user = ctx.author
@@ -224,7 +224,7 @@ async def balance(ctx: ApplicationContext, user=None):
         except: await ctx.reply('Looks like that user is not indexed in our server. Try again later.')
     except Exception as e: await ctx.send(f'An error occured: `{e}`. This has automatically been reported to the devs.')
 
-@slash.slash(
+@client.slash_command(
     name='kick', 
     description='Kicks a member from this server.', 
     options=[
@@ -243,7 +243,7 @@ async def kick(ctx: ApplicationContext, user, reason=None):
                 await ctx.send(embed=discord.Embed(title=f'{user} has been kicked.', description=f'Reason: {str(reason)}'))
             except Exception: await ctx.send(embed=discord.Embed(title='Well, something happened...', description='Either I don\'t have permission to do this, or my role isn\'t high enough.', color=discord.Colour.red()))
 
-@slash.slash(
+@client.slash_command(
     name='ban', 
     description='Bans a member from this server.', 
     options=[
@@ -262,7 +262,7 @@ async def ban(ctx: ApplicationContext, user, reason=None):
                 await ctx.send(embed=discord.Embed(title=f'{user} has been banned.', description=f'Reason: {str(reason)}'))
             except Exception: await ctx.send(embed=discord.Embed(title='Well, something happened...', description='Either I don\'t have permission to do this, or my role isn\'t high enough.', color=discord.Colour.red()))
 
-@slash.slash(
+@client.slash_command(
     name='warn',
     description='Warns someone in your server.',
     options=[
@@ -282,7 +282,7 @@ async def warn(ctx: ApplicationContext, user, reason):
             await ctx.send(embed=discord.Embed(description=f'{user} has been warned.'))
         except Exception: await ctx.send(embed=discord.Embed(description=f'{user} has been warned. I couldn\'t DM them, but their warning is logged.'))
 
-@slash.slash(
+@client.slash_command(
     name='warns_clear',
     description='Clears someone\'s warnings.',
     options=[
@@ -296,7 +296,7 @@ async def warns_clear(ctx: ApplicationContext, user):
         save()
         await ctx.send(embed=discord.Embed(description=f'All {user}\'s warnings have been cleared.'))
 
-@slash.slash(
+@client.slash_command(
     name='deposit',
     description='Deposits a specified amount of cash into the bank.',
     options=[
@@ -316,7 +316,7 @@ async def deposit(ctx: ApplicationContext, amount):
         await ctx.send(f'You deposited `{amount}` coin(s) to your bank account.')
         save()
 
-@slash.slash(
+@client.slash_command(
     name='withdraw',
     description='Withdraws a specified amount of cash from the bank.',
     options=[
@@ -336,7 +336,7 @@ async def withdraw(ctx: ApplicationContext, amount):
         await ctx.send(f'You withdrew `{amount}` coin(s) from your bank account.')
         save()
 
-@slash.slash(
+@client.slash_command(
     name='work',
     description='Work for a 30-minute shift and earn cash.'
 )
@@ -348,7 +348,7 @@ async def work(ctx: ApplicationContext):
         save()
         await ctx.send(f'{ctx.author.mention} worked for a 30-minute shift and earned {i} coins.')
 
-@slash.slash(
+@client.slash_command(
     name='daily',
     description='Claims your daily (every 24 hours)'
 )
@@ -359,7 +359,7 @@ async def daily(ctx: ApplicationContext):
         save()
         await ctx.reply(f'You claimed 10000 coins from the daily reward. Check back in 24 hours for your next one!')
 
-@slash.slash(
+@client.slash_command(
     name='weekly',
     description='Claims your weekly (every 7 days)'
 )
@@ -370,7 +370,7 @@ async def weekly(ctx: ApplicationContext):
         save()
         await ctx.reply(f'You claimed 45000 coins from the weekly reward. Check back in 7 days for your next one!')
 
-@slash.slash(
+@client.slash_command(
     name='monthly',
     description='Claims your monthly (every 31 days)'
 )
@@ -381,7 +381,7 @@ async def monthly(ctx: ApplicationContext):
         save()
         await ctx.reply(f'You claimed 1000000 coins from the monthly reward. Check back in 1 month for your next one!')
 
-@slash.slash(
+@client.slash_command(
     name='beg', 
     description='Begs for some quick cash'
 )
@@ -423,7 +423,7 @@ async def beg(ctx: ApplicationContext):
         await ctx.send(embed=discord.Embed(title=random.choice(names), description=f'"Oh you poor beggar, here\'s {x} coin(s) for you. Hope it helps!"'))
     else: await ctx.send(embed=discord.Embed(title=random.choice(names), description=f'"{random.choice(fail_responses)}"'))
 
-@slash.slash(
+@client.slash_command(
     name='scout', 
     description='Scouts your area for coins'
 )
@@ -443,7 +443,7 @@ async def scout(ctx: ApplicationContext):
         await ctx.send(embed=discord.Embed(title='What you found', description=f'You searched your area and found {x} coin(s)!'))
     else: await ctx.send(embed=discord.Embed(title='What you found', description='Unfortunately no coins for you :('))
 
-@slash.slash(
+@client.slash_command(
     name='give',
     description='Gives any amount of cash to someone else',
     options=[
@@ -461,7 +461,7 @@ async def give(ctx: ApplicationContext, user:discord.User, amount:int):
         save()
         await ctx.send(f':gift: {ctx.author.mention} just gifted {amount} coin(s) to {user.display_name}!')
 
-@slash.slash(
+@client.slash_command(
     name='rob',
     description='Robs someone for their money',
     options=[
@@ -485,7 +485,7 @@ async def rob(ctx: ApplicationContext, user:discord.User):
         await ctx.reply(f'LOL YOU GOT CAUGHT! You paid {user.display_name} {x} coins as compensation for your action.')
     save()
 
-@slash.slash(
+@client.slash_command(
     name='bankrob',
     description='Raids someone\'s bank account',
     options=[
@@ -507,7 +507,7 @@ async def bankrob(ctx: ApplicationContext, user:discord.User):
         currency['wallet'][str(ctx.author.id)] -= x
         await ctx.reply(f'Have you ever thought of this as the outcome? You failed AND ended up getting caught by the police. You just lost {x} coins, you absolute loser.')
 
-@slash.slash(
+@client.slash_command(
     name='inventory', 
     description='Shows the items you (or someone else) own',
     options = [
@@ -523,7 +523,7 @@ async def inventory(ctx: ApplicationContext, user:discord.User = None):
     localembed.add_field(name='Power-ups', value=f'Binoculars `ID: binoculars`: {items[str(user.id)]["binoculars"]}', inline=False)
     await ctx.send(embed=localembed)
 
-@slash.slash(
+@client.slash_command(
     name='shop',
     description='Views and buys items from the shop',
     options=[
@@ -552,7 +552,7 @@ async def shop(ctx: ApplicationContext, item:str=None):
             await ctx.send(embed=localembed)
         except KeyError: await ctx.reply('That item isn\'t in the shop, do you are have stupid?')
 
-@slash.slash(
+@client.slash_command(
     name='buy',
     description='Buys an item from the shop',
     options=[
@@ -573,7 +573,7 @@ async def buy(ctx: ApplicationContext, name:str, quantity:int=1):
         await ctx.reply(embed=discord.Embed(title=f'You just bought {quantity} {shopitem[name]["stylized name"]}!', description='Thank you for your purchase.', color=discord.Color.green()))
     except KeyError: await ctx.reply('That item doesn\'t exist.')
 
-@slash.slash(
+@client.slash_command(
     name='sell',
     description='Sells an item from your inventory in exchange for cash',
     options=[
@@ -595,7 +595,7 @@ async def sell(ctx: ApplicationContext, name:str, quantity:int=1):
     except KeyError: await ctx.reply('what are you doing that item doesn\'t even exist')
     except Exception as e: await ctx.send(f'An error occured while processing this request. ```{e}```')
 
-@slash.slash(
+@client.slash_command(
     name='hunt',
     description='Pull out your rifle and hunt down animals'
 )
@@ -615,7 +615,7 @@ async def hunt(ctx: ApplicationContext):
         save()
         await ctx.reply('Stupid, you died while hunting and lost 1000 coins...')
 
-@slash.slash(
+@client.slash_command(
     name='fish',
     description='Prepare your fishing rod and catch some fish'
 )
@@ -631,7 +631,7 @@ async def fish(ctx: ApplicationContext):
         await ctx.reply(f'You found a {choice} while hunting!')
     else: await ctx.reply('Looks like the fish were weary of your rod. You caught nothing.')
 
-@slash.slash(
+@client.slash_command(
     name='dig',
     description='Take your shovel and dig in the ground for some cool stuff!'
 )
@@ -667,7 +667,7 @@ async def dig(ctx: ApplicationContext):
         await ctx.reply('YOU FELL INTO YOUR OWN TRAP AND DIED LMFAO\nYou lost 2000 coins in the process.')
 
 #need help cuz i only got the idea (aka the logic) and not the code detail and stuff
-@slash.slash(
+@client.slash_command(
     name='openlootbox',
     description='Opens lootbox(es) in your inventory',
     options=[
@@ -725,7 +725,7 @@ async def openlootbox(ctx: ApplicationContext, lootbox:str, amount:int):
     await ctx.send(embed=localembed)
     save()
 
-@slash.slash(
+@client.slash_command(
   name='echo',
   description='Sends a bot message in the channel',
   options=[
@@ -736,7 +736,7 @@ async def echo(ctx: ApplicationContext, text:str):
     await ctx.reply("Echoed!", hidden=True)
     await ctx.channel.send(text)
 
-@slash.slash(
+@client.slash_command(
     name='whoami',
     description='Shows information on a user',
     options=[
@@ -768,7 +768,7 @@ async def whoami(ctx: ApplicationContext, user:discord.User=None):
     await ctx.send(embed=localembed)
 
 # DevTools commands
-@slash.slash(
+@client.slash_command(
     name='sync',
     description='Syncs all of the local databases with their latest version'
 )
@@ -784,7 +784,7 @@ async def sync(ctx: ApplicationContext):
         print(e)
         await ctx.reply('An error occured while resyncing. Check console.', hidden=True)
 
-@slash.slash(
+@client.slash_command(
     name='stroketranslate',
     description='Gives you the ability to make full words and sentences from a cluster of letters',
     options=[create_option(name='strok', description='What do you want to translate?', option_type=3, required=True)]
@@ -802,14 +802,14 @@ async def stroketranslate(ctx: ApplicationContext, strok: str):
         var = ''.join(arr)
         await ctx.reply(f"{var}")
 
-@slash.slash(
+@client.slash_command(
     name='prediction',
     description='Randomly predicts a yes/no question.',
     options=[create_option(name="question", description="What do you want to predict?", option_type=3, required=True)]
 )
 async def prediction(ctx: ApplicationContext, question:str): await ctx.reply(f"My prediction is... **{random.choice(['Yes', 'No'])}!**")
 
-@slash.slash(
+@client.slash_command(
     name='memes',
     description='Finely hand-picks a high-quality meme from the depths of reddit.'
 )
@@ -823,7 +823,7 @@ async def memes(ctx: ApplicationContext):
     embed.set_footer(text='Powered by PRAW')
     await ctx.send(embed = embed)
 
-@slash.slash(
+@client.slash_command(
     name='linuxmemes',
     description='Hands you a fabolous GNU/Linux meme from the r/linuxmemes subreddit.'
 )
@@ -837,7 +837,7 @@ async def linuxmemes(ctx: ApplicationContext):
     embed.set_footer(text='Powered by PRAW')
     await ctx.send(embed = embed)
 
-@slash.slash(
+@client.slash_command(
     name='ihadastroke',
     description='I bet you\'ll have a stroke trying to see these. (JK ITS ABSOLUTELY SAFE FOR YOU DONT WORRY)'
 )
@@ -851,7 +851,7 @@ async def ihadastroke(ctx: ApplicationContext):
     embed.set_footer(text='Powered by PRAW')
     await ctx.send(embed = embed)
 
-@slash.slash(
+@client.slash_command(
     name='engrish',
     description='Features phuck ups in english of any kind!'
 )
@@ -865,7 +865,7 @@ async def engrish(ctx: ApplicationContext):
     embed.set_footer(text='Powered by PRAW')
     await ctx.send(embed = embed)
 
-@slash.slash(
+@client.slash_command(
     name='osugame',
     description='Features a post from the official osu! subreddit!'
 )
@@ -879,7 +879,7 @@ async def osugame(ctx: ApplicationContext):
     embed.set_footer(text='Powered by PRAW')
     await ctx.send(embed = embed)
 
-@slash.slash(
+@client.slash_command(
     name='donate',
     description="Donate money to whoever you want",
     options=[
@@ -912,7 +912,7 @@ async def donate(ctx: ApplicationContext, id:str, amount):
         await ctx.send(embed=localembed)
         await reciever_info.send(embed=localembed2)
     
-@slash.slash(
+@client.slash_command(
     name='modify_balance',
     description="Modifies user balance (Normal Digit: Adds Balance; Negative Digit: Removes Balance)",
     options=[
@@ -929,7 +929,7 @@ async def modify_balance(ctx: ApplicationContext, user:discord.User, modifier:in
     except KeyError:
         await ctx.reply("That user doesn't exist in the database.", hidden=True)
 
-@slash.slash(
+@client.slash_command(
     name="status",
     description="Shows the current client info"
 )
@@ -949,7 +949,7 @@ async def status(ctx: ApplicationContext):
     localembed.set_footer(text=f"Requested by {ctx.author.name}", icon_url=ctx.author.avatar_url)
     await ctx.send(embed=localembed)
 
-@slash.slash(
+@client.slash_command(
     name="gift",
     description="Gifts a (giftable) item to anyone you want",
     options=[
@@ -978,7 +978,7 @@ async def gift(ctx: ApplicationContext, user:discord.User, item:str, amount:int=
         utils.logger.error(e)
         await ctx.reply(f"wtf is {item}?")
         
-@slash.slash(
+@client.slash_command(
     name="afk_set",
     description="Sets your AFK status with a custom response",
     options=[
@@ -993,7 +993,7 @@ async def afk_set(ctx: ApplicationContext, response:str="I'm AFK"):
     localembed = discord.Embed(title=f"{ctx.author.display_name} is now AFK.", description=f"Response: {response}", color=discord.Color.dark_orange())
     await ctx.reply(embed=localembed)
 
-@slash.slash(
+@client.slash_command(
     name="afk_remove",
     description="Removes your AFK status"
 )
@@ -1005,7 +1005,7 @@ async def afk_remove(ctx: ApplicationContext):
     except KeyError:
         return await ctx.send("You weren't previously AFK.", hidden=True)
 
-@slash.slash(
+@client.slash_command(
     name="afk_mod_remove",
     description="Removes an AFK status for someone else",
     options=[
@@ -1021,7 +1021,7 @@ async def afk_mod_remove(ctx: ApplicationContext, user:discord.User):
     except KeyError:
         return await ctx.send("That user isn't AFK.", hidden=True)
 
-@slash.slash(
+@client.slash_command(
     name="autogrind",
     description="Automatically grinds coins and items for you"
 )
@@ -1040,7 +1040,7 @@ async def autogrind(ctx: ApplicationContext):
     localembed = discord.Embed(title="Autogrind has completed!", description=f"**Your rewards**\n\nYou got **{coins_reward}** coins!\nYou got **1 {shopitem[items_reward[0]]['stylized name']}**!\nYou got **1 {shopitem[items_reward[1]]['stylized name']}**!\nYou got **1 {shopitem[items_reward[2]]['stylized name']}!**", color=discord.Color.green())
     await ctx.author.send(embed = localembed)
 
-@slash.slash(
+@client.slash_command(
     name="rank",
     description="Shows your rank or another user's rank",
     options=[
@@ -1057,7 +1057,7 @@ async def rank(ctx: ApplicationContext, user:discord.User=None):
         await ctx.send(embed = localembed)
     except KeyError: return await ctx.send("Looks like that user isn't indexed yet. Try again later.", hidden=True)
 
-@slash.slash(
+@client.slash_command(
     name="edit_rank",
     description="Edits a user's rank. (DEV ONLY)",
     options=[
@@ -1072,7 +1072,7 @@ async def edit_rank(ctx: ApplicationContext, user:discord.User, new_rank:int):
         await ctx.reply(f"{user.display_name}\'s rank successfully edited. `New Rank: {levels[str(user.id)]['level']}`")
     except KeyError: return await ctx.reply("That user isn't indexed yet.", hidden=True)
 
-@slash.slash(
+@client.slash_command(
     name="edit_xp",
     description="Edits a user's XP. (DEV ONLY)",
     options=[
@@ -1087,7 +1087,7 @@ async def edit_xp(ctx: ApplicationContext, user:discord.User, new_xp:int):
         await ctx.reply(f"{user.display_name}\'s XP count successfully edited. `New XP: {levels[str(user.id)]['xp']}`")
     except KeyError: return await ctx.reply("That user isn't indexed yet.", hidden=True)
 
-@slash.slash(
+@client.slash_command(
     name="repo",
     description="Shows the open-source code links for isobot."
 )
@@ -1095,7 +1095,7 @@ async def repo(ctx: ApplicationContext):
     localembed = discord.Embed(title="Source-code Repositories", description="See and contribute to **isobot's [GitHub repository](https://github.com/PyBotDevs/isobot)**\nSee our **[GitHub organization](https://github.com/PyBotDevs)**", color=color)
     await ctx.send(embed=localembed)
 
-@slash.slash(
+@client.slash_command(
     name="embedbuilder",
     description="Builds a custom embed however you want",
     options=[
@@ -1112,7 +1112,7 @@ async def embedbuilder(ctx: ApplicationContext, title: str, description: str, im
     await ctx.send("Embed Built!", hidden=True)
     await ctx.channel.send(embed=framework.isobot.embedengine.embed(title, description, image=image_url, thumbnail=thumbnail_url, color=color, footer_text=footer_text, footer_img=footer_icon_url))
 
-@slash.slash(
+@client.slash_command(
     name="isobank_register",
     description="Registers a new IsoBank account with your Discord ID",
     options=[
@@ -1124,7 +1124,7 @@ async def isobank_register(ctx: ApplicationContext, pin:int):
     await ctx.reply("Congratulations! Your new IsoBank account has been registered.", hidden=True)
 
 # Minigames Commands
-@slash.slash(
+@client.slash_command(
     name="guessthenumber",
     description="Guess a random number from 1 to 10 that the bot is thinking about"
 )
@@ -1143,7 +1143,7 @@ async def guessthenumber(ctx: ApplicationContext):
         await ctx.send(f"Correct! You've just won **{randcoins} coins** by guessing the correct number.")
     else: return await ctx.reply("Too bad bozo, you guessed the number wrong and you won nothing.")
 
-@slash.slash(
+@client.slash_command(
     name="highlow",
     description="Guess whether the actual number is higher or lower than the hint number"
 )
@@ -1178,7 +1178,7 @@ async def highlow(ctx: ApplicationContext):
         else: return await ctx.send(f'Wrong! The number was {numb2}.')
     else: await ctx.send(f'wtf is {msg.content}?')
 
-@slash.slash(
+@client.slash_command(
     name="networth",
     description="Get your networth, or another user's networth",
     options=[
@@ -1193,7 +1193,7 @@ async def networth(ctx: ApplicationContext, user:discord.User=None):
         await ctx.send(embed=localembed)
     except KeyError: return await ctx.reply("Looks like that user isn't cached yet. Please try again later.", hidden=True)
 
-@slash.slash(
+@client.slash_command(
     name="profile",
     description="Shows basic stats about your isobot profile, or someone else's profile stats",
     options=[
@@ -1213,7 +1213,7 @@ async def profile(ctx:  ApplicationContext, user: discord.User = None):
     await ctx.send(embed=localembed)
 
 # Automod commands
-@slash.slash(
+@client.slash_command(
     name="automod",
     description="Shows the current automod configuration for your server"
 )
@@ -1226,7 +1226,7 @@ async def automod(ctx: ApplicationContext):
     localembed.set_footer(text="More automod features will come soon!")
     await ctx.send(embed=localembed)
 
-@slash.slash(
+@client.slash_command(
     name="automod_swearfilter",
     description="Turn on or off automod's swear-filter in your server",
     options=[
@@ -1242,7 +1242,7 @@ async def automod_swearfilter(ctx: ApplicationContext, toggle:bool):
     elif toggle == False: await ctx.reply("Swear-filter successfully **disabled**.", hidden=True)
     save()
 
-@slash.slash(
+@client.slash_command(
     name="automod_use_default_keywords",
     description="Choose whether or not you want to use the default keywords for automod's swear-filter",
     options=[
@@ -1258,7 +1258,7 @@ async def automod_use_default_keywords(ctx: ApplicationContext, toggle:bool):
     elif toggle == False: await ctx.reply("Using default swear-filter keywords successfully **disabled**.", hidden=True)
     save()
 
-@slash.slash(
+@client.slash_command(
     name="automod_view_custom_keywords",
     description="Shows a list of the custom automod swear-filter keywords set for your server",
 )
@@ -1275,7 +1275,7 @@ async def automod_view_custom_keywords(ctx: ApplicationContext):
     localembed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested by {ctx.author}")
     await ctx.send(embed=localembed)
 
-@slash.slash(
+@client.slash_command(
     name="automod_add_custom_keyword",
     description="Adds a custom keyword to your server's swear-filter",
     options=[
@@ -1292,7 +1292,7 @@ async def automod_add_custom_keyword(ctx: ApplicationContext, keyword:str):
         await ctx.reply(embed=localembed, hidden=True)
     else: return await ctx.reply("That keyword is already added in your automod configuration.", hidden=True)
 
-@slash.slash(
+@client.slash_command(
     name="automod_remove_custom_keyword",
     description="Removes a custom keyword (matching its id) from your server's swear-filter",
     options=[
