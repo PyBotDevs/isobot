@@ -185,11 +185,9 @@ async def on_command_error(ctx, error):
 #Commands
 @client.slash_command(
     name="help",
-    description="Gives you help",
-    options=[
-        create_option(name="command", description="Which command do you need help with?", option_type=3, required=False)
-    ]
+    description="Gives you help with a specific command, or shows a list of all commands"
 )
+@option(name="command", description="Which command do you need help with?", type=str, default=None)
 async def help(ctx: ApplicationContext, command:str=None):
     if command is not None:
         try:
@@ -211,7 +209,11 @@ async def help(ctx: ApplicationContext, command:str=None):
         localembed = discord.Embed(title="Isobot Command Help", description=f"**Bot Commands:**\n{r}", color = color)
         await ctx.send(embed=localembed)
 
-@client.slash_command(name='balance', description='Shows your own or another user\'s balance.', options=[create_option(name='user', description='Which user?', option_type=6, required=False)])
+@client.slash_command(
+    name='balance', 
+    description='Shows your own or another user\'s balance.'
+)
+@option(name="user", description="Which user do you want to view information on?", type=discord.User, default=None)
 async def balance(ctx: ApplicationContext, user=None):
     try:
         if user == None: user = ctx.author
@@ -226,12 +228,10 @@ async def balance(ctx: ApplicationContext, user=None):
 
 @client.slash_command(
     name='kick', 
-    description='Kicks a member from this server.', 
-    options=[
-        create_option(name='user', description='Who do you want to kick?', option_type=6, required=True), 
-        create_option(name='reason', description='Why you want to kick the user?', option_type=3, required=False)
-    ]
+    description='Kicks a member from this server.'
 )
+@option(name="user", description="Who do you want to kick?", type=discord.User)
+@option(name="reason", description="Why do you want to kick the user?", type=str, default=None)
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def kick(ctx: ApplicationContext, user, reason=None):
     if plugins.moderation:
@@ -245,12 +245,10 @@ async def kick(ctx: ApplicationContext, user, reason=None):
 
 @client.slash_command(
     name='ban', 
-    description='Bans a member from this server.', 
-    options=[
-        create_option(name='user', description='Who do you want to ban?', option_type=6, required=True), 
-        create_option(name='reason', description='Why you want to ban the user?', option_type=3, required=False)
-    ]
+    description='Bans a member from this server.'
 )
+@option(name="user", description="Who do you want to ban?", type=discord.User)
+@option(name="reason", description="Why you want to ban the user?", type=str, default=None)
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def ban(ctx: ApplicationContext, user, reason=None):
     if plugins.moderation:
@@ -264,12 +262,10 @@ async def ban(ctx: ApplicationContext, user, reason=None):
 
 @client.slash_command(
     name='warn',
-    description='Warns someone in your server.',
-    options=[
-        create_option(name='user', description='Who do you want to warn?', option_type=6, required=True),
-        create_option(name='reason', description='Why are you warning the user?', option_type=3, required=True)
-    ]
+    description='Warns someone in your server.'
 )
+@option(name="user", description="Who do you want to warn?", type=discord.User)
+@option(name="reason", description="Why are you warning the user?", type=str)
 @commands.cooldown(1, 2, commands.BucketType.user)
 async def warn(ctx: ApplicationContext, user, reason):
     if plugins.moderation:
@@ -284,11 +280,9 @@ async def warn(ctx: ApplicationContext, user, reason):
 
 @client.slash_command(
     name='warns_clear',
-    description='Clears someone\'s warnings.',
-    options=[
-        create_option(name='user', description='Who do you want to remove warns from?', option_type=6, required=True)
-    ]
+    description='Clears someone\'s warnings.'
 )
+@option(name="user", description="Who do you want to remove warns from?", type=discord.User)
 async def warns_clear(ctx: ApplicationContext, user):
     if plugins.moderation:
         if not ctx.author.guild_permissions.manage_messages: raise MissingPermissions
@@ -298,11 +292,9 @@ async def warns_clear(ctx: ApplicationContext, user):
 
 @client.slash_command(
     name='deposit',
-    description='Deposits a specified amount of cash into the bank.',
-    options=[
-        create_option(name='amount', description='Specify an amount to deposit (use max for everything)', option_type=3, required=True)
-    ]
+    description='Deposits a specified amount of cash into the bank.'
 )
+@option(name="amount", description="Specify an amount to deposit (use 'max' for everything)", type=str)
 async def deposit(ctx: ApplicationContext, amount):
     if plugins.economy:
         if not amount.isdigit():
@@ -318,11 +310,9 @@ async def deposit(ctx: ApplicationContext, amount):
 
 @client.slash_command(
     name='withdraw',
-    description='Withdraws a specified amount of cash from the bank.',
-    options=[
-        create_option(name='amount', description='Specify an amount to withdraw (use max for everything)', option_type=3, required=True)
-    ]
+    description='Withdraws a specified amount of cash from the bank.'
 )
+@option(name="amount", description="Specify an amount to withdraw (use 'max' for everything)", type=str)
 async def withdraw(ctx: ApplicationContext, amount):
     if plugins.economy:
         if not amount.isdigit():
@@ -445,12 +435,10 @@ async def scout(ctx: ApplicationContext):
 
 @client.slash_command(
     name='give',
-    description='Gives any amount of cash to someone else',
-    options=[
-        create_option(name='user', description='Who do you want to give cash to?', option_type=6, required=True),
-        create_option(name='amount', description='How much do you want to give?', option_type=4, required=True)
-    ]
+    description='Gives any amount of cash to someone else'
 )
+@option(name="user", description="Who do you want to give cash to?", type=discord.User)
+@option(name="amount", description="How much do you want to give?", type=int)
 async def give(ctx: ApplicationContext, user:discord.User, amount:int):
     if not plugins.economy: return
     if amount <= 0: return await ctx.send('The amount you want to give must be greater than `0` coins!', hidden=True)
@@ -463,11 +451,9 @@ async def give(ctx: ApplicationContext, user:discord.User, amount:int):
 
 @client.slash_command(
     name='rob',
-    description='Robs someone for their money',
-    options=[
-        create_option(name='user', description='Who do you want to rob?', option_type=6, required=True)
-    ]
+    description='Robs someone for their money'
 )
+@option(name="user", description="Who do you want to rob?", type=discord.User)
 @commands.cooldown(1, 60, commands.BucketType.user)
 async def rob(ctx: ApplicationContext, user:discord.User):
     if not plugins.economy: return
@@ -487,11 +473,9 @@ async def rob(ctx: ApplicationContext, user:discord.User):
 
 @client.slash_command(
     name='bankrob',
-    description='Raids someone\'s bank account',
-    options=[
-        create_option(name='user', description='Whose bank account you want to raid?', option_type=6, required=True)
-    ]
+    description='Raids someone\'s bank account'
 )
+@option(name="user", description="Whose bank account do you want to raid?", type=discord.User)
 @commands.cooldown(1, (60*5), commands.BucketType.user)
 async def bankrob(ctx: ApplicationContext, user:discord.User):
     if not plugins.economy: return
@@ -509,11 +493,9 @@ async def bankrob(ctx: ApplicationContext, user:discord.User):
 
 @client.slash_command(
     name='inventory', 
-    description='Shows the items you (or someone else) own',
-    options = [
-        create_option(name='user', description='Whose inventory you want to view?', option_type=6, required=False)
-    ]
+    description='Shows the items you (or someone else) own'
 )
+@option(name="user", description="Whose inventory you want to view?", type=discord.User, default=None)
 async def inventory(ctx: ApplicationContext, user:discord.User = None):
     if not plugins.economy: return
     if user == None: user = ctx.author
@@ -525,11 +507,9 @@ async def inventory(ctx: ApplicationContext, user:discord.User = None):
 
 @client.slash_command(
     name='shop',
-    description='Views and buys items from the shop',
-    options=[
-        create_option(name='item', description='Specify an item to view.', option_type=3, required=False)
-    ]
+    description='Views and buys items from the shop'
 )
+@option(name="item", description="Specify an item to view.", type=str, default=None)
 async def shop(ctx: ApplicationContext, item:str=None):
     if not plugins.economy: return
     if item == None:
@@ -554,13 +534,11 @@ async def shop(ctx: ApplicationContext, item:str=None):
 
 @client.slash_command(
     name='buy',
-    description='Buys an item from the shop',
-    options=[
-        create_option(name='name', description='What do you want to buy?', option_type=3, required=True),
-        create_option(name='quantity', description='How many do you want to buy?', option_type=4, required=False)
-    ]
+    description='Buys an item from the shop'
 )
-async def buy(ctx: ApplicationContext, name:str, quantity:int=1):
+@option(name="name", description="What do you want to buy?", type=str)
+@option(name="quantity", description="How many do you want to buy?", type=int, default=1)
+async def buy(ctx: ApplicationContext, name: str, quantity: int=1):
     if not plugins.economy: return
     try:
         amt = shopitem[name]['buy price'] * quantity
@@ -575,13 +553,11 @@ async def buy(ctx: ApplicationContext, name:str, quantity:int=1):
 
 @client.slash_command(
     name='sell',
-    description='Sells an item from your inventory in exchange for cash',
-    options=[
-        create_option(name='name', description='What do you want to sell?', option_type=3, required=True),
-        create_option(name='quantity', description='How many do you want to sell?', option_type=4, required=False)
-    ]
+    description='Sells an item from your inventory in exchange for cash'
 )
-async def sell(ctx: ApplicationContext, name:str, quantity:int=1):
+@option(name="name", description="What do you want to sell?", type=str)
+@option(name="quantity", description="How many do you want to sell?", type=int, default=1)
+async def sell(ctx: ApplicationContext, name: str, quantity: int=1):
     try:
         if shopitem[name]["sellable"] != True: return await ctx.reply('Dumb, you can\'t sell this item.')
         if quantity > items[str(ctx.author.id)][str(name)]: return await ctx.reply('You can\'t sell more than you have.')
@@ -669,12 +645,10 @@ async def dig(ctx: ApplicationContext):
 #need help cuz i only got the idea (aka the logic) and not the code detail and stuff
 @client.slash_command(
     name='openlootbox',
-    description='Opens lootbox(es) in your inventory',
-    options=[
-        create_option(name='lootbox', description='What lootbox do you want to open?', option_type=3, required=True),
-        create_option(name='amount', description='How many do you want to open?', option_type=4, required=True)
-    ]
+    description='Opens lootbox(es) in your inventory'
 )
+@option(name="lootbox", description="What lootbox do you want to open?", type=str)
+@option(name="amount", description="How many do you want to open?", type=int)
 async def openlootbox(ctx: ApplicationContext, lootbox:str, amount:int):
     types = ["normal", "large", "special"]
     if amount <= 0: return await ctx.reply("You can't open 0 or below lootboxes! Don't be stupid.", hidden=True)
@@ -727,23 +701,19 @@ async def openlootbox(ctx: ApplicationContext, lootbox:str, amount:int):
 
 @client.slash_command(
   name='echo',
-  description='Sends a bot message in the channel',
-  options=[
-    create_option(name='text', description='What do you want to send?', option_type=3, required=True)
-  ]
+  description='Sends a bot message in the channel'
 )
+@option(name="text", description="What do you want to send?", type=str)
 async def echo(ctx: ApplicationContext, text:str): 
     await ctx.reply("Echoed!", hidden=True)
     await ctx.channel.send(text)
 
 @client.slash_command(
     name='whoami',
-    description='Shows information on a user',
-    options=[
-        create_option(name='user', description='Who do you want to know about?', option_type=6, required=False)
-    ]
+    description='Shows information on a user'
 )
-async def whoami(ctx: ApplicationContext, user:discord.User=None):
+@option(name="user", description="Who do you want to know about?", type=discord.User, default=None)
+async def whoami(ctx: ApplicationContext, user: discord.User=None):
     if user == None: user = ctx.author
     username = user
     displayname = user.display_name
@@ -786,9 +756,9 @@ async def sync(ctx: ApplicationContext):
 
 @client.slash_command(
     name='stroketranslate',
-    description='Gives you the ability to make full words and sentences from a cluster of letters',
-    options=[create_option(name='strok', description='What do you want to translate?', option_type=3, required=True)]
+    description='Gives you the ability to make full words and sentences from a cluster of letters'
 )
+@option(name="strok", description="What do you want to translate?", type=str)
 async def stroketranslate(ctx: ApplicationContext, strok: str):
         try:
             if len(strok) > 300: return await ctx.reply("Please use no more than `300` character length", hidden=True)
@@ -804,10 +774,11 @@ async def stroketranslate(ctx: ApplicationContext, strok: str):
 
 @client.slash_command(
     name='prediction',
-    description='Randomly predicts a yes/no question.',
-    options=[create_option(name="question", description="What do you want to predict?", option_type=3, required=True)]
+    description='Randomly predicts a yes/no question.'
 )
-async def prediction(ctx: ApplicationContext, question:str): await ctx.reply(f"My prediction is... **{random.choice(['Yes', 'No'])}!**")
+@option(name="question", description="What do you want to predict?", type=str)
+async def prediction(ctx: ApplicationContext, question:str): 
+    await ctx.reply(f"My prediction is... **{random.choice(['Yes', 'No'])}!**")
 
 @client.slash_command(
     name='memes',
@@ -881,12 +852,10 @@ async def osugame(ctx: ApplicationContext):
 
 @client.slash_command(
     name='donate',
-    description="Donate money to whoever you want",
-    options=[
-        create_option(name='id', description="The ID of the user you are donating to", option_type=3, required=True),
-        create_option(name='amount', description="How much do you want to donate?", option_type=4, required=True)
-    ]
+    description="Donate money to whoever you want"
 )
+@option(name="id", description="The ID of the user you are donating to", type=str)
+@option(name="amount", description="How much do you want to donate?", type=int)
 async def donate(ctx: ApplicationContext, id:str, amount):
     if plugins.economy:
         reciever_info = client.get_user(int(id))
@@ -914,12 +883,10 @@ async def donate(ctx: ApplicationContext, id:str, amount):
     
 @client.slash_command(
     name='modify_balance',
-    description="Modifies user balance (Normal Digit: Adds Balance; Negative Digit: Removes Balance)",
-    options=[
-        create_option(name='user', description="Specify the user to change their balance", option_type=6, required=True),
-        create_option(name='modifier', description="Specify the balance to modifiy", option_type=4, required=True)
-    ]
+    description="Modifies user balance (Normal Digit: Adds Balance; Negative Digit: Removes Balance)"
 )
+@option(name="user", description="Specify the user to change their balance", type=discord.User)
+@option(name="modifier", description="Specify the balance to modify", type=int)
 async def modify_balance(ctx: ApplicationContext, user:discord.User, modifier:int):
     if ctx.author.id != 738290097170153472: return ctx.send("Sorry, but this command is only for my developer's use.", hidden=True)
     try:
@@ -951,13 +918,11 @@ async def status(ctx: ApplicationContext):
 
 @client.slash_command(
     name="gift",
-    description="Gifts a (giftable) item to anyone you want",
-    options=[
-        create_option(name="user", description="Who do you want to gift to?", option_type=6, required=True),
-        create_option(name="item", description="What do you want to gift?", option_type=3, required=True),
-        create_option(name="amount", description="How many of these do you want to gift?", option_type=4, required=False)
-    ]
+    description="Gifts a (giftable) item to anyone you want"
 )
+@option(name="user", description="Who do you want to gift to?", type=discord.User)
+@option(name="item", description="What do you want to gift?", type=str)
+@option(name="amount", description="How many of these do you want to gift?", type=int, default=1)
 async def gift(ctx: ApplicationContext, user:discord.User, item:str, amount:int=1):
     try:
         if amount < 1: return await ctx.reply("You can't gift less than 1 of those!", hidden=True)
@@ -980,11 +945,9 @@ async def gift(ctx: ApplicationContext, user:discord.User, item:str, amount:int=
         
 @client.slash_command(
     name="afk_set",
-    description="Sets your AFK status with a custom response",
-    options=[
-        create_option(name="response", description="What do you want your AFK response to be?", option_type=3, required=False)
-    ]
+    description="Sets your AFK status with a custom response"
 )
+@option(name="response", description="What do you want your AFK response to be?", type=str, default="I'm AFK")
 async def afk_set(ctx: ApplicationContext, response:str="I'm AFK"):
     exctime = time.time()
     if str(ctx.guild.id) not in presence: presence[str(ctx.guild.id)] = {}
@@ -1007,11 +970,9 @@ async def afk_remove(ctx: ApplicationContext):
 
 @client.slash_command(
     name="afk_mod_remove",
-    description="Removes an AFK status for someone else",
-    options=[
-        create_option(name="user", description="Whose AFK status do you want to remove?", option_type=6, required=True)
-    ]
+    description="Removes an AFK status for someone else"
 )
+@option(name="user", description="Whose AFK status do you want to remove?", type=discord.User)
 async def afk_mod_remove(ctx: ApplicationContext, user:discord.User):
     if not ctx.author.guild_permissions.manage_messages: return await ctx.reply("You don't have the required permissions to use this.", hidden=True)
     try: 
@@ -1042,11 +1003,9 @@ async def autogrind(ctx: ApplicationContext):
 
 @client.slash_command(
     name="rank",
-    description="Shows your rank or another user's rank",
-    options=[
-        create_option(name="user", description="Who's rank do you want to view?", option_type=6, required=False)
-    ]
+    description="Shows your rank or another user's rank"
 )
+@option(name="user", description="Who's rank do you want to view?", type=discord.User, default=None)
 async def rank(ctx: ApplicationContext, user:discord.User=None):
     if user == None: user = ctx.author
     try:
@@ -1059,12 +1018,10 @@ async def rank(ctx: ApplicationContext, user:discord.User=None):
 
 @client.slash_command(
     name="edit_rank",
-    description="Edits a user's rank. (DEV ONLY)",
-    options=[
-        create_option(name="user", description="Who's rank do you want to edit?", option_type=6, required=True),
-        create_option(name="new_rank", description="The new rank you want to set for the user", option_type=4, required=True)
-    ]
+    description="Edits a user's rank. (DEV ONLY)"
 )
+@option(name="user", description="Who's rank do you want to edit?", type=discord.User)
+@option(name="new_rank", description="The new rank you want to set for the user", type=int)
 async def edit_rank(ctx: ApplicationContext, user:discord.User, new_rank:int):
     if ctx.author.id != 738290097170153472: return await ctx.send("This command isn't for you.", hidden=True)
     try:
@@ -1074,12 +1031,10 @@ async def edit_rank(ctx: ApplicationContext, user:discord.User, new_rank:int):
 
 @client.slash_command(
     name="edit_xp",
-    description="Edits a user's XP. (DEV ONLY)",
-    options=[
-        create_option(name="user", description="Who's rank do you want to edit?", option_type=6, required=True),
-        create_option(name="new_xp", description="The new xp count you want to set for the user", option_type=4, required=True)
-    ]
+    description="Edits a user's XP. (DEV ONLY)"
 )
+@option(name="user", description="Who's rank do you want to edit?", type=discord.User)
+@option(name="new_xp", description="The new xp count you want to set for the user", type=int)
 async def edit_xp(ctx: ApplicationContext, user:discord.User, new_xp:int):
     if ctx.author.id != 738290097170153472: return await ctx.send("This command isn't for you.", hidden=True)
     try:
@@ -1097,28 +1052,24 @@ async def repo(ctx: ApplicationContext):
 
 @client.slash_command(
     name="embedbuilder",
-    description="Builds a custom embed however you want",
-    options=[
-        create_option(name="title", description="The title of the embed", option_type=3, required=True),
-        create_option(name="description", description="The body of the embed", option_type=3, required=True),
-        create_option(name="image_url", description="The main image you want to show for the embed (URL ONLY)", option_type=3, required=False),
-        create_option(name="thumbnail_url", description="The thumbnail image you want to show for the embed (URL ONLY)", option_type=3, required=False),
-        create_option(name="color", description="The embed's accent color (Use -1 for random color)", option_type=4, required=False),
-        create_option(name="footer_text", description="The text at the footer of the embed", option_type=3, required=False),
-        create_option(name="footer_icon_url", description="The icon you want to show in the embed (URL ONLY)", option_type=3, required=False)
-    ]
+    description="Builds a custom embed however you want"
 )
+@option(name="title", description="The title of the embed", type=str)
+@option(name="description", description="The body of the embed", type=str)
+@option(name="image_url", description="The main image you want to show for the embed (URL ONLY)", type=str, default=None)
+@option(name="thumbnail_url", description="The thumbnail image you want to show for the embed (URL ONLY)", type=str, default=None)
+@option(name="color", description="The embed's accent color (Use -1 for random color)", type=int, default=None)
+@option(name="footer_text", description="The text at the footer of the embed", type=str, default=None)
+@option(name="footer_icon_url", description="The icon you want to show in the embed's footer (URL ONLY)", type=str, default=None)
 async def embedbuilder(ctx: ApplicationContext, title: str, description: str, image_url: str = None, thumbnail_url: str = None, color: int = None, footer_text: str = None, footer_icon_url: str = None):
     await ctx.send("Embed Built!", hidden=True)
     await ctx.channel.send(embed=framework.isobot.embedengine.embed(title, description, image=image_url, thumbnail=thumbnail_url, color=color, footer_text=footer_text, footer_img=footer_icon_url))
 
 @client.slash_command(
     name="isobank_register",
-    description="Registers a new IsoBank account with your Discord ID",
-    options=[
-        create_option(name="pin", description="Your new account's authentication ID. Must be a 6-digit integer.", option_type=4, required=True)
-    ]
+    description="Registers a new IsoBank account with your Discord ID"
 )
+@option(name="pin", description="Your new account's authentication ID. Must be a 6-digit integer.", type=int)
 async def isobank_register(ctx: ApplicationContext, pin:int):
     isobankauth.register(ctx.author.id, pin)
     await ctx.reply("Congratulations! Your new IsoBank account has been registered.", hidden=True)
@@ -1180,12 +1131,10 @@ async def highlow(ctx: ApplicationContext):
 
 @client.slash_command(
     name="networth",
-    description="Get your networth, or another user's networth",
-    options=[
-        create_option(name="user", description="Whose networth do you want to find?", option_type=6, required=False)
-    ]
+    description="Get your networth, or another user's networth"
 )
-async def networth(ctx: ApplicationContext, user:discord.User=None):
+@option(name="user", description="Whose networth do you want to find?", type=discord.User, default=None)
+async def networth(ctx: ApplicationContext, user: discord.User=None):
     if user == None: user = ctx.author
     try:
         ntw = get_user_networth(user.id)
@@ -1195,11 +1144,9 @@ async def networth(ctx: ApplicationContext, user:discord.User=None):
 
 @client.slash_command(
     name="profile",
-    description="Shows basic stats about your isobot profile, or someone else's profile stats",
-    options=[
-        create_option(name="user", description="Whose isobot profile do you want to view?", option_type=6, required=False)
-    ]
+    description="Shows basic stats about your isobot profile, or someone else's profile stats"
 )
+@option(name="user", description="Whose isobot profile do you want to view?", type=discord.User, default=None)
 async def profile(ctx:  ApplicationContext, user: discord.User = None):
     if user == None: user = ctx.author
     localembed = discord.Embed(title=f"{user.display_name}'s isobot stats", color=color)
@@ -1228,11 +1175,9 @@ async def automod(ctx: ApplicationContext):
 
 @client.slash_command(
     name="automod_swearfilter",
-    description="Turn on or off automod's swear-filter in your server",
-    options=[
-        create_option(name="toggle", description="Do you want to turn it on or off?", option_type=5, required=True)
-    ]
+    description="Turn on or off automod's swear-filter in your server"
 )
+@option(name="toggle", description="Do you want to turn it on or off?", type=bool)
 async def automod_swearfilter(ctx: ApplicationContext, toggle:bool):
     loaded_config = automod_config[str(ctx.guild.id)]
     if not ctx.author.guild_permissions.administrator: return await ctx.reply("You cannot use this command. If you think this is a mistake, please contact your server owner/administrator.", hidden=True)
@@ -1244,11 +1189,9 @@ async def automod_swearfilter(ctx: ApplicationContext, toggle:bool):
 
 @client.slash_command(
     name="automod_use_default_keywords",
-    description="Choose whether or not you want to use the default keywords for automod's swear-filter",
-    options=[
-        create_option(name="toggle", description="Do you want to turn it on or off?", option_type=5, required=True)
-    ]
+    description="Choose whether or not you want to use the default keywords for automod's swear-filter"
 )
+@option(name="toggle", description="Do you want to turn it on or off?", type=bool)
 async def automod_use_default_keywords(ctx: ApplicationContext, toggle:bool):
     loaded_config = automod_config[str(ctx.guild.id)]
     if not ctx.author.guild_permissions.administrator: return await ctx.reply("You cannot use this command. If you think this is a mistake, please contact your server owner/administrator.", hidden=True)
@@ -1277,11 +1220,9 @@ async def automod_view_custom_keywords(ctx: ApplicationContext):
 
 @client.slash_command(
     name="automod_add_custom_keyword",
-    description="Adds a custom keyword to your server's swear-filter",
-    options=[
-        create_option(name="keyword", description="What keyword do you want to add?", option_type=3, required=True)
-    ]
+    description="Adds a custom keyword to your server's swear-filter"
 )
+@option(name="keyword", description="What keyword do you want to add?", type=str)
 async def automod_add_custom_keyword(ctx: ApplicationContext, keyword:str):
     if not ctx.author.guild_permissions.administrator: return await ctx.reply("You cannot use this command. If you think this is a mistake, please contact your server owner/administrator.", hidden=True)
     loaded_config = automod_config[str(ctx.guild.id)]
@@ -1294,11 +1235,9 @@ async def automod_add_custom_keyword(ctx: ApplicationContext, keyword:str):
 
 @client.slash_command(
     name="automod_remove_custom_keyword",
-    description="Removes a custom keyword (matching its id) from your server's swear-filter",
-    options=[
-        create_option(name="id", description="What's the id of the keyword to remove (can be found in bold through /automod_view_custom_keywords", option_type=4, required=True)
-    ]
+    description="Removes a custom keyword (matching its id) from your server's swear-filter"
 )
+@option(name="id", description="What's the id of the keyword to remove (can be found in bold through /automod_view_custom_keywords", type=int)
 async def automod_remove_custom_keyword(ctx: ApplicationContext, id:int):
     loaded_config = automod_config[str(ctx.guild.id)]
     try:
