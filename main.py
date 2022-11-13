@@ -199,7 +199,7 @@ async def help(ctx: ApplicationContext, command:str=None):
             if commandsdb[command]['bugged'] == True: localembed.set_footer(text="⚠ This command might be bugged (experiencing issues), but will be fixed later.")
             if commandsdb[command]['disabled'] == True: localembed.set_footer(text="⚠ This command is currently disabled")
             await ctx.respond(embed=localembed)
-        except KeyError: return await ctx.reply(embed=discord.Embed(description=f"No results found for {command}."), hidden=True)
+        except KeyError: return await ctx.respond(embed=discord.Embed(description=f"No results found for {command}."), hidden=True)
     else:
         r = ""
         for x in commandsdb: r += f"`/{x}`\n"
@@ -220,7 +220,7 @@ async def balance(ctx: ApplicationContext, user=None):
             e.add_field(name='Cash in bank account', value=f'{currency["bank"][str(user.id)]} coin(s)', inline=True)
             e.add_field(name="Networth", value=f"{get_user_networth(user.id)} coin(s)", inline=True)
             await ctx.respond(embed=e)
-        except: await ctx.reply('Looks like that user is not indexed in our server. Try again later.')
+        except: await ctx.respond('Looks like that user is not indexed in our server. Try again later.', mention_author=True)
     except Exception as e: await ctx.respond(f'An error occured: `{e}`. This has automatically been reported to the devs.')
 
 @client.slash_command(
@@ -232,7 +232,7 @@ async def balance(ctx: ApplicationContext, user=None):
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def kick(ctx: ApplicationContext, user, reason=None):
     if plugins.moderation:
-        if not ctx.author.guild_permissions.kick_members: return await ctx.reply('https://tenor.com/view/oh-yeah-high-kick-take-down-fight-gif-14272509')
+        if not ctx.author.guild_permissions.kick_members: return await ctx.respond('https://tenor.com/view/oh-yeah-high-kick-take-down-fight-gif-14272509', mention_author=True)
         else:
             try:
                 if reason == None: await user.kick()
@@ -249,7 +249,7 @@ async def kick(ctx: ApplicationContext, user, reason=None):
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def ban(ctx: ApplicationContext, user, reason=None):
     if plugins.moderation:
-        if not ctx.author.guild_permissions.ban_members: return await ctx.reply('https://tenor.com/view/thor-strike-admin-ban-admin-ban-gif-22545175')
+        if not ctx.author.guild_permissions.ban_members: return await ctx.respond('https://tenor.com/view/thor-strike-admin-ban-admin-ban-gif-22545175', mention_author=True)
         else:
             try:
                 if reason == None: await user.ban()
@@ -296,10 +296,10 @@ async def deposit(ctx: ApplicationContext, amount):
     if plugins.economy:
         if not amount.isdigit():
             if str(amount) == "max": amount = currency["wallet"][str(ctx.author.id)]
-            else: return await ctx.reply("The amount must be a number, or `max`.", hidden=True)
-        elif currency['bank'] == 0: return await ctx.reply('You don\'t have anything in your bank account.', hidden=True)
-        elif int(amount) <= 0: return await ctx.reply('The amount to deposit must be more than `0` coins!', hidden=True)
-        elif int(amount) > currency["wallet"][str(ctx.author.id)]: return await ctx.reply('The amount to deposit must not be more than what you have in your wallet!', hidden=True)
+            else: return await ctx.respond("The amount must be a number, or `max`.", hidden=True)
+        elif currency['bank'] == 0: return await ctx.respond('You don\'t have anything in your bank account.', hidden=True)
+        elif int(amount) <= 0: return await ctx.respond('The amount to deposit must be more than `0` coins!', hidden=True)
+        elif int(amount) > currency["wallet"][str(ctx.author.id)]: return await ctx.respond('The amount to deposit must not be more than what you have in your wallet!', hidden=True)
         currency["wallet"][str(ctx.author.id)] -= int(amount)
         currency["bank"][str(ctx.author.id)] += int(amount)
         await ctx.respond(f'You deposited `{amount}` coin(s) to your bank account.')
@@ -314,10 +314,10 @@ async def withdraw(ctx: ApplicationContext, amount):
     if plugins.economy:
         if not amount.isdigit():
             if str(amount) == "max": amount = currency["wallet"][str(ctx.author.id)]
-            else: return await ctx.reply("The amount must be a number, or `max`.", hidden=True)
-        elif currency['bank'] == 0: return await ctx.reply('You don\'t have anything in your bank account.', hidden=True)
-        elif int(amount) <= 0: return await ctx.reply('The amount to withdraw must be more than `0` coins!', hidden=True)
-        elif int(amount) > currency["bank"][str(ctx.author.id)]: return await ctx.reply('The amount to withdraw must not be more than what you have in your bank account!', hidden=True)
+            else: return await ctx.respond("The amount must be a number, or `max`.", hidden=True)
+        elif currency['bank'] == 0: return await ctx.respond('You don\'t have anything in your bank account.', hidden=True)
+        elif int(amount) <= 0: return await ctx.respond('The amount to withdraw must be more than `0` coins!', hidden=True)
+        elif int(amount) > currency["bank"][str(ctx.author.id)]: return await ctx.respond('The amount to withdraw must not be more than what you have in your bank account!', hidden=True)
         currency["wallet"][str(ctx.author.id)] += int(amount)
         currency["bank"][str(ctx.author.id)] -= int(amount)
         await ctx.respond(f'You withdrew `{amount}` coin(s) from your bank account.')
@@ -344,7 +344,7 @@ async def daily(ctx: ApplicationContext):
     if plugins.economy:
         currency['wallet'][str(ctx.author.id)] += 10000
         save()
-        await ctx.reply(f'You claimed 10000 coins from the daily reward. Check back in 24 hours for your next one!')
+        await ctx.respond(f'You claimed 10000 coins from the daily reward. Check back in 24 hours for your next one!', mention_author=True)
 
 @client.slash_command(
     name='weekly',
@@ -355,7 +355,7 @@ async def weekly(ctx: ApplicationContext):
     if plugins.economy:
         currency['wallet'][str(ctx.author.id)] += 45000
         save()
-        await ctx.reply(f'You claimed 45000 coins from the weekly reward. Check back in 7 days for your next one!')
+        await ctx.respond(f'You claimed 45000 coins from the weekly reward. Check back in 7 days for your next one!', mention_author=True)
 
 @client.slash_command(
     name='monthly',
@@ -366,7 +366,7 @@ async def monthly(ctx: ApplicationContext):
     if plugins.economy:
         currency['wallet'][str(ctx.author.id)] += 1000000
         save()
-        await ctx.reply(f'You claimed 1000000 coins from the monthly reward. Check back in 1 month for your next one!')
+        await ctx.respond(f'You claimed 1000000 coins from the monthly reward. Check back in 1 month for your next one!', mention_author=True)
 
 @client.slash_command(
     name='beg', 
@@ -454,18 +454,18 @@ async def give(ctx: ApplicationContext, user:discord.User, amount:int):
 @commands.cooldown(1, 60, commands.BucketType.user)
 async def rob(ctx: ApplicationContext, user:discord.User):
     if not plugins.economy: return
-    if currency['wallet'][str(user.id)] < 5000: return await ctx.reply('They has less than 5000 coins on them. Don\'t waste your time...') 
-    elif currency['wallet'][str(ctx.author.id)] < 5000: return await ctx.reply('You have less than 5k coins in your wallet. Play fair dude.')
+    if currency['wallet'][str(user.id)] < 5000: return await ctx.respond('They has less than 5000 coins on them. Don\'t waste your time...', mention_author=True) 
+    elif currency['wallet'][str(ctx.author.id)] < 5000: return await ctx.respond('You have less than 5k coins in your wallet. Play fair dude.', mention_author=True)
     if random.randint(1, 100) <= 50:
         x = random.randint(5000, currency['wallet'][str(user.id)])
         currency['wallet'][str(ctx.author.id)] += x
         currency['wallet'][str(user.id)] -= x
-        await ctx.reply(f'You just stole {x} coins from {user.display_name}! Feels good, doesn\'t it?')
+        await ctx.respond(f'You just stole {x} coins from {user.display_name}! Feels good, doesn\'t it?', mention_author=True)
     else:
         x = random.randint(5000, currency['wallet'][str(ctx.author.id)])
         currency['wallet'][str(ctx.author.id)] -= x
         currency['wallet'][str(user.id)] += x
-        await ctx.reply(f'LOL YOU GOT CAUGHT! You paid {user.display_name} {x} coins as compensation for your action.')
+        await ctx.respond(f'LOL YOU GOT CAUGHT! You paid {user.display_name} {x} coins as compensation for your action.', mention_author=True)
     save()
 
 @client.slash_command(
@@ -476,17 +476,17 @@ async def rob(ctx: ApplicationContext, user:discord.User):
 @commands.cooldown(1, (60*5), commands.BucketType.user)
 async def bankrob(ctx: ApplicationContext, user:discord.User):
     if not plugins.economy: return
-    if currency['wallet'][str(user.id)] < 10000: return await ctx.reply('You really want to risk losing your life to a poor person? (imagine robbing someone with < 10k net worth)')
-    elif currency['wallet'][str(ctx.author.id)] < 10000: return await ctx.reply('You have less than 10k in your wallet. Don\'t be greedy.')
+    if currency['wallet'][str(user.id)] < 10000: return await ctx.respond('You really want to risk losing your life to a poor person? (imagine robbing someone with < 10k net worth)', mention_author=True)
+    elif currency['wallet'][str(ctx.author.id)] < 10000: return await ctx.respond('You have less than 10k in your wallet. Don\'t be greedy.', mention_author=True)
     if random.randint(1, 100) <= 20:
         x = random.randint(10000, currency['wallet'][str(user.id)])
         currency['wallet'][str(ctx.author.id)] += x
         currency['bank'][str(user.id)] -= x
-        await ctx.reply(f'You raided {user.display_name}\'s bank and ended up looting {x} coins from them! Now thats what I like to call *success*.')
+        await ctx.respond(f'You raided {user.display_name}\'s bank and ended up looting {x} coins from them! Now thats what I like to call *success*.', mention_author=True)
     else:
         x = 10000
         currency['wallet'][str(ctx.author.id)] -= x
-        await ctx.reply(f'Have you ever thought of this as the outcome? You failed AND ended up getting caught by the police. You just lost {x} coins, you absolute loser.')
+        await ctx.respond(f'Have you ever thought of this as the outcome? You failed AND ended up getting caught by the police. You just lost {x} coins, you absolute loser.', mention_author=True)
 
 @client.slash_command(
     name='inventory', 
@@ -527,7 +527,7 @@ async def shop(ctx: ApplicationContext, item:str=None):
             localembed.add_field(name='In-store', value=shopitem[item]['available'], inline=True)
             localembed.add_field(name='ID', value=f'`{item}`', inline=True)
             await ctx.respond(embed=localembed)
-        except KeyError: await ctx.reply('That item isn\'t in the shop, do you are have stupid?')
+        except KeyError: await ctx.respond('That item isn\'t in the shop, do you are have stupid?', mention_author=True)
 
 @client.slash_command(
     name='buy',
@@ -539,14 +539,14 @@ async def buy(ctx: ApplicationContext, name: str, quantity: int=1):
     if not plugins.economy: return
     try:
         amt = shopitem[name]['buy price'] * quantity
-        if (currency['wallet'][str(ctx.author.id)] < amt): return await ctx.reply('You don\'t have enough balance to buy this.')
-        if (shopitem[name]['available'] == False): return await ctx.reply('You can\'t buy this item **dood**')
-        if (quantity <= 0): return await ctx.reply('The specified quantity cannot be less than `1`!')
+        if (currency['wallet'][str(ctx.author.id)] < amt): return await ctx.respond('You don\'t have enough balance to buy this.', mention_author=True)
+        if (shopitem[name]['available'] == False): return await ctx.respond('You can\'t buy this item **dood**', mention_author=True)
+        if (quantity <= 0): return await ctx.respond('The specified quantity cannot be less than `1`!', mention_author=True)
         currency['wallet'][str(ctx.author.id)] -= int(amt)
         items[str(ctx.author.id)][str(name)] += quantity
         save()
-        await ctx.reply(embed=discord.Embed(title=f'You just bought {quantity} {shopitem[name]["stylized name"]}!', description='Thank you for your purchase.', color=discord.Color.green()))
-    except KeyError: await ctx.reply('That item doesn\'t exist.')
+        await ctx.respond(embed=discord.Embed(title=f'You just bought {quantity} {shopitem[name]["stylized name"]}!', description='Thank you for your purchase.', color=discord.Color.green()), mention_author=True)
+    except KeyError: await ctx.respond('That item doesn\'t exist.', mention_author=True)
 
 @client.slash_command(
     name='sell',
@@ -556,16 +556,16 @@ async def buy(ctx: ApplicationContext, name: str, quantity: int=1):
 @option(name="quantity", description="How many do you want to sell?", type=int, default=1)
 async def sell(ctx: ApplicationContext, name: str, quantity: int=1):
     try:
-        if shopitem[name]["sellable"] != True: return await ctx.reply('Dumb, you can\'t sell this item.')
-        if quantity > items[str(ctx.author.id)][str(name)]: return await ctx.reply('You can\'t sell more than you have.')
+        if shopitem[name]["sellable"] != True: return await ctx.respond('Dumb, you can\'t sell this item.', mention_author=True)
+        if quantity > items[str(ctx.author.id)][str(name)]: return await ctx.respond('You can\'t sell more than you have.', mention_author=True)
         items[str(ctx.author.id)][str(name)] -= quantity
         ttl = shopitem[name]["sell price"]*quantity
         currency["wallet"][str(ctx.author.id)] += int(ttl)
         save()
         localembed = discord.Embed(title='Item sold', description=f'You successfully sold {quantity} {name} for {ttl} coins!', color=color)
         localembed.set_footer(text='Thank you for your business.')
-        await ctx.reply(embed=localembed)
-    except KeyError: await ctx.reply('what are you doing that item doesn\'t even exist')
+        await ctx.respond(embed=localembed, mention_author=True)
+    except KeyError: await ctx.respond('what are you doing that item doesn\'t even exist', mention_author=True)
     except Exception as e: await ctx.respond(f'An error occured while processing this request. ```{e}```')
 
 @client.slash_command(
@@ -575,18 +575,18 @@ async def sell(ctx: ApplicationContext, name: str, quantity: int=1):
 @commands.cooldown(1, 30, commands.BucketType.user)
 async def hunt(ctx: ApplicationContext):
     if not plugins.economy: return
-    if items[str(ctx.author.id)]['rifle'] == 0: return await ctx.reply('I\'d hate to see you hunt with your bare hands. Please buy a hunting rifle from the shop. ||/buy rifle||')
+    if items[str(ctx.author.id)]['rifle'] == 0: return await ctx.respond('I\'d hate to see you hunt with your bare hands. Please buy a hunting rifle from the shop. ||/buy rifle||', mention_author=True)
     loot = ['rock', 'ant', 'skunk', 'boar', 'deer', 'dragon', 'nothing', 'died']
     choice = random.choice(loot)
     if choice != "nothing" and choice != "died":
         items[str(ctx.author.id)][choice] += 1
-        await ctx.reply(f"You found a {choice} while hunting!")
+        await ctx.respond(f"You found a {choice} while hunting!", mention_author=True)
         save()
-    elif (choice == "nothing"): await ctx.reply('You found absolutely **nothing** while hunting.')
+    elif (choice == "nothing"): await ctx.respond('You found absolutely **nothing** while hunting.', mention_author=True)
     elif (choice == "died"):
         currency[str(ctx.author.id)]['wallet'] -= 1000
         save()
-        await ctx.reply('Stupid, you died while hunting and lost 1000 coins...')
+        await ctx.respond('Stupid, you died while hunting and lost 1000 coins...', mention_author=True)
 
 @client.slash_command(
     name='fish',
@@ -595,14 +595,14 @@ async def hunt(ctx: ApplicationContext):
 @commands.cooldown(1, 45, commands.BucketType.user)
 async def fish(ctx: ApplicationContext):
     if not plugins.economy: return
-    if (items[str(ctx.author.id)]['fishingpole'] == 0): return await ctx.reply('I don\'t think you can fish with your bare hands... or you can just put yo hands in the water bro **giga chad moment**\nAnyway it\'s just better to buy a fishing pole from the shop. ||/buy fishingpole||')
+    if (items[str(ctx.author.id)]['fishingpole'] == 0): return await ctx.respond('I don\'t think you can fish with your bare hands... or you can just put yo hands in the water bro **giga chad moment**\nAnyway it\'s just better to buy a fishing pole from the shop. ||/buy fishingpole||', mention_author=True)
     loot = ['shrimp', 'fish', 'rare fish', 'exotic fish', 'jellyfish', 'shark', 'nothing']
     choice = random.choice(loot)
     if choice != "nothing":
         items[str(ctx.author.id)][choice] += 1
         save()
-        await ctx.reply(f'You found a {choice} while hunting!')
-    else: await ctx.reply('Looks like the fish were weary of your rod. You caught nothing.')
+        await ctx.respond(f'You found a {choice} while hunting!', mention_author=True)
+    else: await ctx.respond('Looks like the fish were weary of your rod. You caught nothing.', mention_author=True)
 
 @client.slash_command(
     name='dig',
@@ -611,7 +611,7 @@ async def fish(ctx: ApplicationContext):
 @commands.cooldown(1, 45, commands.BucketType.user)
 async def dig(ctx: ApplicationContext):
     if not plugins.economy: return
-    if (items[str(ctx.author.id)]['shovel'] == 0): return await ctx.reply('You\'re too good to have to dig with your bare hands..... at least I hope so. Please buy a shovel from the shop. ||/buy shovel||')
+    if (items[str(ctx.author.id)]['shovel'] == 0): return await ctx.respond('You\'re too good to have to dig with your bare hands..... at least I hope so. Please buy a shovel from the shop. ||/buy shovel||', mention_author=True)
     loot = [
         'coins',
         'shovel',
@@ -628,16 +628,16 @@ async def dig(ctx: ApplicationContext):
     if (choice == "coins"):
         currency['wallet'][str(ctx.author.id)] += random.choice('1000', '5000')
         save()
-        await ctx.reply(f'You went digging and found a bunch of coins. Nice!')
+        await ctx.respond(f'You went digging and found a bunch of coins. Nice!', mention_author=True)
     elif choice != "nothing" and choice != "died":
         items[str(ctx.author.id)][choice] += 1
         save()
-        await ctx.reply(f'You found a {choice} while digging ')
-    elif (choice == "nothing"): await ctx.reply('After some time of digging you eventually gave up. You got nothing.')
+        await ctx.respond(f'You found a {choice} while digging ')
+    elif (choice == "nothing"): await ctx.respond('After some time of digging you eventually gave up. You got nothing.', mention_author=True)
     elif (choice == "died"):
         currency['wallet'][str(ctx.author.id)] -= 2000
         save()
-        await ctx.reply('YOU FELL INTO YOUR OWN TRAP AND DIED LMFAO\nYou lost 2000 coins in the process.')
+        await ctx.respond('YOU FELL INTO YOUR OWN TRAP AND DIED LMFAO\nYou lost 2000 coins in the process.', mention_author=True)
 
 #need help cuz i only got the idea (aka the logic) and not the code detail and stuff
 @client.slash_command(
@@ -648,8 +648,8 @@ async def dig(ctx: ApplicationContext):
 @option(name="amount", description="How many do you want to open?", type=int)
 async def openlootbox(ctx: ApplicationContext, lootbox:str, amount:int):
     types = ["normal", "large", "special"]
-    if amount <= 0: return await ctx.reply("You can't open 0 or below lootboxes! Don't be stupid.", hidden=True)
-    if lootbox not in types: return await ctx.reply(f"wtf is {lootbox}?", hidden=True)
+    if amount <= 0: return await ctx.respond("You can't open 0 or below lootboxes! Don't be stupid.", hidden=True)
+    if lootbox not in types: return await ctx.respond(f"wtf is {lootbox}?", hidden=True)
     ie = shopitem.keys()
     normal_loot = [
         random.randint(10000, 25000),
@@ -702,7 +702,7 @@ async def openlootbox(ctx: ApplicationContext, lootbox:str, amount:int):
 )
 @option(name="text", description="What do you want to send?", type=str)
 async def echo(ctx: ApplicationContext, text:str): 
-    await ctx.reply("Echoed!", hidden=True)
+    await ctx.respond("Echoed!", hidden=True)
     await ctx.channel.send(text)
 
 @client.slash_command(
@@ -740,7 +740,7 @@ async def whoami(ctx: ApplicationContext, user: discord.User=None):
     description='Syncs all of the local databases with their latest version'
 )
 async def sync(ctx: ApplicationContext):
-    if ctx.author.id != 738290097170153472: return await ctx.reply('Sorry, this command is only for my developer\'s use.')
+    if ctx.author.id != 738290097170153472: return await ctx.respond('Sorry, this command is only for my developer\'s use.', mention_author=True)
     try:
         with open('database/currency.json', 'r') as f: currency = json.load(f)
         with open('database/warnings.json', 'r') as f: warnings = json.load(f)
@@ -749,7 +749,7 @@ async def sync(ctx: ApplicationContext):
         await ctx.respond('Databases resynced.', hidden=True)
     except Exception as e:
         print(e)
-        await ctx.reply('An error occured while resyncing. Check console.', hidden=True)
+        await ctx.respond('An error occured while resyncing. Check console.', hidden=True)
 
 @client.slash_command(
     name='stroketranslate',
@@ -758,7 +758,7 @@ async def sync(ctx: ApplicationContext):
 @option(name="strok", description="What do you want to translate?", type=str)
 async def stroketranslate(ctx: ApplicationContext, strok: str):
         try:
-            if len(strok) > 300: return await ctx.reply("Please use no more than `300` character length", hidden=True)
+            if len(strok) > 300: return await ctx.respond("Please use no more than `300` character length", hidden=True)
             else:
                 with open(f"{os.getcwd()}/config/words.json", "r") as f: words = json.load(f)
                 var = str()
@@ -767,7 +767,7 @@ async def stroketranslate(ctx: ApplicationContext, strok: str):
                 return await ctx.respond(f"{var}")
         except Exception as e: return await ctx.respond(f"{type(e).__name__}: {e}")
         var = ''.join(arr)
-        await ctx.reply(f"{var}")
+        await ctx.respond(f"{var}", mention_author=True)
 
 @client.slash_command(
     name='prediction',
@@ -775,7 +775,7 @@ async def stroketranslate(ctx: ApplicationContext, strok: str):
 )
 @option(name="question", description="What do you want to predict?", type=str)
 async def prediction(ctx: ApplicationContext, question:str): 
-    await ctx.reply(f"My prediction is... **{random.choice(['Yes', 'No'])}!**")
+    await ctx.respond(f"My prediction is... **{random.choice(['Yes', 'No'])}!**", mention_author=True)
 
 @client.slash_command(
     name='memes',
@@ -856,19 +856,19 @@ async def osugame(ctx: ApplicationContext):
 async def donate(ctx: ApplicationContext, id:str, amount):
     if plugins.economy:
         reciever_info = client.get_user(int(id))
-        if id not in currency["wallet"]: return await ctx.reply("Unfortunately, we couldn't find that user in our server. Try double-checking the ID you've provided.", hidden=True)
+        if id not in currency["wallet"]: return await ctx.respond("Unfortunately, we couldn't find that user in our server. Try double-checking the ID you've provided.", hidden=True)
         # Prevent self-donations
-        if id == ctx.author.id: return await ctx.reply("You can't donate to yourself stupid.", hidden=True)
+        if id == ctx.author.id: return await ctx.respond("You can't donate to yourself stupid.", hidden=True)
         # Check for improper amount argument values
-        if amount < 1: return await ctx.reply("The amount has to be greater than `1`!", hidden=True)
-        elif amount > 1000000000: return await ctx.reply("You can only donate less than 1 billion coins!", hidden=True)
-        elif amount > currency["wallet"][str(ctx.author.id)]: return await ctx.reply("You're too poor to be donating that much money lmao")
+        if amount < 1: return await ctx.respond("The amount has to be greater than `1`!", hidden=True)
+        elif amount > 1000000000: return await ctx.respond("You can only donate less than 1 billion coins!", hidden=True)
+        elif amount > currency["wallet"][str(ctx.author.id)]: return await ctx.respond("You're too poor to be donating that much money lmao", mention_author=True)
         # If no improper values, proceed with donation
         try:
             currency["wallet"][str(id)] += amount
             currency["wallet"][str(ctx.author.id)] -= amount
             save()
-        except Exception as e: return await ctx.reply(e) 
+        except Exception as e: return await ctx.respond(e, mention_author=True) 
         localembed = discord.Embed(title="Donation Successful", description=f"You successfully donated {amount} coins to {reciever_info.name}!", color=discord.Color.green())
         localembed.add_field(name="Your ID", value=ctx.author.id, inline=True)
         localembed.add_field(name="Reciever's ID", value=id, inline=True)
@@ -891,7 +891,7 @@ async def modify_balance(ctx: ApplicationContext, user:discord.User, modifier:in
         save()
         await ctx.respond(f"{user.name}\'s balance has been modified by {modifier} coins.\n\n**New Balance:** {currency['wallet'][str(user.id)]} coins", hidden=True)
     except KeyError:
-        await ctx.reply("That user doesn't exist in the database.", hidden=True)
+        await ctx.respond("That user doesn't exist in the database.", hidden=True)
 
 @client.slash_command(
     name="status",
@@ -922,9 +922,9 @@ async def status(ctx: ApplicationContext):
 @option(name="amount", description="How many of these do you want to gift?", type=int, default=1)
 async def gift(ctx: ApplicationContext, user:discord.User, item:str, amount:int=1):
     try:
-        if amount < 1: return await ctx.reply("You can't gift less than 1 of those!", hidden=True)
-        elif items[str(ctx.author.id)][item] < amount: return await ctx.reply("You don't have enough of those to gift!", hidden=True)
-        elif shopitem[item]["giftable"] == False: return await ctx.reply("You can't sell that item!", hidden=True)
+        if amount < 1: return await ctx.respond("You can't gift less than 1 of those!", hidden=True)
+        elif items[str(ctx.author.id)][item] < amount: return await ctx.respond("You don't have enough of those to gift!", hidden=True)
+        elif shopitem[item]["giftable"] == False: return await ctx.respond("You can't sell that item!", hidden=True)
         items[str(user.id)][item] += amount
         items[str(ctx.author.id)][item] -= amount
         save()
@@ -935,10 +935,10 @@ async def gift(ctx: ApplicationContext, user:discord.User, item:str, amount:int=
         )
         localembed.add_field(name="Now they have", value=f"**{items[str(user.id)][item]} {item}**s")
         localembed.add_field(name="and you have", value=f"**{items[str(ctx.author.id)][item]} {item}**s")
-        await ctx.reply(embed=localembed)
+        await ctx.respond(embed=localembed, mention_author=True)
     except KeyError as e: 
         utils.logger.error(e)
-        await ctx.reply(f"wtf is {item}?")
+        await ctx.respond(f"wtf is {item}?", mention_author=True)
         
 @client.slash_command(
     name="afk_set",
@@ -951,7 +951,7 @@ async def afk_set(ctx: ApplicationContext, response:str="I'm AFK"):
     presence[str(ctx.guild.id)][str(ctx.author.id)] = {"type": "afk", "time": exctime, "response": response}
     save()
     localembed = discord.Embed(title=f"{ctx.author.display_name} is now AFK.", description=f"Response: {response}", color=discord.Color.dark_orange())
-    await ctx.reply(embed=localembed)
+    await ctx.respond(embed=localembed, mention_author=True)
 
 @client.slash_command(
     name="afk_remove",
@@ -971,7 +971,7 @@ async def afk_remove(ctx: ApplicationContext):
 )
 @option(name="user", description="Whose AFK status do you want to remove?", type=discord.User)
 async def afk_mod_remove(ctx: ApplicationContext, user:discord.User):
-    if not ctx.author.guild_permissions.manage_messages: return await ctx.reply("You don't have the required permissions to use this.", hidden=True)
+    if not ctx.author.guild_permissions.manage_messages: return await ctx.respond("You don't have the required permissions to use this.", hidden=True)
     try: 
         del presence[str(ctx.guild.id)][str(user.id)]
         save()
@@ -985,7 +985,7 @@ async def afk_mod_remove(ctx: ApplicationContext, user:discord.User):
 )
 @commands.cooldown(1, 3600, commands.BucketType.user)
 async def autogrind(ctx: ApplicationContext):
-    await ctx.reply("Autogrind has started. Please check back in an hour for your rewards.")
+    await ctx.respond("Autogrind has started. Please check back in an hour for your rewards.", mention_author=True)
     await asyncio.sleep(3600)
     coins_reward = random.randint(10000, 35000)
     ie = shopitem.keys()
@@ -1023,8 +1023,8 @@ async def edit_rank(ctx: ApplicationContext, user:discord.User, new_rank:int):
     if ctx.author.id != 738290097170153472: return await ctx.respond("This command isn't for you.", hidden=True)
     try:
         levels[str(user.id)]["level"] = new_rank
-        await ctx.reply(f"{user.display_name}\'s rank successfully edited. `New Rank: {levels[str(user.id)]['level']}`")
-    except KeyError: return await ctx.reply("That user isn't indexed yet.", hidden=True)
+        await ctx.respond(f"{user.display_name}\'s rank successfully edited. `New Rank: {levels[str(user.id)]['level']}`", mention_author=True)
+    except KeyError: return await ctx.respond("That user isn't indexed yet.", hidden=True)
 
 @client.slash_command(
     name="edit_xp",
@@ -1036,8 +1036,8 @@ async def edit_xp(ctx: ApplicationContext, user:discord.User, new_xp:int):
     if ctx.author.id != 738290097170153472: return await ctx.respond("This command isn't for you.", hidden=True)
     try:
         levels[str(user.id)]["xp"] = new_xp
-        await ctx.reply(f"{user.display_name}\'s XP count successfully edited. `New XP: {levels[str(user.id)]['xp']}`")
-    except KeyError: return await ctx.reply("That user isn't indexed yet.", hidden=True)
+        await ctx.respond(f"{user.display_name}\'s XP count successfully edited. `New XP: {levels[str(user.id)]['xp']}`", mention_author=True)
+    except KeyError: return await ctx.respond("That user isn't indexed yet.", hidden=True)
 
 @client.slash_command(
     name="repo",
@@ -1069,7 +1069,7 @@ async def embedbuilder(ctx: ApplicationContext, title: str, description: str, im
 @option(name="pin", description="Your new account's authentication ID. Must be a 6-digit integer.", type=int)
 async def isobank_register(ctx: ApplicationContext, pin:int):
     isobankauth.register(ctx.author.id, pin)
-    await ctx.reply("Congratulations! Your new IsoBank account has been registered.", hidden=True)
+    await ctx.respond("Congratulations! Your new IsoBank account has been registered.", hidden=True)
 
 # Minigames Commands
 @client.slash_command(
@@ -1089,7 +1089,7 @@ async def guessthenumber(ctx: ApplicationContext):
         currency["wallet"][str(ctx.author.id)] += randcoins
         save()
         await ctx.respond(f"Correct! You've just won **{randcoins} coins** by guessing the correct number.")
-    else: return await ctx.reply("Too bad bozo, you guessed the number wrong and you won nothing.")
+    else: return await ctx.respond("Too bad bozo, you guessed the number wrong and you won nothing.", mention_author=True)
 
 @client.slash_command(
     name="highlow",
@@ -1137,7 +1137,7 @@ async def networth(ctx: ApplicationContext, user: discord.User=None):
         ntw = get_user_networth(user.id)
         localembed = discord.Embed(name=f"{user.display_name}'s networth", description=f"{ntw} coins", color=color)
         await ctx.respond(embed=localembed)
-    except KeyError: return await ctx.reply("Looks like that user isn't cached yet. Please try again later.", hidden=True)
+    except KeyError: return await ctx.respond("Looks like that user isn't cached yet. Please try again later.", hidden=True)
 
 @client.slash_command(
     name="profile",
@@ -1177,11 +1177,11 @@ async def automod(ctx: ApplicationContext):
 @option(name="toggle", description="Do you want to turn it on or off?", type=bool)
 async def automod_swearfilter(ctx: ApplicationContext, toggle:bool):
     loaded_config = automod_config[str(ctx.guild.id)]
-    if not ctx.author.guild_permissions.administrator: return await ctx.reply("You cannot use this command. If you think this is a mistake, please contact your server owner/administrator.", hidden=True)
-    if loaded_config["swear_filter"]["enabled"] == toggle: return await ctx.reply(f"That automod option is already set to `{toggle}`.", hidden=True)
+    if not ctx.author.guild_permissions.administrator: return await ctx.respond("You cannot use this command. If you think this is a mistake, please contact your server owner/administrator.", hidden=True)
+    if loaded_config["swear_filter"]["enabled"] == toggle: return await ctx.respond(f"That automod option is already set to `{toggle}`.", hidden=True)
     loaded_config["swear_filter"]["enabled"] = toggle
-    if toggle == True: await ctx.reply("Swear-filter successfully **enabled**.", hidden=True)
-    elif toggle == False: await ctx.reply("Swear-filter successfully **disabled**.", hidden=True)
+    if toggle == True: await ctx.respond("Swear-filter successfully **enabled**.", hidden=True)
+    elif toggle == False: await ctx.respond("Swear-filter successfully **disabled**.", hidden=True)
     save()
 
 @client.slash_command(
@@ -1191,11 +1191,11 @@ async def automod_swearfilter(ctx: ApplicationContext, toggle:bool):
 @option(name="toggle", description="Do you want to turn it on or off?", type=bool)
 async def automod_use_default_keywords(ctx: ApplicationContext, toggle:bool):
     loaded_config = automod_config[str(ctx.guild.id)]
-    if not ctx.author.guild_permissions.administrator: return await ctx.reply("You cannot use this command. If you think this is a mistake, please contact your server owner/administrator.", hidden=True)
-    if loaded_config["swear_filter"]["keywords"]["use_default"] == toggle: return await ctx.reply(f"That automod option is already set to `{toggle}`.", hidden=True)
+    if not ctx.author.guild_permissions.administrator: return await ctx.respond("You cannot use this command. If you think this is a mistake, please contact your server owner/administrator.", hidden=True)
+    if loaded_config["swear_filter"]["keywords"]["use_default"] == toggle: return await ctx.respond(f"That automod option is already set to `{toggle}`.", hidden=True)
     loaded_config["swear_filter"]["keywords"]["use_default"] = toggle
-    if toggle == True: await ctx.reply("Using default swear-filter keywords successfully **enabled**.", hidden=True)
-    elif toggle == False: await ctx.reply("Using default swear-filter keywords successfully **disabled**.", hidden=True)
+    if toggle == True: await ctx.respond("Using default swear-filter keywords successfully **enabled**.", hidden=True)
+    elif toggle == False: await ctx.respond("Using default swear-filter keywords successfully **disabled**.", hidden=True)
     save()
 
 @client.slash_command(
@@ -1221,14 +1221,14 @@ async def automod_view_custom_keywords(ctx: ApplicationContext):
 )
 @option(name="keyword", description="What keyword do you want to add?", type=str)
 async def automod_add_custom_keyword(ctx: ApplicationContext, keyword:str):
-    if not ctx.author.guild_permissions.administrator: return await ctx.reply("You cannot use this command. If you think this is a mistake, please contact your server owner/administrator.", hidden=True)
+    if not ctx.author.guild_permissions.administrator: return await ctx.respond("You cannot use this command. If you think this is a mistake, please contact your server owner/administrator.", hidden=True)
     loaded_config = automod_config[str(ctx.guild.id)]
     if keyword not in loaded_config["swear_filter"]["keywords"]["custom"]:
         loaded_config["swear_filter"]["keywords"]["custom"].append(keyword)
         save()
         localembed = discord.Embed(description=f"New swear-filter keyword `{keyword}` successfully added to configuration.", color=discord.Color.green())
-        await ctx.reply(embed=localembed, hidden=True)
-    else: return await ctx.reply("That keyword is already added in your automod configuration.", hidden=True)
+        await ctx.respond(embed=localembed, hidden=True)
+    else: return await ctx.respond("That keyword is already added in your automod configuration.", hidden=True)
 
 @client.slash_command(
     name="automod_remove_custom_keyword",
@@ -1241,8 +1241,8 @@ async def automod_remove_custom_keyword(ctx: ApplicationContext, id:int):
         data = loaded_config["swear_filter"]["keywords"]["custom"]
         data.pop(id-1)
         save()
-        return await ctx.reply(f"Keyword (id: `{id}`) successfully removed from swear-filter configuration.")
-    except IndexError: await ctx.reply("That keyword id doesn't exist. Please specify a valid id and try again.", hidden=True)
+        return await ctx.respond(f"Keyword (id: `{id}`) successfully removed from swear-filter configuration.", mention_author=True)
+    except IndexError: await ctx.respond("That keyword id doesn't exist. Please specify a valid id and try again.", hidden=True)
 
 
 # Initialization
