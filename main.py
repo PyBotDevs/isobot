@@ -13,14 +13,9 @@ from discord.ext.commands import *
 from framework import *
 
 # Slash option types:
-# sub command: 1
-# sub command group: 2
-# string: 3
-# int: 4
-# bool: 5
-# user: 6
-# channel: 7
-# role: 8
+# Just use variable types to define option types.
+# For example, if the option has to be only str:
+# @option(name="something", description="A description", type=str)
 
 #Variables
 client = discord.Bot()
