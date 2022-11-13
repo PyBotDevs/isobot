@@ -102,6 +102,8 @@ __________________________________________________""")
     print('Ready to accept commands.')
     await client.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name=f"GitHub"), status=discord.Status.idle)
     print(f'[main/LOG] {colors.green}Status set to IDLE. Rich presence set.{colors.end}')
+    print("[main/FLASK] Starting pinger service...")
+    utils.ping.host()
 
 @client.event
 async def on_message(ctx):
@@ -1246,7 +1248,6 @@ async def automod_remove_custom_keyword(ctx: ApplicationContext, id:int):
 
 
 # Initialization
-utils.ping.host()
 client.run(api.auth.get_token())
 
 

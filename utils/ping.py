@@ -6,13 +6,15 @@ app = Flask('')
 @app.route('/')
 def main():
   return """
-Isobot is online. Redirecting to homepage...
-<script>window.location.replace("https://PyBotDevs.github.io/isobot")</script>
+Isobot is online.
 """, 200
 
 def run():
     app.run(host="0.0.0.0", port="8080")
 
-def host():
-    server = Thread(target=run)
-    server.start()
+def host(*, no_thread: bool = False):
+    if no_thread: run()
+    else:
+        server = Thread(target=run)
+        server.daemon = True
+        server.start()
