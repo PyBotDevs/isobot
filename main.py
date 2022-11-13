@@ -198,13 +198,13 @@ async def help(ctx: ApplicationContext, command:str=None):
                 localembed.add_field(name="Arguments", value=r, inline=False)
             if commandsdb[command]['bugged'] == True: localembed.set_footer(text="⚠ This command might be bugged (experiencing issues), but will be fixed later.")
             if commandsdb[command]['disabled'] == True: localembed.set_footer(text="⚠ This command is currently disabled")
-            await ctx.send(embed=localembed)
+            await ctx.respond(embed=localembed)
         except KeyError: return await ctx.reply(embed=discord.Embed(description=f"No results found for {command}."), hidden=True)
     else:
         r = ""
         for x in commandsdb: r += f"`/{x}`\n"
         localembed = discord.Embed(title="Isobot Command Help", description=f"**Bot Commands:**\n{r}", color = color)
-        await ctx.send(embed=localembed)
+        await ctx.respond(embed=localembed)
 
 @client.slash_command(
     name='balance', 
@@ -219,9 +219,9 @@ async def balance(ctx: ApplicationContext, user=None):
             e.add_field(name='Cash in wallet', value=f'{currency["wallet"][str(user.id)]} coin(s)', inline=True)
             e.add_field(name='Cash in bank account', value=f'{currency["bank"][str(user.id)]} coin(s)', inline=True)
             e.add_field(name="Networth", value=f"{get_user_networth(user.id)} coin(s)", inline=True)
-            await ctx.send(embed=e)
+            await ctx.respond(embed=e)
         except: await ctx.reply('Looks like that user is not indexed in our server. Try again later.')
-    except Exception as e: await ctx.send(f'An error occured: `{e}`. This has automatically been reported to the devs.')
+    except Exception as e: await ctx.respond(f'An error occured: `{e}`. This has automatically been reported to the devs.')
 
 @client.slash_command(
     name='kick', 
@@ -237,8 +237,8 @@ async def kick(ctx: ApplicationContext, user, reason=None):
             try:
                 if reason == None: await user.kick()
                 else: await user.kick(reason=reason)
-                await ctx.send(embed=discord.Embed(title=f'{user} has been kicked.', description=f'Reason: {str(reason)}'))
-            except Exception: await ctx.send(embed=discord.Embed(title='Well, something happened...', description='Either I don\'t have permission to do this, or my role isn\'t high enough.', color=discord.Colour.red()))
+                await ctx.respond(embed=discord.Embed(title=f'{user} has been kicked.', description=f'Reason: {str(reason)}'))
+            except Exception: await ctx.respond(embed=discord.Embed(title='Well, something happened...', description='Either I don\'t have permission to do this, or my role isn\'t high enough.', color=discord.Colour.red()))
 
 @client.slash_command(
     name='ban', 
@@ -254,8 +254,8 @@ async def ban(ctx: ApplicationContext, user, reason=None):
             try:
                 if reason == None: await user.ban()
                 else: await user.ban(reason=reason)
-                await ctx.send(embed=discord.Embed(title=f'{user} has been banned.', description=f'Reason: {str(reason)}'))
-            except Exception: await ctx.send(embed=discord.Embed(title='Well, something happened...', description='Either I don\'t have permission to do this, or my role isn\'t high enough.', color=discord.Colour.red()))
+                await ctx.respond(embed=discord.Embed(title=f'{user} has been banned.', description=f'Reason: {str(reason)}'))
+            except Exception: await ctx.respond(embed=discord.Embed(title='Well, something happened...', description='Either I don\'t have permission to do this, or my role isn\'t high enough.', color=discord.Colour.red()))
 
 @client.slash_command(
     name='warn',
@@ -272,8 +272,8 @@ async def warn(ctx: ApplicationContext, user, reason):
         target=client.get_user(user.id)
         try:
             await target.send(embed=discord.Embed(title=f':warning: You\'ve been warned in {ctx.guild} ({ctx.guild.id})', description=f'Reason {reason}'))
-            await ctx.send(embed=discord.Embed(description=f'{user} has been warned.'))
-        except Exception: await ctx.send(embed=discord.Embed(description=f'{user} has been warned. I couldn\'t DM them, but their warning is logged.'))
+            await ctx.respond(embed=discord.Embed(description=f'{user} has been warned.'))
+        except Exception: await ctx.respond(embed=discord.Embed(description=f'{user} has been warned. I couldn\'t DM them, but their warning is logged.'))
 
 @client.slash_command(
     name='warns_clear',
@@ -285,7 +285,7 @@ async def warns_clear(ctx: ApplicationContext, user):
         if not ctx.author.guild_permissions.manage_messages: raise MissingPermissions
         warnings[str(ctx.guild.id)][str(user.id)] = []
         save()
-        await ctx.send(embed=discord.Embed(description=f'All {user}\'s warnings have been cleared.'))
+        await ctx.respond(embed=discord.Embed(description=f'All {user}\'s warnings have been cleared.'))
 
 @client.slash_command(
     name='deposit',
@@ -302,7 +302,7 @@ async def deposit(ctx: ApplicationContext, amount):
         elif int(amount) > currency["wallet"][str(ctx.author.id)]: return await ctx.reply('The amount to deposit must not be more than what you have in your wallet!', hidden=True)
         currency["wallet"][str(ctx.author.id)] -= int(amount)
         currency["bank"][str(ctx.author.id)] += int(amount)
-        await ctx.send(f'You deposited `{amount}` coin(s) to your bank account.')
+        await ctx.respond(f'You deposited `{amount}` coin(s) to your bank account.')
         save()
 
 @client.slash_command(
@@ -320,7 +320,7 @@ async def withdraw(ctx: ApplicationContext, amount):
         elif int(amount) > currency["bank"][str(ctx.author.id)]: return await ctx.reply('The amount to withdraw must not be more than what you have in your bank account!', hidden=True)
         currency["wallet"][str(ctx.author.id)] += int(amount)
         currency["bank"][str(ctx.author.id)] -= int(amount)
-        await ctx.send(f'You withdrew `{amount}` coin(s) from your bank account.')
+        await ctx.respond(f'You withdrew `{amount}` coin(s) from your bank account.')
         save()
 
 @client.slash_command(
@@ -333,7 +333,7 @@ async def work(ctx: ApplicationContext):
         i = random.randint(10000, 20000)
         currency['wallet'][str(ctx.author.id)] += i
         save()
-        await ctx.send(f'{ctx.author.mention} worked for a 30-minute shift and earned {i} coins.')
+        await ctx.respond(f'{ctx.author.mention} worked for a 30-minute shift and earned {i} coins.')
 
 @client.slash_command(
     name='daily',
@@ -407,8 +407,8 @@ async def beg(ctx: ApplicationContext):
         x = random.randint(10, 100)
         currency["wallet"][str(ctx.author.id)] += x
         save()
-        await ctx.send(embed=discord.Embed(title=random.choice(names), description=f'"Oh you poor beggar, here\'s {x} coin(s) for you. Hope it helps!"'))
-    else: await ctx.send(embed=discord.Embed(title=random.choice(names), description=f'"{random.choice(fail_responses)}"'))
+        await ctx.respond(embed=discord.Embed(title=random.choice(names), description=f'"Oh you poor beggar, here\'s {x} coin(s) for you. Hope it helps!"'))
+    else: await ctx.respond(embed=discord.Embed(title=random.choice(names), description=f'"{random.choice(fail_responses)}"'))
 
 @client.slash_command(
     name='scout', 
@@ -427,8 +427,8 @@ async def scout(ctx: ApplicationContext):
             pass
         currency["wallet"][str(ctx.author.id)] += x
         save()
-        await ctx.send(embed=discord.Embed(title='What you found', description=f'You searched your area and found {x} coin(s)!'))
-    else: await ctx.send(embed=discord.Embed(title='What you found', description='Unfortunately no coins for you :('))
+        await ctx.respond(embed=discord.Embed(title='What you found', description=f'You searched your area and found {x} coin(s)!'))
+    else: await ctx.respond(embed=discord.Embed(title='What you found', description='Unfortunately no coins for you :('))
 
 @client.slash_command(
     name='give',
@@ -438,13 +438,13 @@ async def scout(ctx: ApplicationContext):
 @option(name="amount", description="How much do you want to give?", type=int)
 async def give(ctx: ApplicationContext, user:discord.User, amount:int):
     if not plugins.economy: return
-    if amount <= 0: return await ctx.send('The amount you want to give must be greater than `0` coins!', hidden=True)
-    if amount > int(currency['wallet'][str(ctx.author.id)]): return await ctx.send('You don\'t have enough coins in your wallet to do this.', hidden=True)
+    if amount <= 0: return await ctx.respond('The amount you want to give must be greater than `0` coins!', hidden=True)
+    if amount > int(currency['wallet'][str(ctx.author.id)]): return await ctx.respond('You don\'t have enough coins in your wallet to do this.', hidden=True)
     else:
         currency['wallet'][str(ctx.author.id)] -= amount
         currency['wallet'][str(user.id)] += amount
         save()
-        await ctx.send(f':gift: {ctx.author.mention} just gifted {amount} coin(s) to {user.display_name}!')
+        await ctx.respond(f':gift: {ctx.author.mention} just gifted {amount} coin(s) to {user.display_name}!')
 
 @client.slash_command(
     name='rob',
@@ -500,7 +500,7 @@ async def inventory(ctx: ApplicationContext, user:discord.User = None):
     localembed.add_field(name='Utility', value=f'Hunting Rifle `ID: rifle`: {items[str(user.id)]["rifle"]}\nFishing Rod `ID: fishingpole`: {items[str(user.id)]["fishingpole"]}\nShovel `ID: shovel`: {items[str(user.id)]["shovel"]}', inline=False)
     localembed.add_field(name='Sellables', value=f'Rock `ID: rock`: {items[str(user.id)]["rock"]}\nAnt `ID: ant`: {items[str(user.id)]["ant"]}\nStickbug `ID: stickbug`: {items[str(user.id)]["stickbug"]}\nSkunk `ID: skunk`: {items[str(user.id)]["skunk"]}\nBoar `ID: boar`: {items[str(user.id)]["boar"]}\nDeer `ID: deer`: {items[str(user.id)]["deer"]}\nDragon `ID: dragon`: {items[str(user.id)]["dragon"]}\nGold `ID: gold`: {items[str(user.id)]["gold"]}', inline=False)
     localembed.add_field(name='Power-ups', value=f'Binoculars `ID: binoculars`: {items[str(user.id)]["binoculars"]}', inline=False)
-    await ctx.send(embed=localembed)
+    await ctx.respond(embed=localembed)
 
 @client.slash_command(
     name='shop',
@@ -515,7 +515,7 @@ async def shop(ctx: ApplicationContext, item:str=None):
             description='**Tools**\n\n1) Hunting Rifle `ID: rifle`: A tool used for hunting animals. (10000 coins)\n2) Fishing Pole `ID: fishingpole`: A tool used for fishing. It lets you use /fish command. (6500 coins)\n3) Shovel `ID: shovel`: You can use this tool to dig stuff from the ground. (3000 coins)\n4) Binoculars `ID: binoculars`: Try scouting with these binoculars, maybe you can find more with it. (14850 coins)'
         )
         localembed.set_footer(text='Page 1 | Tools | This command is in development. More items will be added soon!')
-        await ctx.send(embed=localembed)
+        await ctx.respond(embed=localembed)
     else:
         try:
             localembed = discord.Embed(
@@ -526,7 +526,7 @@ async def shop(ctx: ApplicationContext, item:str=None):
             localembed.add_field(name='Selling price', value=shopitem[item]['sell price'], inline=True)
             localembed.add_field(name='In-store', value=shopitem[item]['available'], inline=True)
             localembed.add_field(name='ID', value=f'`{item}`', inline=True)
-            await ctx.send(embed=localembed)
+            await ctx.respond(embed=localembed)
         except KeyError: await ctx.reply('That item isn\'t in the shop, do you are have stupid?')
 
 @client.slash_command(
@@ -566,7 +566,7 @@ async def sell(ctx: ApplicationContext, name: str, quantity: int=1):
         localembed.set_footer(text='Thank you for your business.')
         await ctx.reply(embed=localembed)
     except KeyError: await ctx.reply('what are you doing that item doesn\'t even exist')
-    except Exception as e: await ctx.send(f'An error occured while processing this request. ```{e}```')
+    except Exception as e: await ctx.respond(f'An error occured while processing this request. ```{e}```')
 
 @client.slash_command(
     name='hunt',
@@ -693,7 +693,7 @@ async def openlootbox(ctx: ApplicationContext, lootbox:str, amount:int):
         items[str(ctx.author.id)][special_loot[5]] += 1
         localembed.add_field(name="Coins gained", value=f"**{special_loot[0]}** coins", inline=False)
         localembed.add_field(name="Items recieved", value=f"You got **1 {special_loot[1]}**!\nYou got **1 {special_loot[2]}**!\nYou got **1 {special_loot[3]}**!\nYou got **1 {special_loot[4]}**!\nYou got **1 {special_loot[5]}**!", inline=False)
-    await ctx.send(embed=localembed)
+    await ctx.respond(embed=localembed)
     save()
 
 @client.slash_command(
@@ -732,7 +732,7 @@ async def whoami(ctx: ApplicationContext, user: discord.User=None):
         if p != user.roles[0]: role_render += f"<@&{p.id}> "
     localembed.add_field(name='Roles', value=role_render, inline=False)
     localembed.add_field(name="Net worth", value=f"{get_user_networth(user.id)} coins", inline=False)
-    await ctx.send(embed=localembed)
+    await ctx.respond(embed=localembed)
 
 # DevTools commands
 @client.slash_command(
@@ -746,7 +746,7 @@ async def sync(ctx: ApplicationContext):
         with open('database/warnings.json', 'r') as f: warnings = json.load(f)
         with open('database/items.json', 'r') as f: items = json.load(f)
         with open('config/shop.json', 'r') as f: shopitem = json.load(f)
-        await ctx.send('Databases resynced.', hidden=True)
+        await ctx.respond('Databases resynced.', hidden=True)
     except Exception as e:
         print(e)
         await ctx.reply('An error occured while resyncing. Check console.', hidden=True)
@@ -764,8 +764,8 @@ async def stroketranslate(ctx: ApplicationContext, strok: str):
                 var = str()
                 s = strok.lower()
                 for i, c in enumerate(s): var += random.choice(words[c])
-                return await ctx.send(f"{var}")
-        except Exception as e: return await ctx.send(f"{type(e).__name__}: {e}")
+                return await ctx.respond(f"{var}")
+        except Exception as e: return await ctx.respond(f"{type(e).__name__}: {e}")
         var = ''.join(arr)
         await ctx.reply(f"{var}")
 
@@ -789,7 +789,7 @@ async def memes(ctx: ApplicationContext):
     embed = discord.Embed(title=submission.title, color=color)
     embed.set_image(url=submission.url)
     embed.set_footer(text='Powered by PRAW')
-    await ctx.send(embed = embed)
+    await ctx.respond(embed = embed)
 
 @client.slash_command(
     name='linuxmemes',
@@ -803,7 +803,7 @@ async def linuxmemes(ctx: ApplicationContext):
     embed = discord.Embed(title=submission.title, color=color)
     embed.set_image(url=submission.url)
     embed.set_footer(text='Powered by PRAW')
-    await ctx.send(embed = embed)
+    await ctx.respond(embed = embed)
 
 @client.slash_command(
     name='ihadastroke',
@@ -817,7 +817,7 @@ async def ihadastroke(ctx: ApplicationContext):
     embed = discord.Embed(title=submission.title, color=color)
     embed.set_image(url=submission.url)
     embed.set_footer(text='Powered by PRAW')
-    await ctx.send(embed = embed)
+    await ctx.respond(embed = embed)
 
 @client.slash_command(
     name='engrish',
@@ -831,7 +831,7 @@ async def engrish(ctx: ApplicationContext):
     embed = discord.Embed(title=submission.title, color=color)
     embed.set_image(url=submission.url)
     embed.set_footer(text='Powered by PRAW')
-    await ctx.send(embed = embed)
+    await ctx.respond(embed = embed)
 
 @client.slash_command(
     name='osugame',
@@ -845,7 +845,7 @@ async def osugame(ctx: ApplicationContext):
     embed = discord.Embed(title=submission.title, color=color)
     embed.set_image(url=submission.url)
     embed.set_footer(text='Powered by PRAW')
-    await ctx.send(embed = embed)
+    await ctx.respond(embed = embed)
 
 @client.slash_command(
     name='donate',
@@ -875,7 +875,7 @@ async def donate(ctx: ApplicationContext, id:str, amount):
         localembed2 = discord.Embed(title="You Recieved a Donation!", description=f"{ctx.author} donated {amount} coins to you!", color=discord.Color.green())
         localembed2.add_field(name="Their ID", value=ctx.author.id, inline=True)
         localembed2.add_field(name="Your ID", value=id, inline=True)
-        await ctx.send(embed=localembed)
+        await ctx.respond(embed=localembed)
         await reciever_info.send(embed=localembed2)
     
 @client.slash_command(
@@ -885,11 +885,11 @@ async def donate(ctx: ApplicationContext, id:str, amount):
 @option(name="user", description="Specify the user to change their balance", type=discord.User)
 @option(name="modifier", description="Specify the balance to modify", type=int)
 async def modify_balance(ctx: ApplicationContext, user:discord.User, modifier:int):
-    if ctx.author.id != 738290097170153472: return ctx.send("Sorry, but this command is only for my developer's use.", hidden=True)
+    if ctx.author.id != 738290097170153472: return ctx.respond("Sorry, but this command is only for my developer's use.", hidden=True)
     try:
         currency["wallet"][str(user.id)] += modifier
         save()
-        await ctx.send(f"{user.name}\'s balance has been modified by {modifier} coins.\n\n**New Balance:** {currency['wallet'][str(user.id)]} coins", hidden=True)
+        await ctx.respond(f"{user.name}\'s balance has been modified by {modifier} coins.\n\n**New Balance:** {currency['wallet'][str(user.id)]} coins", hidden=True)
     except KeyError:
         await ctx.reply("That user doesn't exist in the database.", hidden=True)
 
@@ -911,7 +911,7 @@ async def status(ctx: ApplicationContext):
     localembed.add_field(name="Uptime History", value="[here](https://stats.uptimerobot.com/PlKOmI0Aw8)")
     localembed.add_field(name="Release Notes", value="[latest](https://github.com/PyBotDevs/isobot/releases/latest)")
     localembed.set_footer(text=f"Requested by {ctx.author.name}", icon_url=ctx.author.avatar_url)
-    await ctx.send(embed=localembed)
+    await ctx.respond(embed=localembed)
 
 @client.slash_command(
     name="gift",
@@ -961,9 +961,9 @@ async def afk_remove(ctx: ApplicationContext):
     try: 
         del presence[str(ctx.guild.id)][str(ctx.author.id)]
         save()
-        await ctx.send(f"Alright {ctx.author.mention}, I've removed your AFK.")
+        await ctx.respond(f"Alright {ctx.author.mention}, I've removed your AFK.")
     except KeyError:
-        return await ctx.send("You weren't previously AFK.", hidden=True)
+        return await ctx.respond("You weren't previously AFK.", hidden=True)
 
 @client.slash_command(
     name="afk_mod_remove",
@@ -975,9 +975,9 @@ async def afk_mod_remove(ctx: ApplicationContext, user:discord.User):
     try: 
         del presence[str(ctx.guild.id)][str(user.id)]
         save()
-        await ctx.send(f"{user.display_name}'s AFK has been removed.")
+        await ctx.respond(f"{user.display_name}'s AFK has been removed.")
     except KeyError:
-        return await ctx.send("That user isn't AFK.", hidden=True)
+        return await ctx.respond("That user isn't AFK.", hidden=True)
 
 @client.slash_command(
     name="autogrind",
@@ -1010,8 +1010,8 @@ async def rank(ctx: ApplicationContext, user:discord.User=None):
         localembed.add_field(name="Level", value=levels[str(user.id)]["level"])
         localembed.add_field(name="XP", value=levels[str(user.id)]["xp"])
         localembed.set_footer(text="Keep chatting to earn levels!", icon_url=ctx.author.avatar_url)
-        await ctx.send(embed = localembed)
-    except KeyError: return await ctx.send("Looks like that user isn't indexed yet. Try again later.", hidden=True)
+        await ctx.respond(embed = localembed)
+    except KeyError: return await ctx.respond("Looks like that user isn't indexed yet. Try again later.", hidden=True)
 
 @client.slash_command(
     name="edit_rank",
@@ -1020,7 +1020,7 @@ async def rank(ctx: ApplicationContext, user:discord.User=None):
 @option(name="user", description="Who's rank do you want to edit?", type=discord.User)
 @option(name="new_rank", description="The new rank you want to set for the user", type=int)
 async def edit_rank(ctx: ApplicationContext, user:discord.User, new_rank:int):
-    if ctx.author.id != 738290097170153472: return await ctx.send("This command isn't for you.", hidden=True)
+    if ctx.author.id != 738290097170153472: return await ctx.respond("This command isn't for you.", hidden=True)
     try:
         levels[str(user.id)]["level"] = new_rank
         await ctx.reply(f"{user.display_name}\'s rank successfully edited. `New Rank: {levels[str(user.id)]['level']}`")
@@ -1033,7 +1033,7 @@ async def edit_rank(ctx: ApplicationContext, user:discord.User, new_rank:int):
 @option(name="user", description="Who's rank do you want to edit?", type=discord.User)
 @option(name="new_xp", description="The new xp count you want to set for the user", type=int)
 async def edit_xp(ctx: ApplicationContext, user:discord.User, new_xp:int):
-    if ctx.author.id != 738290097170153472: return await ctx.send("This command isn't for you.", hidden=True)
+    if ctx.author.id != 738290097170153472: return await ctx.respond("This command isn't for you.", hidden=True)
     try:
         levels[str(user.id)]["xp"] = new_xp
         await ctx.reply(f"{user.display_name}\'s XP count successfully edited. `New XP: {levels[str(user.id)]['xp']}`")
@@ -1045,7 +1045,7 @@ async def edit_xp(ctx: ApplicationContext, user:discord.User, new_xp:int):
 )
 async def repo(ctx: ApplicationContext):
     localembed = discord.Embed(title="Source-code Repositories", description="See and contribute to **isobot's [GitHub repository](https://github.com/PyBotDevs/isobot)**\nSee our **[GitHub organization](https://github.com/PyBotDevs)**", color=color)
-    await ctx.send(embed=localembed)
+    await ctx.respond(embed=localembed)
 
 @client.slash_command(
     name="embedbuilder",
@@ -1059,7 +1059,7 @@ async def repo(ctx: ApplicationContext):
 @option(name="footer_text", description="The text at the footer of the embed", type=str, default=None)
 @option(name="footer_icon_url", description="The icon you want to show in the embed's footer (URL ONLY)", type=str, default=None)
 async def embedbuilder(ctx: ApplicationContext, title: str, description: str, image_url: str = None, thumbnail_url: str = None, color: int = None, footer_text: str = None, footer_icon_url: str = None):
-    await ctx.send("Embed Built!", hidden=True)
+    await ctx.respond("Embed Built!", hidden=True)
     await ctx.channel.send(embed=framework.isobot.embedengine.embed(title, description, image=image_url, thumbnail=thumbnail_url, color=color, footer_text=footer_text, footer_img=footer_icon_url))
 
 @client.slash_command(
@@ -1081,14 +1081,14 @@ async def guessthenumber(ctx: ApplicationContext):
     number = random.randint(1, 10)
     localembed = discord.Embed(name="Guess the number!", description="I am currently thinking of a number from 1 to 10. Can you guess what it is?", color=color)
     localembed.set_footer(text="If you guess what it is, you will win 500 to 1000 coins!")
-    await ctx.send(embed=localembed)
+    await ctx.respond(embed=localembed)
     def check(msg): return msg.author == ctx.author and msg.channel == ctx.channel and msg.content
     msg = await client.wait_for("message", check=check)
     if int(msg.content) == number:
         randcoins = random.randint(500, 1000)
         currency["wallet"][str(ctx.author.id)] += randcoins
         save()
-        await ctx.send(f"Correct! You've just won **{randcoins} coins** by guessing the correct number.")
+        await ctx.respond(f"Correct! You've just won **{randcoins} coins** by guessing the correct number.")
     else: return await ctx.reply("Too bad bozo, you guessed the number wrong and you won nothing.")
 
 @client.slash_command(
@@ -1103,28 +1103,28 @@ async def highlow(ctx: ApplicationContext):
     def check(msg): return msg.author == ctx.author and msg.channel == ctx.channel and (msg.content)
     localembed = discord.Embed(title=f"Your number is {numb}.", description="Choose if the other number is lower, higher or jackpot.", color=color)
     localembed.set_footer(text="Send your response in chat")
-    await ctx.send(embed=localembed)
+    await ctx.respond(embed=localembed)
     msg = await client.wait_for("message", check=check)
     if msg.content == 'low':
         if numb > numb2:
-            await ctx.send(f'Congrats! Your number was {numb2} and you won **{coins} coins**.')
+            await ctx.respond(f'Congrats! Your number was {numb2} and you won **{coins} coins**.')
             currency["wallet"][ctx.author.id] += coins
             save()
-        elif numb < numb2: await ctx.send(f'Wrong! The number was **{numb2}**.')
-        elif numb == numb2: await ctx.send(f'Rip bozo, you just missed your chance of winning 5 million coins because you didn\'t choose `jackpot` XD')
+        elif numb < numb2: await ctx.respond(f'Wrong! The number was **{numb2}**.')
+        elif numb == numb2: await ctx.respond(f'Rip bozo, you just missed your chance of winning 5 million coins because you didn\'t choose `jackpot` XD')
     if msg.content == 'jackpot':
         if numb == numb2:
-            await ctx.send(f'Congrats! Your luck did you good because your number was {numb2} and you earned **5 million coins**. GG!')
+            await ctx.respond(f'Congrats! Your luck did you good because your number was {numb2} and you earned **5 million coins**. GG!')
             currency["wallet"][ctx.author.id] += 5000000
             save()
-        else: await ctx.send(f'Wrong! The number was {numb2}.')
+        else: await ctx.respond(f'Wrong! The number was {numb2}.')
     if msg.content == 'high':
         if numb < numb2:
-            await ctx.send(f'Congrats! Your number was {numb2} and you earned **{coins} coins**.')
+            await ctx.respond(f'Congrats! Your number was {numb2} and you earned **{coins} coins**.')
             currency["wallet"][ctx.author.id] += coins
             save()
-        else: return await ctx.send(f'Wrong! The number was {numb2}.')
-    else: await ctx.send(f'wtf is {msg.content}?')
+        else: return await ctx.respond(f'Wrong! The number was {numb2}.')
+    else: await ctx.respond(f'wtf is {msg.content}?')
 
 @client.slash_command(
     name="networth",
@@ -1136,7 +1136,7 @@ async def networth(ctx: ApplicationContext, user: discord.User=None):
     try:
         ntw = get_user_networth(user.id)
         localembed = discord.Embed(name=f"{user.display_name}'s networth", description=f"{ntw} coins", color=color)
-        await ctx.send(embed=localembed)
+        await ctx.respond(embed=localembed)
     except KeyError: return await ctx.reply("Looks like that user isn't cached yet. Please try again later.", hidden=True)
 
 @client.slash_command(
@@ -1154,7 +1154,7 @@ async def profile(ctx:  ApplicationContext, user: discord.User = None):
     localembed.add_field(name="Net-Worth", value=f"{get_user_networth(user.id)} coins", inline=True)
     # More stats will be added later
     # Maybe I should make a userdat system for collecting statistical data to process and display here, coming in a future update.
-    await ctx.send(embed=localembed)
+    await ctx.respond(embed=localembed)
 
 # Automod commands
 @client.slash_command(
@@ -1168,7 +1168,7 @@ async def automod(ctx: ApplicationContext):
     localembed.add_field(name="Swear-filter", value=loaded_config["swear_filter"]["enabled"])
     localembed.add_field(name="Swear-filter Keywords Count", value=f"{int(len(loaded_config['swear_filter']['keywords']['default'])) + int(len(loaded_config['swear_filter']['keywords']['custom']))} words")
     localembed.set_footer(text="More automod features will come soon!")
-    await ctx.send(embed=localembed)
+    await ctx.respond(embed=localembed)
 
 @client.slash_command(
     name="automod_swearfilter",
@@ -1213,7 +1213,7 @@ async def automod_view_custom_keywords(ctx: ApplicationContext):
     else: out = "*No custom keywords are set for your server.*"
     localembed = discord.Embed(title=f"Custom Swear-filter keywords for {ctx.guild.name}", description=out, color=color)
     localembed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested by {ctx.author}")
-    await ctx.send(embed=localembed)
+    await ctx.respond(embed=localembed)
 
 @client.slash_command(
     name="automod_add_custom_keyword",
