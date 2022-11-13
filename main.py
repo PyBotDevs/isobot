@@ -1,16 +1,26 @@
 #Imports
-import os, os.path, psutil, json, time, datetime, asyncio, random, math, praw
-import api.auth, utils.logger, utils.ping
+import os, os.path
+import psutil
+import json
+import time, datetime
+import discord
+import asyncio
+import random
+import praw
+import api.auth
+import utils.logger, utils.ping
+from framework import *
+from math import floor
+from random import randint
 import framework.isobot.currency
 import framework.isobot.colors
 import framework.isobank.authorize
 import framework.isobank.manager
 import framework.isobot.embedengine
-import discord
 from discord import ApplicationContext, option
 from discord.ext import commands, tasks
 from discord.ext.commands import *
-from framework import *
+
 
 # Slash option types:
 # Just use variable types to define option types.
@@ -130,7 +140,7 @@ async def on_message(ctx):
     for i in uList:
         if i in ctx.content and not ctx.author.bot:
             fetch_user = client.get_user(id(i))
-            await ctx.channel.send(f"{fetch_user.display_name} went AFK <t:{math.floor(presence[str(ctx.guild.id)][str(i)]['time'])}:R>: {presence[str(ctx.guild.id)][str(i)]['response']}")
+            await ctx.channel.send(f"{fetch_user.display_name} went AFK <t:{floor(presence[str(ctx.guild.id)][str(i)]['time'])}:R>: {presence[str(ctx.guild.id)][str(i)]['response']}")
     if str(ctx.guild.id) in presence and str(ctx.author.id) in presence[str(ctx.guild.id)]:
         del presence[str(ctx.guild.id)][str(ctx.author.id)]
         save()
@@ -138,7 +148,7 @@ async def on_message(ctx):
         await asyncio.sleep(5)
         await m1.delete()
     if not ctx.author.bot:
-        levels[str(ctx.author.id)]["xp"] += random.randint(1, 5)
+        levels[str(ctx.author.id)]["xp"] += randint(1, 5)
         xpreq = 0
         for level in range(int(levels[str(ctx.author.id)]["level"])):
             xpreq += 50
@@ -159,7 +169,7 @@ async def on_message(ctx):
 #Error handler
 @client.event
 async def on_command_error(ctx, error):
-    current_time = math.floor(time.time()).strftime("%H:%M:%S")
+    current_time = floor(time.time()).strftime("%H:%M:%S")
     if isinstance(error, commands.CommandOnCooldown):
         await ctx.channel.send(f':stopwatch: Not now! Please try after **{str(datetime.timedelta(seconds=int(round(error.retry_after))))}**')
         print(f'[{current_time}] Ignoring exception at {colors.cyan}CommandOnCooldown{colors.end}. Details: This command is currently on cooldown.')
@@ -327,7 +337,7 @@ async def withdraw(ctx: ApplicationContext, amount):
 @commands.cooldown(1, 1800, commands.BucketType.user)
 async def work(ctx: ApplicationContext):
     if plugins.economy:
-        i = random.randint(10000, 20000)
+        i = randint(10000, 20000)
         currency['wallet'][str(ctx.author.id)] += i
         save()
         await ctx.respond(f'{ctx.author.mention} worked for a 30-minute shift and earned {i} coins.')
@@ -400,8 +410,8 @@ async def beg(ctx: ApplicationContext):
         "I think I know what you're gonna do with that money.",
         "Debloat notsniped's code and he will probably give you money."
     ]
-    if (random.randint(1, 100) >= 50):
-        x = random.randint(10, 100)
+    if (randint(1, 100) >= 50):
+        x = randint(10, 100)
         currency["wallet"][str(ctx.author.id)] += x
         save()
         await ctx.respond(embed=discord.Embed(title=random.choice(names), description=f'"Oh you poor beggar, here\'s {x} coin(s) for you. Hope it helps!"'))
@@ -414,12 +424,12 @@ async def beg(ctx: ApplicationContext):
 @commands.cooldown(1, 30, commands.BucketType.user)
 async def scout(ctx: ApplicationContext):
     if not plugins.economy: return
-    chance = random.randint(1, 100)
-    if (random.randint(1, 100) <= 90):
-        x = random.randint(550, 2000)
+    chance = randint(1, 100)
+    if (randint(1, 100) <= 90):
+        x = randint(550, 2000)
         if items[str(ctx.author.id)]['binoculars'] >= 1:
             x *= 1.425
-            x = math.floor(x)
+            x = floor(x)
         else:
             pass
         currency["wallet"][str(ctx.author.id)] += x
@@ -453,13 +463,13 @@ async def rob(ctx: ApplicationContext, user:discord.User):
     if not plugins.economy: return
     if currency['wallet'][str(user.id)] < 5000: return await ctx.respond('They has less than 5000 coins on them. Don\'t waste your time...', mention_author=True) 
     elif currency['wallet'][str(ctx.author.id)] < 5000: return await ctx.respond('You have less than 5k coins in your wallet. Play fair dude.', mention_author=True)
-    if random.randint(1, 100) <= 50:
-        x = random.randint(5000, currency['wallet'][str(user.id)])
+    if randint(1, 100) <= 50:
+        x = randint(5000, currency['wallet'][str(user.id)])
         currency['wallet'][str(ctx.author.id)] += x
         currency['wallet'][str(user.id)] -= x
         await ctx.respond(f'You just stole {x} coins from {user.display_name}! Feels good, doesn\'t it?', mention_author=True)
     else:
-        x = random.randint(5000, currency['wallet'][str(ctx.author.id)])
+        x = randint(5000, currency['wallet'][str(ctx.author.id)])
         currency['wallet'][str(ctx.author.id)] -= x
         currency['wallet'][str(user.id)] += x
         await ctx.respond(f'LOL YOU GOT CAUGHT! You paid {user.display_name} {x} coins as compensation for your action.', mention_author=True)
@@ -475,8 +485,8 @@ async def bankrob(ctx: ApplicationContext, user:discord.User):
     if not plugins.economy: return
     if currency['wallet'][str(user.id)] < 10000: return await ctx.respond('You really want to risk losing your life to a poor person? (imagine robbing someone with < 10k net worth)', mention_author=True)
     elif currency['wallet'][str(ctx.author.id)] < 10000: return await ctx.respond('You have less than 10k in your wallet. Don\'t be greedy.', mention_author=True)
-    if random.randint(1, 100) <= 20:
-        x = random.randint(10000, currency['wallet'][str(user.id)])
+    if randint(1, 100) <= 20:
+        x = randint(10000, currency['wallet'][str(user.id)])
         currency['wallet'][str(ctx.author.id)] += x
         currency['bank'][str(user.id)] -= x
         await ctx.respond(f'You raided {user.display_name}\'s bank and ended up looting {x} coins from them! Now thats what I like to call *success*.', mention_author=True)
@@ -649,18 +659,18 @@ async def openlootbox(ctx: ApplicationContext, lootbox:str, amount:int):
     if lootbox not in types: return await ctx.respond(f"wtf is {lootbox}?", hidden=True)
     ie = shopitem.keys()
     normal_loot = [
-        random.randint(10000, 25000),
+        randint(10000, 25000),
         random.choice(list(ie)),
         random.choice(list(ie))
     ]
     large_loot = [
-        random.randint(50000, 75000),
+        randint(50000, 75000),
         random.choice(list(ie)),
         random.choice(list(ie)),
         random.choice(list(ie))
     ]
     special_loot = [
-        random.randint(100000, 500000),
+        randint(100000, 500000),
         random.choice(list(ie)),
         random.choice(list(ie)),
         random.choice(list(ie)),
@@ -714,7 +724,7 @@ async def whoami(ctx: ApplicationContext, user: discord.User=None):
     registered = user.joined_at.strftime("%b %d, %Y, %T")
     pfp = user.avatar_url
     localembed_desc = f"`AKA` {displayname}"
-    if str(user.id) in presence[str(ctx.guild.id)]: localembed_desc += f"\n`🌙 AFK` {presence[str(ctx.guild.id)][str(user.id)]['response']} - <t:{math.floor(presence[str(ctx.guild.id)][str(user.id)]['time'])}>"
+    if str(user.id) in presence[str(ctx.guild.id)]: localembed_desc += f"\n`🌙 AFK` {presence[str(ctx.guild.id)][str(user.id)]['response']} - <t:{floor(presence[str(ctx.guild.id)][str(user.id)]['time'])}>"
     localembed = discord.Embed(
         title=f'User Info on {username}', 
         description=localembed_desc
@@ -780,7 +790,7 @@ async def prediction(ctx: ApplicationContext, question:str):
 )
 async def memes(ctx: ApplicationContext):
     memes_submissions = reddit.subreddit('memes').hot()
-    post_to_pick = random.randint(1, 100)
+    post_to_pick = randint(1, 100)
     for i in range(0, post_to_pick):
         submission = next(x for x in memes_submissions if not x.stickied)
     embed = discord.Embed(title=submission.title, color=color)
@@ -794,7 +804,7 @@ async def memes(ctx: ApplicationContext):
 )
 async def linuxmemes(ctx: ApplicationContext):
     memes_submissions = reddit.subreddit('linuxmemes').hot()
-    post_to_pick = random.randint(1, 100)
+    post_to_pick = randint(1, 100)
     for i in range(0, post_to_pick):
         submission = next(x for x in memes_submissions if not x.stickied)
     embed = discord.Embed(title=submission.title, color=color)
@@ -808,7 +818,7 @@ async def linuxmemes(ctx: ApplicationContext):
 )
 async def ihadastroke(ctx: ApplicationContext):
     memes_submissions = reddit.subreddit('ihadastroke').hot()
-    post_to_pick = random.randint(1, 100)
+    post_to_pick = randint(1, 100)
     for i in range(0, post_to_pick):
         submission = next(x for x in memes_submissions if not x.stickied)
     embed = discord.Embed(title=submission.title, color=color)
@@ -822,7 +832,7 @@ async def ihadastroke(ctx: ApplicationContext):
 )
 async def engrish(ctx: ApplicationContext):
     memes_submissions = reddit.subreddit('engrish').hot()
-    post_to_pick = random.randint(1, 100)
+    post_to_pick = randint(1, 100)
     for i in range(0, post_to_pick):
         submission = next(x for x in memes_submissions if not x.stickied)
     embed = discord.Embed(title=submission.title, color=color)
@@ -836,7 +846,7 @@ async def engrish(ctx: ApplicationContext):
 )
 async def osugame(ctx: ApplicationContext):
     memes_submissions = reddit.subreddit('osugame').hot()
-    post_to_pick = random.randint(1, 100)
+    post_to_pick = randint(1, 100)
     for i in range(0, post_to_pick):
         submission = next(x for x in memes_submissions if not x.stickied)
     embed = discord.Embed(title=submission.title, color=color)
@@ -984,7 +994,7 @@ async def afk_mod_remove(ctx: ApplicationContext, user:discord.User):
 async def autogrind(ctx: ApplicationContext):
     await ctx.respond("Autogrind has started. Please check back in an hour for your rewards.", mention_author=True)
     await asyncio.sleep(3600)
-    coins_reward = random.randint(10000, 35000)
+    coins_reward = randint(10000, 35000)
     ie = shopitem.keys()
     items_reward = [random.choice(list(ie)), random.choice(list(ie)), random.choice(list(ie))]
     currency["wallet"][str(ctx.author.id)] += coins_reward
@@ -1075,14 +1085,14 @@ async def isobank_register(ctx: ApplicationContext, pin:int):
 )
 @commands.cooldown(1, 10, commands.BucketType.user)
 async def guessthenumber(ctx: ApplicationContext):
-    number = random.randint(1, 10)
+    number = randint(1, 10)
     localembed = discord.Embed(name="Guess the number!", description="I am currently thinking of a number from 1 to 10. Can you guess what it is?", color=color)
     localembed.set_footer(text="If you guess what it is, you will win 500 to 1000 coins!")
     await ctx.respond(embed=localembed)
     def check(msg): return msg.author == ctx.author and msg.channel == ctx.channel and msg.content
     msg = await client.wait_for("message", check=check)
     if int(msg.content) == number:
-        randcoins = random.randint(500, 1000)
+        randcoins = randint(500, 1000)
         currency["wallet"][str(ctx.author.id)] += randcoins
         save()
         await ctx.respond(f"Correct! You've just won **{randcoins} coins** by guessing the correct number.")
@@ -1094,9 +1104,9 @@ async def guessthenumber(ctx: ApplicationContext):
 )
 @commands.cooldown(1, 40, commands.BucketType.user)
 async def highlow(ctx: ApplicationContext):
-    numb = random.randint(1, 100)
-    numb2 = random.randint(1, 100)
-    coins = random.randint(300, 1000)
+    numb = randint(1, 100)
+    numb2 = randint(1, 100)
+    coins = randint(300, 1000)
     def check(msg): return msg.author == ctx.author and msg.channel == ctx.channel and (msg.content)
     localembed = discord.Embed(title=f"Your number is {numb}.", description="Choose if the other number is lower, higher or jackpot.", color=color)
     localembed.set_footer(text="Send your response in chat")
