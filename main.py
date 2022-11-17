@@ -405,7 +405,7 @@ async def beg(ctx:SlashContext):
         "Archisha",
         "notsniped",
         "Discord",
-        "notsniped's imaginary gf"
+        "notsniped's imaginary gf",
         "Technoblade"
     ]
     fail_responses = [
