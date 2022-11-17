@@ -395,7 +395,13 @@ async def beg(ctx: ApplicationContext):
         "peppy",
         "Steve Jobs",
         "MrBeast",
-        "Pewdiepie"
+        "Pewdiepie",
+        "Archie",
+        "Archisha",
+        "notsniped",
+        "Discord",
+        "notsniped's imaginary gf",
+        "Technoblade"
     ]
     fail_responses = [
         "Maybe another day.",
