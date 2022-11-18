@@ -677,10 +677,10 @@ async def dig(ctx: ApplicationContext):
     name='openlootbox',
     description='Opens lootbox(es) in your inventory'
 )
-@option(name="lootbox", description="What lootbox do you want to open?", type=str)
+@option(name="lootbox", description="What lootbox do you want to open?", type=str, choices=["normal lootbox", "large lootbox", "special lootbox"])
 @option(name="amount", description="How many do you want to open?", type=int)
 async def openlootbox(ctx: ApplicationContext, lootbox:str, amount:int):
-    types = ["normal", "large", "special"]
+    types = ["normal lootbox", "large lootbox", "special lootbox"]
     if amount <= 0: return await ctx.respond("You can't open 0 or below lootboxes! Don't be stupid.", hidden=True)
     if lootbox not in types: return await ctx.respond(f"wtf is {lootbox}?", hidden=True)
     ie = shopitem.keys()
@@ -704,20 +704,20 @@ async def openlootbox(ctx: ApplicationContext, lootbox:str, amount:int):
         random.choice(list(ie))
     ]
     localembed = discord.Embed(title="You opened a lootbox!", description=f"The amazing rewards of your {lootbox} lootbox behold you...", color=discord.Color.gold())
-    if lootbox == "normal":
+    if lootbox == "normal lootbox":
         currency["wallet"][str(ctx.author.id)] += normal_loot[0]
         items[str(ctx.author.id)][normal_loot[1]] += 1
         items[str(ctx.author.id)][normal_loot[2]] += 1
         localembed.add_field(name="Coins gained", value=f"**{normal_loot[0]}** coins", inline=False)
         localembed.add_field(name="Items recieved", value=f"You got **1 {normal_loot[1]}**!\nYou got **1 {normal_loot[2]}**!", inline=False)
-    if lootbox == "large":
+    if lootbox == "large lootbox":
         currency["wallet"][str(ctx.author.id)] += large_loot[0]
         items[str(ctx.author.id)][large_loot[1]] += 1
         items[str(ctx.author.id)][large_loot[2]] += 1
         items[str(ctx.author.id)][large_loot[3]] += 1
         localembed.add_field(name="Coins gained", value=f"**{large_loot[0]}** coins", inline=False)
         localembed.add_field(name="Items recieved", value=f"You got **1 {large_loot[1]}**!\nYou got **1 {large_loot[2]}**!\nYou got **1 {large_loot[3]}**!", inline=False)
-    if lootbox == "special":
+    if lootbox == "special lootbox":
         currency["wallet"][str(ctx.author.id)] += special_loot[0]
         items[str(ctx.author.id)][special_loot[1]] += 1
         items[str(ctx.author.id)][special_loot[2]] += 1
