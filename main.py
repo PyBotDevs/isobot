@@ -101,6 +101,8 @@ currency_unused = framework.isobot.currency.CurrencyAPI(f'{wdir}/database/curren
 isobankauth = framework.isobank.authorize.IsobankAuth(f"{wdir}/database/isobank/auth.json", f"{wdir}/database/isobank/accounts.json")
 shop_data = ShopData(f"{wdir}/config/shop.json")
 
+all_item_ids = shop_data.get_item_ids()
+
 #Theme Loader
 with open("themes/halloween.theme.json", 'r') as f:
     theme = json.load(f)
