@@ -77,11 +77,29 @@ class plugins:
     levelling = False
     music = False
 
+class ShopData:
+    def __init__(self, db_path: str):
+        self.db_path = db_path 
+        with open(db_path, 'r') as f: self.config = json.load(f)
+        
+    def get_item_ids(self) -> list:
+        json_list = list()
+        for h in self.config: 
+            json_list.append(str(h))
+        return json_list
+    
+    def get_item_names(self) -> list:
+        json_list = list()
+        for h in self.config: 
+            json_list.append(str(h["stylized name"]))
+        return json_list
+
 #Framework Module Loader
 colors = framework.isobot.colors.Colors()
 currency_unused = framework.isobot.currency.CurrencyAPI(f'{wdir}/database/currency.json', f"{wdir}/logs/currency.log")  # Initialize part of the framework (Currency)
 # isobank = framework.isobank.manager.IsoBankManager(f"{wdir}/database/isobank/accounts.json", f"{wdir}/database/isobank/auth.json")
 isobankauth = framework.isobank.authorize.IsobankAuth(f"{wdir}/database/isobank/auth.json", f"{wdir}/database/isobank/accounts.json")
+shop_data = ShopData(f"{wdir}/database/shop.json")
 
 #Theme Loader
 with open("themes/halloween.theme.json", 'r') as f:
