@@ -539,7 +539,7 @@ async def inventory(ctx: ApplicationContext, user:discord.User = None):
     name='shop',
     description='Views and buys items from the shop'
 )
-@option(name="item", description="Specify an item to view.", type=str, default=None)
+@option(name="item", description="Specify an item to view.", type=str, default=None, choices=all_item_ids)
 async def shop(ctx: ApplicationContext, item:str=None):
     if not plugins.economy: return
     if item == None:
@@ -566,7 +566,7 @@ async def shop(ctx: ApplicationContext, item:str=None):
     name='buy',
     description='Buys an item from the shop'
 )
-@option(name="name", description="What do you want to buy?", type=str)
+@option(name="name", description="What do you want to buy?", type=str, choices=all_item_ids)
 @option(name="quantity", description="How many do you want to buy?", type=int, default=1)
 async def buy(ctx: ApplicationContext, name: str, quantity: int=1):
     if not plugins.economy: return
@@ -585,7 +585,7 @@ async def buy(ctx: ApplicationContext, name: str, quantity: int=1):
     name='sell',
     description='Sells an item from your inventory in exchange for cash'
 )
-@option(name="name", description="What do you want to sell?", type=str)
+@option(name="name", description="What do you want to sell?", type=str, choices=all_item_ids)
 @option(name="quantity", description="How many do you want to sell?", type=int, default=1)
 async def sell(ctx: ApplicationContext, name: str, quantity: int=1):
     try:
@@ -951,7 +951,7 @@ async def status(ctx: ApplicationContext):
     description="Gifts a (giftable) item to anyone you want"
 )
 @option(name="user", description="Who do you want to gift to?", type=discord.User)
-@option(name="item", description="What do you want to gift?", type=str)
+@option(name="item", description="What do you want to gift?", type=str, choices=all_item_ids)
 @option(name="amount", description="How many of these do you want to gift?", type=int, default=1)
 async def gift(ctx: ApplicationContext, user:discord.User, item:str, amount:int=1):
     try:
