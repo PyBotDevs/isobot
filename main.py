@@ -77,11 +77,31 @@ class plugins:
     levelling = False
     music = False
 
+class ShopData:
+    def __init__(self, db_path: str):
+        self.db_path = db_path 
+        with open(db_path, 'r') as f: self.config = json.load(f)
+        
+    def get_item_ids(self) -> list:
+        json_list = list()
+        for h in self.config: 
+            json_list.append(str(h))
+        return json_list
+    
+    def get_item_names(self) -> list:
+        json_list = list()
+        for h in self.config: 
+            json_list.append(str(h["stylized name"]))
+        return json_list
+
 #Framework Module Loader
 colors = framework.isobot.colors.Colors()
 currency_unused = framework.isobot.currency.CurrencyAPI(f'{wdir}/database/currency.json', f"{wdir}/logs/currency.log")  # Initialize part of the framework (Currency)
 # isobank = framework.isobank.manager.IsoBankManager(f"{wdir}/database/isobank/accounts.json", f"{wdir}/database/isobank/auth.json")
 isobankauth = framework.isobank.authorize.IsobankAuth(f"{wdir}/database/isobank/auth.json", f"{wdir}/database/isobank/accounts.json")
+shop_data = ShopData(f"{wdir}/config/shop.json")
+
+all_item_ids = shop_data.get_item_ids()
 
 #Theme Loader
 with open("themes/halloween.theme.json", 'r') as f:
@@ -519,7 +539,7 @@ async def inventory(ctx: ApplicationContext, user:discord.User = None):
     name='shop',
     description='Views and buys items from the shop'
 )
-@option(name="item", description="Specify an item to view.", type=str, default=None)
+@option(name="item", description="Specify an item to view.", type=str, default=None, choices=all_item_ids)
 async def shop(ctx: ApplicationContext, item:str=None):
     if not plugins.economy: return
     if item == None:
@@ -546,7 +566,7 @@ async def shop(ctx: ApplicationContext, item:str=None):
     name='buy',
     description='Buys an item from the shop'
 )
-@option(name="name", description="What do you want to buy?", type=str)
+@option(name="name", description="What do you want to buy?", type=str, choices=all_item_ids)
 @option(name="quantity", description="How many do you want to buy?", type=int, default=1)
 async def buy(ctx: ApplicationContext, name: str, quantity: int=1):
     if not plugins.economy: return
@@ -565,7 +585,7 @@ async def buy(ctx: ApplicationContext, name: str, quantity: int=1):
     name='sell',
     description='Sells an item from your inventory in exchange for cash'
 )
-@option(name="name", description="What do you want to sell?", type=str)
+@option(name="name", description="What do you want to sell?", type=str, choices=all_item_ids)
 @option(name="quantity", description="How many do you want to sell?", type=int, default=1)
 async def sell(ctx: ApplicationContext, name: str, quantity: int=1):
     try:
@@ -657,10 +677,10 @@ async def dig(ctx: ApplicationContext):
     name='openlootbox',
     description='Opens lootbox(es) in your inventory'
 )
-@option(name="lootbox", description="What lootbox do you want to open?", type=str)
+@option(name="lootbox", description="What lootbox do you want to open?", type=str, choices=["normal lootbox", "large lootbox", "special lootbox"])
 @option(name="amount", description="How many do you want to open?", type=int)
 async def openlootbox(ctx: ApplicationContext, lootbox:str, amount:int):
-    types = ["normal", "large", "special"]
+    types = ["normal lootbox", "large lootbox", "special lootbox"]
     if amount <= 0: return await ctx.respond("You can't open 0 or below lootboxes! Don't be stupid.", hidden=True)
     if lootbox not in types: return await ctx.respond(f"wtf is {lootbox}?", hidden=True)
     ie = shopitem.keys()
@@ -684,20 +704,20 @@ async def openlootbox(ctx: ApplicationContext, lootbox:str, amount:int):
         random.choice(list(ie))
     ]
     localembed = discord.Embed(title="You opened a lootbox!", description=f"The amazing rewards of your {lootbox} lootbox behold you...", color=discord.Color.gold())
-    if lootbox == "normal":
+    if lootbox == "normal lootbox":
         currency["wallet"][str(ctx.author.id)] += normal_loot[0]
         items[str(ctx.author.id)][normal_loot[1]] += 1
         items[str(ctx.author.id)][normal_loot[2]] += 1
         localembed.add_field(name="Coins gained", value=f"**{normal_loot[0]}** coins", inline=False)
         localembed.add_field(name="Items recieved", value=f"You got **1 {normal_loot[1]}**!\nYou got **1 {normal_loot[2]}**!", inline=False)
-    if lootbox == "large":
+    if lootbox == "large lootbox":
         currency["wallet"][str(ctx.author.id)] += large_loot[0]
         items[str(ctx.author.id)][large_loot[1]] += 1
         items[str(ctx.author.id)][large_loot[2]] += 1
         items[str(ctx.author.id)][large_loot[3]] += 1
         localembed.add_field(name="Coins gained", value=f"**{large_loot[0]}** coins", inline=False)
         localembed.add_field(name="Items recieved", value=f"You got **1 {large_loot[1]}**!\nYou got **1 {large_loot[2]}**!\nYou got **1 {large_loot[3]}**!", inline=False)
-    if lootbox == "special":
+    if lootbox == "special lootbox":
         currency["wallet"][str(ctx.author.id)] += special_loot[0]
         items[str(ctx.author.id)][special_loot[1]] += 1
         items[str(ctx.author.id)][special_loot[2]] += 1
@@ -945,7 +965,7 @@ async def status(ctx: ApplicationContext):
     description="Gifts a (giftable) item to anyone you want"
 )
 @option(name="user", description="Who do you want to gift to?", type=discord.User)
-@option(name="item", description="What do you want to gift?", type=str)
+@option(name="item", description="What do you want to gift?", type=str, choices=all_item_ids)
 @option(name="amount", description="How many of these do you want to gift?", type=int, default=1)
 async def gift(ctx: ApplicationContext, user:discord.User, item:str, amount:int=1):
     try:
