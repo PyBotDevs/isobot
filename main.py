@@ -309,7 +309,10 @@ async def deposit(ctx: ApplicationContext, amount):
         elif int(amount) > currency["wallet"][str(ctx.author.id)]: return await ctx.respond('The amount to deposit must not be more than what you have in your wallet!', hidden=True)
         currency["wallet"][str(ctx.author.id)] -= int(amount)
         currency["bank"][str(ctx.author.id)] += int(amount)
-        await ctx.respond(f'You deposited `{amount}` coin(s) to your bank account.')
+        localembed = discord.Embed(title="Deposit successful", description=f"You deposited `{amount}` coin(s) to your bank account.", color=color)
+        localembed.add_field(name="You previously had", value=f"`{currency['bank'][str(ctx.author.id)]} coins` in your bank account")
+        localembed.add_field(name="Now you have", value=f"`{currency['bank'][str(ctx.author.id)] + amount} coins` in your bank account")
+        await ctx.respond(embed=localembed)
         save()
 
 @client.slash_command(
@@ -327,6 +330,10 @@ async def withdraw(ctx: ApplicationContext, amount):
         elif int(amount) > currency["bank"][str(ctx.author.id)]: return await ctx.respond('The amount to withdraw must not be more than what you have in your bank account!', hidden=True)
         currency["wallet"][str(ctx.author.id)] += int(amount)
         currency["bank"][str(ctx.author.id)] -= int(amount)
+        localembed = discord.Embed(title="Withdraw successful", description=f"You withdrew `{amount}` coin(s) from your bank account.", color=color)
+        localembed.add_field(name="You previously had", value=f"`{currency['wallet'][str(ctx.author.id)]} coins` in your wallet")
+        localembed.add_field(name="Now you have", value=f"`{currency['wallet'][str(ctx.author.id)] + amount} coins` in your wallet")
+        await ctx.respond(embed=localembed)
         await ctx.respond(f'You withdrew `{amount}` coin(s) from your bank account.')
         save()
 
