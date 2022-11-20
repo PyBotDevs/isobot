@@ -867,6 +867,20 @@ async def engrish(ctx: ApplicationContext):
     await ctx.respond(embed = embed)
 
 @client.slash_command(
+    name='softwaregore',
+    description='Features glitchy, nasty, funny software bugs!'
+)
+async def osugame(ctx: ApplicationContext):
+    memes_submissions = reddit.subreddit('softwaregore').hot()
+    post_to_pick = randint(1, 100)
+    for i in range(0, post_to_pick):
+        submission = next(x for x in memes_submissions if not x.stickied)
+    embed = discord.Embed(title=submission.title, color=color)
+    embed.set_image(url=submission.url)
+    embed.set_footer(text='Powered by PRAW')
+    await ctx.respond(embed = embed)
+
+@client.slash_command(
     name='osugame',
     description='Features a post from the official osu! subreddit!'
 )
