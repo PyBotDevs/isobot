@@ -666,7 +666,7 @@ async def dig(ctx: ApplicationContext):
     ]
     choice = random.choice(loot)
     if (choice == "coins"):
-        currency['wallet'][str(ctx.author.id)] += random.choice('1000', '5000')
+        currency['wallet'][str(ctx.author.id)] += random.randint('1000', '5000')
         save()
         await ctx.respond(f'You went digging and found a bunch of coins. Nice!')
     elif choice != "nothing" and choice != "died":
