@@ -558,5 +558,15 @@
 	"usable_by": "server admins",
 	"disabled": false,
 	"bugged": false
+  },
+  "squareroot": {
+	"name": "Square Root",
+	"description": "Finds the square root of any positive number.",
+	"type": "maths",
+	"cooldown": null,
+	"args": ["number"],
+	"usable_by": "everyone",
+	"disabled": false,
+	"bugged": false
   }
 }
