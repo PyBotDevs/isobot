@@ -125,13 +125,6 @@ __________________________________________________""")
     time.sleep(2)
     print(f'Logged in as {client.user.name}.')
     print('Ready to accept commands.')
-    print("--------------------")
-    print("[main/Cogs] Loading isobot Cog (1/1)")
-    try: 
-        client.load_extension("maths")
-        print(f"[main/Cogs] {colors.green}All cogs successfully loaded.{colors.end}")
-    except Exception as e: print(f"[main/Cogs] {colors.red}ERROR: Cog failed to load: {e}{colors.end}")
-    print("--------------------")
     await client.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name=f"GitHub"), status=discord.Status.idle)
     print(f'[main/LOG] {colors.green}Status set to IDLE. Rich presence set.{colors.end}')
     print("[main/FLASK] Starting pinger service...")
@@ -1306,6 +1299,12 @@ async def automod_remove_custom_keyword(ctx: ApplicationContext, id:int):
     except IndexError: await ctx.respond("That keyword id doesn't exist. Please specify a valid id and try again.", hidden=True)
 
 # Initialization
+print("[main/Cogs] Loading isobot Cog (1/1)")
+try: 
+    client.load_extension("maths")
+    print(f"[main/Cogs] {colors.green}All cogs successfully loaded.{colors.end}")
+except Exception as e: print(f"[main/Cogs] {colors.red}ERROR: Cog failed to load: {e}{colors.end}")
+print("--------------------")
 client.run(api.auth.get_token())
 
 
