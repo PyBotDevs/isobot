@@ -10,7 +10,7 @@ import praw
 import api.auth
 import utils.logger, utils.ping
 from framework import *
-from math import floor
+from math import floor, sqrt
 from random import randint
 import framework.isobot.currency
 import framework.isobot.colors
@@ -1298,6 +1298,16 @@ async def automod_remove_custom_keyword(ctx: ApplicationContext, id:int):
         return await ctx.respond(f"Keyword (id: `{id}`) successfully removed from swear-filter configuration.")
     except IndexError: await ctx.respond("That keyword id doesn't exist. Please specify a valid id and try again.", hidden=True)
 
+@client.slash_command(
+    name="squareroot",
+    description="Finds the square root of any positive number"
+)
+@option(name="number", description="Which number do you want to find the root of?", type=int)
+async def squareroot(ctx: ApplicationContext, number: int):
+    if number < 0: return await ctx.respond("The square root of a negative number is an imaginary number.")
+    result = sqrt(number)
+    localembed = discord.Embed(title="Square root of {number}", description=result, color=color)
+    await ctx.respond(embed=localembed)
 
 # Initialization
 client.run(api.auth.get_token())
