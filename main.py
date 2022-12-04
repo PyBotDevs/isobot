@@ -1306,7 +1306,7 @@ async def automod_remove_custom_keyword(ctx: ApplicationContext, id:int):
 async def squareroot(ctx: ApplicationContext, number: int):
     if number < 0: return await ctx.respond("The square root of a negative number is an imaginary number.")
     result = sqrt(number)
-    localembed = discord.Embed(title="Square root of {number}", description=result, color=color)
+    localembed = discord.Embed(title=f"Square root of {number}", description=result, color=color)
     await ctx.respond(embed=localembed)
 
 # Initialization
