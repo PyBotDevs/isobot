@@ -1,6 +1,6 @@
 # Imports
 import discord
-from maths import sqrt
+from math import sqrt
 from discord.ext import commands
 from discord import ApplicationContext, option
 
