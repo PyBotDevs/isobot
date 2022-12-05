@@ -63,7 +63,7 @@ class Maths(commands.Cog):
         if radius < 0: return await ctx.respond("Radius cannot be lower than 0 units.")
         result = ((22/7) * radius) ^ 2
         localembed = discord.Embed(title=f"Area of circle of radius {radius} units", description=f"{result} sq. units", color=color)
-        localembed.set_footer(text=f"Taking π as 22/7\nA = πr²\n(π x {radius})² = {result} sq. units")
+        localembed.set_footer(text=f"Taking π as 22/7\nA = πr²\nπ x {radius}² = {result} sq. units")
         await ctx.respond(embed=localembed)
 
 
