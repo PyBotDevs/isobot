@@ -568,5 +568,35 @@
 	"usable_by": "everyone",
 	"disabled": false,
 	"bugged": false
+  },
+  "area_square": {
+	"name": "Square Area ",
+	"description": "Finds the area of a square.",
+	"type": "maths",
+	"cooldown": null,
+	"args": ["length"],
+	"usable_by": "everyone",
+	"disabled": false,
+	"bugged": false
+  },
+  "area_rectangle": {
+	"name": "Rectangle Area",
+	"description": "Finds the area of a rectangle.",
+	"type": "maths",
+	"cooldown": null,
+	"args": ["length", "breadth"],
+	"usable_by": "everyone",
+	"disabled": false,
+	"bugged": false
+  },
+  "area_circle": {
+	"name": "Circle Area",
+	"description": "Finds the area of a circle. (Takes π as 22/7)",
+	"type": "maths",
+	"cooldown": null,
+	"args": ["radius"],
+	"usable_by": "everyone",
+	"disabled": false,
+	"bugged": false
   }
 }
