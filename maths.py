@@ -61,7 +61,7 @@ class Maths(commands.Cog):
     @option(name="radius", description="What is the radius of the circke?", type=int)
     async def area_circle(self, ctx: ApplicationContext, radius: int):
         if radius < 0: return await ctx.respond("Radius cannot be lower than 0 units.")
-        result = ((22/7) * radius) * ((22/7) * radius)
+        result = (22/7) * (radius * radius)
         localembed = discord.Embed(title=f"Area of circle of radius {radius} units", description=f"{result} sq. units", color=color)
         localembed.set_footer(text=f"Taking π as 22/7\nA = πr²\nπ x {radius}² = {result} sq. units")
         await ctx.respond(embed=localembed)
