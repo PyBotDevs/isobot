@@ -46,7 +46,7 @@ class Maths(commands.Cog):
     )
     @option(name="length", description="What is the length?", type=int)
     @option(name="breadth", description="What is the breadth?", type=int)
-    async def area_square(self, ctx: ApplicationContext, length: int, breadth: int):
+    async def area_rectangle(self, ctx: ApplicationContext, length: int, breadth: int):
         if length < 0: return await ctx.respond("Length cannot be lower than 0 units.")
         elif breadth < 0: return await ctx.respond("Breadth cannot be lower than 0 units.")
         result = length * breadth
