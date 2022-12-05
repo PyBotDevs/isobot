@@ -1298,22 +1298,13 @@ async def automod_remove_custom_keyword(ctx: ApplicationContext, id:int):
         return await ctx.respond(f"Keyword (id: `{id}`) successfully removed from swear-filter configuration.")
     except IndexError: await ctx.respond("That keyword id doesn't exist. Please specify a valid id and try again.", hidden=True)
 
-@client.slash_command(
-    name="squareroot",
-    description="Finds the square root of any positive number"
-)
-@option(name="number", description="Which number do you want to find the root of?", type=int)
-async def squareroot(ctx: ApplicationContext, number: int):
-    if number < 0: 
-        localembed = discord.Embed(description="The square root of a negative number is an imaginary number.", color=color)
-        localembed.set_footer(text=f"√({number}) = i√{number}")
-        return await ctx.respond(embed=localembed)
-    result = sqrt(number)
-    localembed = discord.Embed(title=f"Square root of {number}", description=result, color=color)
-    localembed.set_footer(text=f"√({number}) = {result}")
-    await ctx.respond(embed=localembed)
-
 # Initialization
+print("[main/Cogs] Loading isobot Cog (1/1)")
+try: 
+    client.load_extension("maths")
+    print(f"[main/Cogs] {colors.green}All cogs successfully loaded.{colors.end}")
+except Exception as e: print(f"[main/Cogs] {colors.red}ERROR: Cog failed to load: {e}{colors.end}")
+print("--------------------")
 client.run(api.auth.get_token())
 
 
