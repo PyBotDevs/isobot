@@ -58,7 +58,7 @@ class Maths(commands.Cog):
         name="area_circle",
         description="Finds the area of a circle"
     )
-    @option(name="radius", description="What is the radius of the circke?", type=int)
+    @option(name="radius", description="What is the radius of the circle?", type=int)
     async def area_circle(self, ctx: ApplicationContext, radius: int):
         if radius < 0: return await ctx.respond("Radius cannot be lower than 0 units.")
         result = (22/7) * (radius * radius)
