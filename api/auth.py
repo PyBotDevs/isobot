@@ -1,6 +1,5 @@
 # Imports
-import json
-import os
+import json, os
 
 # Config
 wdir = os.getcwd()
@@ -19,8 +18,7 @@ def get_token():
         if arg1.lower() == "y":
             arg2 = input("Enter your custom token: ")
             config["token"] = str(arg2)
-            with open(f'{wdir}/api/runtimeconfig.json', 'w+') as f:
-                json.dump(config, f, indent=4)
+            with open(f'{wdir}/api/runtimeconfig.json', 'w+') as f: json.dump(config, f, indent=4)
             print("[✅] Setup successful!")
         elif arg1.lower() == "n": return
     return str(config["token"])
