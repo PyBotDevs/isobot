@@ -68,7 +68,7 @@ class Maths(commands.Cog):
     
     @commands.slash_command(
         name="area_triangle",
-        description="Finds the area of a triangle (using Heron's theorem)"
+        description="Finds the area of a triangle (using Heron's formula)"
     )
     @option(name="side_length_a", description="What is the length of side A of the triangle?", type=int)
     @option(name="side_length_b", description="What is the length of side B of the triangle?", type=int)
