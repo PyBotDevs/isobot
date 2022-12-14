@@ -1,6 +1,4 @@
-import json
-import time
-import datetime
+import json, time, datetime
 
 class Colors:
     """Contains general stdout colors."""
