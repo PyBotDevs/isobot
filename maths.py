@@ -7,11 +7,9 @@ from discord import ApplicationContext, option
 # Variables
 color = discord.Color.random()
 
-
 # Commands
 class Maths(commands.Cog):
-    def __init__(self, bot):
-        self.bot = bot
+    def __init__(self, bot): self.bot = bot
     
     @commands.slash_command(
         name="squareroot",
@@ -66,7 +64,5 @@ class Maths(commands.Cog):
         localembed.set_footer(text=f"Taking π as 22/7\nA = πr²\nπ x {radius}² = {result} sq. units")
         await ctx.respond(embed=localembed)
 
-
 # Cog Initialization
-def setup(bot): 
-    bot.add_cog(Maths(bot))
+def setup(bot): bot.add_cog(Maths(bot))
