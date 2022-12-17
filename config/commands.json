@@ -598,5 +598,15 @@
 	"usable_by": "everyone",
 	"disabled": false,
 	"bugged": false
+  },
+  "area_triangle": {
+	"name": "Triangle Area",
+	"description": "Finds the area of a triangle. (Uses Heron's formula)",
+	"type": "maths",
+	"cooldown": null,
+	"args": ["side_length_a", "side_length_b", "side_length_c"],
+	"usable_by": "everyone",
+	"disabled": false,
+	"bugged": false
   }
 }
