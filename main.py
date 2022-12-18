@@ -1153,9 +1153,11 @@ async def automod_remove_custom_keyword(ctx: ApplicationContext, id:int):
 # Initialization
 try: 
     client.load_extension("maths")
-    print("[main/Cogs] Loading isobot Cog (1/2)")
+    print("[main/Cogs] Loading isobot Cog (1/3)")
     client.load_extension("moderation")
-    print("[main/Cogs] Loading isobot Cog (2/2)")
+    print("[main/Cogs] Loading isobot Cog (2/3)")
+    client.load_extension("reddit")
+    print("[main/Cogs] Loading isobot Cog (3/3)")
     print(f"[main/Cogs] {colors.green}All cogs successfully loaded.{colors.end}")
 except Exception as e: print(f"[main/Cogs] {colors.red}ERROR: Cog failed to load: {e}{colors.end}")
 print("--------------------")
