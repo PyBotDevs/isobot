@@ -28,7 +28,7 @@ class Moderation(commands.Cog):
     @option(name="user", description="Who do you want to kick?", type=discord.User)
     @option(name="reason", description="Why do you want to kick the user?", type=str, default=None)
     @commands.cooldown(1, 3, commands.BucketType.user)
-    async def kick(ctx: ApplicationContext, user, reason=None):
+    async def kick(self, ctx: ApplicationContext, user, reason=None):
         if not ctx.author.guild_permissions.kick_members: return await ctx.respond('https://tenor.com/view/oh-yeah-high-kick-take-down-fight-gif-14272509')
         else:
             try:
@@ -44,7 +44,7 @@ class Moderation(commands.Cog):
     @option(name="user", description="Who do you want to ban?", type=discord.User)
     @option(name="reason", description="Why you want to ban the user?", type=str, default=None)
     @commands.cooldown(1, 3, commands.BucketType.user)
-    async def ban(ctx: ApplicationContext, user, reason=None):
+    async def ban(self, ctx: ApplicationContext, user, reason=None):
         if not ctx.author.guild_permissions.ban_members: return await ctx.respond('https://tenor.com/view/thor-strike-admin-ban-admin-ban-gif-22545175')
         else:
             try:
@@ -60,7 +60,7 @@ class Moderation(commands.Cog):
     @option(name="user", description="Who do you want to warn?", type=discord.User)
     @option(name="reason", description="Why are you warning the user?", type=str)
     @commands.cooldown(1, 2, commands.BucketType.user)
-    async def warn(ctx: ApplicationContext, user, reason):
+    async def warn(self, ctx: ApplicationContext, user, reason):
         if not ctx.author.guild_permissions.manage_messages: raise MissingPermissions
         warnings[str(ctx.guild.id)][str(user.id)].append('reason')
         save()
@@ -75,7 +75,7 @@ class Moderation(commands.Cog):
         description='Clears someone\'s warnings.'
     )
     @option(name="user", description="Who do you want to remove warns from?", type=discord.User)
-    async def warns_clear(ctx: ApplicationContext, user):
+    async def warns_clear(self, ctx: ApplicationContext, user):
         if not ctx.author.guild_permissions.manage_messages: raise MissingPermissions
         warnings[str(ctx.guild.id)][str(user.id)] = []
         save()
