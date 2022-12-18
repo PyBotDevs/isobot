@@ -22,8 +22,8 @@ class Moderation(commands.Cog):
         self.bot = bot
 
     @commands.slash_command(
-    name='kick', 
-    description='Kicks a member from this server.'
+        name='kick', 
+        description='Kicks a member from this server.'
     )
     @option(name="user", description="Who do you want to kick?", type=discord.User)
     @option(name="reason", description="Why do you want to kick the user?", type=str, default=None)
