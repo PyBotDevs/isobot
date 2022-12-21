@@ -229,7 +229,8 @@ async def help(ctx: ApplicationContext, command:str=None):
         except KeyError: return await ctx.respond(embed=discord.Embed(description=f"No results found for {command}."), hidden=True)
     else:
         r = ""
-        for x in commandsdb: r += f"`/{x}`\n"
+        for x in commandsdb: 
+            if commandsdb[x]["type"] != "DevTools": r += f"`/{x}`\n"
         localembed = discord.Embed(title="Isobot Command Help", description=f"**Bot Commands:**\n{r}", color = color)
         await ctx.respond(embed=localembed)
 
