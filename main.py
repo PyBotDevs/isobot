@@ -1,5 +1,15 @@
 #Imports
-import os, os.path, psutil, json, time, datetime, discord, asyncio, random, praw, api.auth, utils.logger, utils.ping
+import os
+import os.path
+import psutil
+import json
+import time, datetime
+import discord
+import asyncio
+import random
+import praw
+import api.auth
+import utils.logger, utils.ping
 from framework import *
 from math import floor, sqrt
 from random import randint
