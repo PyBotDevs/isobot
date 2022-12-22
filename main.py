@@ -1092,19 +1092,8 @@ for x in active_cogs:
     print(f"[main/Cogs] Loading isobot Cog ({i}/{len(active_cogs)})")
     i += 1
     try: client.load_extension(x)
-    except Exception as e: print(f"[main/Cogs] {colors.red}ERROR: Cog failed to load \"{x}\" cog: {e}{colors.end}")
-
-try: 
-    client.load_extension("maths")
-    print("[main/Cogs] Loading isobot Cog (1/3)")
-    client.load_extension("moderation")
-    print("[main/Cogs] Loading isobot Cog (2/3)")
-    client.load_extension("reddit")
-    print("[main/Cogs] Loading isobot Cog (3/4)")
-    client.load_extension("minigames")
-    print("[main/Cogs] Loading isobot Cog (4/4)")
-    print(f"[main/Cogs] {colors.green}All cogs successfully loaded.{colors.end}")
-except Exception as e: print(f"[main/Cogs] {colors.red}ERROR: Cog failed to load: {e}{colors.end}")
+    except Exception as e: print(f"[main/Cogs] {colors.red}ERROR: Cog \"{x}\" failed to load: {e}{colors.end}")
+    else: print(f"[main/Cogs] {colors.green}All cogs successfully loaded.{colors.end}")
 print("--------------------")
 client.run(api.auth.get_token())
 
