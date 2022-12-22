@@ -1086,6 +1086,14 @@ async def automod_remove_custom_keyword(ctx: ApplicationContext, id:int):
     except IndexError: await ctx.respond("That keyword id doesn't exist. Please specify a valid id and try again.", hidden=True)
 
 # Initialization
+active_cogs = ["maths", "moderation", "reddit", "minigames"]
+i = 1
+for x in active_cogs:
+    print(f"[main/Cogs] Loading isobot Cog ({i}/{len(active_cogs)})")
+    i += 1
+    try: client.load_extension(x)
+    except Exception as e: print(f"[main/Cogs] {colors.red}ERROR: Cog failed to load \"{x}\" cog: {e}{colors.end}")
+
 try: 
     client.load_extension("maths")
     print("[main/Cogs] Loading isobot Cog (1/3)")
