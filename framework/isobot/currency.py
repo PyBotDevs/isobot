@@ -1,6 +1,4 @@
-import json
-import discord
-import datetime
+import json, discord, datetime
 
 class Colors:
     """Contains general stdout colors."""
@@ -26,8 +24,7 @@ class CurrencyAPI(Colors):
             currency = json.load(f)
         print(f"[Framework/Loader] {Colors.green}CurrencyAPI initialized.{Colors.end}")
     
-    def get_time(self):
-        return datetime.datetime.now().strftime("%H:%M:%S")
+    def get_time(self): return datetime.datetime.now().strftime("%H:%M:%S")
     
     def save(self):
         """Saves databases cached on memory."""

@@ -7,11 +7,9 @@ from discord import ApplicationContext, option
 # Variables
 color = discord.Color.random()
 
-
 # Commands
 class Maths(commands.Cog):
-    def __init__(self, bot):
-        self.bot = bot
+    def __init__(self, bot): self.bot = bot
     
     @commands.slash_command(
         name="squareroot",
@@ -84,7 +82,5 @@ class Maths(commands.Cog):
         localembed.set_footer(text="s = (a + b + c) / 2\nA = √(s x (s - a) x (s - b) x (s - c))")
         await ctx.respond(embed=localembed)
 
-
 # Cog Initialization
-def setup(bot): 
-    bot.add_cog(Maths(bot))
+def setup(bot): bot.add_cog(Maths(bot))

@@ -1,5 +1,4 @@
-import time
-import datetime
+import time, datetime
 log_path = "logs/info-log.txt"
 error_path = "logs/error-log.txt"
 class colours:
@@ -9,8 +8,7 @@ class colours:
 def info(text:str, *, nolog=False):
     current_time = datetime.datetime.now().strftime("%H:%M:%S")
     print(f'[{current_time}/INFO] {text}')
-    if nolog == True:
-      pass
+    if nolog == True: pass
     else:
       with open(log_path, 'a') as f:
           f.write(f'[{current_time}/INFO] {text}\n')
@@ -18,8 +16,7 @@ def info(text:str, *, nolog=False):
 def warn(text:str, *, nolog=False):
     current_time = datetime.datetime.now().strftime("%H:%M:%S")
     print(f'[{current_time}/WARN] {text}')
-    if nolog == True:
-      pass
+    if nolog == True: pass
     else:
       with open(log_path, 'a') as f:
           f.write(f'[{current_time}/WARN] {text}\n')
@@ -27,8 +24,7 @@ def warn(text:str, *, nolog=False):
 def error(text:str, *, nolog=False):
     current_time = datetime.datetime.now().strftime("%H:%M:%S")
     print(f'{colours.error}[{current_time}/ERROR] {text}{colours.end}')
-    if nolog == True:
-      pass
+    if nolog == True: pass
     else:
       with open(error_path, 'a') as f:
           f.write(f'[{current_time}/ERROR] {text}\n')

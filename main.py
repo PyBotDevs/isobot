@@ -1,5 +1,6 @@
 #Imports
-import os, os.path
+import os
+import os.path
 import psutil
 import json
 import time, datetime
@@ -12,15 +13,10 @@ import utils.logger, utils.ping
 from framework import *
 from math import floor, sqrt
 from random import randint
-import framework.isobot.currency
-import framework.isobot.colors
-import framework.isobank.authorize
-import framework.isobank.manager
-import framework.isobot.embedengine
+import framework.isobot.currency, framework.isobot.colors, framework.isobank.authorize, framework.isobank.manager, framework.isobot.embedengine
 from discord import ApplicationContext, option
 from discord.ext import commands, tasks
 from discord.ext.commands import *
-
 
 # Slash option types:
 # Just use variable types to define option types.
@@ -84,14 +80,12 @@ class ShopData:
         
     def get_item_ids(self) -> list:
         json_list = list()
-        for h in self.config: 
-            json_list.append(str(h))
+        for h in self.config: json_list.append(str(h))
         return json_list
     
     def get_item_names(self) -> list:
         json_list = list()
-        for h in self.config: 
-            json_list.append(str(h["stylized name"]))
+        for h in self.config: json_list.append(str(h["stylized name"]))
         return json_list
 
 #Framework Module Loader
@@ -400,8 +394,7 @@ async def scout(ctx: ApplicationContext):
         if items[str(ctx.author.id)]['binoculars'] >= 1:
             x *= 1.425
             x = floor(x)
-        else:
-            pass
+        else: pass
         currency["wallet"][str(ctx.author.id)] += x
         save()
         await ctx.respond(embed=discord.Embed(title='What you found', description=f'You searched your area and found {x} coin(s)!'))
@@ -751,8 +744,7 @@ async def stroketranslate(ctx: ApplicationContext, strok: str):
     description='Randomly predicts a yes/no question.'
 )
 @option(name="question", description="What do you want to predict?", type=str)
-async def prediction(ctx: ApplicationContext, question:str): 
-    await ctx.respond(f"My prediction is... **{random.choice(['Yes', 'No'])}!**")
+async def prediction(ctx: ApplicationContext, question:str): await ctx.respond(f"My prediction is... **{random.choice(['Yes', 'No'])}!**")
 
 @client.slash_command(
     name='donate',
@@ -797,8 +789,7 @@ async def modify_balance(ctx: ApplicationContext, user:discord.User, modifier:in
         currency["wallet"][str(user.id)] += modifier
         save()
         await ctx.respond(f"{user.name}\'s balance has been modified by {modifier} coins.\n\n**New Balance:** {currency['wallet'][str(user.id)]} coins", hidden=True)
-    except KeyError:
-        await ctx.respond("That user doesn't exist in the database.", hidden=True)
+    except KeyError: await ctx.respond("That user doesn't exist in the database.", hidden=True)
 
 @client.slash_command(
     name="status",
@@ -869,8 +860,7 @@ async def afk_remove(ctx: ApplicationContext):
         del presence[str(ctx.guild.id)][str(ctx.author.id)]
         save()
         await ctx.respond(f"Alright {ctx.author.mention}, I've removed your AFK.")
-    except KeyError:
-        return await ctx.respond("You weren't previously AFK.", hidden=True)
+    except KeyError: return await ctx.respond("You weren't previously AFK.", hidden=True)
 
 @client.slash_command(
     name="afk_mod_remove",
@@ -883,8 +873,7 @@ async def afk_mod_remove(ctx: ApplicationContext, user:discord.User):
         del presence[str(ctx.guild.id)][str(user.id)]
         save()
         await ctx.respond(f"{user.display_name}'s AFK has been removed.")
-    except KeyError:
-        return await ctx.respond("That user isn't AFK.", hidden=True)
+    except KeyError: return await ctx.respond("That user isn't AFK.", hidden=True)
 
 @client.slash_command(
     name="autogrind",
