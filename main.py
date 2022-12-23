@@ -244,6 +244,7 @@ async def balance(ctx: ApplicationContext, user=None):
         if user == None: user = ctx.author
         try:
             e = discord.Embed(title=f'{user.display_name}\'s balance', color=color)
+            e.add_field(name="🎁 Presents", value=f'{presents[str(ctx.author.id)]} presents', inline=False)
             e.add_field(name='Cash in wallet', value=f'{currency["wallet"][str(user.id)]} coin(s)', inline=True)
             e.add_field(name='Cash in bank account', value=f'{currency["bank"][str(user.id)]} coin(s)', inline=True)
             e.add_field(name="Networth", value=f"{get_user_networth(user.id)} coin(s)", inline=True)
