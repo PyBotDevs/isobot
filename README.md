@@ -25,7 +25,7 @@ At that time, I wanted to make brand new, cutting-edge features for the old isob
 Maybe not anytime soon...
 
 ## When the project's development is complete, what will happen?
-***Our project development is complete!*** We will still however update our project and add a **load** of features to it for the coming years. So, make sure to follow along in our Discord server for updates!
+***Our core project development is complete!*** We will still however update our project and add a **load** of features to it for the coming years. So, make sure to follow along in our Discord server for updates!
 
 # Invite link
 Become an isobot user today! You being a user in isobot and your feedback helps us make isobot better! [Click here to invite](https://discord.com/api/oauth2/authorize?client_id=896437848176230411&permissions=8&scope=bot%20applications.commands)
