@@ -37,6 +37,8 @@ with open('database/levels.json', 'r') as f: levels = json.load(f)
 with open('config/commands.json', 'r') as f: commandsdb = json.load(f)
 with open('database/automod.json', 'r') as f: automod_config = json.load(f)
 
+with open('database/special/new_years_2022.json', 'r') as f: presents = json.load(f)  # Temp
+
 #Pre-Initialization Commands
 def timenow(): datetime.datetime.now().strftime("%H:%M:%S")
 def save():
@@ -46,6 +48,7 @@ def save():
     with open('database/presence.json', 'w+') as f: json.dump(presence, f, indent=4)
     with open('database/levels.json', 'w+') as f: json.dump(levels, f, indent=4)
     with open('database/automod.json', 'w+') as f: json.dump(automod_config, f, indent=4)
+    with open('database/special/new_years_2022.json', 'w+') as f: json.dump(presents, f, indent=4)  # Temp
 
 def get_user_networth(user_id:int):
     nw = currency["wallet"][str(user_id)] + currency["bank"][str(user_id)]
@@ -146,6 +149,7 @@ async def on_message(ctx):
     for z in shopitem:
         if z in items[str(ctx.author.id)]: pass
         else: items[str(ctx.author.id)][str(z)] = 0
+    if str(ctx.author.id) not in presents: presents[str(ctx.author.id)] = 0  # Temp
     save()
     uList = list()
     if str(ctx.guild.id) in presence:
