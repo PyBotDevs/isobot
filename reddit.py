@@ -10,7 +10,7 @@ color = discord.Color.random()
 reddit = praw.Reddit(client_id='_pazwWZHi9JldA', client_secret='1tq1HM7UMEGIro6LlwtlmQYJ1jB4vQ', user_agent='idk', check_for_async=False)
 
 # Commands
-class RedditMedia:
+class RedditMedia(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
     
