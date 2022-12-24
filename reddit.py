@@ -18,7 +18,7 @@ class RedditMedia(commands.Cog):
         name='memes',
         description='Finely hand-picks a high-quality meme from the depths of reddit.'
     )
-    async def memes(ctx: ApplicationContext):
+    async def memes(self, ctx: ApplicationContext):
         memes_submissions = reddit.subreddit('memes').hot()
         post_to_pick = randint(1, 100)
         for i in range(0, post_to_pick):
@@ -32,7 +32,7 @@ class RedditMedia(commands.Cog):
         name='linuxmemes',
         description='Hands you a fabolous GNU/Linux meme from the r/linuxmemes subreddit.'
     )
-    async def linuxmemes(ctx: ApplicationContext):
+    async def linuxmemes(self, ctx: ApplicationContext):
         memes_submissions = reddit.subreddit('linuxmemes').hot()
         post_to_pick = randint(1, 100)
         for i in range(0, post_to_pick):
@@ -46,7 +46,7 @@ class RedditMedia(commands.Cog):
         name='ihadastroke',
         description='I bet you\'ll have a stroke trying to see these. (JK ITS ABSOLUTELY SAFE FOR YOU DONT WORRY)'
     )
-    async def ihadastroke(ctx: ApplicationContext):
+    async def ihadastroke(self, ctx: ApplicationContext):
         memes_submissions = reddit.subreddit('ihadastroke').hot()
         post_to_pick = randint(1, 100)
         for i in range(0, post_to_pick):
@@ -60,7 +60,7 @@ class RedditMedia(commands.Cog):
         name='engrish',
         description='Features phuck ups in english of any kind!'
     )
-    async def engrish(ctx: ApplicationContext):
+    async def engrish(self, ctx: ApplicationContext):
         memes_submissions = reddit.subreddit('engrish').hot()
         post_to_pick = randint(1, 100)
         for i in range(0, post_to_pick):
@@ -74,7 +74,7 @@ class RedditMedia(commands.Cog):
         name='softwaregore',
         description='Features glitchy, nasty, funny software bugs!'
     )
-    async def osugame(ctx: ApplicationContext):
+    async def softwaregore(self, ctx: ApplicationContext):
         memes_submissions = reddit.subreddit('softwaregore').hot()
         post_to_pick = randint(1, 100)
         for i in range(0, post_to_pick):
@@ -88,7 +88,7 @@ class RedditMedia(commands.Cog):
         name='osugame',
         description='Features a post from the official osu! subreddit!'
     )
-    async def osugame(ctx: ApplicationContext):
+    async def osugame(self, ctx: ApplicationContext):
         memes_submissions = reddit.subreddit('osugame').hot()
         post_to_pick = randint(1, 100)
         for i in range(0, post_to_pick):
