@@ -74,7 +74,7 @@ class RedditMedia(commands.Cog):
         name='softwaregore',
         description='Features glitchy, nasty, funny software bugs!'
     )
-    async def osugame(ctx: ApplicationContext):
+    async def softwaregore(ctx: ApplicationContext):
         memes_submissions = reddit.subreddit('softwaregore').hot()
         post_to_pick = randint(1, 100)
         for i in range(0, post_to_pick):
