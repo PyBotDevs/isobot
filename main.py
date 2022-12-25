@@ -255,9 +255,9 @@ async def help(ctx: ApplicationContext, command:str=None):
         for x in commandsdb: 
             if commandsdb[x]["type"] != "DevTools": r += f"`/{x}`\n"
         localembed = discord.Embed(title="Isobot Command Help", description=f"**Bot Commands:**\n{r}", color = color)
-        user = client.get_user(ctx.author.id)
+        user = client.fetch_user(ctx.author.id)
         await user.send(embed=localembed)
-        await ctx.respond("Check your direct messages.", hidden=True)
+        await ctx.respond("Check your direct messages.", ephemeral=True)
 
 @client.slash_command(
     name='balance', 
