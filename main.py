@@ -217,7 +217,7 @@ async def on_command_error(ctx, error):
         await ctx.channel.send(f':stopwatch: Not now! Please try after **{str(datetime.timedelta(seconds=int(round(error.retry_after))))}**')
         print(f'[{current_time}] Ignoring exception at {colors.cyan}CommandOnCooldown{colors.end}. Details: This command is currently on cooldown.')
     elif isinstance(error, commands.MissingPermissions):
-        await ctx.channel.send('You don\'t have permission to do this!', hidden=True)
+        await ctx.channel.send('You don\'t have permission to do this!', ephemeral=True)
         print(f'[{current_time}] Ignoring exception at {colors.cyan}MissingPermissions{colors.end}. Details: The user doesn\'t have the required permissions.')
     elif isinstance(error, commands.BadArgument):
         await ctx.channel.send(':x: Invalid argument.', delete_after=8)
@@ -249,7 +249,7 @@ async def help(ctx: ApplicationContext, command:str=None):
             if commandsdb[command]['bugged'] == True: localembed.set_footer(text="⚠ This command might be bugged (experiencing issues), but will be fixed later.")
             if commandsdb[command]['disabled'] == True: localembed.set_footer(text="⚠ This command is currently disabled")
             await ctx.respond(embed=localembed)
-        except KeyError: return await ctx.respond(embed=discord.Embed(description=f"No results found for {command}."), hidden=True)
+        except KeyError: return await ctx.respond(embed=discord.Embed(description=f"No results found for {command}."), ephemeral=True)
     else:
         r = ""
         for x in commandsdb: 
@@ -274,7 +274,7 @@ async def balance(ctx: ApplicationContext, user=None):
             e.add_field(name='Cash in bank account', value=f'{currency["bank"][str(user.id)]} coin(s)', inline=True)
             e.add_field(name="Networth", value=f"{get_user_networth(user.id)} coin(s)", inline=True)
             await ctx.respond(embed=e)
-        except: await ctx.respond('Looks like that user is not indexed in our server. Try again later.', hidden=True)
+        except: await ctx.respond('Looks like that user is not indexed in our server. Try again later.', ephemeral=True)
     except Exception as e: await ctx.respond(f'An error occured: `{e}`. This has automatically been reported to the devs.')
 
 @client.slash_command(
@@ -286,10 +286,10 @@ async def deposit(ctx: ApplicationContext, amount):
     if plugins.economy:
         if not amount.isdigit():
             if str(amount) == "max": amount = currency["wallet"][str(ctx.author.id)]
-            else: return await ctx.respond("The amount must be a number, or `max`.", hidden=True)
-        elif currency['bank'] == 0: return await ctx.respond('You don\'t have anything in your bank account.', hidden=True)
-        elif int(amount) <= 0: return await ctx.respond('The amount to deposit must be more than `0` coins!', hidden=True)
-        elif int(amount) > currency["wallet"][str(ctx.author.id)]: return await ctx.respond('The amount to deposit must not be more than what you have in your wallet!', hidden=True)
+            else: return await ctx.respond("The amount must be a number, or `max`.", ephemeral=True)
+        elif currency['bank'] == 0: return await ctx.respond('You don\'t have anything in your bank account.', ephemeral=True)
+        elif int(amount) <= 0: return await ctx.respond('The amount to deposit must be more than `0` coins!', ephemeral=True)
+        elif int(amount) > currency["wallet"][str(ctx.author.id)]: return await ctx.respond('The amount to deposit must not be more than what you have in your wallet!', ephemeral=True)
         currency["wallet"][str(ctx.author.id)] -= int(amount)
         currency["bank"][str(ctx.author.id)] += int(amount)
         localembed = discord.Embed(title="Deposit successful", description=f"You deposited `{amount}` coin(s) to your bank account.", color=color)
@@ -307,10 +307,10 @@ async def withdraw(ctx: ApplicationContext, amount):
     if plugins.economy:
         if not amount.isdigit():
             if str(amount) == "max": amount = currency["wallet"][str(ctx.author.id)]
-            else: return await ctx.respond("The amount must be a number, or `max`.", hidden=True)
-        elif currency['bank'] == 0: return await ctx.respond('You don\'t have anything in your bank account.', hidden=True)
-        elif int(amount) <= 0: return await ctx.respond('The amount to withdraw must be more than `0` coins!', hidden=True)
-        elif int(amount) > currency["bank"][str(ctx.author.id)]: return await ctx.respond('The amount to withdraw must not be more than what you have in your bank account!', hidden=True)
+            else: return await ctx.respond("The amount must be a number, or `max`.", ephemeral=True)
+        elif currency['bank'] == 0: return await ctx.respond('You don\'t have anything in your bank account.', ephemeral=True)
+        elif int(amount) <= 0: return await ctx.respond('The amount to withdraw must be more than `0` coins!', ephemeral=True)
+        elif int(amount) > currency["bank"][str(ctx.author.id)]: return await ctx.respond('The amount to withdraw must not be more than what you have in your bank account!', ephemeral=True)
         currency["wallet"][str(ctx.author.id)] += int(amount)
         currency["bank"][str(ctx.author.id)] -= int(amount)
         localembed = discord.Embed(title="Withdraw successful", description=f"You withdrew `{amount}` coin(s) from your bank account.", color=color)
@@ -440,8 +440,8 @@ async def scout(ctx: ApplicationContext):
 @option(name="amount", description="How much do you want to give?", type=int)
 async def give(ctx: ApplicationContext, user:discord.User, amount:int):
     if not plugins.economy: return
-    if amount <= 0: return await ctx.respond('The amount you want to give must be greater than `0` coins!', hidden=True)
-    if amount > int(currency['wallet'][str(ctx.author.id)]): return await ctx.respond('You don\'t have enough coins in your wallet to do this.', hidden=True)
+    if amount <= 0: return await ctx.respond('The amount you want to give must be greater than `0` coins!', ephemeral=True)
+    if amount > int(currency['wallet'][str(ctx.author.id)]): return await ctx.respond('You don\'t have enough coins in your wallet to do this.', ephemeral=True)
     else:
         currency['wallet'][str(ctx.author.id)] -= amount
         currency['wallet'][str(user.id)] += amount
@@ -650,8 +650,8 @@ async def dig(ctx: ApplicationContext):
 @option(name="amount", description="How many do you want to open?", type=int)
 async def openlootbox(ctx: ApplicationContext, lootbox:str, amount:int):
     types = ["normal lootbox", "large lootbox", "special lootbox"]
-    if amount <= 0: return await ctx.respond("You can't open 0 or below lootboxes! Don't be stupid.", hidden=True)
-    if lootbox not in types: return await ctx.respond(f"wtf is {lootbox}?", hidden=True)
+    if amount <= 0: return await ctx.respond("You can't open 0 or below lootboxes! Don't be stupid.", ephemeral=True)
+    if lootbox not in types: return await ctx.respond(f"wtf is {lootbox}?", ephemeral=True)
     ie = shopitem.keys()
     normal_loot = [
         randint(10000, 25000),
@@ -704,7 +704,7 @@ async def openlootbox(ctx: ApplicationContext, lootbox:str, amount:int):
 )
 @option(name="text", description="What do you want to send?", type=str)
 async def echo(ctx: ApplicationContext, text:str): 
-    await ctx.respond("Echoed!", hidden=True)
+    await ctx.respond("Echoed!", ephemeral=True)
     await ctx.channel.send(text)
 
 @client.slash_command(
@@ -748,10 +748,10 @@ async def sync(ctx: ApplicationContext):
         with open('database/warnings.json', 'r') as f: warnings = json.load(f)
         with open('database/items.json', 'r') as f: items = json.load(f)
         with open('config/shop.json', 'r') as f: shopitem = json.load(f)
-        await ctx.respond('Databases resynced.', hidden=True)
+        await ctx.respond('Databases resynced.', ephemeral=True)
     except Exception as e:
         print(e)
-        await ctx.respond('An error occured while resyncing. Check console.', hidden=True)
+        await ctx.respond('An error occured while resyncing. Check console.', ephemeral=True)
 
 @client.slash_command(
     name='stroketranslate',
@@ -760,7 +760,7 @@ async def sync(ctx: ApplicationContext):
 @option(name="strok", description="What do you want to translate?", type=str)
 async def stroketranslate(ctx: ApplicationContext, strok: str):
         try:
-            if len(strok) > 300: return await ctx.respond("Please use no more than `300` character length", hidden=True)
+            if len(strok) > 300: return await ctx.respond("Please use no more than `300` character length", ephemeral=True)
             else:
                 with open(f"{os.getcwd()}/config/words.json", "r") as f: words = json.load(f)
                 var = str()
@@ -787,12 +787,12 @@ async def prediction(ctx: ApplicationContext, question:str): await ctx.respond(f
 async def donate(ctx: ApplicationContext, id:str, amount):
     if plugins.economy:
         reciever_info = client.get_user(int(id))
-        if id not in currency["wallet"]: return await ctx.respond("Unfortunately, we couldn't find that user in our server. Try double-checking the ID you've provided.", hidden=True)
+        if id not in currency["wallet"]: return await ctx.respond("Unfortunately, we couldn't find that user in our server. Try double-checking the ID you've provided.", ephemeral=True)
         # Prevent self-donations
-        if id == ctx.author.id: return await ctx.respond("You can't donate to yourself stupid.", hidden=True)
+        if id == ctx.author.id: return await ctx.respond("You can't donate to yourself stupid.", ephemeral=True)
         # Check for improper amount argument values
-        if amount < 1: return await ctx.respond("The amount has to be greater than `1`!", hidden=True)
-        elif amount > 1000000000: return await ctx.respond("You can only donate less than 1 billion coins!", hidden=True)
+        if amount < 1: return await ctx.respond("The amount has to be greater than `1`!", ephemeral=True)
+        elif amount > 1000000000: return await ctx.respond("You can only donate less than 1 billion coins!", ephemeral=True)
         elif amount > currency["wallet"][str(ctx.author.id)]: return await ctx.respond("You're too poor to be donating that much money lmao")
         # If no improper values, proceed with donation
         try:
@@ -816,12 +816,12 @@ async def donate(ctx: ApplicationContext, id:str, amount):
 @option(name="user", description="Specify the user to change their balance", type=discord.User)
 @option(name="modifier", description="Specify the balance to modify", type=int)
 async def modify_balance(ctx: ApplicationContext, user:discord.User, modifier:int):
-    if ctx.author.id != 738290097170153472: return ctx.respond("Sorry, but this command is only for my developer's use.", hidden=True)
+    if ctx.author.id != 738290097170153472: return ctx.respond("Sorry, but this command is only for my developer's use.", ephemeral=True)
     try:
         currency["wallet"][str(user.id)] += modifier
         save()
-        await ctx.respond(f"{user.name}\'s balance has been modified by {modifier} coins.\n\n**New Balance:** {currency['wallet'][str(user.id)]} coins", hidden=True)
-    except KeyError: await ctx.respond("That user doesn't exist in the database.", hidden=True)
+        await ctx.respond(f"{user.name}\'s balance has been modified by {modifier} coins.\n\n**New Balance:** {currency['wallet'][str(user.id)]} coins", ephemeral=True)
+    except KeyError: await ctx.respond("That user doesn't exist in the database.", ephemeral=True)
 
 @client.slash_command(
     name="status",
@@ -852,9 +852,9 @@ async def status(ctx: ApplicationContext):
 @option(name="amount", description="How many of these do you want to gift?", type=int, default=1)
 async def gift(ctx: ApplicationContext, user:discord.User, item:str, amount:int=1):
     try:
-        if amount < 1: return await ctx.respond("You can't gift less than 1 of those!", hidden=True)
-        elif items[str(ctx.author.id)][item] < amount: return await ctx.respond("You don't have enough of those to gift!", hidden=True)
-        elif shopitem[item]["giftable"] == False: return await ctx.respond("You can't sell that item!", hidden=True)
+        if amount < 1: return await ctx.respond("You can't gift less than 1 of those!", ephemeral=True)
+        elif items[str(ctx.author.id)][item] < amount: return await ctx.respond("You don't have enough of those to gift!", ephemeral=True)
+        elif shopitem[item]["giftable"] == False: return await ctx.respond("You can't sell that item!", ephemeral=True)
         items[str(user.id)][item] += amount
         items[str(ctx.author.id)][item] -= amount
         save()
@@ -892,7 +892,7 @@ async def afk_remove(ctx: ApplicationContext):
         del presence[str(ctx.guild.id)][str(ctx.author.id)]
         save()
         await ctx.respond(f"Alright {ctx.author.mention}, I've removed your AFK.")
-    except KeyError: return await ctx.respond("You weren't previously AFK.", hidden=True)
+    except KeyError: return await ctx.respond("You weren't previously AFK.", ephemeral=True)
 
 @client.slash_command(
     name="afk_mod_remove",
@@ -900,12 +900,12 @@ async def afk_remove(ctx: ApplicationContext):
 )
 @option(name="user", description="Whose AFK status do you want to remove?", type=discord.User)
 async def afk_mod_remove(ctx: ApplicationContext, user:discord.User):
-    if not ctx.author.guild_permissions.manage_messages: return await ctx.respond("You don't have the required permissions to use this.", hidden=True)
+    if not ctx.author.guild_permissions.manage_messages: return await ctx.respond("You don't have the required permissions to use this.", ephemeral=True)
     try: 
         del presence[str(ctx.guild.id)][str(user.id)]
         save()
         await ctx.respond(f"{user.display_name}'s AFK has been removed.")
-    except KeyError: return await ctx.respond("That user isn't AFK.", hidden=True)
+    except KeyError: return await ctx.respond("That user isn't AFK.", ephemeral=True)
 
 @client.slash_command(
     name="autogrind",
@@ -939,7 +939,7 @@ async def rank(ctx: ApplicationContext, user:discord.User=None):
         localembed.add_field(name="XP", value=levels[str(user.id)]["xp"])
         localembed.set_footer(text="Keep chatting to earn levels!", icon_url=ctx.author.avatar_url)
         await ctx.respond(embed = localembed)
-    except KeyError: return await ctx.respond("Looks like that user isn't indexed yet. Try again later.", hidden=True)
+    except KeyError: return await ctx.respond("Looks like that user isn't indexed yet. Try again later.", ephemeral=True)
 
 @client.slash_command(
     name="edit_rank",
@@ -948,11 +948,11 @@ async def rank(ctx: ApplicationContext, user:discord.User=None):
 @option(name="user", description="Who's rank do you want to edit?", type=discord.User)
 @option(name="new_rank", description="The new rank you want to set for the user", type=int)
 async def edit_rank(ctx: ApplicationContext, user:discord.User, new_rank:int):
-    if ctx.author.id != 738290097170153472: return await ctx.respond("This command isn't for you.", hidden=True)
+    if ctx.author.id != 738290097170153472: return await ctx.respond("This command isn't for you.", ephemeral=True)
     try:
         levels[str(user.id)]["level"] = new_rank
         await ctx.respond(f"{user.display_name}\'s rank successfully edited. `New Rank: {levels[str(user.id)]['level']}`")
-    except KeyError: return await ctx.respond("That user isn't indexed yet.", hidden=True)
+    except KeyError: return await ctx.respond("That user isn't indexed yet.", ephemeral=True)
 
 @client.slash_command(
     name="edit_xp",
@@ -961,11 +961,11 @@ async def edit_rank(ctx: ApplicationContext, user:discord.User, new_rank:int):
 @option(name="user", description="Who's rank do you want to edit?", type=discord.User)
 @option(name="new_xp", description="The new xp count you want to set for the user", type=int)
 async def edit_xp(ctx: ApplicationContext, user:discord.User, new_xp:int):
-    if ctx.author.id != 738290097170153472: return await ctx.respond("This command isn't for you.", hidden=True)
+    if ctx.author.id != 738290097170153472: return await ctx.respond("This command isn't for you.", ephemeral=True)
     try:
         levels[str(user.id)]["xp"] = new_xp
         await ctx.respond(f"{user.display_name}\'s XP count successfully edited. `New XP: {levels[str(user.id)]['xp']}`")
-    except KeyError: return await ctx.respond("That user isn't indexed yet.", hidden=True)
+    except KeyError: return await ctx.respond("That user isn't indexed yet.", ephemeral=True)
 
 @client.slash_command(
     name="repo",
@@ -987,7 +987,7 @@ async def repo(ctx: ApplicationContext):
 @option(name="footer_text", description="The text at the footer of the embed", type=str, default=None)
 @option(name="footer_icon_url", description="The icon you want to show in the embed's footer (URL ONLY)", type=str, default=None)
 async def embedbuilder(ctx: ApplicationContext, title: str, description: str, image_url: str = None, thumbnail_url: str = None, color: int = None, footer_text: str = None, footer_icon_url: str = None):
-    await ctx.respond("Embed Built!", hidden=True)
+    await ctx.respond("Embed Built!", ephemeral=True)
     await ctx.channel.send(embed=framework.isobot.embedengine.embed(title, description, image=image_url, thumbnail=thumbnail_url, color=color, footer_text=footer_text, footer_img=footer_icon_url))
 
 @client.slash_command(
@@ -997,7 +997,7 @@ async def embedbuilder(ctx: ApplicationContext, title: str, description: str, im
 @option(name="pin", description="Your new account's authentication ID. Must be a 6-digit integer.", type=int)
 async def isobank_register(ctx: ApplicationContext, pin:int):
     isobankauth.register(ctx.author.id, pin)
-    await ctx.respond("Congratulations! Your new IsoBank account has been registered.", hidden=True)
+    await ctx.respond("Congratulations! Your new IsoBank account has been registered.", ephemeral=True)
 
 @client.slash_command(
     name="networth",
@@ -1010,7 +1010,7 @@ async def networth(ctx: ApplicationContext, user: discord.User=None):
         ntw = get_user_networth(user.id)
         localembed = discord.Embed(name=f"{user.display_name}'s networth", description=f"{ntw} coins", color=color)
         await ctx.respond(embed=localembed)
-    except KeyError: return await ctx.respond("Looks like that user isn't cached yet. Please try again later.", hidden=True)
+    except KeyError: return await ctx.respond("Looks like that user isn't cached yet. Please try again later.", ephemeral=True)
 
 @client.slash_command(
     name="profile",
@@ -1050,11 +1050,11 @@ async def automod(ctx: ApplicationContext):
 @option(name="toggle", description="Do you want to turn it on or off?", type=bool)
 async def automod_swearfilter(ctx: ApplicationContext, toggle:bool):
     loaded_config = automod_config[str(ctx.guild.id)]
-    if not ctx.author.guild_permissions.administrator: return await ctx.respond("You cannot use this command. If you think this is a mistake, please contact your server owner/administrator.", hidden=True)
-    if loaded_config["swear_filter"]["enabled"] == toggle: return await ctx.respond(f"That automod option is already set to `{toggle}`.", hidden=True)
+    if not ctx.author.guild_permissions.administrator: return await ctx.respond("You cannot use this command. If you think this is a mistake, please contact your server owner/administrator.", ephemeral=True)
+    if loaded_config["swear_filter"]["enabled"] == toggle: return await ctx.respond(f"That automod option is already set to `{toggle}`.", ephemeral=True)
     loaded_config["swear_filter"]["enabled"] = toggle
-    if toggle == True: await ctx.respond("Swear-filter successfully **enabled**.", hidden=True)
-    elif toggle == False: await ctx.respond("Swear-filter successfully **disabled**.", hidden=True)
+    if toggle == True: await ctx.respond("Swear-filter successfully **enabled**.", ephemeral=True)
+    elif toggle == False: await ctx.respond("Swear-filter successfully **disabled**.", ephemeral=True)
     save()
 
 @client.slash_command(
@@ -1064,11 +1064,11 @@ async def automod_swearfilter(ctx: ApplicationContext, toggle:bool):
 @option(name="toggle", description="Do you want to turn it on or off?", type=bool)
 async def automod_use_default_keywords(ctx: ApplicationContext, toggle:bool):
     loaded_config = automod_config[str(ctx.guild.id)]
-    if not ctx.author.guild_permissions.administrator: return await ctx.respond("You cannot use this command. If you think this is a mistake, please contact your server owner/administrator.", hidden=True)
-    if loaded_config["swear_filter"]["keywords"]["use_default"] == toggle: return await ctx.respond(f"That automod option is already set to `{toggle}`.", hidden=True)
+    if not ctx.author.guild_permissions.administrator: return await ctx.respond("You cannot use this command. If you think this is a mistake, please contact your server owner/administrator.", ephemeral=True)
+    if loaded_config["swear_filter"]["keywords"]["use_default"] == toggle: return await ctx.respond(f"That automod option is already set to `{toggle}`.", ephemeral=True)
     loaded_config["swear_filter"]["keywords"]["use_default"] = toggle
-    if toggle == True: await ctx.respond("Using default swear-filter keywords successfully **enabled**.", hidden=True)
-    elif toggle == False: await ctx.respond("Using default swear-filter keywords successfully **disabled**.", hidden=True)
+    if toggle == True: await ctx.respond("Using default swear-filter keywords successfully **enabled**.", ephemeral=True)
+    elif toggle == False: await ctx.respond("Using default swear-filter keywords successfully **disabled**.", ephemeral=True)
     save()
 
 @client.slash_command(
@@ -1094,14 +1094,14 @@ async def automod_view_custom_keywords(ctx: ApplicationContext):
 )
 @option(name="keyword", description="What keyword do you want to add?", type=str)
 async def automod_add_custom_keyword(ctx: ApplicationContext, keyword:str):
-    if not ctx.author.guild_permissions.administrator: return await ctx.respond("You cannot use this command. If you think this is a mistake, please contact your server owner/administrator.", hidden=True)
+    if not ctx.author.guild_permissions.administrator: return await ctx.respond("You cannot use this command. If you think this is a mistake, please contact your server owner/administrator.", ephemeral=True)
     loaded_config = automod_config[str(ctx.guild.id)]
     if keyword not in loaded_config["swear_filter"]["keywords"]["custom"]:
         loaded_config["swear_filter"]["keywords"]["custom"].append(keyword)
         save()
         localembed = discord.Embed(description=f"New swear-filter keyword `{keyword}` successfully added to configuration.", color=discord.Color.green())
-        await ctx.respond(embed=localembed, hidden=True)
-    else: return await ctx.respond("That keyword is already added in your automod configuration.", hidden=True)
+        await ctx.respond(embed=localembed, ephemeral=True)
+    else: return await ctx.respond("That keyword is already added in your automod configuration.", ephemeral=True)
 
 @client.slash_command(
     name="automod_remove_custom_keyword",
@@ -1115,7 +1115,7 @@ async def automod_remove_custom_keyword(ctx: ApplicationContext, id:int):
         data.pop(id-1)
         save()
         return await ctx.respond(f"Keyword (id: `{id}`) successfully removed from swear-filter configuration.")
-    except IndexError: await ctx.respond("That keyword id doesn't exist. Please specify a valid id and try again.", hidden=True)
+    except IndexError: await ctx.respond("That keyword id doesn't exist. Please specify a valid id and try again.", ephemeral=True)
 
 # Initialization
 active_cogs = ["maths", "moderation", "reddit", "minigames"]
