@@ -17,6 +17,7 @@ import framework.isobot.currency, framework.isobot.colors, framework.isobank.aut
 from discord import ApplicationContext, option
 from discord.ext import commands, tasks
 from discord.ext.commands import *
+from threading import Thread
 
 # Slash option types:
 # Just use variable types to define option types.
@@ -37,6 +38,8 @@ with open('database/levels.json', 'r') as f: levels = json.load(f)
 with open('config/commands.json', 'r') as f: commandsdb = json.load(f)
 with open('database/automod.json', 'r') as f: automod_config = json.load(f)
 
+with open('database/special/new_years_2022.json', 'r') as f: presents = json.load(f)  # Temp
+
 #Pre-Initialization Commands
 def timenow(): datetime.datetime.now().strftime("%H:%M:%S")
 def save():
@@ -46,6 +49,7 @@ def save():
     with open('database/presence.json', 'w+') as f: json.dump(presence, f, indent=4)
     with open('database/levels.json', 'w+') as f: json.dump(levels, f, indent=4)
     with open('database/automod.json', 'w+') as f: json.dump(automod_config, f, indent=4)
+    with open('database/special/new_years_2022.json', 'w+') as f: json.dump(presents, f, indent=4)  # Temp
 
 def get_user_networth(user_id:int):
     nw = currency["wallet"][str(user_id)] + currency["bank"][str(user_id)]
@@ -107,6 +111,19 @@ with open("themes/halloween.theme.json", 'r') as f:
         print(f"{colors.red}The theme file being loaded might be broken. Rolling back to default configuration...{colors.end}")
         color = discord.Color.random()
 
+# Discord UI Views
+class PresentsDrop(discord.ui.View):
+    @discord.ui.button(label="🎁 Collect Presents", style=discord.ButtonStyle.blurple)
+    async def receive(self, button: discord.ui.Button, interaction: discord.Interaction):
+        presents_bounty = randint(500, 1000)
+        presents[str(interaction.user.id)] += presents_bounty
+        save()
+        button.disabled = True
+        button.label = f"Presents Collected!"
+        button.style = discord.ButtonStyle.grey
+        newembed = discord.Embed(description=f"{interaction.user.name} collected **{presents_bounty} :gift: presents** from this drop!", color=discord.Color.green())
+        await interaction.response.edit_message(embed=newembed, view=self)
+
 #Events
 @client.event
 async def on_ready():
@@ -123,6 +140,17 @@ __________________________________________________""")
     print(f'[main/LOG] {colors.green}Status set to IDLE. Rich presence set.{colors.end}')
     print("[main/FLASK] Starting pinger service...")
     utils.ping.host()
+    time.sleep(5)
+    async def presents_daemon():
+        print("[main/Presents] Presents daemon started.")
+        while True:
+            time.sleep(randint(180, 300))
+            cyberspace_channel_context = await client.fetch_channel(880409977074888718)
+            localembed = discord.Embed(title="**:gift: Presents have dropped in chat!**", description="Be the first one to collect them!", color=color)
+            await cyberspace_channel_context.send(embed=localembed, view=PresentsDrop()) 
+    presents_daemon_thread = Thread(target=presents_daemon)
+    presents_daemon_thread.daemon = True
+    presents_daemon_thread.start()
 
 @client.event
 async def on_message(ctx):
@@ -146,6 +174,7 @@ async def on_message(ctx):
     for z in shopitem:
         if z in items[str(ctx.author.id)]: pass
         else: items[str(ctx.author.id)][str(z)] = 0
+    if str(ctx.author.id) not in presents: presents[str(ctx.author.id)] = 0  # Temp
     save()
     uList = list()
     if str(ctx.guild.id) in presence:
@@ -240,6 +269,7 @@ async def balance(ctx: ApplicationContext, user=None):
         if user == None: user = ctx.author
         try:
             e = discord.Embed(title=f'{user.display_name}\'s balance', color=color)
+            e.add_field(name="🎁 Presents", value=f'{presents[str(ctx.author.id)]} presents', inline=False)
             e.add_field(name='Cash in wallet', value=f'{currency["wallet"][str(user.id)]} coin(s)', inline=True)
             e.add_field(name='Cash in bank account', value=f'{currency["bank"][str(user.id)]} coin(s)', inline=True)
             e.add_field(name="Networth", value=f"{get_user_networth(user.id)} coin(s)", inline=True)
