@@ -988,15 +988,6 @@ async def embedbuilder(ctx: ApplicationContext, title: str, description: str, im
     await ctx.channel.send(embed=framework.isobot.embedengine.embed(title, description, image=image_url, thumbnail=thumbnail_url, color=color, footer_text=footer_text, footer_img=footer_icon_url))
 
 @client.slash_command(
-    name="isobank_register",
-    description="Registers a new IsoBank account with your Discord ID"
-)
-@option(name="pin", description="Your new account's authentication ID. Must be a 6-digit integer.", type=int)
-async def isobank_register(ctx: ApplicationContext, pin:int):
-    isobankauth.register(ctx.author.id, pin)
-    await ctx.respond("Congratulations! Your new IsoBank account has been registered.", ephemeral=True)
-
-@client.slash_command(
     name="networth",
     description="Get your networth, or another user's networth"
 )
