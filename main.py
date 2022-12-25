@@ -1017,6 +1017,35 @@ async def profile(ctx:  ApplicationContext, user: discord.User = None):
     # Maybe I should make a userdat system for collecting statistical data to process and display here, coming in a future update.
     await ctx.respond(embed=localembed)
 
+# New Year's in-game Event Commands
+special_event = client.create_group("event", "Commands related to the New Years special in-game event.")
+
+@special_event.command(
+    name="leaderboard", 
+    description="View the global leaderboard for the special in-game event."
+)
+async def leaderboard(ctx: ApplicationContext):
+    undicted_leaderboard = sorted(presents.items(), key=lambda x:x[1], reverse=True)
+    dicted_leaderboard = dict(undicted_leaderboard)
+    parsed_output = str()
+    y = 1
+    for i in dicted_leaderboard:
+        if y < 10:
+            try:
+                if presents[i] != 0:
+                    user_context = await client.fetch_user(i)
+                    if not user_context.bot and presents[i] != 0:
+                        print(i, presents[i])
+                        if y == 1: yf = ":first_place:"
+                        elif y == 2: yf = ":second_place:"
+                        elif y == 3: yf = ":third_place:"
+                        else: yf = f"#{y}"
+                        parsed_output += f"{yf} **{user_context.name}:** {presents[i]} presents\n"
+                        y += 1
+            except discord.errors.NotFound: continue
+    localembed = discord.Embed(title="New Years Special Event global leaderboard", description=parsed_output, color=color)
+    await ctx.respond(embed=localembed)
+
 # Initialization
 active_cogs = ["maths", "moderation", "reddit", "minigames", "automod", "isobank"]
 i = 1
