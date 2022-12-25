@@ -141,16 +141,13 @@ __________________________________________________""")
     print("[main/FLASK] Starting pinger service...")
     utils.ping.host()
     time.sleep(5)
-    async def presents_daemon():
-        print("[main/Presents] Presents daemon started.")
-        while True:
-            time.sleep(randint(180, 300))
-            cyberspace_channel_context = await client.fetch_channel(880409977074888718)
-            localembed = discord.Embed(title="**:gift: Presents have dropped in chat!**", description="Be the first one to collect them!", color=color)
-            await cyberspace_channel_context.send(embed=localembed, view=PresentsDrop()) 
-    presents_daemon_thread = Thread(target=presents_daemon)
-    presents_daemon_thread.daemon = True
-    presents_daemon_thread.start()
+    print("[main/Presents] Presents daemon started.")
+    while True:
+        print(f"[main/Presents] Dropping new presents in {colors.cyan}#general{colors.end} channel...")
+        await asyncio.sleep(randint(180, 300))
+        cyberspace_channel_context = await client.fetch_channel(880409977074888718)
+        localembed = discord.Embed(title="**:gift: Presents have dropped in chat!**", description="Be the first one to collect them!", color=color)
+        await cyberspace_channel_context.send(embed=localembed, view=PresentsDrop()) 
 
 @client.event
 async def on_message(ctx):
