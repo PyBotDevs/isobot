@@ -106,5 +106,4 @@ class Automod(commands.Cog):
             return await ctx.respond(f"Keyword (id: `{id}`) successfully removed from swear-filter configuration.")
         except IndexError: await ctx.respond("That keyword id doesn't exist. Please specify a valid id and try again.", ephemeral=True)
 
-def setup(bot):
-    bot.add_cog(Automod(bot))
+def setup(bot): bot.add_cog(Automod(bot))
