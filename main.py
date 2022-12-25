@@ -1018,7 +1018,7 @@ async def profile(ctx:  ApplicationContext, user: discord.User = None):
     await ctx.respond(embed=localembed)
 
 # Initialization
-active_cogs = ["maths", "moderation", "reddit", "minigames"]
+active_cogs = ["maths", "moderation", "reddit", "minigames", "automod", "isobank"]
 i = 1
 for x in active_cogs:
     print(f"[main/Cogs] Loading isobot Cog ({i}/{len(active_cogs)})")
