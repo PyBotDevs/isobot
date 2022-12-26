@@ -153,7 +153,7 @@ __________________________________________________""")
 async def on_message(ctx):
     if str(ctx.author.id) not in currency['wallet']: currency['wallet'][str(ctx.author.id)] = 5000
     if str(ctx.author.id) not in currency['bank']: currency['bank'][str(ctx.author.id)] = 0
-    if str(ctx.author.id) not in warnings: warnings[str(ctx.guild.id)] = {}
+    if str(ctx.guild.id) not in warnings: warnings[str(ctx.guild.id)] = {}
     if str(ctx.author.id) not in warnings[str(ctx.guild.id)]: warnings[str(ctx.guild.id)][str(ctx.author.id)] = []
     if str(ctx.author.id) not in items: items[str(ctx.author.id)] = {}
     if str(ctx.author.id) not in levels: levels[str(ctx.author.id)] = {"xp": 0, "level": 0}
