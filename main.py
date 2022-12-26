@@ -638,7 +638,6 @@ async def dig(ctx: ApplicationContext):
         save()
         await ctx.respond('YOU FELL INTO YOUR OWN TRAP AND DIED LMFAO\nYou lost 2000 coins in the process.')
 
-#need help cuz i only got the idea (aka the logic) and not the code detail and stuff
 @client.slash_command(
     name='openlootbox',
     description='Opens lootbox(es) in your inventory'
