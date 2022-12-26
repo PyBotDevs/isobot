@@ -871,7 +871,7 @@ async def gift(ctx: ApplicationContext, user:discord.User, item:str, amount:int=
 afk_system = client.create_group("afk", "Commands for interacting with the built-in AFK system.")
 
 @afk_system.command(
-    name="afk_set",
+    name="set",
     description="Sets your AFK status with a custom response"
 )
 @option(name="response", description="What do you want your AFK response to be?", type=str, default="I'm AFK")
@@ -884,7 +884,7 @@ async def afk_set(ctx: ApplicationContext, response:str="I'm AFK"):
     await ctx.respond(embed=localembed)
 
 @afk_system.command(
-    name="afk_remove",
+    name="remove",
     description="Removes your AFK status"
 )
 async def afk_remove(ctx: ApplicationContext):
@@ -895,7 +895,7 @@ async def afk_remove(ctx: ApplicationContext):
     except KeyError: return await ctx.respond("You weren't previously AFK.", ephemeral=True)
 
 @afk_system.command(
-    name="afk_mod_remove",
+    name="mod_remove",
     description="Removes an AFK status for someone else"
 )
 @option(name="user", description="Whose AFK status do you want to remove?", type=discord.User)
