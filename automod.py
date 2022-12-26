@@ -23,7 +23,7 @@ class Automod(commands.Cog):
         name="automod",
         description="Shows the current automod configuration for your server"
     )
-    async def automod(ctx: ApplicationContext):
+    async def automod(self, ctx: ApplicationContext):
         loaded_config = automod_config[str(ctx.guild.id)]
         localembed = discord.Embed(title=f"{ctx.guild.name}\'s automod configuration", descripton="Use the `/automod_set` command to change your server's automod configuration.", color=color)
         localembed.set_thumbnail(url=ctx.guild.icon_url)
@@ -37,7 +37,7 @@ class Automod(commands.Cog):
         description="Turn on or off automod's swear-filter in your server"
     )
     @option(name="toggle", description="Do you want to turn it on or off?", type=bool)
-    async def automod_swearfilter(ctx: ApplicationContext, toggle:bool):
+    async def automod_swearfilter(self, ctx: ApplicationContext, toggle:bool):
         loaded_config = automod_config[str(ctx.guild.id)]
         if not ctx.author.guild_permissions.administrator: return await ctx.respond("You cannot use this command. If you think this is a mistake, please contact your server owner/administrator.", ephemeral=True)
         if loaded_config["swear_filter"]["enabled"] == toggle: return await ctx.respond(f"That automod option is already set to `{toggle}`.", ephemeral=True)
@@ -51,7 +51,7 @@ class Automod(commands.Cog):
         description="Choose whether or not you want to use the default keywords for automod's swear-filter"
     )
     @option(name="toggle", description="Do you want to turn it on or off?", type=bool)
-    async def automod_use_default_keywords(ctx: ApplicationContext, toggle:bool):
+    async def automod_use_default_keywords(self, ctx: ApplicationContext, toggle:bool):
         loaded_config = automod_config[str(ctx.guild.id)]
         if not ctx.author.guild_permissions.administrator: return await ctx.respond("You cannot use this command. If you think this is a mistake, please contact your server owner/administrator.", ephemeral=True)
         if loaded_config["swear_filter"]["keywords"]["use_default"] == toggle: return await ctx.respond(f"That automod option is already set to `{toggle}`.", ephemeral=True)
@@ -64,7 +64,7 @@ class Automod(commands.Cog):
         name="automod_view_custom_keywords",
         description="Shows a list of the custom automod swear-filter keywords set for your server",
     )
-    async def automod_view_custom_keywords(ctx: ApplicationContext):
+    async def automod_view_custom_keywords(self, ctx: ApplicationContext):
         loaded_config = automod_config[str(ctx.guild.id)]
         out = ""
         if loaded_config["swear_filter"]["keywords"]["custom"] != []:
@@ -82,7 +82,7 @@ class Automod(commands.Cog):
         description="Adds a custom keyword to your server's swear-filter"
     )
     @option(name="keyword", description="What keyword do you want to add?", type=str)
-    async def automod_add_custom_keyword(ctx: ApplicationContext, keyword:str):
+    async def automod_add_custom_keyword(self, ctx: ApplicationContext, keyword:str):
         if not ctx.author.guild_permissions.administrator: return await ctx.respond("You cannot use this command. If you think this is a mistake, please contact your server owner/administrator.", ephemeral=True)
         loaded_config = automod_config[str(ctx.guild.id)]
         if keyword not in loaded_config["swear_filter"]["keywords"]["custom"]:
@@ -97,7 +97,7 @@ class Automod(commands.Cog):
         description="Removes a custom keyword (matching its id) from your server's swear-filter"
     )
     @option(name="id", description="What's the id of the keyword to remove (can be found in bold through /automod_view_custom_keywords", type=int)
-    async def automod_remove_custom_keyword(ctx: ApplicationContext, id:int):
+    async def automod_remove_custom_keyword(self, ctx: ApplicationContext, id:int):
         loaded_config = automod_config[str(ctx.guild.id)]
         try:
             data = loaded_config["swear_filter"]["keywords"]["custom"]
