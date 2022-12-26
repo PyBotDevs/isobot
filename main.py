@@ -1006,7 +1006,7 @@ async def leaderboard(ctx: ApplicationContext):
     await ctx.respond(embed=localembed)
 
 # Initialization
-active_cogs = ["maths", "moderation", "reddit", "minigames", "automod", "isobank"]
+active_cogs = ["maths", "moderation", "reddit", "minigames", "automod", "isobank", "levelling"]
 i = 1
 cog_errors = 0
 for x in active_cogs:
