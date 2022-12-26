@@ -1049,12 +1049,16 @@ async def leaderboard(ctx: ApplicationContext):
 # Initialization
 active_cogs = ["maths", "moderation", "reddit", "minigames", "automod", "isobank"]
 i = 1
+cog_errors = 0
 for x in active_cogs:
     print(f"[main/Cogs] Loading isobot Cog ({i}/{len(active_cogs)})")
     i += 1
     try: client.load_extension(x)
-    except Exception as e: print(f"[main/Cogs] {colors.red}ERROR: Cog \"{x}\" failed to load: {e}{colors.end}")
-    else: print(f"[main/Cogs] {colors.green}All cogs successfully loaded.{colors.end}")
+    except Exception as e:
+        cog_errors += 1 
+        print(f"[main/Cogs] {colors.red}ERROR: Cog \"{x}\" failed to load: {e}{colors.end}")
+if cog_errors == 0: print(f"[main/Cogs] {colors.green}All cogs successfully loaded.{colors.end}")
+else: print(f"[main/Cogs] {colors.yellow}{cog_errors}/{len(active_cogs)} cogs failed to load.{colors.end}")
 print("--------------------")
 client.run(api.auth.get_token())
 
