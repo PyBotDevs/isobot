@@ -18,6 +18,7 @@ from discord import ApplicationContext, option
 from discord.ext import commands, tasks
 from discord.ext.commands import *
 from threading import Thread
+from economy import get_wallet, get_bank, new_bank, new_wallet
 
 # Slash option types:
 # Just use variable types to define option types.
@@ -50,7 +51,7 @@ def save():
     with open('database/special/new_years_2022.json', 'w+') as f: json.dump(presents, f, indent=4)  # Temp
 
 def get_user_networth(user_id:int):
-    nw = currency["wallet"][str(user_id)] + currency["bank"][str(user_id)]
+    nw = get_wallet(user_id) + get_bank(user_id)
     #for e in items[str(user_id)]:
     #    if e != 0: nw += shopitem[e]["sell price"]
     return nw
@@ -149,8 +150,8 @@ __________________________________________________""")
 
 @client.event
 async def on_message(ctx):
-    if str(ctx.author.id) not in currency['wallet']: currency['wallet'][str(ctx.author.id)] = 5000
-    if str(ctx.author.id) not in currency['bank']: currency['bank'][str(ctx.author.id)] = 0
+    new_wallet(ctx.author.id)
+    new_bank(ctx.author.id)
     if str(ctx.guild.id) not in warnings: warnings[str(ctx.guild.id)] = {}
     if str(ctx.author.id) not in warnings[str(ctx.guild.id)]: warnings[str(ctx.guild.id)][str(ctx.author.id)] = []
     if str(ctx.author.id) not in items: items[str(ctx.author.id)] = {}
@@ -427,8 +428,8 @@ async def profile(ctx:  ApplicationContext, user: discord.User = None):
     localembed = discord.Embed(title=f"{user.display_name}'s isobot stats", color=color)
     localembed.set_thumbnail(url=user.avatar_url)
     localembed.add_field(name="Level", value=f"Level {levels[str(user.id)]['level']} ({levels[str(user.id)]['xp']} XP)", inline=False)
-    localembed.add_field(name="Balance in Wallet", value=f"{currency['wallet'][str(user.id)]} coins", inline=True)
-    localembed.add_field(name="Balance in Bank Account", value=f"{currency['bank'][str(user.id)]} coins", inline=True)
+    localembed.add_field(name="Balance in Wallet", value=f"{get_wallet(user.id)} coins", inline=True)
+    localembed.add_field(name="Balance in Bank Account", value=f"{get_bank(user.id)} coins", inline=True)
     localembed.add_field(name="Net-Worth", value=f"{get_user_networth(user.id)} coins", inline=True)
     # More stats will be added later
     # Maybe I should make a userdat system for collecting statistical data to process and display here, coming in a future update.
