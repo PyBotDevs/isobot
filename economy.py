@@ -52,6 +52,31 @@ def save():
     with open(f"{wdir}/database/currency.json", 'w+') as f: json.dump(currency, f, indent=4)
     with open(f"{wdir}/database/items.json", 'w+') as f: json.dump(items, f, indent=4)
 
+# Functions
+def get_user_networth(user_id:int):
+    nw = currency["wallet"][str(user_id)] + currency["bank"][str(user_id)]
+    #for e in items[str(user_id)]:
+    #    if e != 0: nw += shopitem[e]["sell price"]
+    return nw
+
+def get_wallet(id: int) -> int:
+    return currency['wallet'][str(id)]
+
+def get_bank(id: int) -> int:
+    return currency['bank'][str(id)]
+
+def new_wallet(id: int):
+    if str(id) not in currency['wallet']: 
+        currency['wallet'][str(id)] = 5000
+        return 0
+    else: return 1
+    
+def new_bank(id: int):
+    if str(id) not in currency['bank']: 
+        currency['bank'][str(id)] = 0
+        return 0
+    else: return 1
+    
 # Commands
 class Economy(commands.Cog):
     def __init__(self, bot):
