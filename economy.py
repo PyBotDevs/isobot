@@ -568,7 +568,7 @@ class Economy(commands.Cog):
     async def withdraw(self, ctx: ApplicationContext, amount):
         recache()
         if not amount.isdigit():
-            if str(amount) == "max": amount = currency["wallet"][str(ctx.author.id)]
+            if str(amount) == "max": amount = currency["bank"][str(ctx.author.id)]
             else: return await ctx.respond("The amount must be a number, or `max`.", ephemeral=True)
         elif currency['bank'] == 0: return await ctx.respond('You don\'t have anything in your bank account.', ephemeral=True)
         elif int(amount) <= 0: return await ctx.respond('The amount to withdraw must be more than `0` coins!', ephemeral=True)
