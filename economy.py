@@ -570,7 +570,7 @@ class Economy(commands.Cog):
         if not amount.isdigit():
             if str(amount) == "max": amount = currency["bank"][str(ctx.author.id)]
             else: return await ctx.respond("The amount must be a number, or `max`.", ephemeral=True)
-        elif currency['bank'] == 0: return await ctx.respond('You don\'t have anything in your bank account.', ephemeral=True)
+        elif currency['bank'][str(ctx.author.id)] == 0: return await ctx.respond('You don\'t have anything in your bank account.', ephemeral=True)
         elif int(amount) <= 0: return await ctx.respond('The amount to withdraw must be more than `0` coins!', ephemeral=True)
         elif int(amount) > currency["bank"][str(ctx.author.id)]: return await ctx.respond('The amount to withdraw must not be more than what you have in your bank account!', ephemeral=True)
         currency["wallet"][str(ctx.author.id)] += int(amount)
