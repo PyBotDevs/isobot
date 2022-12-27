@@ -423,7 +423,6 @@ async def embedbuilder(ctx: ApplicationContext, title: str, description: str, im
 )
 @option(name="user", description="Whose isobot profile do you want to view?", type=discord.User, default=None)
 async def profile(ctx:  ApplicationContext, user: discord.User = None):
-    recache()
     if user == None: user = ctx.author
     localembed = discord.Embed(title=f"{user.display_name}'s isobot stats", color=color)
     localembed.set_thumbnail(url=user.avatar_url)
