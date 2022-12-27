@@ -373,9 +373,35 @@ async def inventory(ctx: ApplicationContext, user:discord.User = None):
     if not plugins.economy: return
     if user == None: user = ctx.author
     localembed = discord.Embed(title=f'{user.display_name}\'s Inventory')
-    localembed.add_field(name='Utility', value=f'Hunting Rifle `ID: rifle`: {items[str(user.id)]["rifle"]}\nFishing Rod `ID: fishingpole`: {items[str(user.id)]["fishingpole"]}\nShovel `ID: shovel`: {items[str(user.id)]["shovel"]}', inline=False)
-    localembed.add_field(name='Sellables', value=f'Rock `ID: rock`: {items[str(user.id)]["rock"]}\nAnt `ID: ant`: {items[str(user.id)]["ant"]}\nStickbug `ID: stickbug`: {items[str(user.id)]["stickbug"]}\nSkunk `ID: skunk`: {items[str(user.id)]["skunk"]}\nBoar `ID: boar`: {items[str(user.id)]["boar"]}\nDeer `ID: deer`: {items[str(user.id)]["deer"]}\nDragon `ID: dragon`: {items[str(user.id)]["dragon"]}\nGold `ID: gold`: {items[str(user.id)]["gold"]}', inline=False)
-    localembed.add_field(name='Power-ups', value=f'Binoculars `ID: binoculars`: {items[str(user.id)]["binoculars"]}', inline=False)
+    filtered_utility_items = list()
+    filtered_sellables = list()
+    filtered_powerups = list()
+    filtered_lootboxes = list()
+    parsed_utility_items = str()
+    parsed_sellables = str()
+    parsed_powerups = str()
+    parsed_lootboxes = str()
+    for x in shopitem:
+        if x['collection'] == "utility": filtered_utility_items.append(x)
+        elif x['collection'] == "sellable": filtered_sellables.append(x)
+        elif x['collection'] == "power-up": filtered_powerups.append(x)
+        elif x['collection'] == "lootbox": filtered_lootboxes.append(x)
+    for g in filtered_utility_items:
+        if items[str(ctx.author.id)][g] != 0:
+            parsed_utility_items += f"{shopitem[g]['stylized name']} `ID: {g}`: {items[str(user.id)][g]}\n"
+    for g in filtered_sellables:
+        if items[str(ctx.author.id)][g] != 0:
+            parsed_sellables += f"{shopitem[g]['stylized name']} `ID: {g}`: {items[str(user.id)][g]}\n"
+    for g in filtered_powerups:
+        if items[str(ctx.author.id)][g] != 0:
+            parsed_powerups += f"{shopitem[g]['stylized name']} `ID: {g}`: {items[str(user.id)][g]}\n"
+    for g in filtered_lootboxes:
+        if items[str(ctx.author.id)][g] != 0:
+            parsed_lootboxes += f"{shopitem[g]['stylized name']} `ID: {g}`: {items[str(user.id)][g]}\n"
+    if parsed_utility_items != "": localembed.add_field(name='Utility', value=parsed_utility_items, inline=False)
+    if parsed_sellables != "": localembed.add_field(name='Sellables', value=parsed_sellables, inline=False)
+    if parsed_powerups != "": localembed.add_field(name='Power-ups', value=parsed_powerups, inline=False)
+    if parsed_lootboxes != "": localembed.add_field(name='Power-ups', value=parsed_lootboxes, inline=False)
     await ctx.respond(embed=localembed)
 
 @client.slash_command(
