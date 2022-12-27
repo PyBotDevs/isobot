@@ -29,7 +29,6 @@ client = discord.Bot()
 color = discord.Color.random()
 wdir = os.getcwd()
 reddit = praw.Reddit(client_id='_pazwWZHi9JldA', client_secret='1tq1HM7UMEGIro6LlwtlmQYJ1jB4vQ', user_agent='idk', check_for_async=False)
-with open('database/currency.json', 'r') as f: currency = json.load(f)
 with open('database/warnings.json', 'r') as f: warnings = json.load(f)
 with open('database/items.json', 'r') as f: items = json.load(f)
 with open('config/shop.json', 'r') as f: shopitem = json.load(f)
@@ -43,7 +42,6 @@ with open('database/special/new_years_2022.json', 'r') as f: presents = json.loa
 #Pre-Initialization Commands
 def timenow(): datetime.datetime.now().strftime("%H:%M:%S")
 def save():
-    with open('database/currency.json', 'w+') as f: json.dump(currency, f, indent=4)
     with open('database/warnings.json', 'w+') as f: json.dump(warnings, f, indent=4)
     with open('database/items.json', 'w+') as f: json.dump(items, f, indent=4)
     with open('database/presence.json', 'w+') as f: json.dump(presence, f, indent=4)
