@@ -300,7 +300,6 @@ async def whoami(ctx: ApplicationContext, user: discord.User=None):
 async def sync(ctx: ApplicationContext):
     if ctx.author.id != 738290097170153472: return await ctx.respond('Sorry, this command is only for my developer\'s use.')
     try:
-        with open('database/currency.json', 'r') as f: currency = json.load(f)
         with open('database/warnings.json', 'r') as f: warnings = json.load(f)
         with open('database/items.json', 'r') as f: items = json.load(f)
         with open('config/shop.json', 'r') as f: shopitem = json.load(f)
