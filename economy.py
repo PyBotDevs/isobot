@@ -15,6 +15,11 @@ with open(f"{wdir}/database/currency.json", 'r') as f: currency = json.load(f)
 with open(f"{wdir}/database/items.json", 'r') as f: items = json.load(f)
 with open(f"{wdir}/config/shop.json", 'r') as f: shopitem = json.load(f)
 
+def recache():
+    "Replaces the cached databases with new data fetched directly from the database files. Useful if using a multi-cog setup."
+    with open(f"{wdir}/database/currency.json", 'r') as f: currency = json.load(f)
+    with open(f"{wdir}/database/items.json", 'r') as f: items = json.load(f)
+
 def save():
     with open(f"{wdir}/database/currency.json", 'w+') as f: json.dump(currency, f, indent=4)
     with open(f"{wdir}/database/items.json", 'w+') as f: json.dump(items, f, indent=4)
@@ -31,6 +36,7 @@ class Economy(commands.Cog):
     @option(name="lootbox", description="What lootbox do you want to open?", type=str, choices=["normal lootbox", "large lootbox", "special lootbox"])
     @option(name="amount", description="How many do you want to open?", type=int)
     async def openlootbox(self, ctx: ApplicationContext, lootbox:str, amount:int):
+        recache()
         types = ["normal lootbox", "large lootbox", "special lootbox"]
         if amount <= 0: return await ctx.respond("You can't open 0 or below lootboxes! Don't be stupid.", ephemeral=True)
         if lootbox not in types: return await ctx.respond(f"wtf is {lootbox}?", ephemeral=True)
@@ -86,6 +92,7 @@ class Economy(commands.Cog):
     )
     @commands.cooldown(1, 15, commands.BucketType.user)
     async def beg(self, ctx: ApplicationContext):
+        recache()
         names = [
             "A random person",
             "Your friend",
@@ -133,6 +140,7 @@ class Economy(commands.Cog):
     )
     @commands.cooldown(1, 43200, commands.BucketType.user)
     async def daily(self, ctx: ApplicationContext):
+        recache()
         currency['wallet'][str(ctx.author.id)] += 10000
         save()
         await ctx.respond(f'You claimed 10000 coins from the daily reward. Check back in 24 hours for your next one!')
@@ -143,6 +151,7 @@ class Economy(commands.Cog):
     )
     @commands.cooldown(1, 302400, commands.BucketType.user)
     async def weekly(self, ctx: ApplicationContext):
+        recache()
         currency['wallet'][str(ctx.author.id)] += 45000
         save()
         await ctx.respond(f'You claimed 45000 coins from the weekly reward. Check back in 7 days for your next one!')
@@ -153,6 +162,7 @@ class Economy(commands.Cog):
     )
     @commands.cooldown(1, 1339200, commands.BucketType.user)
     async def monthly(self, ctx: ApplicationContext):
+        recache()
         currency['wallet'][str(ctx.author.id)] += 1000000
         save()
         await ctx.respond(f'You claimed 1000000 coins from the monthly reward. Check back in 1 month for your next one!')
@@ -164,6 +174,7 @@ class Economy(commands.Cog):
     @option(name="user", description="Who do you want to rob?", type=discord.User)
     @commands.cooldown(1, 60, commands.BucketType.user)
     async def rob(self, ctx: ApplicationContext, user:discord.User):
+        recache()
         if currency['wallet'][str(user.id)] < 5000: return await ctx.respond('They has less than 5000 coins on them. Don\'t waste your time...') 
         elif currency['wallet'][str(ctx.author.id)] < 5000: return await ctx.respond('You have less than 5k coins in your wallet. Play fair dude.')
         if randint(1, 100) <= 50:
@@ -185,6 +196,7 @@ class Economy(commands.Cog):
     @option(name="user", description="Whose bank account do you want to raid?", type=discord.User)
     @commands.cooldown(1, (60*5), commands.BucketType.user)
     async def bankrob(self, ctx: ApplicationContext, user:discord.User):
+        recache()
         if currency['wallet'][str(user.id)] < 10000: return await ctx.respond('You really want to risk losing your life to a poor person? (imagine robbing someone with < 10k net worth)')
         elif currency['wallet'][str(ctx.author.id)] < 10000: return await ctx.respond('You have less than 10k in your wallet. Don\'t be greedy.')
         if randint(1, 100) <= 20:
@@ -203,6 +215,7 @@ class Economy(commands.Cog):
     )
     @commands.cooldown(1, 30, commands.BucketType.user)
     async def hunt(self, ctx: ApplicationContext):
+        recache()
         if items[str(ctx.author.id)]['rifle'] == 0: return await ctx.respond('I\'d hate to see you hunt with your bare hands. Please buy a hunting rifle from the shop. ||/buy rifle||')
         loot = ['rock', 'ant', 'skunk', 'boar', 'deer', 'dragon', 'nothing', 'died']
         choice = random.choice(loot)
@@ -212,7 +225,7 @@ class Economy(commands.Cog):
             save()
         elif (choice == "nothing"): await ctx.respond('You found absolutely **nothing** while hunting.')
         elif (choice == "died"):
-            currency[str(ctx.author.id)]['wallet'] -= 1000
+            currency['wallet'][str(ctx.author.id)] -= 1000
             save()
             await ctx.respond('Stupid, you died while hunting and lost 1000 coins...')
 
@@ -222,6 +235,7 @@ class Economy(commands.Cog):
     )
     @commands.cooldown(1, 45, commands.BucketType.user)
     async def fish(self, ctx: ApplicationContext):
+        recache()
         if (items[str(ctx.author.id)]['fishingpole'] == 0): return await ctx.respond('I don\'t think you can fish with your bare hands... or you can just put yo hands in the water bro **giga chad moment**\nAnyway it\'s just better to buy a fishing pole from the shop. ||/buy fishingpole||')
         loot = ['shrimp', 'fish', 'rare fish', 'exotic fish', 'jellyfish', 'shark', 'nothing']
         choice = random.choice(loot)
@@ -237,6 +251,7 @@ class Economy(commands.Cog):
     )
     @commands.cooldown(1, 45, commands.BucketType.user)
     async def dig(self, ctx: ApplicationContext):
+        recache()
         if (items[str(ctx.author.id)]['shovel'] == 0): return await ctx.respond('You\'re too good to have to dig with your bare hands..... at least I hope so. Please buy a shovel from the shop. ||/buy shovel||')
         loot = [
             'coins',
