@@ -51,16 +51,6 @@ def save():
     with open('database/automod.json', 'w+') as f: json.dump(automod_config, f, indent=4)
     with open('database/special/new_years_2022.json', 'w+') as f: json.dump(presents, f, indent=4)  # Temp
 
-def recache():
-    with open('database/currency.json', 'r') as f: currency = json.load(f)
-    with open('database/warnings.json', 'r') as f: warnings = json.load(f)
-    with open('database/items.json', 'r') as f: items = json.load(f)
-    with open('database/presence.json', 'r') as f: presence = json.load(f)
-    with open('database/levels.json', 'r') as f: levels = json.load(f)
-    with open('database/automod.json', 'r') as f: automod_config = json.load(f)
-
-    with open('database/special/new_years_2022.json', 'r') as f: presents = json.load(f)  # Temp
-
 def get_user_networth(user_id:int):
     nw = currency["wallet"][str(user_id)] + currency["bank"][str(user_id)]
     #for e in items[str(user_id)]:
