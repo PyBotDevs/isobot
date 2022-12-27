@@ -342,7 +342,7 @@ async def status(ctx: ApplicationContext):
     sys_ram = str(f"{psutil.virtual_memory()[2]}GiB")
     sys_cpu = str(f"{psutil.cpu_percent(1)}%")
     bot_users = 0
-    for x in currency["wallet"].keys(): bot_users += 1
+    for x in levels.keys(): bot_users += 1
     localembed = discord.Embed(title="Client Info")
     localembed.add_field(name="OS Name", value=os_name)
     localembed.add_field(name="RAM Available", value=sys_ram)
