@@ -382,10 +382,10 @@ async def inventory(ctx: ApplicationContext, user:discord.User = None):
     parsed_powerups = str()
     parsed_lootboxes = str()
     for x in shopitem:
-        if x['collection'] == "utility": filtered_utility_items.append(x)
-        elif x['collection'] == "sellable": filtered_sellables.append(x)
-        elif x['collection'] == "power-up": filtered_powerups.append(x)
-        elif x['collection'] == "lootbox": filtered_lootboxes.append(x)
+        if shopitem[x]['collection'] == "utility": filtered_utility_items.append(x)
+        elif shopitem[x]['collection'] == "sellable": filtered_sellables.append(x)
+        elif shopitem[x]['collection'] == "power-up": filtered_powerups.append(x)
+        elif shopitem[x]['collection'] == "lootbox": filtered_lootboxes.append(x)
     for g in filtered_utility_items:
         if items[str(user.id)][g] != 0:
             parsed_utility_items += f"{shopitem[g]['stylized name']} `ID: {g}`: {items[str(user.id)][g]}\n"
