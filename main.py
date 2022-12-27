@@ -51,6 +51,16 @@ def save():
     with open('database/automod.json', 'w+') as f: json.dump(automod_config, f, indent=4)
     with open('database/special/new_years_2022.json', 'w+') as f: json.dump(presents, f, indent=4)  # Temp
 
+def recache():
+    with open('database/currency.json', 'r') as f: currency = json.load(f)
+    with open('database/warnings.json', 'r') as f: warnings = json.load(f)
+    with open('database/items.json', 'r') as f: items = json.load(f)
+    with open('database/presence.json', 'r') as f: presence = json.load(f)
+    with open('database/levels.json', 'r') as f: levels = json.load(f)
+    with open('database/automod.json', 'r') as f: automod_config = json.load(f)
+
+    with open('database/special/new_years_2022.json', 'r') as f: presents = json.load(f)  # Temp
+
 def get_user_networth(user_id:int):
     nw = currency["wallet"][str(user_id)] + currency["bank"][str(user_id)]
     #for e in items[str(user_id)]:
@@ -262,6 +272,7 @@ async def help(ctx: ApplicationContext, command:str=None):
 )
 @option(name="user", description="Which user do you want to view information on?", type=discord.User, default=None)
 async def balance(ctx: ApplicationContext, user=None):
+    recache()
     try:
         if user == None: user = ctx.author
         try:
@@ -273,202 +284,6 @@ async def balance(ctx: ApplicationContext, user=None):
             await ctx.respond(embed=e)
         except: await ctx.respond('Looks like that user is not indexed in our server. Try again later.', ephemeral=True)
     except Exception as e: await ctx.respond(f'An error occured: `{e}`. This has automatically been reported to the devs.')
-
-@client.slash_command(
-    name='deposit',
-    description='Deposits a specified amount of cash into the bank.'
-)
-@option(name="amount", description="Specify an amount to deposit (use 'max' for everything)", type=str)
-async def deposit(ctx: ApplicationContext, amount):
-    if plugins.economy:
-        if not amount.isdigit():
-            if str(amount) == "max": amount = currency["wallet"][str(ctx.author.id)]
-            else: return await ctx.respond("The amount must be a number, or `max`.", ephemeral=True)
-        elif currency['bank'] == 0: return await ctx.respond('You don\'t have anything in your bank account.', ephemeral=True)
-        elif int(amount) <= 0: return await ctx.respond('The amount to deposit must be more than `0` coins!', ephemeral=True)
-        elif int(amount) > currency["wallet"][str(ctx.author.id)]: return await ctx.respond('The amount to deposit must not be more than what you have in your wallet!', ephemeral=True)
-        currency["wallet"][str(ctx.author.id)] -= int(amount)
-        currency["bank"][str(ctx.author.id)] += int(amount)
-        localembed = discord.Embed(title="Deposit successful", description=f"You deposited `{amount}` coin(s) to your bank account.", color=color)
-        localembed.add_field(name="You previously had", value=f"`{currency['bank'][str(ctx.author.id)]} coins` in your bank account")
-        localembed.add_field(name="Now you have", value=f"`{currency['bank'][str(ctx.author.id)] + amount} coins` in your bank account")
-        await ctx.respond(embed=localembed)
-        save()
-
-@client.slash_command(
-    name='withdraw',
-    description='Withdraws a specified amount of cash from the bank.'
-)
-@option(name="amount", description="Specify an amount to withdraw (use 'max' for everything)", type=str)
-async def withdraw(ctx: ApplicationContext, amount):
-    if plugins.economy:
-        if not amount.isdigit():
-            if str(amount) == "max": amount = currency["wallet"][str(ctx.author.id)]
-            else: return await ctx.respond("The amount must be a number, or `max`.", ephemeral=True)
-        elif currency['bank'] == 0: return await ctx.respond('You don\'t have anything in your bank account.', ephemeral=True)
-        elif int(amount) <= 0: return await ctx.respond('The amount to withdraw must be more than `0` coins!', ephemeral=True)
-        elif int(amount) > currency["bank"][str(ctx.author.id)]: return await ctx.respond('The amount to withdraw must not be more than what you have in your bank account!', ephemeral=True)
-        currency["wallet"][str(ctx.author.id)] += int(amount)
-        currency["bank"][str(ctx.author.id)] -= int(amount)
-        localembed = discord.Embed(title="Withdraw successful", description=f"You withdrew `{amount}` coin(s) from your bank account.", color=color)
-        localembed.add_field(name="You previously had", value=f"`{currency['wallet'][str(ctx.author.id)]} coins` in your wallet")
-        localembed.add_field(name="Now you have", value=f"`{currency['wallet'][str(ctx.author.id)] + amount} coins` in your wallet")
-        await ctx.respond(embed=localembed)
-        await ctx.respond(f'You withdrew `{amount}` coin(s) from your bank account.')
-        save()
-
-@client.slash_command(
-    name='work',
-    description='Work for a 30-minute shift and earn cash.'
-)
-@commands.cooldown(1, 1800, commands.BucketType.user)
-async def work(ctx: ApplicationContext):
-    if plugins.economy:
-        i = randint(10000, 20000)
-        currency['wallet'][str(ctx.author.id)] += i
-        save()
-        await ctx.respond(f'{ctx.author.mention} worked for a 30-minute shift and earned {i} coins.')
-
-@client.slash_command(
-    name='scout', 
-    description='Scouts your area for coins'
-)
-@commands.cooldown(1, 30, commands.BucketType.user)
-async def scout(ctx: ApplicationContext):
-    if not plugins.economy: return
-    chance = randint(1, 100)
-    if (randint(1, 100) <= 90):
-        x = randint(550, 2000)
-        if items[str(ctx.author.id)]['binoculars'] >= 1:
-            x *= 1.425
-            x = floor(x)
-        else: pass
-        currency["wallet"][str(ctx.author.id)] += x
-        save()
-        await ctx.respond(embed=discord.Embed(title='What you found', description=f'You searched your area and found {x} coin(s)!'))
-    else: await ctx.respond(embed=discord.Embed(title='What you found', description='Unfortunately no coins for you :('))
-
-@client.slash_command(
-    name='give',
-    description='Gives any amount of cash to someone else'
-)
-@option(name="user", description="Who do you want to give cash to?", type=discord.User)
-@option(name="amount", description="How much do you want to give?", type=int)
-async def give(ctx: ApplicationContext, user:discord.User, amount:int):
-    if not plugins.economy: return
-    if amount <= 0: return await ctx.respond('The amount you want to give must be greater than `0` coins!', ephemeral=True)
-    if amount > int(currency['wallet'][str(ctx.author.id)]): return await ctx.respond('You don\'t have enough coins in your wallet to do this.', ephemeral=True)
-    else:
-        currency['wallet'][str(ctx.author.id)] -= amount
-        currency['wallet'][str(user.id)] += amount
-        save()
-        await ctx.respond(f':gift: {ctx.author.mention} just gifted {amount} coin(s) to {user.display_name}!')
-
-@client.slash_command(
-    name='inventory', 
-    description='Shows the items you (or someone else) own'
-)
-@option(name="user", description="Whose inventory you want to view?", type=discord.User, default=None)
-async def inventory(ctx: ApplicationContext, user:discord.User = None):
-    if not plugins.economy: return
-    if user == None: user = ctx.author
-    localembed = discord.Embed(title=f'{user.display_name}\'s Inventory')
-    filtered_utility_items = list()
-    filtered_sellables = list()
-    filtered_powerups = list()
-    filtered_lootboxes = list()
-    parsed_utility_items = str()
-    parsed_sellables = str()
-    parsed_powerups = str()
-    parsed_lootboxes = str()
-    for x in shopitem:
-        if shopitem[x]['collection'] == "utility": filtered_utility_items.append(x)
-        elif shopitem[x]['collection'] == "sellable": filtered_sellables.append(x)
-        elif shopitem[x]['collection'] == "power-up": filtered_powerups.append(x)
-        elif shopitem[x]['collection'] == "lootbox": filtered_lootboxes.append(x)
-    for g in filtered_utility_items:
-        if items[str(user.id)][g] != 0:
-            parsed_utility_items += f"{shopitem[g]['stylized name']} `ID: {g}`: {items[str(user.id)][g]}\n"
-    for g in filtered_sellables:
-        if items[str(user.id)][g] != 0:
-            parsed_sellables += f"{shopitem[g]['stylized name']} `ID: {g}`: {items[str(user.id)][g]}\n"
-    for g in filtered_powerups:
-        if items[str(user.id)][g] != 0:
-            parsed_powerups += f"{shopitem[g]['stylized name']} `ID: {g}`: {items[str(user.id)][g]}\n"
-    for g in filtered_lootboxes:
-        if items[str(user.id)][g] != 0:
-            parsed_lootboxes += f"{shopitem[g]['stylized name']} `ID: {g}`: {items[str(user.id)][g]}\n"
-    if parsed_utility_items != "": localembed.add_field(name='Utility', value=parsed_utility_items, inline=False)
-    if parsed_sellables != "": localembed.add_field(name='Sellables', value=parsed_sellables, inline=False)
-    if parsed_powerups != "": localembed.add_field(name='Power-ups', value=parsed_powerups, inline=False)
-    if parsed_lootboxes != "": localembed.add_field(name='Power-ups', value=parsed_lootboxes, inline=False)
-    await ctx.respond(embed=localembed)
-
-@client.slash_command(
-    name='shop',
-    description='Views and buys items from the shop'
-)
-@option(name="item", description="Specify an item to view.", type=str, default=None, choices=all_item_ids)
-async def shop(ctx: ApplicationContext, item:str=None):
-    if not plugins.economy: return
-    if item == None:
-        localembed = discord.Embed(
-            title='The Shop!', 
-            description='**Tools**\n\n1) Hunting Rifle `ID: rifle`: A tool used for hunting animals. (10000 coins)\n2) Fishing Pole `ID: fishingpole`: A tool used for fishing. It lets you use /fish command. (6500 coins)\n3) Shovel `ID: shovel`: You can use this tool to dig stuff from the ground. (3000 coins)\n4) Binoculars `ID: binoculars`: Try scouting with these binoculars, maybe you can find more with it. (14850 coins)'
-        )
-        localembed.set_footer(text='Page 1 | Tools | This command is in development. More items will be added soon!')
-        await ctx.respond(embed=localembed)
-    else:
-        try:
-            localembed = discord.Embed(
-                title=shopitem[item]['stylized name'],
-                description=shopitem[item]['description']
-            )
-            localembed.add_field(name='Buying price', value=shopitem[item]['buy price'], inline=True)
-            localembed.add_field(name='Selling price', value=shopitem[item]['sell price'], inline=True)
-            localembed.add_field(name='In-store', value=shopitem[item]['available'], inline=True)
-            localembed.add_field(name='ID', value=f'`{item}`', inline=True)
-            await ctx.respond(embed=localembed)
-        except KeyError: await ctx.respond('That item isn\'t in the shop, do you are have stupid?')
-
-@client.slash_command(
-    name='buy',
-    description='Buys an item from the shop'
-)
-@option(name="name", description="What do you want to buy?", type=str, choices=all_item_ids)
-@option(name="quantity", description="How many do you want to buy?", type=int, default=1)
-async def buy(ctx: ApplicationContext, name: str, quantity: int=1):
-    if not plugins.economy: return
-    try:
-        amt = shopitem[name]['buy price'] * quantity
-        if (currency['wallet'][str(ctx.author.id)] < amt): return await ctx.respond('You don\'t have enough balance to buy this.')
-        if (shopitem[name]['available'] == False): return await ctx.respond('You can\'t buy this item **dood**')
-        if (quantity <= 0): return await ctx.respond('The specified quantity cannot be less than `1`!')
-        currency['wallet'][str(ctx.author.id)] -= int(amt)
-        items[str(ctx.author.id)][str(name)] += quantity
-        save()
-        await ctx.respond(embed=discord.Embed(title=f'You just bought {quantity} {shopitem[name]["stylized name"]}!', description='Thank you for your purchase.', color=discord.Color.green()))
-    except KeyError: await ctx.respond('That item doesn\'t exist.')
-
-@client.slash_command(
-    name='sell',
-    description='Sells an item from your inventory in exchange for cash'
-)
-@option(name="name", description="What do you want to sell?", type=str, choices=all_item_ids)
-@option(name="quantity", description="How many do you want to sell?", type=int, default=1)
-async def sell(ctx: ApplicationContext, name: str, quantity: int=1):
-    try:
-        if shopitem[name]["sellable"] != True: return await ctx.respond('Dumb, you can\'t sell this item.')
-        if quantity > items[str(ctx.author.id)][str(name)]: return await ctx.respond('You can\'t sell more than you have.')
-        items[str(ctx.author.id)][str(name)] -= quantity
-        ttl = shopitem[name]["sell price"]*quantity
-        currency["wallet"][str(ctx.author.id)] += int(ttl)
-        save()
-        localembed = discord.Embed(title='Item sold', description=f'You successfully sold {quantity} {name} for {ttl} coins!', color=color)
-        localembed.set_footer(text='Thank you for your business.')
-        await ctx.respond(embed=localembed)
-    except KeyError: await ctx.respond('what are you doing that item doesn\'t even exist')
-    except Exception as e: await ctx.respond(f'An error occured while processing this request. ```{e}```')
 
 @client.slash_command(
   name='echo',
@@ -551,51 +366,6 @@ async def stroketranslate(ctx: ApplicationContext, strok: str):
 async def prediction(ctx: ApplicationContext, question:str): await ctx.respond(f"My prediction is... **{random.choice(['Yes', 'No'])}!**")
 
 @client.slash_command(
-    name='donate',
-    description="Donate money to whoever you want"
-)
-@option(name="id", description="The ID of the user you are donating to", type=str)
-@option(name="amount", description="How much do you want to donate?", type=int)
-async def donate(ctx: ApplicationContext, id:str, amount):
-    if plugins.economy:
-        reciever_info = client.get_user(int(id))
-        if id not in currency["wallet"]: return await ctx.respond("Unfortunately, we couldn't find that user in our server. Try double-checking the ID you've provided.", ephemeral=True)
-        # Prevent self-donations
-        if id == ctx.author.id: return await ctx.respond("You can't donate to yourself stupid.", ephemeral=True)
-        # Check for improper amount argument values
-        if amount < 1: return await ctx.respond("The amount has to be greater than `1`!", ephemeral=True)
-        elif amount > 1000000000: return await ctx.respond("You can only donate less than 1 billion coins!", ephemeral=True)
-        elif amount > currency["wallet"][str(ctx.author.id)]: return await ctx.respond("You're too poor to be donating that much money lmao")
-        # If no improper values, proceed with donation
-        try:
-            currency["wallet"][str(id)] += amount
-            currency["wallet"][str(ctx.author.id)] -= amount
-            save()
-        except Exception as e: return await ctx.respond(e) 
-        localembed = discord.Embed(title="Donation Successful", description=f"You successfully donated {amount} coins to {reciever_info.name}!", color=discord.Color.green())
-        localembed.add_field(name="Your ID", value=ctx.author.id, inline=True)
-        localembed.add_field(name="Reciever's ID", value=id, inline=True)
-        localembed2 = discord.Embed(title="You Recieved a Donation!", description=f"{ctx.author} donated {amount} coins to you!", color=discord.Color.green())
-        localembed2.add_field(name="Their ID", value=ctx.author.id, inline=True)
-        localembed2.add_field(name="Your ID", value=id, inline=True)
-        await ctx.respond(embed=localembed)
-        await reciever_info.send(embed=localembed2)
-    
-@client.slash_command(
-    name='modify_balance',
-    description="Modifies user balance (Normal Digit: Adds Balance; Negative Digit: Removes Balance)"
-)
-@option(name="user", description="Specify the user to change their balance", type=discord.User)
-@option(name="modifier", description="Specify the balance to modify", type=int)
-async def modify_balance(ctx: ApplicationContext, user:discord.User, modifier:int):
-    if ctx.author.id != 738290097170153472: return ctx.respond("Sorry, but this command is only for my developer's use.", ephemeral=True)
-    try:
-        currency["wallet"][str(user.id)] += modifier
-        save()
-        await ctx.respond(f"{user.name}\'s balance has been modified by {modifier} coins.\n\n**New Balance:** {currency['wallet'][str(user.id)]} coins", ephemeral=True)
-    except KeyError: await ctx.respond("That user doesn't exist in the database.", ephemeral=True)
-
-@client.slash_command(
     name="status",
     description="Shows the current client info"
 )
@@ -614,33 +384,6 @@ async def status(ctx: ApplicationContext):
     localembed.add_field(name="Release Notes", value="[latest](https://github.com/PyBotDevs/isobot/releases/latest)")
     localembed.set_footer(text=f"Requested by {ctx.author.name}", icon_url=ctx.author.avatar_url)
     await ctx.respond(embed=localembed)
-
-@client.slash_command(
-    name="gift",
-    description="Gifts a (giftable) item to anyone you want"
-)
-@option(name="user", description="Who do you want to gift to?", type=discord.User)
-@option(name="item", description="What do you want to gift?", type=str, choices=all_item_ids)
-@option(name="amount", description="How many of these do you want to gift?", type=int, default=1)
-async def gift(ctx: ApplicationContext, user:discord.User, item:str, amount:int=1):
-    try:
-        if amount < 1: return await ctx.respond("You can't gift less than 1 of those!", ephemeral=True)
-        elif items[str(ctx.author.id)][item] < amount: return await ctx.respond("You don't have enough of those to gift!", ephemeral=True)
-        elif shopitem[item]["giftable"] == False: return await ctx.respond("You can't sell that item!", ephemeral=True)
-        items[str(user.id)][item] += amount
-        items[str(ctx.author.id)][item] -= amount
-        save()
-        localembed = discord.Embed(
-            title="Gift successful!",
-            description=f"You just gifted {amount} **{item}**s to {user.display_name}!",
-            color=discord.Color.green()
-        )
-        localembed.add_field(name="Now they have", value=f"**{items[str(user.id)][item]} {item}**s")
-        localembed.add_field(name="and you have", value=f"**{items[str(ctx.author.id)][item]} {item}**s")
-        await ctx.respond(embed=localembed)
-    except KeyError as e: 
-        utils.logger.error(e)
-        await ctx.respond(f"wtf is {item}?")
 
 # AFK System Commands
 afk_system = client.create_group("afk", "Commands for interacting with the built-in AFK system.")
@@ -683,25 +426,6 @@ async def afk_mod_remove(ctx: ApplicationContext, user:discord.User):
     except KeyError: return await ctx.respond("That user isn't AFK.", ephemeral=True)
 
 @client.slash_command(
-    name="autogrind",
-    description="Automatically grinds coins and items for you"
-)
-@commands.cooldown(1, 3600, commands.BucketType.user)
-async def autogrind(ctx: ApplicationContext):
-    await ctx.respond("Autogrind has started. Please check back in an hour for your rewards.")
-    await asyncio.sleep(3600)
-    coins_reward = randint(10000, 35000)
-    ie = shopitem.keys()
-    items_reward = [random.choice(list(ie)), random.choice(list(ie)), random.choice(list(ie))]
-    currency["wallet"][str(ctx.author.id)] += coins_reward
-    items[str(ctx.author.id)][items_reward[0]] += 1
-    items[str(ctx.author.id)][items_reward[1]] += 1
-    items[str(ctx.author.id)][items_reward[2]] += 1
-    save()
-    localembed = discord.Embed(title="Autogrind has completed!", description=f"**Your rewards**\n\nYou got **{coins_reward}** coins!\nYou got **1 {shopitem[items_reward[0]]['stylized name']}**!\nYou got **1 {shopitem[items_reward[1]]['stylized name']}**!\nYou got **1 {shopitem[items_reward[2]]['stylized name']}!**", color=discord.Color.green())
-    await ctx.author.send(embed = localembed)
-
-@client.slash_command(
     name="repo",
     description="Shows the open-source code links for isobot."
 )
@@ -725,24 +449,12 @@ async def embedbuilder(ctx: ApplicationContext, title: str, description: str, im
     await ctx.channel.send(embed=framework.isobot.embedengine.embed(title, description, image=image_url, thumbnail=thumbnail_url, color=color, footer_text=footer_text, footer_img=footer_icon_url))
 
 @client.slash_command(
-    name="networth",
-    description="Get your networth, or another user's networth"
-)
-@option(name="user", description="Whose networth do you want to find?", type=discord.User, default=None)
-async def networth(ctx: ApplicationContext, user: discord.User=None):
-    if user == None: user = ctx.author
-    try:
-        ntw = get_user_networth(user.id)
-        localembed = discord.Embed(name=f"{user.display_name}'s networth", description=f"{ntw} coins", color=color)
-        await ctx.respond(embed=localembed)
-    except KeyError: return await ctx.respond("Looks like that user isn't cached yet. Please try again later.", ephemeral=True)
-
-@client.slash_command(
     name="profile",
     description="Shows basic stats about your isobot profile, or someone else's profile stats"
 )
 @option(name="user", description="Whose isobot profile do you want to view?", type=discord.User, default=None)
 async def profile(ctx:  ApplicationContext, user: discord.User = None):
+    recache()
     if user == None: user = ctx.author
     localembed = discord.Embed(title=f"{user.display_name}'s isobot stats", color=color)
     localembed.set_thumbnail(url=user.avatar_url)
