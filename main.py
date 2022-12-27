@@ -483,6 +483,17 @@ async def leaderboard(ctx: ApplicationContext):
     localembed = discord.Embed(title="New Years Special Event global leaderboard", description=parsed_output, color=color)
     await ctx.respond(embed=localembed)
 
+@special_event.command(
+    name="stats",
+    description="See your current stats in the special in-game event."
+)
+@option(name="user", description="Who's event stats do you want to view?", type=discord.User, default=None)
+async def stats(ctx: ApplicationContext, user: discord.User):
+    if user == None: user = ctx.author
+    localembed = discord.Embed(title=f"{user.display_name}'s New Years Special Event stats", description="Event ends on **1st January 2023**.", color=color)
+    localembed.add_field(name=":gift: Presents", value=presents[str(user.id)], inline=True)
+    await ctx.respond(embed=localembed)
+
 # Initialization
 active_cogs = ["economy", "maths", "moderation", "reddit", "minigames", "automod", "isobank", "levelling"]
 i = 1
