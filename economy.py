@@ -607,6 +607,23 @@ class Economy(commands.Cog):
         if parsed_lootboxes != "": localembed.add_field(name='Power-ups', value=parsed_lootboxes, inline=False)
         await ctx.respond(embed=localembed)
 
+    @commands.slash_command(
+        name='balance', 
+        description='Shows your own or another user\'s balance.'
+    )
+    @option(name="user", description="Which user do you want to view information on?", type=discord.User, default=None)
+    async def balance(self, ctx: ApplicationContext, user=None):
+        try:
+            if user == None: user = ctx.author
+            try:
+                e = discord.Embed(title=f'{user.display_name}\'s balance', color=color)
+                e.add_field(name='Cash in wallet', value=f'{currency["wallet"][str(user.id)]} coin(s)', inline=True)
+                e.add_field(name='Cash in bank account', value=f'{currency["bank"][str(user.id)]} coin(s)', inline=True)
+                e.add_field(name="Networth", value=f"{get_user_networth(user.id)} coin(s)", inline=True)
+                await ctx.respond(embed=e)
+            except: await ctx.respond('Looks like that user is not indexed in our server. Try again later.', ephemeral=True)
+        except Exception as e: await ctx.respond(f'An error occured: `{e}`. This has automatically been reported to the devs.')
+
 # Initialization
 def setup(bot):
     bot.add_cog(Economy(bot))
