@@ -4,7 +4,7 @@
         "buy price": 10000,
         "sell price": 5000,
         "description": "A tool used for hunting animals.",
-        "collection": null,
+        "collection": "utility",
         "available": true,
         "giftable": true,
         "sellable": true
@@ -14,7 +14,7 @@
         "buy price": 6500,
         "sell price": 3250,
         "description": "A tool used for fishing. It lets you use /fish command.",
-        "collection": null,
+        "collection": "utility",
         "available": true,
         "giftable": true,
         "sellable": true
@@ -24,7 +24,7 @@
         "buy price": 3000,
         "sell price": 1500,
         "description": "You can use this tool to dig stuff from the ground.",
-        "collection": null,
+        "collection": "utility",
         "available": true,
         "giftable": true,
         "sellable": true
@@ -34,7 +34,7 @@
         "buy price": 0,
         "sell price": 500,
         "description": "Literally just a rock. What do you think?",
-        "collection": null,
+        "collection": "sellable",
         "available": false,
         "giftable": true,
         "sellable": true
@@ -44,7 +44,7 @@
         "buy price": 0,
         "sell price": 800,
         "description": "A puny, little ant. You can find this while hunting.",
-        "collection": null,
+        "collection": "sellable",
         "available": false,
         "giftable": true,
         "sellable": true
@@ -54,7 +54,7 @@
         "buy price": 0,
         "sell price": 1000,
         "description": "Just a small skunk. You can find this while hunting.",
-        "collection": null,
+        "collection": "sellable",
         "available": false,
         "giftable": true,
         "sellable": true
@@ -64,7 +64,7 @@
         "buy price": 0,
         "sell price": 5000,
         "description": "Just a boar. You can find this while hunting.",
-        "collection": null,
+        "collection": "sellable",
         "available": false,
         "giftable": true,
         "sellable": true
@@ -74,7 +74,7 @@
         "buy price": 0,
         "sell price": 10000,
         "description": "Just a deer. You can find this while hunting.",
-        "collection": null,
+        "collection": "sellable",
         "available": false,
         "giftable": true,
         "sellable": true
@@ -84,7 +84,7 @@
         "buy price": 0,
         "sell price": 50000,
         "description": "An absolute beast, sells for very high prices!",
-        "collection": null,
+        "collection": "sellable",
         "available": false,
         "giftable": true,
         "sellable": true
@@ -94,7 +94,7 @@
         "buy price": 0,
         "sell price": 1000,
         "description": "",
-        "collection": null,
+        "collection": "sellable",
         "available": false,
         "giftable": true,
         "sellable": true
@@ -104,7 +104,7 @@
         "buy price": 0,
         "sell price": 3542,
         "description": "",
-        "collection": null,
+        "collection": "sellable",
         "available": false,
         "giftable": true,
         "sellable": true
@@ -114,7 +114,7 @@
         "buy price": 0,
         "sell price": 6940,
         "description": "",
-        "collection": null,
+        "collection": "sellable",
         "available": false,
         "giftable": true,
         "sellable": true
@@ -124,7 +124,7 @@
         "buy price": 0,
         "sell price": 15250,
         "description": "",
-        "collection": null,
+        "collection": "sellable",
         "available": false,
         "giftable": true,
         "sellable": true
@@ -134,7 +134,7 @@
         "buy price": 0,
         "sell price": 45320,
         "description": "",
-        "collection": null,
+        "collection": "sellable",
         "available": false,
         "giftable": true,
         "sellable": true
@@ -144,7 +144,7 @@
         "buy price": 0,
         "sell price": 65980,
         "description": "",
-        "collection": null,
+        "collection": "sellable",
         "available": false,
         "giftable": true,
         "sellable": true
@@ -154,7 +154,7 @@
         "buy price": 14850,
         "sell price": 9800,
         "description": "Try scouting with this binoculars, maybe you can find more with it.",
-        "collection": null,
+        "collection": "power-up",
         "available": true,
         "giftable": true,
         "sellable": true
@@ -164,7 +164,7 @@
         "buy price": 0,
         "sell price": 0,
         "description": "A simple box that contains a small amount of items.",
-        "collection": null,
+        "collection": "lootbox",
         "available": false,
         "giftable": true,
         "sellable": false
@@ -174,7 +174,7 @@
         "buy price": 0,
         "sell price": 0,
         "description": "A larger box that contains more items inside.",
-        "collection": null,
+        "collection": "lootbox",
         "available": false,
         "giftable": true,
         "sellable": false
@@ -184,7 +184,7 @@
         "buy price": 0,
         "sell price": 0,
         "description": "A nice looking lootbox that contains rare items.",
-        "collection": null,
+        "collection": "lootbox",
         "available": false,
         "giftable": true,
         "sellable": false
@@ -194,7 +194,7 @@
         "buy price": 0,
         "sell price": 1000,
         "description": "Found by digging the area. This is meant to be sold, not to be used.",
-        "collection": null,
+        "collection": "sellable",
         "available": false,
         "giftable": true,
         "sellable": true
@@ -204,7 +204,7 @@
         "buy price": 15835,
         "sell price": 11520,
         "description": "Found by digging the area. You can flex this to people who can't afford it, or you can sell it, or you can even trade it... the possibilities are endless......",
-        "collection": null,
+        "collection": "sellable",
         "available": true,
         "giftable": true,
         "sellable": true
@@ -214,7 +214,7 @@
         "buy price": 15000,
         "sell price": 10000,
         "description": "Give money to the poor and needy!",
-        "collection": null,
+        "collection": "power-up",
         "available": true,
         "giftable": true,
         "sellable": true
