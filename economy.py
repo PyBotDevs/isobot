@@ -212,7 +212,7 @@ class Economy(commands.Cog):
             save()
         elif (choice == "nothing"): await ctx.respond('You found absolutely **nothing** while hunting.')
         elif (choice == "died"):
-            currency[str(ctx.author.id)]['wallet'] -= 1000
+            currency['wallet'][str(ctx.author.id)] -= 1000
             save()
             await ctx.respond('Stupid, you died while hunting and lost 1000 coins...')
 
