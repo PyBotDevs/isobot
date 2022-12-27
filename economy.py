@@ -26,13 +26,6 @@ class ShopData:
         for h in self.config: json_list.append(str(h["stylized name"]))
         return json_list
 
-# Functions
-def get_user_networth(user_id:int):
-    nw = currency["wallet"][str(user_id)] + currency["bank"][str(user_id)]
-    #for e in items[str(user_id)]:
-    #    if e != 0: nw += shopitem[e]["sell price"]
-    return nw
-
 # Variables
 wdir = os.getcwd()
 color = discord.Color.random()
