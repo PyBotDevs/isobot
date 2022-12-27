@@ -387,16 +387,16 @@ async def inventory(ctx: ApplicationContext, user:discord.User = None):
         elif x['collection'] == "power-up": filtered_powerups.append(x)
         elif x['collection'] == "lootbox": filtered_lootboxes.append(x)
     for g in filtered_utility_items:
-        if items[str(ctx.author.id)][g] != 0:
+        if items[str(user.id)][g] != 0:
             parsed_utility_items += f"{shopitem[g]['stylized name']} `ID: {g}`: {items[str(user.id)][g]}\n"
     for g in filtered_sellables:
-        if items[str(ctx.author.id)][g] != 0:
+        if items[str(user.id)][g] != 0:
             parsed_sellables += f"{shopitem[g]['stylized name']} `ID: {g}`: {items[str(user.id)][g]}\n"
     for g in filtered_powerups:
-        if items[str(ctx.author.id)][g] != 0:
+        if items[str(user.id)][g] != 0:
             parsed_powerups += f"{shopitem[g]['stylized name']} `ID: {g}`: {items[str(user.id)][g]}\n"
     for g in filtered_lootboxes:
-        if items[str(ctx.author.id)][g] != 0:
+        if items[str(user.id)][g] != 0:
             parsed_lootboxes += f"{shopitem[g]['stylized name']} `ID: {g}`: {items[str(user.id)][g]}\n"
     if parsed_utility_items != "": localembed.add_field(name='Utility', value=parsed_utility_items, inline=False)
     if parsed_sellables != "": localembed.add_field(name='Sellables', value=parsed_sellables, inline=False)
