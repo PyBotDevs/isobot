@@ -17,6 +17,7 @@ import framework.isobot.currency, framework.isobot.colors, framework.isobank.aut
 from discord import ApplicationContext, option
 from discord.ext import commands
 from discord.ext.commands import *
+from economy import get_wallet, get_bank, new_bank, new_wallet
 
 # Slash option types:
 # Just use variable types to define option types.
@@ -28,7 +29,6 @@ client = discord.Bot()
 color = discord.Color.random()
 wdir = os.getcwd()
 reddit = praw.Reddit(client_id='_pazwWZHi9JldA', client_secret='1tq1HM7UMEGIro6LlwtlmQYJ1jB4vQ', user_agent='idk', check_for_async=False)
-with open('database/currency.json', 'r') as f: currency = json.load(f)
 with open('database/warnings.json', 'r') as f: warnings = json.load(f)
 with open('database/items.json', 'r') as f: items = json.load(f)
 with open('config/shop.json', 'r') as f: shopitem = json.load(f)
@@ -42,7 +42,6 @@ with open('database/special/new_years_2022.json', 'r') as f: presents = json.loa
 #Pre-Initialization Commands
 def timenow(): datetime.datetime.now().strftime("%H:%M:%S")
 def save():
-    with open('database/currency.json', 'w+') as f: json.dump(currency, f, indent=4)
     with open('database/warnings.json', 'w+') as f: json.dump(warnings, f, indent=4)
     with open('database/items.json', 'w+') as f: json.dump(items, f, indent=4)
     with open('database/presence.json', 'w+') as f: json.dump(presence, f, indent=4)
@@ -50,18 +49,8 @@ def save():
     with open('database/automod.json', 'w+') as f: json.dump(automod_config, f, indent=4)
     with open('database/special/new_years_2022.json', 'w+') as f: json.dump(presents, f, indent=4)  # Temp
 
-def recache():
-    with open('database/currency.json', 'r') as f: currency = json.load(f)
-    with open('database/warnings.json', 'r') as f: warnings = json.load(f)
-    with open('database/items.json', 'r') as f: items = json.load(f)
-    with open('database/presence.json', 'r') as f: presence = json.load(f)
-    with open('database/levels.json', 'r') as f: levels = json.load(f)
-    with open('database/automod.json', 'r') as f: automod_config = json.load(f)
-
-    with open('database/special/new_years_2022.json', 'r') as f: presents = json.load(f)  # Temp
-
 def get_user_networth(user_id:int):
-    nw = currency["wallet"][str(user_id)] + currency["bank"][str(user_id)]
+    nw = get_wallet(user_id) + get_bank(user_id)
     #for e in items[str(user_id)]:
     #    if e != 0: nw += shopitem[e]["sell price"]
     return nw
@@ -160,8 +149,8 @@ __________________________________________________""")
 
 @client.event
 async def on_message(ctx):
-    if str(ctx.author.id) not in currency['wallet']: currency['wallet'][str(ctx.author.id)] = 5000
-    if str(ctx.author.id) not in currency['bank']: currency['bank'][str(ctx.author.id)] = 0
+    new_wallet(ctx.author.id)
+    new_bank(ctx.author.id)
     if str(ctx.guild.id) not in warnings: warnings[str(ctx.guild.id)] = {}
     if str(ctx.author.id) not in warnings[str(ctx.guild.id)]: warnings[str(ctx.guild.id)][str(ctx.author.id)] = []
     if str(ctx.author.id) not in items: items[str(ctx.author.id)] = {}
@@ -266,25 +255,6 @@ async def help(ctx: ApplicationContext, command:str=None):
         await ctx.respond("Check your direct messages.", ephemeral=True)
 
 @client.slash_command(
-    name='balance', 
-    description='Shows your own or another user\'s balance.'
-)
-@option(name="user", description="Which user do you want to view information on?", type=discord.User, default=None)
-async def balance(ctx: ApplicationContext, user=None):
-    recache()
-    try:
-        if user == None: user = ctx.author
-        try:
-            e = discord.Embed(title=f'{user.display_name}\'s balance', color=color)
-            e.add_field(name="🎁 Presents", value=f'{presents[str(user.id)]} presents', inline=False)
-            e.add_field(name='Cash in wallet', value=f'{currency["wallet"][str(user.id)]} coin(s)', inline=True)
-            e.add_field(name='Cash in bank account', value=f'{currency["bank"][str(user.id)]} coin(s)', inline=True)
-            e.add_field(name="Networth", value=f"{get_user_networth(user.id)} coin(s)", inline=True)
-            await ctx.respond(embed=e)
-        except: await ctx.respond('Looks like that user is not indexed in our server. Try again later.', ephemeral=True)
-    except Exception as e: await ctx.respond(f'An error occured: `{e}`. This has automatically been reported to the devs.')
-
-@client.slash_command(
   name='echo',
   description='Sends a bot message in the channel'
 )
@@ -330,7 +300,6 @@ async def whoami(ctx: ApplicationContext, user: discord.User=None):
 async def sync(ctx: ApplicationContext):
     if ctx.author.id != 738290097170153472: return await ctx.respond('Sorry, this command is only for my developer\'s use.')
     try:
-        with open('database/currency.json', 'r') as f: currency = json.load(f)
         with open('database/warnings.json', 'r') as f: warnings = json.load(f)
         with open('database/items.json', 'r') as f: items = json.load(f)
         with open('config/shop.json', 'r') as f: shopitem = json.load(f)
@@ -373,7 +342,7 @@ async def status(ctx: ApplicationContext):
     sys_ram = str(f"{psutil.virtual_memory()[2]}GiB")
     sys_cpu = str(f"{psutil.cpu_percent(1)}%")
     bot_users = 0
-    for x in currency["wallet"].keys(): bot_users += 1
+    for x in levels.keys(): bot_users += 1
     localembed = discord.Embed(title="Client Info")
     localembed.add_field(name="OS Name", value=os_name)
     localembed.add_field(name="RAM Available", value=sys_ram)
@@ -453,13 +422,12 @@ async def embedbuilder(ctx: ApplicationContext, title: str, description: str, im
 )
 @option(name="user", description="Whose isobot profile do you want to view?", type=discord.User, default=None)
 async def profile(ctx:  ApplicationContext, user: discord.User = None):
-    recache()
     if user == None: user = ctx.author
     localembed = discord.Embed(title=f"{user.display_name}'s isobot stats", color=color)
     localembed.set_thumbnail(url=user.avatar_url)
     localembed.add_field(name="Level", value=f"Level {levels[str(user.id)]['level']} ({levels[str(user.id)]['xp']} XP)", inline=False)
-    localembed.add_field(name="Balance in Wallet", value=f"{currency['wallet'][str(user.id)]} coins", inline=True)
-    localembed.add_field(name="Balance in Bank Account", value=f"{currency['bank'][str(user.id)]} coins", inline=True)
+    localembed.add_field(name="Balance in Wallet", value=f"{get_wallet(user.id)} coins", inline=True)
+    localembed.add_field(name="Balance in Bank Account", value=f"{get_bank(user.id)} coins", inline=True)
     localembed.add_field(name="Net-Worth", value=f"{get_user_networth(user.id)} coins", inline=True)
     # More stats will be added later
     # Maybe I should make a userdat system for collecting statistical data to process and display here, coming in a future update.
@@ -492,6 +460,17 @@ async def leaderboard(ctx: ApplicationContext):
                         y += 1
             except discord.errors.NotFound: continue
     localembed = discord.Embed(title="New Years Special Event global leaderboard", description=parsed_output, color=color)
+    await ctx.respond(embed=localembed)
+
+@special_event.command(
+    name="stats",
+    description="See your current stats in the special in-game event."
+)
+@option(name="user", description="Who's event stats do you want to view?", type=discord.User, default=None)
+async def stats(ctx: ApplicationContext, user: discord.User):
+    if user == None: user = ctx.author
+    localembed = discord.Embed(title=f"{user.display_name}'s New Years Special Event stats", description="Event ends on **1st January 2023**.", color=color)
+    localembed.add_field(name=":gift: Presents", value=presents[str(user.id)], inline=True)
     await ctx.respond(embed=localembed)
 
 # Initialization

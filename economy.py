@@ -26,13 +26,6 @@ class ShopData:
         for h in self.config: json_list.append(str(h["stylized name"]))
         return json_list
 
-# Functions
-def get_user_networth(user_id:int):
-    nw = currency["wallet"][str(user_id)] + currency["bank"][str(user_id)]
-    #for e in items[str(user_id)]:
-    #    if e != 0: nw += shopitem[e]["sell price"]
-    return nw
-
 # Variables
 wdir = os.getcwd()
 color = discord.Color.random()
@@ -43,15 +36,35 @@ with open(f"{wdir}/database/currency.json", 'r') as f: currency = json.load(f)
 with open(f"{wdir}/database/items.json", 'r') as f: items = json.load(f)
 with open(f"{wdir}/config/shop.json", 'r') as f: shopitem = json.load(f)
 
-def recache():
-    "Replaces the cached databases with new data fetched directly from the database files. Useful if using a multi-cog setup."
-    with open(f"{wdir}/database/currency.json", 'r') as f: currency = json.load(f)
-    with open(f"{wdir}/database/items.json", 'r') as f: items = json.load(f)
-
 def save():
     with open(f"{wdir}/database/currency.json", 'w+') as f: json.dump(currency, f, indent=4)
     with open(f"{wdir}/database/items.json", 'w+') as f: json.dump(items, f, indent=4)
 
+# Functions
+def get_user_networth(user_id:int):
+    nw = currency["wallet"][str(user_id)] + currency["bank"][str(user_id)]
+    #for e in items[str(user_id)]:
+    #    if e != 0: nw += shopitem[e]["sell price"]
+    return nw
+
+def get_wallet(id: int) -> int:
+    return currency['wallet'][str(id)]
+
+def get_bank(id: int) -> int:
+    return currency['bank'][str(id)]
+
+def new_wallet(id: int):
+    if str(id) not in currency['wallet']: 
+        currency['wallet'][str(id)] = 5000
+        return 0
+    else: return 1
+    
+def new_bank(id: int):
+    if str(id) not in currency['bank']: 
+        currency['bank'][str(id)] = 0
+        return 0
+    else: return 1
+    
 # Commands
 class Economy(commands.Cog):
     def __init__(self, bot):
@@ -64,7 +77,6 @@ class Economy(commands.Cog):
     @option(name="lootbox", description="What lootbox do you want to open?", type=str, choices=["normal lootbox", "large lootbox", "special lootbox"])
     @option(name="amount", description="How many do you want to open?", type=int)
     async def openlootbox(self, ctx: ApplicationContext, lootbox:str, amount:int):
-        recache()
         types = ["normal lootbox", "large lootbox", "special lootbox"]
         if amount <= 0: return await ctx.respond("You can't open 0 or below lootboxes! Don't be stupid.", ephemeral=True)
         if lootbox not in types: return await ctx.respond(f"wtf is {lootbox}?", ephemeral=True)
@@ -120,7 +132,6 @@ class Economy(commands.Cog):
     )
     @commands.cooldown(1, 15, commands.BucketType.user)
     async def beg(self, ctx: ApplicationContext):
-        recache()
         names = [
             "A random person",
             "Your friend",
@@ -168,7 +179,6 @@ class Economy(commands.Cog):
     )
     @commands.cooldown(1, 43200, commands.BucketType.user)
     async def daily(self, ctx: ApplicationContext):
-        recache()
         currency['wallet'][str(ctx.author.id)] += 10000
         save()
         await ctx.respond(f'You claimed 10000 coins from the daily reward. Check back in 24 hours for your next one!')
@@ -179,7 +189,6 @@ class Economy(commands.Cog):
     )
     @commands.cooldown(1, 302400, commands.BucketType.user)
     async def weekly(self, ctx: ApplicationContext):
-        recache()
         currency['wallet'][str(ctx.author.id)] += 45000
         save()
         await ctx.respond(f'You claimed 45000 coins from the weekly reward. Check back in 7 days for your next one!')
@@ -190,7 +199,6 @@ class Economy(commands.Cog):
     )
     @commands.cooldown(1, 1339200, commands.BucketType.user)
     async def monthly(self, ctx: ApplicationContext):
-        recache()
         currency['wallet'][str(ctx.author.id)] += 1000000
         save()
         await ctx.respond(f'You claimed 1000000 coins from the monthly reward. Check back in 1 month for your next one!')
@@ -202,7 +210,6 @@ class Economy(commands.Cog):
     @option(name="user", description="Who do you want to rob?", type=discord.User)
     @commands.cooldown(1, 60, commands.BucketType.user)
     async def rob(self, ctx: ApplicationContext, user:discord.User):
-        recache()
         if currency['wallet'][str(user.id)] < 5000: return await ctx.respond('They has less than 5000 coins on them. Don\'t waste your time...') 
         elif currency['wallet'][str(ctx.author.id)] < 5000: return await ctx.respond('You have less than 5k coins in your wallet. Play fair dude.')
         if randint(1, 100) <= 50:
@@ -224,7 +231,6 @@ class Economy(commands.Cog):
     @option(name="user", description="Whose bank account do you want to raid?", type=discord.User)
     @commands.cooldown(1, (60*5), commands.BucketType.user)
     async def bankrob(self, ctx: ApplicationContext, user:discord.User):
-        recache()
         if currency['wallet'][str(user.id)] < 10000: return await ctx.respond('You really want to risk losing your life to a poor person? (imagine robbing someone with < 10k net worth)')
         elif currency['wallet'][str(ctx.author.id)] < 10000: return await ctx.respond('You have less than 10k in your wallet. Don\'t be greedy.')
         if randint(1, 100) <= 20:
@@ -243,7 +249,6 @@ class Economy(commands.Cog):
     )
     @commands.cooldown(1, 30, commands.BucketType.user)
     async def hunt(self, ctx: ApplicationContext):
-        recache()
         if items[str(ctx.author.id)]['rifle'] == 0: return await ctx.respond('I\'d hate to see you hunt with your bare hands. Please buy a hunting rifle from the shop. ||/buy rifle||')
         loot = ['rock', 'ant', 'skunk', 'boar', 'deer', 'dragon', 'nothing', 'died']
         choice = random.choice(loot)
@@ -263,7 +268,6 @@ class Economy(commands.Cog):
     )
     @commands.cooldown(1, 45, commands.BucketType.user)
     async def fish(self, ctx: ApplicationContext):
-        recache()
         if (items[str(ctx.author.id)]['fishingpole'] == 0): return await ctx.respond('I don\'t think you can fish with your bare hands... or you can just put yo hands in the water bro **giga chad moment**\nAnyway it\'s just better to buy a fishing pole from the shop. ||/buy fishingpole||')
         loot = ['shrimp', 'fish', 'rare fish', 'exotic fish', 'jellyfish', 'shark', 'nothing']
         choice = random.choice(loot)
@@ -279,7 +283,6 @@ class Economy(commands.Cog):
     )
     @commands.cooldown(1, 45, commands.BucketType.user)
     async def dig(self, ctx: ApplicationContext):
-        recache()
         if (items[str(ctx.author.id)]['shovel'] == 0): return await ctx.respond('You\'re too good to have to dig with your bare hands..... at least I hope so. Please buy a shovel from the shop. ||/buy shovel||')
         loot = [
             'coins',
@@ -341,7 +344,6 @@ class Economy(commands.Cog):
     @option(name="name", description="What do you want to buy?", type=str, choices=all_item_ids)
     @option(name="quantity", description="How many do you want to buy?", type=int, default=1)
     async def buy(self, ctx: ApplicationContext, name: str, quantity: int=1):
-        recache()
         try:
             amt = shopitem[name]['buy price'] * quantity
             if (currency['wallet'][str(ctx.author.id)] < amt): return await ctx.respond('You don\'t have enough balance to buy this.')
@@ -360,7 +362,6 @@ class Economy(commands.Cog):
     @option(name="name", description="What do you want to sell?", type=str, choices=all_item_ids)
     @option(name="quantity", description="How many do you want to sell?", type=int, default=1)
     async def sell(self, ctx: ApplicationContext, name: str, quantity: int=1):
-        recache()
         try:
             if shopitem[name]["sellable"] != True: return await ctx.respond('Dumb, you can\'t sell this item.')
             if quantity > items[str(ctx.author.id)][str(name)]: return await ctx.respond('You can\'t sell more than you have.')
@@ -382,7 +383,6 @@ class Economy(commands.Cog):
     @option(name="item", description="What do you want to gift?", type=str, choices=all_item_ids)
     @option(name="amount", description="How many of these do you want to gift?", type=int, default=1)
     async def gift(self, ctx: ApplicationContext, user:discord.User, item:str, amount:int=1):
-        recache()
         try:
             if amount < 1: return await ctx.respond("You can't gift less than 1 of those!", ephemeral=True)
             elif items[str(ctx.author.id)][item] < amount: return await ctx.respond("You don't have enough of those to gift!", ephemeral=True)
@@ -409,7 +409,6 @@ class Economy(commands.Cog):
     @option(name="user", description="Specify the user to change their balance", type=discord.User)
     @option(name="modifier", description="Specify the balance to modify", type=int)
     async def modify_balance(self, ctx: ApplicationContext, user:discord.User, modifier:int):
-        recache()
         if ctx.author.id != 738290097170153472: return ctx.respond("Sorry, but this command is only for my developer's use.", ephemeral=True)
         try:
             currency["wallet"][str(user.id)] += modifier
@@ -424,7 +423,6 @@ class Economy(commands.Cog):
     @option(name="user", description="Who do you want to give cash to?", type=discord.User)
     @option(name="amount", description="How much do you want to give?", type=int)
     async def give(self, ctx: ApplicationContext, user:discord.User, amount:int):
-        recache()
         if amount <= 0: return await ctx.respond('The amount you want to give must be greater than `0` coins!', ephemeral=True)
         if amount > int(currency['wallet'][str(ctx.author.id)]): return await ctx.respond('You don\'t have enough coins in your wallet to do this.', ephemeral=True)
         else:
@@ -439,7 +437,6 @@ class Economy(commands.Cog):
     )
     @commands.cooldown(1, 1800, commands.BucketType.user)
     async def work(self, ctx: ApplicationContext):
-        recache()
         i = randint(10000, 20000)
         currency['wallet'][str(ctx.author.id)] += i
         save()
@@ -452,7 +449,6 @@ class Economy(commands.Cog):
     @option(name="id", description="The ID of the user you are donating to", type=str)
     @option(name="amount", description="How much do you want to donate?", type=int)
     async def donate(self, ctx: ApplicationContext, id:str, amount):
-        recache()
         reciever_info = self.bot.get_user(int(id))
         if id not in currency["wallet"]: return await ctx.respond("Unfortunately, we couldn't find that user in our server. Try double-checking the ID you've provided.", ephemeral=True)
         # Prevent self-donations
@@ -482,7 +478,6 @@ class Economy(commands.Cog):
     )
     @commands.cooldown(1, 30, commands.BucketType.user)
     async def scout(self, ctx: ApplicationContext):
-        recache()
         if (randint(1, 100) <= 90):
             x = randint(550, 2000)
             if items[str(ctx.author.id)]['binoculars'] >= 1:
@@ -500,7 +495,6 @@ class Economy(commands.Cog):
     )
     @commands.cooldown(1, 3600, commands.BucketType.user)
     async def autogrind(self, ctx: ApplicationContext):
-        recache()
         await ctx.respond("Autogrind has started. Please check back in an hour for your rewards.")
         await asyncio.sleep(3600)
         coins_reward = randint(10000, 35000)
@@ -520,7 +514,6 @@ class Economy(commands.Cog):
     )
     @option(name="amount", description="Specify an amount to deposit (use 'max' for everything)", type=str)
     async def deposit(self, ctx: ApplicationContext, amount):
-        recache()
         if not amount.isdigit():
             if str(amount) == "max": amount = currency["wallet"][str(ctx.author.id)]
             else: return await ctx.respond("The amount must be a number, or `max`.", ephemeral=True)
@@ -530,8 +523,8 @@ class Economy(commands.Cog):
         currency["wallet"][str(ctx.author.id)] -= int(amount)
         currency["bank"][str(ctx.author.id)] += int(amount)
         localembed = discord.Embed(title="Deposit successful", description=f"You deposited `{amount}` coin(s) to your bank account.", color=color)
-        localembed.add_field(name="You previously had", value=f"`{currency['bank'][str(ctx.author.id)]} coins` in your bank account")
-        localembed.add_field(name="Now you have", value=f"`{currency['bank'][str(ctx.author.id)] + amount} coins` in your bank account")
+        localembed.add_field(name="You previously had", value=f"`{currency['bank'][str(ctx.author.id)] - amount} coins` in your bank account")
+        localembed.add_field(name="Now you have", value=f"`{currency['bank'][str(ctx.author.id)]} coins` in your bank account")
         await ctx.respond(embed=localembed)
         save()
 
@@ -541,18 +534,17 @@ class Economy(commands.Cog):
     )
     @option(name="amount", description="Specify an amount to withdraw (use 'max' for everything)", type=str)
     async def withdraw(self, ctx: ApplicationContext, amount):
-        recache()
         if not amount.isdigit():
-            if str(amount) == "max": amount = currency["wallet"][str(ctx.author.id)]
+            if str(amount) == "max": amount = currency["bank"][str(ctx.author.id)]
             else: return await ctx.respond("The amount must be a number, or `max`.", ephemeral=True)
-        elif currency['bank'] == 0: return await ctx.respond('You don\'t have anything in your bank account.', ephemeral=True)
+        elif currency['bank'][str(ctx.author.id)] == 0: return await ctx.respond('You don\'t have anything in your bank account.', ephemeral=True)
         elif int(amount) <= 0: return await ctx.respond('The amount to withdraw must be more than `0` coins!', ephemeral=True)
         elif int(amount) > currency["bank"][str(ctx.author.id)]: return await ctx.respond('The amount to withdraw must not be more than what you have in your bank account!', ephemeral=True)
         currency["wallet"][str(ctx.author.id)] += int(amount)
         currency["bank"][str(ctx.author.id)] -= int(amount)
         localembed = discord.Embed(title="Withdraw successful", description=f"You withdrew `{amount}` coin(s) from your bank account.", color=color)
-        localembed.add_field(name="You previously had", value=f"`{currency['wallet'][str(ctx.author.id)]} coins` in your wallet")
-        localembed.add_field(name="Now you have", value=f"`{currency['wallet'][str(ctx.author.id)] + amount} coins` in your wallet")
+        localembed.add_field(name="You previously had", value=f"`{currency['wallet'][str(ctx.author.id)] - amount} coins` in your wallet")
+        localembed.add_field(name="Now you have", value=f"`{currency['wallet'][str(ctx.author.id)]} coins` in your wallet")
         await ctx.respond(embed=localembed)
         save()
     
@@ -562,7 +554,6 @@ class Economy(commands.Cog):
     )
     @option(name="user", description="Whose networth do you want to find?", type=discord.User, default=None)
     async def networth(self, ctx: ApplicationContext, user: discord.User=None):
-        recache()
         if user == None: user = ctx.author
         try:
             ntw = get_user_networth(user.id)
@@ -576,7 +567,6 @@ class Economy(commands.Cog):
     )
     @option(name="user", description="Whose inventory you want to view?", type=discord.User, default=None)
     async def inventory(self, ctx: ApplicationContext, user:discord.User = None):
-        recache()
         if user == None: user = ctx.author
         localembed = discord.Embed(title=f'{user.display_name}\'s Inventory')
         filtered_utility_items = list()
@@ -609,6 +599,23 @@ class Economy(commands.Cog):
         if parsed_powerups != "": localembed.add_field(name='Power-ups', value=parsed_powerups, inline=False)
         if parsed_lootboxes != "": localembed.add_field(name='Power-ups', value=parsed_lootboxes, inline=False)
         await ctx.respond(embed=localembed)
+
+    @commands.slash_command(
+        name='balance', 
+        description='Shows your own or another user\'s balance.'
+    )
+    @option(name="user", description="Which user do you want to view information on?", type=discord.User, default=None)
+    async def balance(self, ctx: ApplicationContext, user=None):
+        try:
+            if user == None: user = ctx.author
+            try:
+                e = discord.Embed(title=f'{user.display_name}\'s balance', color=color)
+                e.add_field(name='Cash in wallet', value=f'{currency["wallet"][str(user.id)]} coin(s)', inline=True)
+                e.add_field(name='Cash in bank account', value=f'{currency["bank"][str(user.id)]} coin(s)', inline=True)
+                e.add_field(name="Networth", value=f"{get_user_networth(user.id)} coin(s)", inline=True)
+                await ctx.respond(embed=e)
+            except: await ctx.respond('Looks like that user is not indexed in our server. Try again later.', ephemeral=True)
+        except Exception as e: await ctx.respond(f'An error occured: `{e}`. This has automatically been reported to the devs.')
 
 # Initialization
 def setup(bot):
