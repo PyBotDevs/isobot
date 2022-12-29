@@ -11,13 +11,12 @@ import praw
 import api.auth
 import utils.logger, utils.ping
 from framework import *
-from math import floor, sqrt
+from math import floor
 from random import randint
 import framework.isobot.currency, framework.isobot.colors, framework.isobank.authorize, framework.isobank.manager, framework.isobot.embedengine
 from discord import ApplicationContext, option
-from discord.ext import commands, tasks
+from discord.ext import commands
 from discord.ext.commands import *
-from threading import Thread
 from economy import get_wallet, get_bank, new_bank, new_wallet
 
 # Slash option types:
