@@ -273,7 +273,7 @@ async def whoami(ctx: ApplicationContext, user: discord.User=None):
     username = user
     displayname = user.display_name
     registered = user.joined_at.strftime("%b %d, %Y, %T")
-    pfp = user.avatar_url
+    pfp = user.avatar
     localembed_desc = f"`AKA` {displayname}"
     if str(user.id) in presence[str(ctx.guild.id)]: localembed_desc += f"\n`🌙 AFK` {presence[str(ctx.guild.id)][str(user.id)]['response']} - <t:{floor(presence[str(ctx.guild.id)][str(user.id)]['time'])}>"
     localembed = discord.Embed(
@@ -424,7 +424,7 @@ async def embedbuilder(ctx: ApplicationContext, title: str, description: str, im
 async def profile(ctx:  ApplicationContext, user: discord.User = None):
     if user == None: user = ctx.author
     localembed = discord.Embed(title=f"{user.display_name}'s isobot stats", color=color)
-    localembed.set_thumbnail(url=user.avatar_url)
+    localembed.set_thumbnail(url=user.avatar)
     localembed.add_field(name="Level", value=f"Level {levels[str(user.id)]['level']} ({levels[str(user.id)]['xp']} XP)", inline=False)
     localembed.add_field(name="Balance in Wallet", value=f"{get_wallet(user.id)} coins", inline=True)
     localembed.add_field(name="Balance in Bank Account", value=f"{get_bank(user.id)} coins", inline=True)
