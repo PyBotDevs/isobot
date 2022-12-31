@@ -141,9 +141,9 @@ __________________________________________________""")
     time.sleep(5)
     print("[main/Presents] Presents daemon started.")
     while True:
+        print(f"[main/Presents] Dropping new presents in {colors.cyan}#general{colors.end} channel...")
+        await asyncio.sleep(randint(450, 600))
         if floor(time.time()) > 1672511400:
-            print(f"[main/Presents] Dropping new presents in {colors.cyan}#general{colors.end} channel...")
-            await asyncio.sleep(randint(450, 600))
             cyberspace_channel_context = await client.fetch_channel(880409977074888718)
             localembed = discord.Embed(title="**:gift: Presents have dropped in chat!**", description="Be the first one to collect them!", color=color)
             await cyberspace_channel_context.send(embed=localembed, view=PresentsDrop()) 
