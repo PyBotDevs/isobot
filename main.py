@@ -37,8 +37,6 @@ with open('database/levels.json', 'r') as f: levels = json.load(f)
 with open('config/commands.json', 'r') as f: commandsdb = json.load(f)
 with open('database/automod.json', 'r') as f: automod_config = json.load(f)
 
-with open('database/special/new_years_2022.json', 'r') as f: presents = json.load(f)  # Temp
-
 #Pre-Initialization Commands
 def timenow(): datetime.datetime.now().strftime("%H:%M:%S")
 def save():
@@ -47,7 +45,6 @@ def save():
     with open('database/presence.json', 'w+') as f: json.dump(presence, f, indent=4)
     with open('database/levels.json', 'w+') as f: json.dump(levels, f, indent=4)
     with open('database/automod.json', 'w+') as f: json.dump(automod_config, f, indent=4)
-    with open('database/special/new_years_2022.json', 'w+') as f: json.dump(presents, f, indent=4)  # Temp
 
 def get_user_networth(user_id:int):
     nw = get_wallet(user_id) + get_bank(user_id)
@@ -109,19 +106,6 @@ with open("themes/halloween.theme.json", 'r') as f:
         print(f"{colors.red}The theme file being loaded might be broken. Rolling back to default configuration...{colors.end}")
         color = discord.Color.random()
 
-# Discord UI Views
-class PresentsDrop(discord.ui.View):
-    @discord.ui.button(label="🎁 Collect Presents", style=discord.ButtonStyle.blurple)
-    async def receive(self, button: discord.ui.Button, interaction: discord.Interaction):
-        presents_bounty = randint(500, 1000)
-        presents[str(interaction.user.id)] += presents_bounty
-        save()
-        button.disabled = True
-        button.label = f"Presents Collected!"
-        button.style = discord.ButtonStyle.grey
-        newembed = discord.Embed(description=f"{interaction.user.name} collected **{presents_bounty} :gift: presents** from this drop!", color=discord.Color.green())
-        await interaction.response.edit_message(embed=newembed, view=self)
-
 #Events
 @client.event
 async def on_ready():
@@ -139,14 +123,6 @@ __________________________________________________""")
     print("[main/FLASK] Starting pinger service...")
     utils.ping.host()
     time.sleep(5)
-    print("[main/Presents] Presents daemon started.")
-    while True:
-        print(f"[main/Presents] Dropping new presents in {colors.cyan}#general{colors.end} channel...")
-        await asyncio.sleep(randint(450, 600))
-        if floor(time.time()) > 1672511400:
-            cyberspace_channel_context = await client.fetch_channel(880409977074888718)
-            localembed = discord.Embed(title="**:gift: Presents have dropped in chat!**", description="Be the first one to collect them!", color=color)
-            await cyberspace_channel_context.send(embed=localembed, view=PresentsDrop()) 
 
 @client.event
 async def on_message(ctx):
@@ -170,7 +146,6 @@ async def on_message(ctx):
     for z in shopitem:
         if z in items[str(ctx.author.id)]: pass
         else: items[str(ctx.author.id)][str(z)] = 0
-    if str(ctx.author.id) not in presents: presents[str(ctx.author.id)] = 0  # Temp
     save()
     uList = list()
     if str(ctx.guild.id) in presence:
@@ -435,33 +410,14 @@ async def profile(ctx:  ApplicationContext, user: discord.User = None):
     await ctx.respond(embed=localembed)
 
 # New Year's in-game Event Commands
-special_event = client.create_group("event", "Commands related to the New Years special in-game event.")
+special_event = client.create_group("event", "Commands related to any ongoing special in-game event.")
 
 @special_event.command(
     name="leaderboard", 
     description="View the global leaderboard for the special in-game event."
 )
 async def leaderboard(ctx: ApplicationContext):
-    undicted_leaderboard = sorted(presents.items(), key=lambda x:x[1], reverse=True)
-    dicted_leaderboard = dict(undicted_leaderboard)
-    parsed_output = str()
-    y = 1
-    for i in dicted_leaderboard:
-        if y < 10:
-            try:
-                if presents[i] != 0:
-                    user_context = await client.fetch_user(i)
-                    if not user_context.bot and presents[i] != 0:
-                        print(i, presents[i])
-                        if y == 1: yf = ":first_place:"
-                        elif y == 2: yf = ":second_place:"
-                        elif y == 3: yf = ":third_place:"
-                        else: yf = f"#{y}"
-                        parsed_output += f"{yf} **{user_context.name}:** {presents[i]} presents\n"
-                        y += 1
-            except discord.errors.NotFound: continue
-    localembed = discord.Embed(title="New Years Special Event global leaderboard", description=parsed_output, color=color)
-    await ctx.respond(embed=localembed)
+    ctx.respond("This event has been concluded! Come back to this command later for new events!", ephemeral=True)
 
 @special_event.command(
     name="stats",
@@ -470,9 +426,7 @@ async def leaderboard(ctx: ApplicationContext):
 @option(name="user", description="Who's event stats do you want to view?", type=discord.User, default=None)
 async def stats(ctx: ApplicationContext, user: discord.User):
     if user == None: user = ctx.author
-    localembed = discord.Embed(title=f"{user.display_name}'s New Years Special Event stats", description="Event ends on **1st January 2023**.", color=color)
-    localembed.add_field(name=":gift: Presents", value=presents[str(user.id)], inline=True)
-    await ctx.respond(embed=localembed)
+    ctx.respond("This event has been concluded! Come back to this command later for new events!", ephemeral=True)
 
 # Initialization
 active_cogs = ["economy", "maths", "moderation", "reddit", "minigames", "automod", "isobank", "levelling"]
