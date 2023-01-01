@@ -329,6 +329,45 @@ async def status(ctx: ApplicationContext):
     localembed.set_footer(text=f"Requested by {ctx.author.name}", icon_url=ctx.author.avatar_url)
     await ctx.respond(embed=localembed)
 
+# Cog Commands
+cogs = client.create_group("cog", "Commands for working with isobot cogs.")
+
+@cogs.command(
+    name="load",
+    description="Loads a cog."
+)
+@option(name="cog", description="What cog do you want to load?", type=str)
+async def load(ctx: ApplicationContext, cog: str):
+    if ctx.author.id != 738290097170153472: return await ctx.respond("You can't use this command!", ephemeral=True)
+    try:
+        client.load_extension(f"cogs.{cog}")
+        await ctx.respond(embed=discord.Embed(description=f"{cog} cog successfully loaded."), color=discord.Color.green())
+    except: await ctx.respond(embed=discord.Embed(description=f"{cog} cog not found."), color=discord.Color.red())
+
+@cogs.command(
+    name="disable",
+    description="Disables a cog."
+)
+@option(name="cog", description="What cog do you want to disable?", type=str)
+async def disable(ctx: ApplicationContext, cog: str):
+    if ctx.author.id != 738290097170153472: return await ctx.respond("You can't use this command!", ephemeral=True)
+    try:
+        client.unload_extension(f"cogs.{cog}")
+        await ctx.respond(embed=discord.Embed(description=f"{cog} cog successfully disabled."), color=discord.Color.green())
+    except: await ctx.respond(embed=discord.Embed(description=f"{cog} cog not found."), color=discord.Color.red())
+
+@cogs.command(
+    name="reload",
+    description="Reloads a cog."
+)
+@option(name="cog", description="What cog do you want to reload?", type=str)
+async def reload(ctx: ApplicationContext, cog: str):
+    if ctx.author.id != 738290097170153472: return await ctx.respond("You can't use this command!", ephemeral=True)
+    try:
+        client.reload_extension(f"cogs.{cog}")
+        await ctx.respond(embed=discord.Embed(description=f"{cog} cog successfully reloaded."), color=discord.Color.green())
+    except: await ctx.respond(embed=discord.Embed(description=f"{cog} cog not found."), color=discord.Color.red())
+
 # AFK System Commands
 afk_system = client.create_group("afk", "Commands for interacting with the built-in AFK system.")
 

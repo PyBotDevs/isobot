@@ -608,5 +608,35 @@
 	"usable_by": "everyone",
 	"disabled": false,
 	"bugged": false
+  },
+  "cog load": {
+	"name": "Load Cog",
+	"description": "Loads a cog.",
+	"type": "DevTools",
+	"cooldown": null,
+	"args": ["cog"],
+	"usable_by": "the developer",
+	"disabled": false,
+	"bugged": false
+  },
+  "cog disable": {
+	"name": "Disable Cog",
+	"description": "Disables a cog.",
+	"type": "DevTools",
+	"cooldown": null,
+	"args": ["cog"],
+	"usable_by": "the developer",
+	"disabled": false,
+	"bugged": false
+  },
+  "cog reload": {
+	"name": "Reload Cog",
+	"description": "Reloads a cog.",
+	"type": "DevTools",
+	"cooldown": null,
+	"args": ["cog"],
+	"usable_by": "the developer",
+	"disabled": false,
+	"bugged": false
   }
 }
