@@ -8,6 +8,7 @@ from random import randint
 from math import floor
 import time
 import json
+from discord import ApplicationContext, option
 
 colors = framework.isobot.colors.Colors()
 client = discord.Bot()
@@ -41,4 +42,42 @@ async def on_ready():
             localembed = discord.Embed(title="**:gift: Presents have dropped in chat!**", description="Be the first one to collect them!", color=color)
             await cyberspace_channel_context.send(embed=localembed, view=PresentsDrop())
 
+# Commands
+special_event = client.create_group("event", "Commands related to the New Years special in-game event.")
 
+@special_event.command(
+    name="leaderboard", 
+    description="View the global leaderboard for the special in-game event."
+)
+async def leaderboard(ctx: ApplicationContext):
+    undicted_leaderboard = sorted(presents.items(), key=lambda x:x[1], reverse=True)
+    dicted_leaderboard = dict(undicted_leaderboard)
+    parsed_output = str()
+    y = 1
+    for i in dicted_leaderboard:
+        if y < 10:
+            try:
+                if presents[i] != 0:
+                    user_context = await client.fetch_user(i)
+                    if not user_context.bot and presents[i] != 0:
+                        print(i, presents[i])
+                        if y == 1: yf = ":first_place:"
+                        elif y == 2: yf = ":second_place:"
+                        elif y == 3: yf = ":third_place:"
+                        else: yf = f"#{y}"
+                        parsed_output += f"{yf} **{user_context.name}:** {presents[i]} presents\n"
+                        y += 1
+            except discord.errors.NotFound: continue
+    localembed = discord.Embed(title="New Years Special Event global leaderboard", description=parsed_output, color=color)
+    await ctx.respond(embed=localembed)
+
+@special_event.command(
+    name="stats",
+    description="See your current stats in the special in-game event."
+)
+@option(name="user", description="Who's event stats do you want to view?", type=discord.User, default=None)
+async def stats(ctx: ApplicationContext, user: discord.User):
+    if user == None: user = ctx.author
+    localembed = discord.Embed(title=f"{user.display_name}'s New Years Special Event stats", description="Event ends on **1st January 2023**.", color=color)
+    localembed.add_field(name=":gift: Presents", value=presents[str(user.id)], inline=True)
+    await ctx.respond(embed=localembed)

@@ -421,26 +421,7 @@ special_event = client.create_group("event", "Commands related to the New Years 
     description="View the global leaderboard for the special in-game event."
 )
 async def leaderboard(ctx: ApplicationContext):
-    undicted_leaderboard = sorted(presents.items(), key=lambda x:x[1], reverse=True)
-    dicted_leaderboard = dict(undicted_leaderboard)
-    parsed_output = str()
-    y = 1
-    for i in dicted_leaderboard:
-        if y < 10:
-            try:
-                if presents[i] != 0:
-                    user_context = await client.fetch_user(i)
-                    if not user_context.bot and presents[i] != 0:
-                        print(i, presents[i])
-                        if y == 1: yf = ":first_place:"
-                        elif y == 2: yf = ":second_place:"
-                        elif y == 3: yf = ":third_place:"
-                        else: yf = f"#{y}"
-                        parsed_output += f"{yf} **{user_context.name}:** {presents[i]} presents\n"
-                        y += 1
-            except discord.errors.NotFound: continue
-    localembed = discord.Embed(title="New Years Special Event global leaderboard", description=parsed_output, color=color)
-    await ctx.respond(embed=localembed)
+    ctx.respond("This event has been concluded! Come back to this command later for new events!", ephemeral=True)
 
 @special_event.command(
     name="stats",
@@ -449,9 +430,7 @@ async def leaderboard(ctx: ApplicationContext):
 @option(name="user", description="Who's event stats do you want to view?", type=discord.User, default=None)
 async def stats(ctx: ApplicationContext, user: discord.User):
     if user == None: user = ctx.author
-    localembed = discord.Embed(title=f"{user.display_name}'s New Years Special Event stats", description="Event ends on **1st January 2023**.", color=color)
-    localembed.add_field(name=":gift: Presents", value=presents[str(user.id)], inline=True)
-    await ctx.respond(embed=localembed)
+    ctx.respond("This event has been concluded! Come back to this command later for new events!", ephemeral=True)
 
 # Initialization
 active_cogs = ["economy", "maths", "moderation", "reddit", "minigames", "automod", "isobank", "levelling"]
