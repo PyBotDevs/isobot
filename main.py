@@ -435,7 +435,7 @@ cog_errors = 0
 for x in active_cogs:
     print(f"[main/Cogs] Loading isobot Cog ({i}/{len(active_cogs)})")
     i += 1
-    try: client.load_extension(x)
+    try: client.load_extension(f"cogs.{x}")
     except Exception as e:
         cog_errors += 1 
         print(f"[main/Cogs] {colors.red}ERROR: Cog \"{x}\" failed to load: {e}{colors.end}")
