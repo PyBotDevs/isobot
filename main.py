@@ -17,7 +17,7 @@ import framework.isobot.currency, framework.isobot.colors, framework.isobank.aut
 from discord import ApplicationContext, option
 from discord.ext import commands
 from discord.ext.commands import *
-from economy import get_wallet, get_bank, new_bank, new_wallet
+from cogs.economy import get_wallet, get_bank, new_bank, new_wallet
 
 # Slash option types:
 # Just use variable types to define option types.
