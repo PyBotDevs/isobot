@@ -414,7 +414,7 @@ async def profile(ctx:  ApplicationContext, user: discord.User = None):
     await ctx.respond(embed=localembed)
 
 # New Year's in-game Event Commands
-special_event = client.create_group("event", "Commands related to the New Years special in-game event.")
+special_event = client.create_group("event", "Commands related to any ongoing special in-game event.")
 
 @special_event.command(
     name="leaderboard", 
