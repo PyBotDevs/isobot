@@ -285,24 +285,6 @@ async def sync(ctx: ApplicationContext):
         await ctx.respond('An error occured while resyncing. Check console.', ephemeral=True)
 
 @client.slash_command(
-    name='stroketranslate',
-    description='Gives you the ability to make full words and sentences from a cluster of letters'
-)
-@option(name="strok", description="What do you want to translate?", type=str)
-async def stroketranslate(ctx: ApplicationContext, strok: str):
-        try:
-            if len(strok) > 300: return await ctx.respond("Please use no more than `300` character length", ephemeral=True)
-            else:
-                with open(f"{os.getcwd()}/config/words.json", "r") as f: words = json.load(f)
-                var = str()
-                s = strok.lower()
-                for i, c in enumerate(s): var += random.choice(words[c])
-                return await ctx.respond(f"{var}")
-        except Exception as e: return await ctx.respond(f"{type(e).__name__}: {e}")
-        var = ''.join(arr)
-        await ctx.respond(f"{var}")
-
-@client.slash_command(
     name='prediction',
     description='Randomly predicts a yes/no question.'
 )
@@ -468,7 +450,7 @@ async def stats(ctx: ApplicationContext, user: discord.User):
     ctx.respond("This event has been concluded! Come back to this command later for new events!", ephemeral=True)
 
 # Initialization
-active_cogs = ["economy", "maths", "moderation", "reddit", "minigames", "automod", "isobank", "levelling"]
+active_cogs = ["economy", "maths", "moderation", "reddit", "minigames", "automod", "isobank", "levelling", "fun"]
 i = 1
 cog_errors = 0
 for x in active_cogs:
