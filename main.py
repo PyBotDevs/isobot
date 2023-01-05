@@ -182,8 +182,8 @@ async def on_message(ctx):
 
 #Error handler
 @client.event
-async def on_command_error(ctx, error):
-    current_time = floor(time.time()).strftime("%H:%M:%S")
+async def on_application_command_error(ctx: ApplicationContext, error: discord.DiscordException):
+    current_time = datetime.time().strftime("%H:%M:%S")
     if isinstance(error, commands.CommandOnCooldown):
         await ctx.channel.send(f':stopwatch: Not now! Please try after **{str(datetime.timedelta(seconds=int(round(error.retry_after))))}**')
         print(f'[{current_time}] Ignoring exception at {colors.cyan}CommandOnCooldown{colors.end}. Details: This command is currently on cooldown.')
