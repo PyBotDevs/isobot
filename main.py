@@ -323,8 +323,8 @@ async def load(ctx: ApplicationContext, cog: str):
     if ctx.author.id != 738290097170153472: return await ctx.respond("You can't use this command!", ephemeral=True)
     try:
         client.load_extension(f"cogs.{cog}")
-        await ctx.respond(embed=discord.Embed(description=f"{cog} cog successfully loaded."), color=discord.Color.green())
-    except: await ctx.respond(embed=discord.Embed(description=f"{cog} cog not found."), color=discord.Color.red())
+        await ctx.respond(embed=discord.Embed(description=f"{cog} cog successfully loaded.", color=discord.Color.green()))
+    except Exception as e: await ctx.respond(embed=discord.Embed(description=f"{cog} failed to load: {e}", color=discord.Color.red()))
 
 @cogs.command(
     name="disable",
@@ -335,7 +335,7 @@ async def disable(ctx: ApplicationContext, cog: str):
     if ctx.author.id != 738290097170153472: return await ctx.respond("You can't use this command!", ephemeral=True)
     try:
         client.unload_extension(f"cogs.{cog}")
-        await ctx.respond(embed=discord.Embed(description=f"{cog} cog successfully disabled."), color=discord.Color.green())
+        await ctx.respond(embed=discord.Embed(description=f"{cog} cog successfully disabled.", color=discord.Color.green()))
     except: await ctx.respond(embed=discord.Embed(description=f"{cog} cog not found."), color=discord.Color.red())
 
 @cogs.command(
@@ -347,8 +347,8 @@ async def reload(ctx: ApplicationContext, cog: str):
     if ctx.author.id != 738290097170153472: return await ctx.respond("You can't use this command!", ephemeral=True)
     try:
         client.reload_extension(f"cogs.{cog}")
-        await ctx.respond(embed=discord.Embed(description=f"{cog} cog successfully reloaded."), color=discord.Color.green())
-    except: await ctx.respond(embed=discord.Embed(description=f"{cog} cog not found."), color=discord.Color.red())
+        await ctx.respond(embed=discord.Embed(description=f"{cog} cog successfully reloaded.", color=discord.Color.green()))
+    except: await ctx.respond(embed=discord.Embed(description=f"{cog} cog not found.", color=discord.Color.red()))
 
 # AFK System Commands
 afk_system = client.create_group("afk", "Commands for interacting with the built-in AFK system.")
