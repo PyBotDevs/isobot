@@ -128,9 +128,9 @@ class Economy(commands.Cog):
     
     @commands.slash_command(
         name='beg', 
-        description='Begs for some quick cash',
-        cooldown=15
+        description='Begs for some quick cash'
     )
+    @commands.cooldown(1, 15, commands.BucketType.user)
     async def beg(self, ctx: ApplicationContext):
         names = [
             "A random person",
@@ -175,9 +175,9 @@ class Economy(commands.Cog):
 
     @commands.slash_command(
         name='daily',
-        description='Claims your daily (every 24 hours)',
-        cooldown=43200
+        description='Claims your daily (every 24 hours)'
     )
+    @commands.cooldown(1, 43200, commands.BucketType.user)
     async def daily(self, ctx: ApplicationContext):
         currency['wallet'][str(ctx.author.id)] += 10000
         save()
@@ -185,9 +185,9 @@ class Economy(commands.Cog):
 
     @commands.slash_command(
         name='weekly',
-        description='Claims your weekly (every 7 days)',
-        cooldown=302400
+        description='Claims your weekly (every 7 days)'
     )
+    @commands.cooldown(1, 302400, commands.BucketType.user)
     async def weekly(self, ctx: ApplicationContext):
         currency['wallet'][str(ctx.author.id)] += 45000
         save()
@@ -195,9 +195,9 @@ class Economy(commands.Cog):
 
     @commands.slash_command(
         name='monthly',
-        description='Claims your monthly (every 31 days)',
-        cooldown=1339200
+        description='Claims your monthly (every 31 days)'
     )
+    @commands.cooldown(1, 1339200, commands.BucketType.user)
     async def monthly(self, ctx: ApplicationContext):
         currency['wallet'][str(ctx.author.id)] += 1000000
         save()
@@ -205,10 +205,10 @@ class Economy(commands.Cog):
     
     @commands.slash_command(
         name='rob',
-        description='Robs someone for their money',
-        cooldown=60
+        description='Robs someone for their money'
     )
     @option(name="user", description="Who do you want to rob?", type=discord.User)
+    @commands.cooldown(1, 60, commands.BucketType.user)
     async def rob(self, ctx: ApplicationContext, user:discord.User):
         if currency['wallet'][str(user.id)] < 5000: return await ctx.respond('They has less than 5000 coins on them. Don\'t waste your time...') 
         elif currency['wallet'][str(ctx.author.id)] < 5000: return await ctx.respond('You have less than 5k coins in your wallet. Play fair dude.')
@@ -226,10 +226,10 @@ class Economy(commands.Cog):
 
     @commands.slash_command(
         name='bankrob',
-        description='Raids someone\'s bank account',
-        cooldown=300
+        description='Raids someone\'s bank account'
     )
     @option(name="user", description="Whose bank account do you want to raid?", type=discord.User)
+    @commands.cooldown(1, (60*5), commands.BucketType.user)
     async def bankrob(self, ctx: ApplicationContext, user:discord.User):
         if currency['wallet'][str(user.id)] < 10000: return await ctx.respond('You really want to risk losing your life to a poor person? (imagine robbing someone with < 10k net worth)')
         elif currency['wallet'][str(ctx.author.id)] < 10000: return await ctx.respond('You have less than 10k in your wallet. Don\'t be greedy.')
@@ -245,9 +245,9 @@ class Economy(commands.Cog):
 
     @commands.slash_command(
         name='hunt',
-        description='Pull out your rifle and hunt down animals',
-        cooldown=30
+        description='Pull out your rifle and hunt down animals'
     )
+    @commands.cooldown(1, 30, commands.BucketType.user)
     async def hunt(self, ctx: ApplicationContext):
         if items[str(ctx.author.id)]['rifle'] == 0: return await ctx.respond('I\'d hate to see you hunt with your bare hands. Please buy a hunting rifle from the shop. ||/buy rifle||')
         loot = ['rock', 'ant', 'skunk', 'boar', 'deer', 'dragon', 'nothing', 'died']
@@ -264,9 +264,9 @@ class Economy(commands.Cog):
 
     @commands.slash_command(
         name='fish',
-        description='Prepare your fishing rod and catch some fish',
-        cooldown=45
+        description='Prepare your fishing rod and catch some fish'
     )
+    @commands.cooldown(1, 45, commands.BucketType.user)
     async def fish(self, ctx: ApplicationContext):
         if (items[str(ctx.author.id)]['fishingpole'] == 0): return await ctx.respond('I don\'t think you can fish with your bare hands... or you can just put yo hands in the water bro **giga chad moment**\nAnyway it\'s just better to buy a fishing pole from the shop. ||/buy fishingpole||')
         loot = ['shrimp', 'fish', 'rare fish', 'exotic fish', 'jellyfish', 'shark', 'nothing']
@@ -279,9 +279,9 @@ class Economy(commands.Cog):
 
     @commands.slash_command(
         name='dig',
-        description='Take your shovel and dig in the ground for some cool stuff!',
-        cooldown=45
+        description='Take your shovel and dig in the ground for some cool stuff!'
     )
+    @commands.cooldown(1, 45, commands.BucketType.user)
     async def dig(self, ctx: ApplicationContext):
         if (items[str(ctx.author.id)]['shovel'] == 0): return await ctx.respond('You\'re too good to have to dig with your bare hands..... at least I hope so. Please buy a shovel from the shop. ||/buy shovel||')
         loot = [
@@ -433,9 +433,9 @@ class Economy(commands.Cog):
     
     @commands.slash_command(
         name='work',
-        description='Work for a 30-minute shift and earn cash.',
-        cooldown=1800
+        description='Work for a 30-minute shift and earn cash.'
     )
+    @commands.cooldown(1, 1800, commands.BucketType.user)
     async def work(self, ctx: ApplicationContext):
         i = randint(10000, 20000)
         currency['wallet'][str(ctx.author.id)] += i
@@ -474,9 +474,9 @@ class Economy(commands.Cog):
     
     @commands.slash_command(
         name='scout', 
-        description='Scouts your area for coins',
-        cooldown=30
+        description='Scouts your area for coins'
     )
+    @commands.cooldown(1, 30, commands.BucketType.user)
     async def scout(self, ctx: ApplicationContext):
         if (randint(1, 100) <= 90):
             x = randint(550, 2000)
@@ -491,9 +491,9 @@ class Economy(commands.Cog):
 
     @commands.slash_command(
         name="autogrind",
-        description="Automatically grinds coins and items for you",
-        cooldown=3600
+        description="Automatically grinds coins and items for you"
     )
+    @commands.cooldown(1, 3600, commands.BucketType.user)
     async def autogrind(self, ctx: ApplicationContext):
         await ctx.respond("Autogrind has started. Please check back in an hour for your rewards.")
         await asyncio.sleep(3600)
