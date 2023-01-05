@@ -22,9 +22,9 @@ class Minigames(commands.Cog):
     
     @commands.slash_command(
         name="guessthenumber",
-        description="Guess a random number from 1 to 10 that the bot is thinking about"
+        description="Guess a random number from 1 to 10 that the bot is thinking about",
+        cooldown=10
     )
-    @commands.cooldown(1, 10, commands.BucketType.user)
     async def guessthenumber(self, ctx: ApplicationContext):
         number = randint(1, 10)
         localembed = discord.Embed(name="Guess the number!", description="I am currently thinking of a number from 1 to 10. Can you guess what it is?", color=color)
@@ -41,9 +41,9 @@ class Minigames(commands.Cog):
 
     @commands.slash_command(
         name="highlow",
-        description="Guess whether the actual number is higher or lower than the hint number"
+        description="Guess whether the actual number is higher or lower than the hint number",
+        cooldown=40
     )
-    @commands.cooldown(1, 40, commands.BucketType.user)
     async def highlow(self, ctx: ApplicationContext):
         numb = randint(1, 100)
         numb2 = randint(1, 100)
