@@ -569,7 +569,7 @@
 	"disabled": false,
 	"bugged": false
   },
-  "area_square": {
+  "area square": {
 	"name": "Square Area ",
 	"description": "Finds the area of a square.",
 	"type": "maths",
@@ -579,7 +579,7 @@
 	"disabled": false,
 	"bugged": false
   },
-  "area_rectangle": {
+  "area rectangle": {
 	"name": "Rectangle Area",
 	"description": "Finds the area of a rectangle.",
 	"type": "maths",
@@ -589,7 +589,7 @@
 	"disabled": false,
 	"bugged": false
   },
-  "area_circle": {
+  "area circle": {
 	"name": "Circle Area",
 	"description": "Finds the area of a circle. (Takes π as 22/7)",
 	"type": "maths",
@@ -599,7 +599,7 @@
 	"disabled": false,
 	"bugged": false
   },
-  "area_triangle": {
+  "area triangle": {
 	"name": "Triangle Area",
 	"description": "Finds the area of a triangle. (Uses Heron's formula)",
 	"type": "maths",
