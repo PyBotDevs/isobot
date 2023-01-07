@@ -1,6 +1,7 @@
 # Imports
 import discord
 from math import sqrt
+from discord.commands import SlashCommandGroup
 from discord.ext import commands
 from discord import ApplicationContext, option
 
@@ -11,7 +12,7 @@ color = discord.Color.random()
 class Maths(commands.Cog):
     def __init__(self, bot): self.bot = bot
     
-    area = commands.SlashCommandGroup("area", "Find area of different figures.")
+    area = SlashCommandGroup("area", "Find area of different figures.")
 
     @commands.slash_command(
         name="squareroot",
@@ -28,7 +29,7 @@ class Maths(commands.Cog):
         localembed.set_footer(text=f"√({number}) = {result}")
         await ctx.respond(embed=localembed)
     
-    @area.slash_command(
+    @area.command(
         name="square",
         description="Finds the area of a square"
     )
@@ -40,7 +41,7 @@ class Maths(commands.Cog):
         localembed.set_footer(text=f"A = s²\n{length} x {length} = {result} sq. units")
         await ctx.respond(embed=localembed)
     
-    @area.slash_command(
+    @area.command(
         name="rectangle",
         description="Finds the area of a rectangle"
     )
@@ -54,7 +55,7 @@ class Maths(commands.Cog):
         localembed.set_footer(text=f"A = l x b\n{length} x {breadth} = {result} sq. units")
         await ctx.respond(embed=localembed)
 
-    @area.slash_command(
+    @area.command(
         name="circle",
         description="Finds the area of a circle"
     )
@@ -66,7 +67,7 @@ class Maths(commands.Cog):
         localembed.set_footer(text=f"Taking π as 22/7\nA = πr²\nπ x {radius}² = {result} sq. units")
         await ctx.respond(embed=localembed)
     
-    @area.slash_command(
+    @area.command(
         name="triangle",
         description="Finds the area of a triangle (using Heron's formula)"
     )
