@@ -430,25 +430,6 @@ async def profile(ctx:  ApplicationContext, user: discord.User = None):
     # Maybe I should make a userdat system for collecting statistical data to process and display here, coming in a future update.
     await ctx.respond(embed=localembed)
 
-# New Year's in-game Event Commands
-special_event = client.create_group("event", "Commands related to any ongoing special in-game event.")
-
-@special_event.command(
-    name="leaderboard", 
-    description="View the global leaderboard for the special in-game event."
-)
-async def leaderboard(ctx: ApplicationContext):
-    ctx.respond("This event has been concluded! Come back to this command later for new events!", ephemeral=True)
-
-@special_event.command(
-    name="stats",
-    description="See your current stats in the special in-game event."
-)
-@option(name="user", description="Who's event stats do you want to view?", type=discord.User, default=None)
-async def stats(ctx: ApplicationContext, user: discord.User):
-    if user == None: user = ctx.author
-    ctx.respond("This event has been concluded! Come back to this command later for new events!", ephemeral=True)
-
 # Initialization
 active_cogs = ["economy", "maths", "moderation", "reddit", "minigames", "automod", "isobank", "levelling", "fun"]
 i = 1
