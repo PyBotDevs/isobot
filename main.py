@@ -42,6 +42,7 @@ with open('database/presence.json', 'r') as f: presence = json.load(f)
 with open('database/levels.json', 'r') as f: levels = json.load(f)
 with open('config/commands.json', 'r') as f: commandsdb = json.load(f)
 with open('database/automod.json', 'r') as f: automod_config = json.load(f)
+with open('database/isotokens.json', 'r') as f: isocoins = json.load(f)
 
 #Pre-Initialization Commands
 def timenow(): datetime.datetime.now().strftime("%H:%M:%S")
@@ -51,6 +52,7 @@ def save():
     with open('database/presence.json', 'w+') as f: json.dump(presence, f, indent=4)
     with open('database/levels.json', 'w+') as f: json.dump(levels, f, indent=4)
     with open('database/automod.json', 'w+') as f: json.dump(automod_config, f, indent=4)
+    with open('database/isotokens.json', 'w+') as f: json.dump(isocoins, f, indent=4)
 
 def get_user_networth(user_id:int):
     nw = get_wallet(user_id) + get_bank(user_id)
@@ -134,6 +136,7 @@ __________________________________________________""")
 async def on_message(ctx):
     new_wallet(ctx.author.id)
     new_bank(ctx.author.id)
+    if str(ctx.author.id) not in isocoins: isocoins[str(ctx.author.id)] = 0
     if str(ctx.guild.id) not in warnings: warnings[str(ctx.guild.id)] = {}
     if str(ctx.author.id) not in warnings[str(ctx.guild.id)]: warnings[str(ctx.guild.id)][str(ctx.author.id)] = []
     if str(ctx.author.id) not in items: items[str(ctx.author.id)] = {}
@@ -435,6 +438,35 @@ async def profile(ctx:  ApplicationContext, user: discord.User = None):
     # More stats will be added later
     # Maybe I should make a userdat system for collecting statistical data to process and display here, coming in a future update.
     await ctx.respond(embed=localembed)
+
+# IsoCoins commands
+isocoin_system = client.create_group("isocoin", "Commands related to the IsoCoin rewards system.")
+
+isocoin_system.command(
+    name="balance",
+    description="See your IsoCoin balances"
+)
+async def isocoin_balance(ctx: ApplicationContext):
+    localembed = discord.Embed(description=f"You currently have **{isocoins[str(ctx.author.id)]}** IsoCoins.")
+    await ctx.respond(embed=localembed)
+
+isocoin_system.command(
+    name="daily",
+    description="Collect your daily reward of IsoCoins"
+)
+@commands.cooldown(1, 86400, commands.BucketType.user)
+async def isocoin_daily(ctx: ApplicationContext):
+    isocoins_reward = random.randint(2500, 5000)
+    isocoins[str(ctx.author.id)] += isocoins_reward
+    save()
+    await ctx.respond(f"You have earned {isocoins_reward} IsoCoins from this daily. Come back in 24 hours for the next one!")
+
+isocoin_system.command(
+    name="shop",
+    description="See all the items that you can buy using your IsoCoins."
+)
+async def isocoin_shop(ctx: ApplicationContext):
+    await ctx.respond("IsoCoin shop is coming soon! Check back later for new items.")
 
 # Initialization
 active_cogs = ["economy", "maths", "moderation", "reddit", "minigames", "automod", "isobank", "levelling", "fun"]
