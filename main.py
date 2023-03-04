@@ -433,7 +433,7 @@ async def profile(ctx:  ApplicationContext, user: discord.User = None):
     await ctx.respond(embed=localembed)
 
 # IsoCoins commands
-isocoin_system = client.create_group("isocoin", "Commands related to the IsoCoin rewards system")
+isocoin_system = client.create_group("isocoin", "Commands related to the IsoCoin rewards system.")
 
 isocoin_system.command(
     name="daily",
@@ -445,6 +445,13 @@ async def isocoin_daily(ctx: ApplicationContext):
     isotokens[str(ctx.author.id)] += isocoins_reward
     save()
     await ctx.respond(f"You have earned {isocoins_reward} IsoCoins from this daily. Come back in 24 hours for the next one!")
+
+isocoin_system.command(
+    name="shop",
+    description="See all the items that you can buy using your IsoCoins."
+)
+async def isocoin_shop(ctx: ApplicationContext):
+    await ctx.respond("IsoCoin shop is coming soon! Check back later for new items.")
 
 # Initialization
 active_cogs = ["economy", "maths", "moderation", "reddit", "minigames", "automod", "isobank", "levelling", "fun"]
