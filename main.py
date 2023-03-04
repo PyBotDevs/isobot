@@ -437,6 +437,14 @@ async def profile(ctx:  ApplicationContext, user: discord.User = None):
 isocoin_system = client.create_group("isocoin", "Commands related to the IsoCoin rewards system.")
 
 isocoin_system.command(
+    name="balance",
+    description="See your IsoCoin balances"
+)
+async def isocoin_balance(ctx: ApplicationContext):
+    localembed = discord.Embed(description=f"You currently have **{isocoins[str(ctx.author.id)]}** IsoCoins.")
+    await ctx.respond(embed=localembed)
+
+isocoin_system.command(
     name="daily",
     description="Collect your daily reward of IsoCoins"
 )
