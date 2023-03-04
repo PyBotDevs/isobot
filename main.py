@@ -482,7 +482,12 @@ for x in active_cogs:
 if cog_errors == 0: print(f"[main/Cogs] {colors.green}All cogs successfully loaded.{colors.end}")
 else: print(f"[main/Cogs] {colors.yellow}{cog_errors}/{len(active_cogs)} cogs failed to load.{colors.end}")
 print("--------------------")
-client.run(api.auth.get_token())
+if api.auth.get_mode(): 
+    print(f"[main/CLIENT] Starting client in {colors.cyan}Replit mode{colors.end}...")
+    client.run(os.getenv("TOKEN"))
+else:
+    print(f"[main/CLIENT] Starting client in {colors.orange}local mode{colors.end}...") 
+    client.run(api.auth.get_token())
 
 
 
