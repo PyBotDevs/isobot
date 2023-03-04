@@ -432,6 +432,20 @@ async def profile(ctx:  ApplicationContext, user: discord.User = None):
     # Maybe I should make a userdat system for collecting statistical data to process and display here, coming in a future update.
     await ctx.respond(embed=localembed)
 
+# IsoCoins commands
+isocoin_system = client.create_group("isocoin", "Commands related to the IsoCoin rewards system")
+
+isocoin_system.command(
+    name="daily",
+    description="Collect your daily reward of IsoCoins"
+)
+@commands.cooldown(1, 86400, commands.BucketType.user)
+async def isocoin_daily(ctx: ApplicationContext):
+    isocoins_reward = random.randint(2500, 5000)
+    isotokens[str(ctx.author.id)] += isocoins_reward
+    save()
+    await ctx.respond(f"You have earned {isocoins_reward} IsoCoins from this daily. Come back in 24 hours for the next one!")
+
 # Initialization
 active_cogs = ["economy", "maths", "moderation", "reddit", "minigames", "automod", "isobank", "levelling", "fun"]
 i = 1
