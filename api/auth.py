@@ -32,3 +32,7 @@ def get_public_key():
     """Returns the bot's public key in `runtimeconfig.json`, if it exists."""
     if config["public_key"]: return config["public_key"]
     else: return "Public key has not been set."
+
+def get_mode() -> bool:
+    """Returns a boolean of the current runtime mode.\n\nReturns `True` if replit mode is active, returns `False` if replit mode is inactive."""
+    return config["replit"]
