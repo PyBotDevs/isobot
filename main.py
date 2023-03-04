@@ -1,19 +1,25 @@
-#Imports
+# Imports
 import os
 import os.path
 import psutil
 import json
-import time, datetime
+import time
+import datetime
 import discord
 import asyncio
 import random
 import praw
 import api.auth
-import utils.logger, utils.ping
+import utils.logger
+import utils.ping
 from framework import *
 from math import floor
 from random import randint
-import framework.isobot.currency, framework.isobot.colors, framework.isobank.authorize, framework.isobank.manager, framework.isobot.embedengine
+import framework.isobot.currency
+import framework.isobot.colors
+import framework.isobank.authorize
+import framework.isobank.manager
+import framework.isobot.embedengine
 from discord import ApplicationContext, option
 from discord.ext import commands
 from discord.ext.commands import *
