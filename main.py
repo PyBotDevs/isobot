@@ -36,7 +36,7 @@ with open('database/presence.json', 'r') as f: presence = json.load(f)
 with open('database/levels.json', 'r') as f: levels = json.load(f)
 with open('config/commands.json', 'r') as f: commandsdb = json.load(f)
 with open('database/automod.json', 'r') as f: automod_config = json.load(f)
-with open('database/isotokens.json', 'r') as f: isotokens = json.load(f)
+with open('database/isotokens.json', 'r') as f: isocoins = json.load(f)
 
 #Pre-Initialization Commands
 def timenow(): datetime.datetime.now().strftime("%H:%M:%S")
@@ -46,7 +46,7 @@ def save():
     with open('database/presence.json', 'w+') as f: json.dump(presence, f, indent=4)
     with open('database/levels.json', 'w+') as f: json.dump(levels, f, indent=4)
     with open('database/automod.json', 'w+') as f: json.dump(automod_config, f, indent=4)
-    with open('database/isotokens.json', 'w+') as f: json.dump(isotokens, f, indent=4)
+    with open('database/isotokens.json', 'w+') as f: json.dump(isocoins, f, indent=4)
 
 def get_user_networth(user_id:int):
     nw = get_wallet(user_id) + get_bank(user_id)
@@ -442,7 +442,7 @@ isocoin_system.command(
 @commands.cooldown(1, 86400, commands.BucketType.user)
 async def isocoin_daily(ctx: ApplicationContext):
     isocoins_reward = random.randint(2500, 5000)
-    isotokens[str(ctx.author.id)] += isocoins_reward
+    isocoins[str(ctx.author.id)] += isocoins_reward
     save()
     await ctx.respond(f"You have earned {isocoins_reward} IsoCoins from this daily. Come back in 24 hours for the next one!")
 
