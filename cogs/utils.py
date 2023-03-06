@@ -1,9 +1,11 @@
 # Imports
 import discord
+import os
+import psutil
 import framework.isobot.embedengine
 from discord import option, ApplicationContext
 from discord.ext import commands
-from cogs.economy import get_wallet, get_bank, get_user_networth
+from cogs.economy import get_wallet, get_bank, get_user_networth, get_user_count
 from cogs.levelling import get_level, get_xp
 
 # Variables
@@ -61,6 +63,25 @@ class Utils(commands.Cog):
         localembed.add_field(name="Net-Worth", value=f"{get_user_networth(user.id)} coins", inline=True)
         # More stats will be added later
         # Maybe I should make a userdat system for collecting statistical data to process and display here, coming in a future update.
+        await ctx.respond(embed=localembed)
+
+    @commands.slash_command(
+        name="status",
+        description="Shows the current client info"
+    )
+    async def status(self, ctx: ApplicationContext):
+        os_name = os.name
+        sys_ram = str(f"{psutil.virtual_memory()[2]}GiB")
+        sys_cpu = str(f"{psutil.cpu_percent(1)}%")
+        bot_users = get_user_count()
+        localembed = discord.Embed(title="Client Info")
+        localembed.add_field(name="OS Name", value=os_name)
+        localembed.add_field(name="RAM Available", value=sys_ram)
+        localembed.add_field(name="CPU Usage", value=sys_cpu)
+        localembed.add_field(name="Registered Users", value=f"{bot_users} users", inline=True)
+        localembed.add_field(name="Uptime History", value="[here](https://stats.uptimerobot.com/PlKOmI0Aw8)")
+        localembed.add_field(name="Release Notes", value="[latest](https://github.com/PyBotDevs/isobot/releases/latest)")
+        localembed.set_footer(text=f"Requested by {ctx.author.name}", icon_url=ctx.author.avatar_url)
         await ctx.respond(embed=localembed)
     
 # Cog Initialization
