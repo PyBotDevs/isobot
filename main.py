@@ -239,35 +239,6 @@ async def help(ctx: ApplicationContext, command:str=None):
         await user.send(embed=localembed)
         await ctx.respond("Check your direct messages.", ephemeral=True)
 
-@client.slash_command(
-    name='whoami',
-    description='Shows information on a user'
-)
-@option(name="user", description="Who do you want to know about?", type=discord.User, default=None)
-async def whoami(ctx: ApplicationContext, user: discord.User=None):
-    if user == None: user = ctx.author
-    username = user
-    displayname = user.display_name
-    registered = user.joined_at.strftime("%b %d, %Y, %T")
-    pfp = user.avatar
-    localembed_desc = f"`AKA` {displayname}"
-    if str(user.id) in presence[str(ctx.guild.id)]: localembed_desc += f"\n`🌙 AFK` {presence[str(ctx.guild.id)][str(user.id)]['response']} - <t:{floor(presence[str(ctx.guild.id)][str(user.id)]['time'])}>"
-    localembed = discord.Embed(
-        title=f'User Info on {username}', 
-        description=localembed_desc
-    )
-    localembed.set_thumbnail(url=pfp)
-    localembed.add_field(name='Username', value=username, inline=True)
-    localembed.add_field(name='Display Name', value=displayname, inline=True)
-    localembed.add_field(name='Joined Discord on', value=registered, inline=False)
-    localembed.add_field(name='Avatar URL', value=f"[here!]({pfp})", inline=True)
-    role_render = ""
-    for p in user.roles:
-        if p != user.roles[0]: role_render += f"<@&{p.id}> "
-    localembed.add_field(name='Roles', value=role_render, inline=False)
-    localembed.add_field(name="Net worth", value=f"{get_user_networth(user.id)} coins", inline=False)
-    await ctx.respond(embed=localembed)
-
 # DevTools commands
 @client.slash_command(
     name='sync',
@@ -330,46 +301,6 @@ async def reload(ctx: ApplicationContext, cog: str):
         await ctx.respond(embed=discord.Embed(description=f"{cog} cog successfully reloaded.", color=discord.Color.green()))
     except: await ctx.respond(embed=discord.Embed(description=f"{cog} cog not found.", color=discord.Color.red()))
 
-# AFK System Commands
-afk_system = client.create_group("afk", "Commands for interacting with the built-in AFK system.")
-
-@afk_system.command(
-    name="set",
-    description="Sets your AFK status with a custom response"
-)
-@option(name="response", description="What do you want your AFK response to be?", type=str, default="I'm AFK")
-async def afk_set(ctx: ApplicationContext, response:str="I'm AFK"):
-    exctime = time.time()
-    if str(ctx.guild.id) not in presence: presence[str(ctx.guild.id)] = {}
-    presence[str(ctx.guild.id)][str(ctx.author.id)] = {"type": "afk", "time": exctime, "response": response}
-    save()
-    localembed = discord.Embed(title=f"{ctx.author.display_name} is now AFK.", description=f"Response: {response}", color=discord.Color.dark_orange())
-    await ctx.respond(embed=localembed)
-
-@afk_system.command(
-    name="remove",
-    description="Removes your AFK status"
-)
-async def afk_remove(ctx: ApplicationContext):
-    try: 
-        del presence[str(ctx.guild.id)][str(ctx.author.id)]
-        save()
-        await ctx.respond(f"Alright {ctx.author.mention}, I've removed your AFK.")
-    except KeyError: return await ctx.respond("You weren't previously AFK.", ephemeral=True)
-
-@afk_system.command(
-    name="mod_remove",
-    description="Removes an AFK status for someone else"
-)
-@option(name="user", description="Whose AFK status do you want to remove?", type=discord.User)
-async def afk_mod_remove(ctx: ApplicationContext, user:discord.User):
-    if not ctx.author.guild_permissions.manage_messages: return await ctx.respond("You don't have the required permissions to use this.", ephemeral=True)
-    try: 
-        del presence[str(ctx.guild.id)][str(user.id)]
-        save()
-        await ctx.respond(f"{user.display_name}'s AFK has been removed.")
-    except KeyError: return await ctx.respond("That user isn't AFK.", ephemeral=True)
-
 # IsoCoins commands
 isocoin_system = client.create_group("isocoin", "Commands related to the IsoCoin rewards system.")
 
@@ -400,7 +331,18 @@ async def isocoin_shop(ctx: ApplicationContext):
     await ctx.respond("IsoCoin shop is coming soon! Check back later for new items.")
 
 # Initialization
-active_cogs = ["economy", "maths", "moderation", "reddit", "minigames", "automod", "isobank", "levelling", "fun"]
+active_cogs = [
+    "economy", 
+    "maths", 
+    "moderation", 
+    "reddit", 
+    "minigames", 
+    "automod", 
+    "isobank", 
+    "levelling", 
+    "fun", 
+    "afk"
+]
 i = 1
 cog_errors = 0
 for x in active_cogs:
