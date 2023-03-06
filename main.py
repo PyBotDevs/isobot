@@ -35,24 +35,24 @@ client = discord.Bot()
 color = discord.Color.random()
 wdir = os.getcwd()
 reddit = praw.Reddit(client_id='_pazwWZHi9JldA', client_secret='1tq1HM7UMEGIro6LlwtlmQYJ1jB4vQ', user_agent='idk', check_for_async=False)
-with open('database/warnings.json', 'r') as f: warnings = json.load(f)
-with open('database/items.json', 'r') as f: items = json.load(f)
-with open('config/shop.json', 'r') as f: shopitem = json.load(f)
-with open('database/presence.json', 'r') as f: presence = json.load(f)
-with open('database/levels.json', 'r') as f: levels = json.load(f)
-with open('config/commands.json', 'r') as f: commandsdb = json.load(f)
-with open('database/automod.json', 'r') as f: automod_config = json.load(f)
-with open('database/isotokens.json', 'r') as f: isocoins = json.load(f)
+with open('database/warnings.json', 'r', encoding="utf-8") as f: warnings = json.load(f)
+with open('database/items.json', 'r', encoding="utf-8") as f: items = json.load(f)
+with open('config/shop.json', 'r', encoding="utf-8") as f: shopitem = json.load(f)
+with open('database/presence.json', 'r', encoding="utf-8") as f: presence = json.load(f)
+with open('database/levels.json', 'r', encoding="utf-8") as f: levels = json.load(f)
+with open('config/commands.json', 'r', encoding="utf-8") as f: commandsdb = json.load(f)
+with open('database/automod.json', 'r', encoding="utf-8") as f: automod_config = json.load(f)
+with open('database/isotokens.json', 'r', encoding="utf-8") as f: isocoins = json.load(f)
 
 #Pre-Initialization Commands
 def timenow(): datetime.datetime.now().strftime("%H:%M:%S")
 def save():
-    with open('database/warnings.json', 'w+') as f: json.dump(warnings, f, indent=4)
-    with open('database/items.json', 'w+') as f: json.dump(items, f, indent=4)
-    with open('database/presence.json', 'w+') as f: json.dump(presence, f, indent=4)
-    with open('database/levels.json', 'w+') as f: json.dump(levels, f, indent=4)
-    with open('database/automod.json', 'w+') as f: json.dump(automod_config, f, indent=4)
-    with open('database/isotokens.json', 'w+') as f: json.dump(isocoins, f, indent=4)
+    with open('database/warnings.json', 'w+', encoding="utf-8") as f: json.dump(warnings, f, indent=4)
+    with open('database/items.json', 'w+', encoding="utf-8") as f: json.dump(items, f, indent=4)
+    with open('database/presence.json', 'w+', encoding="utf-8") as f: json.dump(presence, f, indent=4)
+    with open('database/levels.json', 'w+', encoding="utf-8") as f: json.dump(levels, f, indent=4)
+    with open('database/automod.json', 'w+', encoding="utf-8") as f: json.dump(automod_config, f, indent=4)
+    with open('database/isotokens.json', 'w+', encoding="utf-8") as f: json.dump(isocoins, f, indent=4)
 
 def get_user_networth(user_id:int):
     nw = get_wallet(user_id) + get_bank(user_id)
@@ -63,13 +63,13 @@ def get_user_networth(user_id:int):
 if not os.path.isdir("logs"):
     os.mkdir('logs')
     try:
-        open('logs/info-log.txt', 'x')
+        open('logs/info-log.txt', 'x', encoding="utf-8")
         utils.logger.info("Created info log", nolog=True)
         time.sleep(0.5)
-        open('logs/error-log.txt', 'x')
+        open('logs/error-log.txt', 'x', encoding="utf-8")
         utils.logger.info("Created error log", nolog=True)
         time.sleep(0.5)
-        open('logs/currency.log', 'x')
+        open('logs/currency.log', 'x', encoding="utf-8")
         utils.logger.info("Created currency log", nolog=True)
     except Exception as e: utils.logger.error(f"Failed to make log file: {e}", nolog=True)
 
@@ -83,7 +83,7 @@ class plugins:
 class ShopData:
     def __init__(self, db_path: str):
         self.db_path = db_path
-        with open(db_path, 'r') as f: self.config = json.load(f)
+        with open(db_path, 'r', encoding="utf-8") as f: self.config = json.load(f)
 
     def get_item_ids(self) -> list:
         json_list = list()
@@ -105,7 +105,7 @@ shop_data = ShopData(f"{wdir}/config/shop.json")
 all_item_ids = shop_data.get_item_ids()
 
 #Theme Loader
-with open("themes/halloween.theme.json", 'r') as f:
+with open("themes/halloween.theme.json", 'r', encoding="utf-8") as f:
     theme = json.load(f)
     try:
         color_loaded = theme["theme"]["embed_color"]

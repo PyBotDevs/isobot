@@ -25,7 +25,7 @@ class Fun(commands.Cog):
         try:
             if len(strok) > 300: return await ctx.respond("Please use no more than `300` character length", ephemeral=True)
             else:
-                with open(f"{os.getcwd()}/config/words.json", "r") as f: words = json.load(f)
+                with open(f"{os.getcwd()}/config/words.json", "r", encoding="utf-8") as f: words = json.load(f)
                 var = str()
                 s = strok.lower()
                 for i, c in enumerate(s): var += random.choice(words[c])

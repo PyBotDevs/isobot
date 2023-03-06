@@ -12,11 +12,11 @@ from discord.ext.commands.errors import MissingPermissions
 color = discord.Color.random()
 wdir = os.getcwd()
 
-with open(f"{wdir}/database/warnings.json", 'r') as f: warnings = json.load(f)
+with open(f"{wdir}/database/warnings.json", 'r', encoding="utf-8") as f: warnings = json.load(f)
 
 # Functions
 def save():
-    with open(f"{wdir}/database/warnings.json", 'w+') as f: json.dump(warnings, f)
+    with open(f"{wdir}/database/warnings.json", 'w+', encoding="utf-8") as f: json.dump(warnings, f)
 
 # Commands
 class Moderation(commands.Cog):

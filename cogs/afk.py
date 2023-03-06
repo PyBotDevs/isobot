@@ -8,10 +8,10 @@ from discord import option, ApplicationContext, SlashCommandGroup
 from discord.ext import commands
 
 # Variables
-with open("database/presence.json", 'r') as f: presence = json.load(f)
+with open("database/presence.json", 'r', encoding="utf-8") as f: presence = json.load(f)
 
 def save():
-    with open("database/presence.json", 'w+') as f: json.dump(presence, f)
+    with open("database/presence.json", 'w+', encoding="utf-8") as f: json.dump(presence, f)
 
 # Functions
 def get_presence(user_id: int, guild_id: int) -> dict:

@@ -11,10 +11,10 @@ from discord.ext import commands
 wdir = os.getcwd()
 color = discord.Color.random()
 
-with open(f"{wdir}/database/levels.json", 'r') as f: levels = json.load(f)
+with open(f"{wdir}/database/levels.json", 'r', encoding="utf-8") as f: levels = json.load(f)
 
 def save():
-    with open(f"{wdir}/database/levels.json", 'w+') as f: json.dump(levels, f, indent=4)
+    with open(f"{wdir}/database/levels.json", 'w+', encoding="utf-8") as f: json.dump(levels, f, indent=4)
 
 # Functions
 def get_xp(id: int) -> int:
