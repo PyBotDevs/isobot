@@ -240,15 +240,6 @@ async def help(ctx: ApplicationContext, command:str=None):
         await ctx.respond("Check your direct messages.", ephemeral=True)
 
 @client.slash_command(
-  name='echo',
-  description='Sends a bot message in the channel'
-)
-@option(name="text", description="What do you want to send?", type=str)
-async def echo(ctx: ApplicationContext, text:str): 
-    await ctx.respond("Echoed!", ephemeral=True)
-    await ctx.channel.send(text)
-
-@client.slash_command(
     name='whoami',
     description='Shows information on a user'
 )
@@ -398,46 +389,6 @@ async def afk_mod_remove(ctx: ApplicationContext, user:discord.User):
         save()
         await ctx.respond(f"{user.display_name}'s AFK has been removed.")
     except KeyError: return await ctx.respond("That user isn't AFK.", ephemeral=True)
-
-@client.slash_command(
-    name="repo",
-    description="Shows the open-source code links for isobot."
-)
-async def repo(ctx: ApplicationContext):
-    localembed = discord.Embed(title="Source-code Repositories", description="See and contribute to **isobot's [GitHub repository](https://github.com/PyBotDevs/isobot)**\nSee our **[GitHub organization](https://github.com/PyBotDevs)**", color=color)
-    await ctx.respond(embed=localembed)
-
-@client.slash_command(
-    name="embedbuilder",
-    description="Builds a custom embed however you want"
-)
-@option(name="title", description="The title of the embed", type=str)
-@option(name="description", description="The body of the embed", type=str)
-@option(name="image_url", description="The main image you want to show for the embed (URL ONLY)", type=str, default=None)
-@option(name="thumbnail_url", description="The thumbnail image you want to show for the embed (URL ONLY)", type=str, default=None)
-@option(name="color", description="The embed's accent color (Use -1 for random color)", type=int, default=None)
-@option(name="footer_text", description="The text at the footer of the embed", type=str, default=None)
-@option(name="footer_icon_url", description="The icon you want to show in the embed's footer (URL ONLY)", type=str, default=None)
-async def embedbuilder(ctx: ApplicationContext, title: str, description: str, image_url: str = None, thumbnail_url: str = None, color: int = None, footer_text: str = None, footer_icon_url: str = None):
-    await ctx.respond("Embed Built!", ephemeral=True)
-    await ctx.channel.send(embed=framework.isobot.embedengine.embed(title, description, image=image_url, thumbnail=thumbnail_url, color=color, footer_text=footer_text, footer_img=footer_icon_url))
-
-@client.slash_command(
-    name="profile",
-    description="Shows basic stats about your isobot profile, or someone else's profile stats"
-)
-@option(name="user", description="Whose isobot profile do you want to view?", type=discord.User, default=None)
-async def profile(ctx:  ApplicationContext, user: discord.User = None):
-    if user == None: user = ctx.author
-    localembed = discord.Embed(title=f"{user.display_name}'s isobot stats", color=color)
-    localembed.set_thumbnail(url=user.avatar)
-    localembed.add_field(name="Level", value=f"Level {levels[str(user.id)]['level']} ({levels[str(user.id)]['xp']} XP)", inline=False)
-    localembed.add_field(name="Balance in Wallet", value=f"{get_wallet(user.id)} coins", inline=True)
-    localembed.add_field(name="Balance in Bank Account", value=f"{get_bank(user.id)} coins", inline=True)
-    localembed.add_field(name="Net-Worth", value=f"{get_user_networth(user.id)} coins", inline=True)
-    # More stats will be added later
-    # Maybe I should make a userdat system for collecting statistical data to process and display here, coming in a future update.
-    await ctx.respond(embed=localembed)
 
 # IsoCoins commands
 isocoin_system = client.create_group("isocoin", "Commands related to the IsoCoin rewards system.")
