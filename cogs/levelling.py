@@ -14,6 +14,13 @@ with open(f"{wdir}/database/levels.json", 'r') as f: levels = json.load(f)
 def save():
     with open(f"{wdir}/database/levels.json", 'w+') as f: json.dump(levels, f, indent=4)
 
+# Functions
+def get_xp(id: int) -> int:
+    return levels[str(id)]["xp"]
+
+def get_level(id: int) -> int:
+    return levels[str(id)]["level"]
+
 # Commands
 class Levelling(commands.Cog):
     def __init__(self, bot):
