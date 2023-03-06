@@ -64,6 +64,12 @@ def new_bank(id: int):
         currency['bank'][str(id)] = 0
         return 0
     else: return 1
+
+def get_user_count():
+    users = 0
+    for x in currency["wallet"].keys():
+        users += 1
+    return users
     
 # Commands
 class Economy(commands.Cog):
