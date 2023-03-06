@@ -1,3 +1,5 @@
+"""The isobot cog file for utility commands."""
+
 # Imports
 import discord
 import os

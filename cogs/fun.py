@@ -1,3 +1,5 @@
+"""The isobot cog file for fun commands."""
+
 # Imports
 import discord
 import json

@@ -1,3 +1,5 @@
+"""The isobot cog file for the economy system."""
+
 # Imports
 import discord
 import os.path

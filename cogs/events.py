@@ -1,3 +1,5 @@
+"""The isobot cog file for special events."""
+
 # Imports
 import discord
 from discord import option, ApplicationContext

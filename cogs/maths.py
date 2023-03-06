@@ -1,3 +1,5 @@
+"""The isobot cog file for maths commands."""
+
 # Imports
 import discord
 from math import sqrt

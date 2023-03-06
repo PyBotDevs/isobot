@@ -1,3 +1,5 @@
+"""The isobot cog file for the AFK system."""
+
 # Imports
 import discord
 import json

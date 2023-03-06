@@ -1,3 +1,5 @@
+"""The isobot cog file for minigames."""
+
 # Imports
 import discord
 import json
