@@ -333,43 +333,6 @@ async def reload(ctx: ApplicationContext, cog: str):
 # AFK System Commands
 afk_system = client.create_group("afk", "Commands for interacting with the built-in AFK system.")
 
-@afk_system.command(
-    name="set",
-    description="Sets your AFK status with a custom response"
-)
-@option(name="response", description="What do you want your AFK response to be?", type=str, default="I'm AFK")
-async def afk_set(ctx: ApplicationContext, response:str="I'm AFK"):
-    exctime = time.time()
-    if str(ctx.guild.id) not in presence: presence[str(ctx.guild.id)] = {}
-    presence[str(ctx.guild.id)][str(ctx.author.id)] = {"type": "afk", "time": exctime, "response": response}
-    save()
-    localembed = discord.Embed(title=f"{ctx.author.display_name} is now AFK.", description=f"Response: {response}", color=discord.Color.dark_orange())
-    await ctx.respond(embed=localembed)
-
-@afk_system.command(
-    name="remove",
-    description="Removes your AFK status"
-)
-async def afk_remove(ctx: ApplicationContext):
-    try: 
-        del presence[str(ctx.guild.id)][str(ctx.author.id)]
-        save()
-        await ctx.respond(f"Alright {ctx.author.mention}, I've removed your AFK.")
-    except KeyError: return await ctx.respond("You weren't previously AFK.", ephemeral=True)
-
-@afk_system.command(
-    name="mod_remove",
-    description="Removes an AFK status for someone else"
-)
-@option(name="user", description="Whose AFK status do you want to remove?", type=discord.User)
-async def afk_mod_remove(ctx: ApplicationContext, user:discord.User):
-    if not ctx.author.guild_permissions.manage_messages: return await ctx.respond("You don't have the required permissions to use this.", ephemeral=True)
-    try: 
-        del presence[str(ctx.guild.id)][str(user.id)]
-        save()
-        await ctx.respond(f"{user.display_name}'s AFK has been removed.")
-    except KeyError: return await ctx.respond("That user isn't AFK.", ephemeral=True)
-
 # IsoCoins commands
 isocoin_system = client.create_group("isocoin", "Commands related to the IsoCoin rewards system.")
 
