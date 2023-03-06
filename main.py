@@ -195,19 +195,19 @@ async def on_message(ctx):
 async def on_application_command_error(ctx: ApplicationContext, error: discord.DiscordException):
     current_time = datetime.time().strftime("%H:%M:%S")
     if isinstance(error, commands.CommandOnCooldown):
-        await ctx.channel.send(f':stopwatch: Not now! Please try after **{str(datetime.timedelta(seconds=int(round(error.retry_after))))}**')
+        await ctx.respond(f':stopwatch: Not now! Please try after **{str(datetime.timedelta(seconds=int(round(error.retry_after))))}**')
         print(f'[{current_time}] Ignoring exception at {colors.cyan}CommandOnCooldown{colors.end}. Details: This command is currently on cooldown.')
     elif isinstance(error, commands.MissingPermissions):
-        await ctx.channel.send('You don\'t have permission to do this!', ephemeral=True)
+        await ctx.respond('You don\'t have permission to do this!', ephemeral=True)
         print(f'[{current_time}] Ignoring exception at {colors.cyan}MissingPermissions{colors.end}. Details: The user doesn\'t have the required permissions.')
     elif isinstance(error, commands.BadArgument):
-        await ctx.channel.send(':x: Invalid argument.', delete_after=8)
+        await ctx.respond(':x: Invalid argument.', delete_after=8)
         print(f'[{current_time}] Ignoring exception at {colors.cyan}BadArgument{colors.end}.')
     elif isinstance(error, commands.BotMissingPermissions):
-        await ctx.channel.send(':x: I don\'t have the required permissions to use this.')
+        await ctx.respond(':x: I don\'t have the required permissions to use this.')
         print(f'[{current_time}] Ignoring exception at {colors.cyan}BotMissingPremissions{colors.end}. Details: The bot doesn\'t have the required permissions.')
     elif isinstance(error, commands.BadBoolArgument):
-        await ctx.channel.send(':x: Invalid true/false argument.', delete_after=8)
+        await ctx.respond(':x: Invalid true/false argument.', delete_after=8)
         print(f'[{current_time}] Ignoring exception at {colors.cyan}BadBoolArgument{colors.end}.')
 
 #Commands
