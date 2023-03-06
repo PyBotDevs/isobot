@@ -312,7 +312,8 @@ active_cogs = [
     "automod", 
     "isobank", 
     "levelling", 
-    "fun", 
+    "fun",
+    "utils"
     "afk"
 ]
 i = 1
