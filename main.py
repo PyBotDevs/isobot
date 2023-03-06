@@ -24,6 +24,7 @@ from discord import ApplicationContext, option
 from discord.ext import commands
 from discord.ext.commands import *
 from cogs.economy import get_wallet, get_bank, new_bank, new_wallet
+from cogs.isocoin import create_isocoin_key
 
 # Slash option types:
 # Just use variable types to define option types.
@@ -136,7 +137,7 @@ __________________________________________________""")
 async def on_message(ctx):
     new_wallet(ctx.author.id)
     new_bank(ctx.author.id)
-    if str(ctx.author.id) not in isocoins: isocoins[str(ctx.author.id)] = 0
+    create_isocoin_key(ctx.author.id)
     if str(ctx.guild.id) not in warnings: warnings[str(ctx.guild.id)] = {}
     if str(ctx.author.id) not in warnings[str(ctx.guild.id)]: warnings[str(ctx.guild.id)][str(ctx.author.id)] = []
     if str(ctx.author.id) not in items: items[str(ctx.author.id)] = {}
@@ -300,35 +301,6 @@ async def reload(ctx: ApplicationContext, cog: str):
         client.reload_extension(f"cogs.{cog}")
         await ctx.respond(embed=discord.Embed(description=f"{cog} cog successfully reloaded.", color=discord.Color.green()))
     except: await ctx.respond(embed=discord.Embed(description=f"{cog} cog not found.", color=discord.Color.red()))
-
-# IsoCoins commands
-isocoin_system = client.create_group("isocoin", "Commands related to the IsoCoin rewards system.")
-
-isocoin_system.command(
-    name="balance",
-    description="See your IsoCoin balances"
-)
-async def isocoin_balance(ctx: ApplicationContext):
-    localembed = discord.Embed(description=f"You currently have **{isocoins[str(ctx.author.id)]}** IsoCoins.")
-    await ctx.respond(embed=localembed)
-
-isocoin_system.command(
-    name="daily",
-    description="Collect your daily reward of IsoCoins"
-)
-@commands.cooldown(1, 86400, commands.BucketType.user)
-async def isocoin_daily(ctx: ApplicationContext):
-    isocoins_reward = random.randint(2500, 5000)
-    isocoins[str(ctx.author.id)] += isocoins_reward
-    save()
-    await ctx.respond(f"You have earned {isocoins_reward} IsoCoins from this daily. Come back in 24 hours for the next one!")
-
-isocoin_system.command(
-    name="shop",
-    description="See all the items that you can buy using your IsoCoins."
-)
-async def isocoin_shop(ctx: ApplicationContext):
-    await ctx.respond("IsoCoin shop is coming soon! Check back later for new items.")
 
 # Initialization
 active_cogs = [
