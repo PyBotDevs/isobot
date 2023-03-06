@@ -16,7 +16,7 @@ class Presence(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
     
-    afk_system = SlashCommandGroup("afk", "Commands related to managing your AFK status.")
+    afk_system = SlashCommandGroup("afk", "Commands for interacting with the AFK system.")
 
     @afk_system.command(
         name="set",

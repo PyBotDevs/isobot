@@ -330,9 +330,6 @@ async def reload(ctx: ApplicationContext, cog: str):
         await ctx.respond(embed=discord.Embed(description=f"{cog} cog successfully reloaded.", color=discord.Color.green()))
     except: await ctx.respond(embed=discord.Embed(description=f"{cog} cog not found.", color=discord.Color.red()))
 
-# AFK System Commands
-afk_system = client.create_group("afk", "Commands for interacting with the built-in AFK system.")
-
 # IsoCoins commands
 isocoin_system = client.create_group("isocoin", "Commands related to the IsoCoin rewards system.")
 
