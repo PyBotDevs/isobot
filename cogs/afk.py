@@ -11,6 +11,18 @@ with open("database/presence.json", 'r') as f: presence = json.load(f)
 def save():
     with open("database/presence.json", 'w+') as f: presence = json.dump(presence, f)
 
+# Functions
+def get_presence(user_id: int, guild_id: int) -> dict:
+    """Returns a `dict` of the specified user's current AFK status in the guild."""
+    if str(user_id) in presence[str(guild_id)]: 
+        return {
+            "afk": True, 
+            "response": presence[str(guild_id)][str(user_id)]['response'], 
+            "time": presence[str(guild_id)][str(user_id)]['time']
+        }
+    else:
+        return False
+
 # Commands
 class Presence(commands.Cog):
     def __init__(self, bot):
