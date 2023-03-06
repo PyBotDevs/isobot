@@ -17,16 +17,16 @@ color = discord.Color.random()
 class Utils(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-    
+
     @commands.slash_command(
         name='echo',
         description='Sends a bot message in the channel'
     )
     @option(name="text", description="What do you want to send?", type=str)
-    async def echo(self, ctx: ApplicationContext, text:str): 
+    async def echo(self, ctx: ApplicationContext, text:str):
         await ctx.respond("Echoed!", ephemeral=True)
         await ctx.channel.send(text)
-    
+
     @commands.slash_command(
         name="repo",
         description="Shows the open-source code links for isobot."
@@ -34,7 +34,7 @@ class Utils(commands.Cog):
     async def repo(self, ctx: ApplicationContext):
         localembed = discord.Embed(title="Source-code Repositories", description="See and contribute to **isobot's [GitHub repository](https://github.com/PyBotDevs/isobot)**\nSee our **[GitHub organization](https://github.com/PyBotDevs)**", color=color)
         await ctx.respond(embed=localembed)
-    
+
     @commands.slash_command(
         name="embedbuilder",
         description="Builds a custom embed however you want"
@@ -65,7 +65,7 @@ class Utils(commands.Cog):
         presence = get_presence(ctx.author.id, ctx.guild.id)
         if presence != False: localembed_desc += f"\n`🌙 AFK` {presence['response']} - <t:{math.floor(presence['time'])}>"
         localembed = discord.Embed(
-            title=f'User Info on {username}', 
+            title=f'User Info on {username}',
             description=localembed_desc
         )
         localembed.set_thumbnail(url=pfp)
@@ -115,6 +115,6 @@ class Utils(commands.Cog):
         localembed.add_field(name="Release Notes", value="[latest](https://github.com/PyBotDevs/isobot/releases/latest)")
         localembed.set_footer(text=f"Requested by {ctx.author.name}", icon_url=ctx.author.avatar_url)
         await ctx.respond(embed=localembed)
-    
+
 # Cog Initialization
 def setup(bot): bot.add_cog(Utils(bot))

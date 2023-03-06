@@ -14,7 +14,7 @@ def save():
 # Functions
 def get_presence(user_id: int, guild_id: int) -> dict:
     """Returns a `dict` of the specified user's current AFK status in the guild."""
-    if str(user_id) in presence[str(guild_id)]: 
+    if str(user_id) in presence[str(guild_id)]:
         return {
             "afk": True, 
             "response": presence[str(guild_id)][str(user_id)]['response'], 
@@ -27,7 +27,7 @@ def get_presence(user_id: int, guild_id: int) -> dict:
 class Presence(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-    
+
     afk_system = SlashCommandGroup("afk", "Commands for interacting with the AFK system.")
 
     @afk_system.command(
@@ -48,7 +48,7 @@ class Presence(commands.Cog):
         description="Removes your AFK status"
     )
     async def afk_remove(self, ctx: ApplicationContext):
-        try: 
+        try:
             del presence[str(ctx.guild.id)][str(ctx.author.id)]
             save()
             await ctx.respond(f"Alright {ctx.author.mention}, I've removed your AFK.")
@@ -61,7 +61,7 @@ class Presence(commands.Cog):
     @option(name="user", description="Whose AFK status do you want to remove?", type=discord.User)
     async def afk_mod_remove(self, ctx: ApplicationContext, user:discord.User):
         if not ctx.author.guild_permissions.manage_messages: return await ctx.respond("You don't have the required permissions to use this.", ephemeral=True)
-        try: 
+        try:
             del presence[str(ctx.guild.id)][str(user.id)]
             save()
             await ctx.respond(f"{user.display_name}'s AFK has been removed.")

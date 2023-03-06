@@ -82,14 +82,14 @@ class plugins:
 
 class ShopData:
     def __init__(self, db_path: str):
-        self.db_path = db_path 
+        self.db_path = db_path
         with open(db_path, 'r') as f: self.config = json.load(f)
-        
+
     def get_item_ids(self) -> list:
         json_list = list()
         for h in self.config: json_list.append(str(h))
         return json_list
-    
+
     def get_item_names(self) -> list:
         json_list = list()
         for h in self.config: json_list.append(str(h["stylized name"]))
@@ -232,7 +232,7 @@ async def help(ctx: ApplicationContext, command:str=None):
         except KeyError: return await ctx.respond(embed=discord.Embed(description=f"No results found for {command}."), ephemeral=True)
     else:
         r = ""
-        for x in commandsdb: 
+        for x in commandsdb:
             if commandsdb[x]["type"] != "DevTools": r += f"`/{x}`\n"
         localembed = discord.Embed(title="Isobot Command Help", description=f"**Bot Commands:**\n{r}", color = color)
         user = client.fetch_user(ctx.author.id)
@@ -350,16 +350,16 @@ for x in active_cogs:
     i += 1
     try: client.load_extension(f"cogs.{x}")
     except Exception as e:
-        cog_errors += 1 
+        cog_errors += 1
         print(f"[main/Cogs] {colors.red}ERROR: Cog \"{x}\" failed to load: {e}{colors.end}")
 if cog_errors == 0: print(f"[main/Cogs] {colors.green}All cogs successfully loaded.{colors.end}")
 else: print(f"[main/Cogs] {colors.yellow}{cog_errors}/{len(active_cogs)} cogs failed to load.{colors.end}")
 print("--------------------")
-if api.auth.get_mode(): 
+if api.auth.get_mode():
     print(f"[main/CLIENT] Starting client in {colors.cyan}Replit mode{colors.end}...")
     client.run(os.getenv("TOKEN"))
 else:
-    print(f"[main/CLIENT] Starting client in {colors.orange}local mode{colors.end}...") 
+    print(f"[main/CLIENT] Starting client in {colors.orange}local mode{colors.end}...")
     client.run(api.auth.get_token())
 
 
