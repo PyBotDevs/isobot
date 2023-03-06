@@ -8,9 +8,9 @@ import math
 import framework.isobot.embedengine
 from discord import option, ApplicationContext
 from discord.ext import commands
-from economy import get_wallet, get_bank, get_user_networth, get_user_count
-from levelling import get_level, get_xp
-from afk import get_presence
+from cogs.economy import get_wallet, get_bank, get_user_networth, get_user_count
+from cogs.levelling import get_level, get_xp
+from cogs.afk import get_presence
 
 # Variables
 color = discord.Color.random()
