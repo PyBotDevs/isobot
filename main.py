@@ -239,35 +239,6 @@ async def help(ctx: ApplicationContext, command:str=None):
         await user.send(embed=localembed)
         await ctx.respond("Check your direct messages.", ephemeral=True)
 
-@client.slash_command(
-    name='whoami',
-    description='Shows information on a user'
-)
-@option(name="user", description="Who do you want to know about?", type=discord.User, default=None)
-async def whoami(ctx: ApplicationContext, user: discord.User=None):
-    if user == None: user = ctx.author
-    username = user
-    displayname = user.display_name
-    registered = user.joined_at.strftime("%b %d, %Y, %T")
-    pfp = user.avatar
-    localembed_desc = f"`AKA` {displayname}"
-    if str(user.id) in presence[str(ctx.guild.id)]: localembed_desc += f"\n`🌙 AFK` {presence[str(ctx.guild.id)][str(user.id)]['response']} - <t:{floor(presence[str(ctx.guild.id)][str(user.id)]['time'])}>"
-    localembed = discord.Embed(
-        title=f'User Info on {username}', 
-        description=localembed_desc
-    )
-    localembed.set_thumbnail(url=pfp)
-    localembed.add_field(name='Username', value=username, inline=True)
-    localembed.add_field(name='Display Name', value=displayname, inline=True)
-    localembed.add_field(name='Joined Discord on', value=registered, inline=False)
-    localembed.add_field(name='Avatar URL', value=f"[here!]({pfp})", inline=True)
-    role_render = ""
-    for p in user.roles:
-        if p != user.roles[0]: role_render += f"<@&{p.id}> "
-    localembed.add_field(name='Roles', value=role_render, inline=False)
-    localembed.add_field(name="Net worth", value=f"{get_user_networth(user.id)} coins", inline=False)
-    await ctx.respond(embed=localembed)
-
 # DevTools commands
 @client.slash_command(
     name='sync',
