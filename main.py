@@ -360,7 +360,18 @@ async def isocoin_shop(ctx: ApplicationContext):
     await ctx.respond("IsoCoin shop is coming soon! Check back later for new items.")
 
 # Initialization
-active_cogs = ["economy", "maths", "moderation", "reddit", "minigames", "automod", "isobank", "levelling", "fun", "afk"]
+active_cogs = [
+    "economy", 
+    "maths", 
+    "moderation", 
+    "reddit", 
+    "minigames", 
+    "automod", 
+    "isobank", 
+    "levelling", 
+    "fun", 
+    "afk"
+]
 i = 1
 cog_errors = 0
 for x in active_cogs:
