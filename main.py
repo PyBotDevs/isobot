@@ -311,7 +311,7 @@ async def status(ctx: ApplicationContext):
     localembed.set_footer(text=f"Requested by {ctx.author.name}", icon_url=ctx.author.avatar_url)
     await ctx.respond(embed=localembed)
 
-# Cog Commands
+# Cog Commands (these cannot be moved into a cog)
 cogs = client.create_group("cog", "Commands for working with isobot cogs.")
 
 @cogs.command(
