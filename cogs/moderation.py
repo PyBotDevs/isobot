@@ -34,7 +34,7 @@ class Moderation(commands.Cog):
         if not ctx.author.guild_permissions.kick_members: return await ctx.respond('https://tenor.com/view/oh-yeah-high-kick-take-down-fight-gif-14272509')
         else:
             try:
-                if reason == None: await user.kick()
+                if reason is None: await user.kick()
                 else: await user.kick(reason=reason)
                 await ctx.respond(embed=discord.Embed(title=f'{user} has been kicked.', description=f'Reason: {str(reason)}'))
             except Exception: await ctx.respond(embed=discord.Embed(title='Well, something happened...', description='Either I don\'t have permission to do this, or my role isn\'t high enough.', color=discord.Colour.red()))
@@ -50,7 +50,7 @@ class Moderation(commands.Cog):
         if not ctx.author.guild_permissions.ban_members: return await ctx.respond('https://tenor.com/view/thor-strike-admin-ban-admin-ban-gif-22545175')
         else:
             try:
-                if reason == None: await user.ban()
+                if reason is None: await user.ban()
                 else: await user.ban(reason=reason)
                 await ctx.respond(embed=discord.Embed(title=f'{user} has been banned.', description=f'Reason: {str(reason)}'))
             except Exception: await ctx.respond(embed=discord.Embed(title='Well, something happened...', description='Either I don\'t have permission to do this, or my role isn\'t high enough.', color=discord.Colour.red()))

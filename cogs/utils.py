@@ -58,14 +58,14 @@ class Utils(commands.Cog):
     )
     @option(name="user", description="Who do you want to know about?", type=discord.User, default=None)
     async def whoami(self, ctx: ApplicationContext, user: discord.User=None):
-        if user == None: user = ctx.author
+        if user is None: user = ctx.author
         username = user
         displayname = user.display_name
         registered = user.joined_at.strftime("%b %d, %Y, %T")
         pfp = user.avatar
         localembed_desc = f"`AKA` {displayname}"
         presence = get_presence(ctx.author.id, ctx.guild.id)
-        if presence != False: localembed_desc += f"\n`🌙 AFK` {presence['response']} - <t:{math.floor(presence['time'])}>"
+        if presence is not False: localembed_desc += f"\n`🌙 AFK` {presence['response']} - <t:{math.floor(presence['time'])}>"
         localembed = discord.Embed(
             title=f'User Info on {username}',
             description=localembed_desc

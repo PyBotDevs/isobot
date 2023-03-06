@@ -44,8 +44,8 @@ class Automod(commands.Cog):
         if not ctx.author.guild_permissions.administrator: return await ctx.respond("You cannot use this command. If you think this is a mistake, please contact your server owner/administrator.", ephemeral=True)
         if loaded_config["swear_filter"]["enabled"] == toggle: return await ctx.respond(f"That automod option is already set to `{toggle}`.", ephemeral=True)
         loaded_config["swear_filter"]["enabled"] = toggle
-        if toggle == True: await ctx.respond("Swear-filter successfully **enabled**.", ephemeral=True)
-        elif toggle == False: await ctx.respond("Swear-filter successfully **disabled**.", ephemeral=True)
+        if toggle is True: await ctx.respond("Swear-filter successfully **enabled**.", ephemeral=True)
+        elif toggle is False: await ctx.respond("Swear-filter successfully **disabled**.", ephemeral=True)
         save()
 
     @commands.slash_command(
@@ -58,8 +58,8 @@ class Automod(commands.Cog):
         if not ctx.author.guild_permissions.administrator: return await ctx.respond("You cannot use this command. If you think this is a mistake, please contact your server owner/administrator.", ephemeral=True)
         if loaded_config["swear_filter"]["keywords"]["use_default"] == toggle: return await ctx.respond(f"That automod option is already set to `{toggle}`.", ephemeral=True)
         loaded_config["swear_filter"]["keywords"]["use_default"] = toggle
-        if toggle == True: await ctx.respond("Using default swear-filter keywords successfully **enabled**.", ephemeral=True)
-        elif toggle == False: await ctx.respond("Using default swear-filter keywords successfully **disabled**.", ephemeral=True)
+        if toggle is True: await ctx.respond("Using default swear-filter keywords successfully **enabled**.", ephemeral=True)
+        elif toggle is False: await ctx.respond("Using default swear-filter keywords successfully **disabled**.", ephemeral=True)
         save()
 
     @commands.slash_command(

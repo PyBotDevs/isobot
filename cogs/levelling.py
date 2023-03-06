@@ -34,7 +34,7 @@ class Levelling(commands.Cog):
     )
     @option(name="user", description="Who's rank do you want to view?", type=discord.User, default=None)
     async def rank(self, ctx: ApplicationContext, user:discord.User=None):
-        if user == None: user = ctx.author
+        if user is None: user = ctx.author
         try:
             localembed = discord.Embed(title=f"{user.display_name}'s rank", color=color)
             localembed.add_field(name="Level", value=levels[str(user.id)]["level"])

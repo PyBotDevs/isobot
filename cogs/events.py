@@ -28,7 +28,7 @@ class SpecialEvents(commands.Cog):
     )
     @option(name="user", description="Who's event stats do you want to view?", type=discord.User, default=None)
     async def stats(self, ctx: ApplicationContext, user: discord.User):
-        if user == None: user = ctx.author
+        if user is None: user = ctx.author
         ctx.respond("This event has been concluded! Come back to this command later for new events!", ephemeral=True)
 
 # Initialization
