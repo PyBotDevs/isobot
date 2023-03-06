@@ -86,7 +86,7 @@ class Utils(commands.Cog):
     )
     @option(name="user", description="Whose isobot profile do you want to view?", type=discord.User, default=None)
     async def profile(self, ctx: ApplicationContext, user: discord.User = None):
-        if user == None: user = ctx.author
+        if user is None: user = ctx.author
         localembed = discord.Embed(title=f"{user.display_name}'s isobot stats", color=color)
         localembed.set_thumbnail(url=user.avatar)
         localembed.add_field(name="Level", value=f"Level {get_level(user.id)} ({get_xp(user.id)} XP)", inline=False)
