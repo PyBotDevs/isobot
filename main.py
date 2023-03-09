@@ -41,7 +41,6 @@ with open('database/presence.json', 'r', encoding="utf-8") as f: presence = json
 with open('database/levels.json', 'r', encoding="utf-8") as f: levels = json.load(f)
 with open('config/commands.json', 'r', encoding="utf-8") as f: commandsdb = json.load(f)
 with open('database/automod.json', 'r', encoding="utf-8") as f: automod_config = json.load(f)
-with open('database/isotokens.json', 'r', encoding="utf-8") as f: isocoins = json.load(f)
 
 #Pre-Initialization Commands
 def save():
@@ -50,7 +49,6 @@ def save():
     with open('database/presence.json', 'w+', encoding="utf-8") as f: json.dump(presence, f, indent=4)
     with open('database/levels.json', 'w+', encoding="utf-8") as f: json.dump(levels, f, indent=4)
     with open('database/automod.json', 'w+', encoding="utf-8") as f: json.dump(automod_config, f, indent=4)
-    with open('database/isotokens.json', 'w+', encoding="utf-8") as f: json.dump(isocoins, f, indent=4)
 
 if not os.path.isdir("logs"):
     os.mkdir('logs')
