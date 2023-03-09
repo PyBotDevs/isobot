@@ -35,7 +35,6 @@ client = discord.Bot()
 color = discord.Color.random()
 wdir = os.getcwd()
 reddit = praw.Reddit(client_id='_pazwWZHi9JldA', client_secret='1tq1HM7UMEGIro6LlwtlmQYJ1jB4vQ', user_agent='idk', check_for_async=False)
-with open('database/warnings.json', 'r', encoding="utf-8") as f: warnings = json.load(f)
 with open('database/items.json', 'r', encoding="utf-8") as f: items = json.load(f)
 with open('config/shop.json', 'r', encoding="utf-8") as f: shopitem = json.load(f)
 with open('database/presence.json', 'r', encoding="utf-8") as f: presence = json.load(f)
@@ -47,7 +46,6 @@ with open('database/isotokens.json', 'r', encoding="utf-8") as f: isocoins = jso
 #Pre-Initialization Commands
 def timenow(): datetime.datetime.now().strftime("%H:%M:%S")
 def save():
-    with open('database/warnings.json', 'w+', encoding="utf-8") as f: json.dump(warnings, f, indent=4)
     with open('database/items.json', 'w+', encoding="utf-8") as f: json.dump(items, f, indent=4)
     with open('database/presence.json', 'w+', encoding="utf-8") as f: json.dump(presence, f, indent=4)
     with open('database/levels.json', 'w+', encoding="utf-8") as f: json.dump(levels, f, indent=4)
@@ -223,7 +221,6 @@ async def help(ctx: ApplicationContext, command:str=None):
 async def sync(ctx: ApplicationContext):
     if ctx.author.id != 738290097170153472: return await ctx.respond('Sorry, this command is only for my developer\'s use.')
     try:
-        with open('database/warnings.json', 'r') as f: warnings = json.load(f)
         with open('database/items.json', 'r') as f: items = json.load(f)
         with open('config/shop.json', 'r') as f: shopitem = json.load(f)
         await ctx.respond('Databases resynced.', ephemeral=True)
