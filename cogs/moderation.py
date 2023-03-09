@@ -14,9 +14,25 @@ wdir = os.getcwd()
 
 with open(f"{wdir}/database/warnings.json", 'r', encoding="utf-8") as f: warnings = json.load(f)
 
-# Functions
 def save():
     with open(f"{wdir}/database/warnings.json", 'w+', encoding="utf-8") as f: json.dump(warnings, f)
+
+# Functions
+def new_warnings_guild(guild_id: int) -> int:
+    """Makes a new key for guild warnings in the warnings database.\n\nReturns `0` if successful, returns `1` if key already exists."""
+    if str(guild_id) not in warnings:
+        warnings[str(guild_id)] = {}
+        save()
+        return 0
+    else: return 1
+
+def new_warnings_user(guild_id: int, user_id: int) -> int:
+    """Makes a new key for user warnings for the specified guild in the warnings database.\n\nReturns `0` if successful, returns `1` if key already exists."""
+    if str(user_id) not in warnings[str(guild_id)].keys():
+        warnings[str(guild_id)][str(user_id)] = []
+        save()
+        return 0
+    else: return 1
 
 # Commands
 class Moderation(commands.Cog):

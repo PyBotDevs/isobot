@@ -23,6 +23,7 @@ from discord.ext import commands
 from discord.ext.commands import *
 from cogs.economy import new_bank, new_wallet
 from cogs.isocoin import create_isocoin_key
+from cogs.moderation import new_warnings_guild, new_warnings_user
 
 # Slash option types:
 # Just use variable types to define option types.
@@ -34,7 +35,6 @@ client = discord.Bot()
 color = discord.Color.random()
 wdir = os.getcwd()
 reddit = praw.Reddit(client_id='_pazwWZHi9JldA', client_secret='1tq1HM7UMEGIro6LlwtlmQYJ1jB4vQ', user_agent='idk', check_for_async=False)
-with open('database/warnings.json', 'r', encoding="utf-8") as f: warnings = json.load(f)
 with open('database/items.json', 'r', encoding="utf-8") as f: items = json.load(f)
 with open('config/shop.json', 'r', encoding="utf-8") as f: shopitem = json.load(f)
 with open('database/presence.json', 'r', encoding="utf-8") as f: presence = json.load(f)
@@ -44,7 +44,6 @@ with open('database/automod.json', 'r', encoding="utf-8") as f: automod_config =
 
 #Pre-Initialization Commands
 def save():
-    with open('database/warnings.json', 'w+', encoding="utf-8") as f: json.dump(warnings, f, indent=4)
     with open('database/items.json', 'w+', encoding="utf-8") as f: json.dump(items, f, indent=4)
     with open('database/presence.json', 'w+', encoding="utf-8") as f: json.dump(presence, f, indent=4)
     with open('database/levels.json', 'w+', encoding="utf-8") as f: json.dump(levels, f, indent=4)
@@ -108,9 +107,9 @@ __________________________________________________""")
 async def on_message(ctx):
     new_wallet(ctx.author.id)
     new_bank(ctx.author.id)
+    new_warnings_guild(ctx.guild.id)
+    new_warnings_user(ctx.guild.id, ctx.author.id)
     create_isocoin_key(ctx.author.id)
-    if str(ctx.guild.id) not in warnings: warnings[str(ctx.guild.id)] = {}
-    if str(ctx.author.id) not in warnings[str(ctx.guild.id)]: warnings[str(ctx.guild.id)][str(ctx.author.id)] = []
     if str(ctx.author.id) not in items: items[str(ctx.author.id)] = {}
     if str(ctx.author.id) not in levels: levels[str(ctx.author.id)] = {"xp": 0, "level": 0}
     if str(ctx.guild.id) not in automod_config: automod_config[str(ctx.guild.id)] = \
@@ -219,7 +218,6 @@ async def help(ctx: ApplicationContext, command:str=None):
 async def sync(ctx: ApplicationContext):
     if ctx.author.id != 738290097170153472: return await ctx.respond('Sorry, this command is only for my developer\'s use.')
     try:
-        with open('database/warnings.json', 'r') as f: warnings = json.load(f)
         with open('database/items.json', 'r') as f: items = json.load(f)
         with open('config/shop.json', 'r') as f: shopitem = json.load(f)
         await ctx.respond('Databases resynced.', ephemeral=True)
