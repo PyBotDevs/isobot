@@ -23,6 +23,7 @@ from discord.ext import commands
 from discord.ext.commands import *
 from cogs.economy import new_bank, new_wallet
 from cogs.isocoin import create_isocoin_key
+from cogs.moderation import new_warnings_guild, new_warnings_user
 
 # Slash option types:
 # Just use variable types to define option types.
@@ -111,9 +112,9 @@ __________________________________________________""")
 async def on_message(ctx):
     new_wallet(ctx.author.id)
     new_bank(ctx.author.id)
+    new_warnings_guild(ctx.guild.id)
+    new_warnings_user(ctx.guild.id, ctx.author.id)
     create_isocoin_key(ctx.author.id)
-    if str(ctx.guild.id) not in warnings: warnings[str(ctx.guild.id)] = {}
-    if str(ctx.author.id) not in warnings[str(ctx.guild.id)]: warnings[str(ctx.guild.id)][str(ctx.author.id)] = []
     if str(ctx.author.id) not in items: items[str(ctx.author.id)] = {}
     if str(ctx.author.id) not in levels: levels[str(ctx.author.id)] = {"xp": 0, "level": 0}
     if str(ctx.guild.id) not in automod_config: automod_config[str(ctx.guild.id)] = \
