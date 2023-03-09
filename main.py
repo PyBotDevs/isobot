@@ -55,12 +55,6 @@ def save():
     with open('database/automod.json', 'w+', encoding="utf-8") as f: json.dump(automod_config, f, indent=4)
     with open('database/isotokens.json', 'w+', encoding="utf-8") as f: json.dump(isocoins, f, indent=4)
 
-def get_user_networth(user_id:int):
-    nw = get_wallet(user_id) + get_bank(user_id)
-    #for e in items[str(user_id)]:
-    #    if e != 0: nw += shopitem[e]["sell price"]
-    return nw
-
 if not os.path.isdir("logs"):
     os.mkdir('logs')
     try:
@@ -81,29 +75,11 @@ class plugins:
     levelling = False
     music = False
 
-class ShopData:
-    def __init__(self, db_path: str):
-        self.db_path = db_path
-        with open(db_path, 'r', encoding="utf-8") as f: self.config = json.load(f)
-
-    def get_item_ids(self) -> list:
-        json_list = list()
-        for h in self.config: json_list.append(str(h))
-        return json_list
-
-    def get_item_names(self) -> list:
-        json_list = list()
-        for h in self.config: json_list.append(str(h["stylized name"]))
-        return json_list
-
 #Framework Module Loader
 colors = framework.isobot.colors.Colors()
 currency_unused = framework.isobot.currency.CurrencyAPI(f'{wdir}/database/currency.json', f"{wdir}/logs/currency.log")  # Initialize part of the framework (Currency)
 # isobank = framework.isobank.manager.IsoBankManager(f"{wdir}/database/isobank/accounts.json", f"{wdir}/database/isobank/auth.json")
 isobankauth = framework.isobank.authorize.IsobankAuth(f"{wdir}/database/isobank/auth.json", f"{wdir}/database/isobank/accounts.json")
-shop_data = ShopData(f"{wdir}/config/shop.json")
-
-all_item_ids = shop_data.get_item_ids()
 
 #Theme Loader
 with open("themes/halloween.theme.json", 'r', encoding="utf-8") as f:
