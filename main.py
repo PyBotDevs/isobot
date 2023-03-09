@@ -21,7 +21,7 @@ import framework.isobot.embedengine
 from discord import ApplicationContext, option
 from discord.ext import commands
 from discord.ext.commands import *
-from cogs.economy import get_wallet, get_bank, new_bank, new_wallet
+from cogs.economy import new_bank, new_wallet
 from cogs.isocoin import create_isocoin_key
 
 # Slash option types:
