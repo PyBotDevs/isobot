@@ -34,5 +34,14 @@ class Fun(commands.Cog):
         var = ''.join(arr)
         await ctx.respond(f"{var}")
 
+    @commands.slash_command(
+        name='prediction',
+        description='Randomly predicts a yes/no question.'
+    )
+    @option(name="question", description="What do you want to predict?", type=str)
+    async def prediction(self, ctx: ApplicationContext, question: str):
+        await ctx.respond(f"My prediction is... **{random.choice(['Yes', 'No'])}!**")
+
+
 # Initialization
 def setup(bot): bot.add_cog(Fun(bot))
