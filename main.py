@@ -232,13 +232,6 @@ async def sync(ctx: ApplicationContext):
         print(e)
         await ctx.respond('An error occured while resyncing. Check console.', ephemeral=True)
 
-@client.slash_command(
-    name='prediction',
-    description='Randomly predicts a yes/no question.'
-)
-@option(name="question", description="What do you want to predict?", type=str)
-async def prediction(ctx: ApplicationContext, question:str): await ctx.respond(f"My prediction is... **{random.choice(['Yes', 'No'])}!**")
-
 # Cog Commands (these cannot be moved into a cog)
 cogs = client.create_group("cog", "Commands for working with isobot cogs.")
 
