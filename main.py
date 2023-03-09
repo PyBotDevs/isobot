@@ -1,13 +1,11 @@
 # Imports
 import os
 import os.path
-import psutil
 import json
 import time
 import datetime
 import discord
 import asyncio
-import random
 import praw
 import api.auth
 import utils.logger
