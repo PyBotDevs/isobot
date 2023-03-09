@@ -44,7 +44,6 @@ with open('database/automod.json', 'r', encoding="utf-8") as f: automod_config =
 with open('database/isotokens.json', 'r', encoding="utf-8") as f: isocoins = json.load(f)
 
 #Pre-Initialization Commands
-def timenow(): datetime.datetime.now().strftime("%H:%M:%S")
 def save():
     with open('database/items.json', 'w+', encoding="utf-8") as f: json.dump(items, f, indent=4)
     with open('database/presence.json', 'w+', encoding="utf-8") as f: json.dump(presence, f, indent=4)
