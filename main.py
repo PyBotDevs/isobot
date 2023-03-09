@@ -43,7 +43,6 @@ with open('config/commands.json', 'r', encoding="utf-8") as f: commandsdb = json
 with open('database/automod.json', 'r', encoding="utf-8") as f: automod_config = json.load(f)
 
 #Pre-Initialization Commands
-def timenow(): datetime.datetime.now().strftime("%H:%M:%S")
 def save():
     with open('database/warnings.json', 'w+', encoding="utf-8") as f: json.dump(warnings, f, indent=4)
     with open('database/items.json', 'w+', encoding="utf-8") as f: json.dump(items, f, indent=4)
