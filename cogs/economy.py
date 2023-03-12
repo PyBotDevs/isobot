@@ -363,6 +363,7 @@ class Economy(commands.Cog):
             total_amount = amt + rounded_taxable_amount
             currency['wallet'][str(ctx.author.id)] -= int(total_amount)
             items[str(ctx.author.id)][str(name)] += quantity
+            currency["treasury"] += rounded_taxable_amount
             save()
             localembed = discord.Embed(
                 title=f'You just bought {quantity} {shopitem[name]["stylized name"]}!',
@@ -634,6 +635,14 @@ class Economy(commands.Cog):
                 await ctx.respond(embed=e)
             except: await ctx.respond('Looks like that user is not indexed in our server. Try again later.', ephemeral=True)
         except Exception as e: await ctx.respond(f'An error occured: `{e}`. This has automatically been reported to the devs.')
+    
+    @commands.slash_command(
+        name="treasury",
+        description="See the amount of coins in the isobot treasury."
+    )
+    async def treasury(ctx: ApplicationContext):
+        localembed = discord.Embed(description="There are currently {currency['treasury']} coins in the isobot treasury.")
+        await ctx.respond(embed=localembed)
 
 # Initialization
 def setup(bot):

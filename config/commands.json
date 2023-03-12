@@ -638,5 +638,15 @@
 	"usable_by": "the developer",
 	"disabled": false,
 	"bugged": false
+  },
+  "treasury": {
+	"name": "Treasury",
+	"description": "View the amount of coins in the isobot treasury.",
+	"type": "economy system",
+	"cooldown": null,
+	"args": null,
+	"usable_by": "everyone",
+	"disabled": false,
+	"bugged": false
   }
 }
