@@ -363,6 +363,7 @@ class Economy(commands.Cog):
             total_amount = amt + rounded_taxable_amount
             currency['wallet'][str(ctx.author.id)] -= int(total_amount)
             items[str(ctx.author.id)][str(name)] += quantity
+            currency["treasury"] += rounded_taxable_amount
             save()
             localembed = discord.Embed(
                 title=f'You just bought {quantity} {shopitem[name]["stylized name"]}!',
