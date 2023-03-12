@@ -360,7 +360,13 @@ class Economy(commands.Cog):
             currency['wallet'][str(ctx.author.id)] -= int(amt)
             items[str(ctx.author.id)][str(name)] += quantity
             save()
-            await ctx.respond(embed=discord.Embed(title=f'You just bought {quantity} {shopitem[name]["stylized name"]}!', description='Thank you for your purchase.', color=discord.Color.green()))
+            await ctx.respond(
+                embed=discord.Embed(
+                    title=f'You just bought {quantity} {shopitem[name]["stylized name"]}!',
+                    description='Thank you for your purchase.',
+                    color=discord.Color.green()
+                )
+            )
         except KeyError: await ctx.respond('That item doesn\'t exist.')
 
     @commands.slash_command(
