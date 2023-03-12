@@ -366,7 +366,7 @@ class Economy(commands.Cog):
             save()
             localembed = discord.Embed(
                 title=f'You just bought {quantity} {shopitem[name]["stylized name"]}!',
-                description=f"**Your Purchase Invoice**\n\nItem: {quantity} {name.lower()}\n---------------\nBase Amount: {amt} coins\nTax: 3%\nTaxable Amount: {taxable_amount} coins\nTaxable Amount (rounded): {rounded_taxable_amount}coins\n**Charged Amount:** {total_amount} coins",
+                description=f"**Your Purchase Invoice**\n\nItem: {quantity} {name.lower()}\n---------------\nBase Amount: {amt} coins\nTax: 3%\nTaxable Amount: {taxable_amount} coins\nTaxable Amount (rounded): {rounded_taxable_amount} coins\n**Charged Amount:** {total_amount} coins",
                 color=discord.Color.green()
             )
             localembed.set_footer(text="Thank you for your purchase.")
