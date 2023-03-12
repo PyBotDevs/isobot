@@ -357,10 +357,20 @@ class Economy(commands.Cog):
             if (currency['wallet'][str(ctx.author.id)] < amt): return await ctx.respond('You don\'t have enough balance to buy this.')
             if (shopitem[name]['available'] == False): return await ctx.respond('You can\'t buy this item **dood**')
             if (quantity <= 0): return await ctx.respond('The specified quantity cannot be less than `1`!')
-            currency['wallet'][str(ctx.author.id)] -= int(amt)
+            tax = 3
+            taxable_amount = (amt / 100) * tax
+            rounded_taxable_amount = math.floor(taxable_amount)
+            total_amount = amt + rounded_taxable_amount
+            currency['wallet'][str(ctx.author.id)] -= int(total_amount)
             items[str(ctx.author.id)][str(name)] += quantity
             save()
-            await ctx.respond(embed=discord.Embed(title=f'You just bought {quantity} {shopitem[name]["stylized name"]}!', description='Thank you for your purchase.', color=discord.Color.green()))
+            localembed = discord.Embed(
+                title=f'You just bought {quantity} {shopitem[name]["stylized name"]}!',
+                description=f"**Your Purchase Invoice**\n\nItem: {quantity} {name.lower()}\n---------------\nBase Amount: {amt} coins\nTax: 3%\nTaxable Amount: {taxable_amount} coins\nTaxable Amount (rounded): {rounded_taxable_amount} coins\n**Charged Amount:** {total_amount} coins",
+                color=discord.Color.green()
+            )
+            localembed.set_footer(text="Thank you for your purchase.")
+            await ctx.respond(embed=localembed)
         except KeyError: await ctx.respond('That item doesn\'t exist.')
 
     @commands.slash_command(
