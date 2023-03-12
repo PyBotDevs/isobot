@@ -370,11 +370,7 @@ class Economy(commands.Cog):
                 color=discord.Color.green()
             )
             localembed.set_footer(text="Thank you for your purchase.")
-            await ctx.respond(
-                embed=discord.Embed(
-                    
-                )
-            )
+            await ctx.respond(embed=localembed)
         except KeyError: await ctx.respond('That item doesn\'t exist.')
 
     @commands.slash_command(
