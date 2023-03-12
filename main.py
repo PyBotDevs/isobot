@@ -112,17 +112,17 @@ async def on_message(ctx):
     create_isocoin_key(ctx.author.id)
     if str(ctx.author.id) not in items: items[str(ctx.author.id)] = {}
     if str(ctx.author.id) not in levels: levels[str(ctx.author.id)] = {"xp": 0, "level": 0}
-    if str(ctx.guild.id) not in automod_config: automod_config[str(ctx.guild.id)] = \
-    {
-        "swear_filter": {
-            "enabled": False,
-            "keywords": {
-                "use_default": True,
-                "default": ["fuck", "shit", "pussy", "penis", "cock", "vagina", "sex", "moan", "bitch", "hoe", "nigga", "nigger", "xxx", "porn"],
-                "custom": []
+    if str(ctx.guild.id) not in automod_config: 
+        automod_config[str(ctx.guild.id)] = {
+            "swear_filter": {
+                "enabled": False,
+                "keywords": {
+                    "use_default": True,
+                    "default": ["fuck", "shit", "pussy", "penis", "cock", "vagina", "sex", "moan", "bitch", "hoe", "nigga", "nigger", "xxx", "porn"],
+                    "custom": []
+                }
             }
         }
-    }
     for z in shopitem:
         if z in items[str(ctx.author.id)]: pass
         else: items[str(ctx.author.id)][str(z)] = 0
