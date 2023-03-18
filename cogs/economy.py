@@ -37,10 +37,12 @@ all_item_ids = shop_data.get_item_ids()
 with open(f"{wdir}/database/currency.json", 'r') as f: currency = json.load(f)
 with open(f"{wdir}/database/items.json", 'r') as f: items = json.load(f)
 with open(f"{wdir}/config/shop.json", 'r') as f: shopitem = json.load(f)
+with open(f"{wdir}/database/user_data.json", 'r') as f: userdat = json.load(f)
 
 def save():
     with open(f"{wdir}/database/currency.json", 'w+') as f: json.dump(currency, f, indent=4)
     with open(f"{wdir}/database/items.json", 'w+') as f: json.dump(items, f, indent=4)
+    with open(f"{wdir}/database/user_data.json", 'w+') as f: json.dump(userdat, f, indent=4)
 
 # Functions
 def get_user_networth(user_id:int):
@@ -72,7 +74,14 @@ def get_user_count():
     for x in currency["wallet"].keys():
         users += 1
     return users
-    
+
+def new_userdat(id: int):
+    if str(id) not in userdat.keys(): 
+        userdat[str(id)] = {"work_job": None}
+        save()
+        return 0
+    else: return 1
+
 # Commands
 class Economy(commands.Cog):
     def __init__(self, bot):

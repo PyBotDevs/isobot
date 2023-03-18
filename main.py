@@ -21,7 +21,7 @@ import framework.isobot.embedengine
 from discord import ApplicationContext, option
 from discord.ext import commands
 from discord.ext.commands import *
-from cogs.economy import new_bank, new_wallet
+from cogs.economy import new_bank, new_wallet, new_userdat
 from cogs.isocoin import create_isocoin_key
 from cogs.moderation import new_warnings_guild, new_warnings_user
 
@@ -110,6 +110,7 @@ async def on_message(ctx):
     new_warnings_guild(ctx.guild.id)
     new_warnings_user(ctx.guild.id, ctx.author.id)
     create_isocoin_key(ctx.author.id)
+    new_userdat(ctx.author.id)
     if str(ctx.author.id) not in items: items[str(ctx.author.id)] = {}
     if str(ctx.author.id) not in levels: levels[str(ctx.author.id)] = {"xp": 0, "level": 0}
     if str(ctx.guild.id) not in automod_config: 
