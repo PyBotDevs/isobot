@@ -11,6 +11,7 @@ import asyncio
 from random import randint
 from discord import option, ApplicationContext
 from discord.ext import commands
+from cogs.levelling import get_level
 
 # Classes
 class ShopData:
@@ -499,6 +500,12 @@ class Economy(commands.Cog):
     @commands.cooldown(1, 1800, commands.BucketType.user)
     async def work_select(self, ctx: ApplicationContext, job: str):
         if job not in jobs: return await ctx.respond(f"This job does not exist. What kind of a job is even {job}??", ephemeral=True)
+        if job == "YouTuber" and get_level(ctx.author.id) < 3: return await ctx.respond("You currently do not have the required level to perform this job!", ephemeral=True)
+        elif job == "Streamer" and get_level(ctx.author.id) < 5: return await ctx.respond("You currently do not have the required level to perform this job!", ephemeral=True)
+        elif job == "Developer" and get_level(ctx.author.id) < 10: return await ctx.respond("You currently do not have the required level to perform this job!", ephemeral=True)
+        elif job == "Scientist" and get_level(ctx.author.id) < 20: return await ctx.respond("You currently do not have the required level to perform this job!", ephemeral=True)
+        elif job == "Engineer" and get_level(ctx.author.id) < 25: return await ctx.respond("You currently do not have the required level to perform this job!", ephemeral=True)
+        elif job == "Doctor" and get_level(ctx.author.id) < 40: return await ctx.respond("You currently do not have the required level to perform this job!", ephemeral=True)
         userdat[str(ctx.author.id)]["work_job"] = job
         save()
         localembed = discord.Embed(title="New job!", description=f"You are now working as a {job}!")
