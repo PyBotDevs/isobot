@@ -33,6 +33,15 @@ wdir = os.getcwd()
 color = discord.Color.random()
 shop_data = ShopData(f"{wdir}/config/shop.json")
 all_item_ids = shop_data.get_item_ids()
+jobs = [
+    "Discord mod",
+    "YouTuber",
+    "Streamer",
+    "Developer",
+    "Scientist",
+    "Engineer",
+    "Doctor"
+]
 
 with open(f"{wdir}/database/currency.json", 'r') as f: currency = json.load(f)
 with open(f"{wdir}/database/items.json", 'r') as f: items = json.load(f)
@@ -469,7 +478,20 @@ class Economy(commands.Cog):
         currency['wallet'][str(ctx.author.id)] += i
         save()
         await ctx.respond(f'{ctx.author.mention} worked for a 30-minute shift and earned {i} coins.')
-    
+
+    @commands.slash_command(
+        name="work_select",
+        description="Choose the job you want to work."
+    )
+    @option(name="job", description="What job do you want to work?", options=jobs, type=str)
+    @commands.cooldown(1, 1800, commands.BucketType.user)
+    async def work_select(self, ctx: ApplicationContext, job: str):
+        if job not in jobs: return await ctx.respond(f"This job does not exist. What kind of a job is even {job}??", ephemeral=True)
+        userdat[str(ctx.author.id)]["work_job"] = job
+        save()
+        localembed = discord.Embed(title="New job!", description=f"You are now working as a {job}!")
+        await ctx.reply(embed=localembed)
+
     @commands.slash_command(
         name='donate',
         description="Donate money to whoever you want"
