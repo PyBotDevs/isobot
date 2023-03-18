@@ -475,10 +475,18 @@ class Economy(commands.Cog):
     )
     @commands.cooldown(1, 1800, commands.BucketType.user)
     async def work(self, ctx: ApplicationContext):
-        i = randint(10000, 20000)
+        if userdat[str(ctx.author.id)]["work_job"] == None: return await ctx.respond("You don't currently have a job! Join one by using the `/work_select` command.", ephemeral=True)
+        # TODO: make salaries for different jobs
+        if userdat[str(ctx.author.id)]["work_job"] == "Discord mod": i = randint(5000, 10000)
+        elif userdat[str(ctx.author.id)]["work_job"] == "YouTuber": i = randint(10000, 15000)
+        elif userdat[str(ctx.author.id)]["work_job"] == "Streamer": i = randint(12000, 18000)
+        elif userdat[str(ctx.author.id)]["work_job"] == "Developer": i = randint(20000, 40000)
+        elif userdat[str(ctx.author.id)]["work_job"] == "Scientist": i = randint(50000, 100000)
+        elif userdat[str(ctx.author.id)]["work_job"] == "Engineer": i = randint(100000, 175000)
+        elif userdat[str(ctx.author.id)]["work_job"] == "Doctor": i = randint(200000, 300000)
         currency['wallet'][str(ctx.author.id)] += i
         save()
-        await ctx.respond(f'{ctx.author.mention} worked for a 30-minute shift and earned {i} coins.')
+        await ctx.respond(f'{ctx.author.mention} worked for a 30-minute shift as a {userdat[str(ctx.author.id)]["work_job"]} and earned {i} coins.')
 
     @commands.slash_command(
         name="work_list",
