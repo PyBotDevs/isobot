@@ -480,6 +480,18 @@ class Economy(commands.Cog):
         await ctx.respond(f'{ctx.author.mention} worked for a 30-minute shift and earned {i} coins.')
 
     @commands.slash_command(
+        name="work_list",
+        description="Shows a list of all the jobs currently available."
+    )
+    async def work_list(self, ctx: ApplicationContext):
+        localembed = discord.Embed(
+            title="All jobs currently available",
+            description="To join a job, make sure you meet the required level first.\n\n**Discord mod**: Moderate community servers and earn money from the owner\n  Salary: `5000 - 10000 coins` per shift\n  Level experience: None required\n\n**YouTuber**: Make YouTube videos and earn money from monetization\n  Salary: `10000-15000 coins` per shift\n  Level experience: Level 3\n\n**Streamer**: Stream on Twitch and earn money from viewer donations\n  Salary: `12000-18000 coins` per shift\n  Level experience: Level 5\n\n**Developer**: Write code for *stuff* and make money\n  Salary: `20000-40000 coins` per shift\n  Level experience: Level 10\n\n**Scientist**: Make large amounts of money by working as a scientist at a undisclosed lab\n  Salary: `50000-100000 coins` per shift\n  Level experience: Level 20\n\n**Engineer**: Work as a highly-skilled engineer in a big company and make tons of money\n  Salary: `100000-175000 coins` per shift\n  Level experience: Level 25\n\n**Doctor**: Perform a job as a surgeon in a big hospital and earn money\n  Salary: `200000-300000 coins` per shift\n  Level experience: Level 40"
+        )
+        localembed.footer(text="More jobs are coming soon!")
+        await ctx.respond(embed=localembed)
+
+    @commands.slash_command(
         name="work_select",
         description="Choose the job you want to work."
     )
