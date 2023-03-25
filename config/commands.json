@@ -648,5 +648,15 @@
 	"usable_by": "everyone",
 	"disabled": false,
 	"bugged": false
+  },
+  "kill": {
+	"name": "Treasury",
+	"description": "Lets you kill someone.",
+	"type": "fun",
+	"cooldown": null,
+	"args": ["target"],
+	"usable_by": "everyone",
+	"disabled": false,
+	"bugged": false
   }
 }
