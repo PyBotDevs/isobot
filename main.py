@@ -41,6 +41,7 @@ with open('database/presence.json', 'r', encoding="utf-8") as f: presence = json
 with open('database/levels.json', 'r', encoding="utf-8") as f: levels = json.load(f)
 with open('config/commands.json', 'r', encoding="utf-8") as f: commandsdb = json.load(f)
 with open('database/automod.json', 'r', encoding="utf-8") as f: automod_config = json.load(f)
+cmd_list = commandsdb.keys()
 
 #Pre-Initialization Commands
 def save():
@@ -186,8 +187,8 @@ async def on_application_command_error(ctx: ApplicationContext, error: discord.D
     name="help",
     description="Gives you help with a specific command, or shows a list of all commands"
 )
-@option(name="command", description="Which command do you need help with?", type=str, default=None)
-async def help(ctx: ApplicationContext, command:str=None):
+@option(name="command", description="Which command do you need help with?", type=str, default=None, choices=cmd_list)
+async def help(ctx: ApplicationContext, command: str = None):
     if command is not None:
         try:
             localembed = discord.Embed(title=f"{commandsdb[command]['name']} Command (/{command})", description=commandsdb[command]['description'], color=color)
@@ -198,8 +199,8 @@ async def help(ctx: ApplicationContext, command:str=None):
                 r = ""
                 for x in commandsdb[command]['args']: r += f"`{x}` "
                 localembed.add_field(name="Arguments", value=r, inline=False)
-            if commandsdb[command]['bugged'] == True: localembed.set_footer(text="⚠ This command might be bugged (experiencing issues), but will be fixed later.")
-            if commandsdb[command]['disabled'] == True: localembed.set_footer(text="⚠ This command is currently disabled")
+            if commandsdb[command]['bugged'] is True: localembed.set_footer(text="⚠ This command might be bugged (experiencing issues), but will be fixed later.")
+            if commandsdb[command]['disabled'] is True: localembed.set_footer(text="⚠ This command is currently disabled")
             await ctx.respond(embed=localembed)
         except KeyError: return await ctx.respond(embed=discord.Embed(description=f"No results found for {command}."), ephemeral=True)
     else:
