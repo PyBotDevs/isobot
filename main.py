@@ -41,6 +41,7 @@ with open('database/presence.json', 'r', encoding="utf-8") as f: presence = json
 with open('database/levels.json', 'r', encoding="utf-8") as f: levels = json.load(f)
 with open('config/commands.json', 'r', encoding="utf-8") as f: commandsdb = json.load(f)
 with open('database/automod.json', 'r', encoding="utf-8") as f: automod_config = json.load(f)
+cmd_list = commandsdb.keys()
 
 #Pre-Initialization Commands
 def save():
@@ -186,7 +187,7 @@ async def on_application_command_error(ctx: ApplicationContext, error: discord.D
     name="help",
     description="Gives you help with a specific command, or shows a list of all commands"
 )
-@option(name="command", description="Which command do you need help with?", type=str, default=None)
+@option(name="command", description="Which command do you need help with?", type=str, default=None, choices=cmd_list)
 async def help(ctx: ApplicationContext, command: str = None):
     if command is not None:
         try:
