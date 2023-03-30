@@ -709,7 +709,7 @@ class Economy(commands.Cog):
         name="treasury",
         description="See the amount of coins in the isobot treasury."
     )
-    async def treasury(ctx: ApplicationContext):
+    async def treasury(self, ctx: ApplicationContext):
         localembed = discord.Embed(description="There are currently {currency['treasury']} coins in the isobot treasury.")
         await ctx.respond(embed=localembed)
 
