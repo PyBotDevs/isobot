@@ -504,7 +504,7 @@ class Economy(commands.Cog):
         name="work_select",
         description="Choose the job you want to work."
     )
-    @option(name="job", description="What job do you want to work?", options=jobs, type=str)
+    @option(name="job", description="What job do you want to work?", choices=jobs, type=str)
     @commands.cooldown(1, 1800, commands.BucketType.user)
     async def work_select(self, ctx: ApplicationContext, job: str):
         if job not in jobs: return await ctx.respond(f"This job does not exist. What kind of a job is even {job}??", ephemeral=True)
