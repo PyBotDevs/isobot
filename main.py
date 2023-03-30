@@ -298,7 +298,7 @@ active_cogs = [
     "isobank", 
     "levelling", 
     "fun",
-    "utils"
+    "utils",
     "afk"
 ]
 i = 1
