@@ -39,7 +39,7 @@ class Levelling(commands.Cog):
             localembed = discord.Embed(title=f"{user.display_name}'s rank", color=color)
             localembed.add_field(name="Level", value=levels[str(user.id)]["level"])
             localembed.add_field(name="XP", value=levels[str(user.id)]["xp"])
-            localembed.set_footer(text="Keep chatting to earn levels!", icon_url=ctx.author.avatar_url)
+            localembed.set_footer(text="Keep chatting to earn levels!")
             await ctx.respond(embed = localembed)
         except KeyError: return await ctx.respond("Looks like that user isn't indexed yet. Try again later.", ephemeral=True)
 
