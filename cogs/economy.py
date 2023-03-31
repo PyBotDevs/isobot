@@ -526,7 +526,7 @@ class Economy(commands.Cog):
         if userdat[str(ctx.author.id)]["work_job"] is None: return await ctx.respond("You can't quit your job if you don't already have one!", ephemeral=True)
         userdat[str(ctx.author.id)]["work_job"] = None
         save()
-        localembed = discord.Embed(title="Resignation", description="You have successfully rrsigned from your job.")
+        localembed = discord.Embed(title="Resignation", description="You have successfully resigned from your job.")
         await ctx.respond(embed=localembed)
 
     @commands.slash_command(
