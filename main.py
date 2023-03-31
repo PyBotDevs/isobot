@@ -319,8 +319,7 @@ async def reload(ctx: ApplicationContext, cog: str):
 # Initialization
 active_cogs = [
     "economy", 
-    "maths", 
-    "moderation", 
+    "maths",
     "reddit", 
     "minigames", 
     "automod", 
