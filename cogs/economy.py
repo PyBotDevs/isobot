@@ -517,7 +517,7 @@ class Economy(commands.Cog):
         userdat[str(ctx.author.id)]["work_job"] = job
         save()
         localembed = discord.Embed(title="New job!", description=f"You are now working as a {job}!")
-        await ctx.reply(embed=localembed)
+        await ctx.respond(embed=localembed)
 
     @commands.slash_command(
         name="work_resign",
