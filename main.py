@@ -23,7 +23,7 @@ from discord.ext import commands
 from discord.ext.commands import *
 from cogs.economy import new_bank, new_wallet, new_userdat
 from cogs.isocoin import create_isocoin_key
-from cogs.moderation import new_warnings_guild, new_warnings_user
+from data_archive.moderation import new_warnings_guild, new_warnings_user
 
 # Slash option types:
 # Just use variable types to define option types.
