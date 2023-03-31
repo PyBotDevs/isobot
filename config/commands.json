@@ -650,7 +650,7 @@
 	"bugged": false
   },
   "kill": {
-	"name": "Treasury",
+	"name": "Kill",
 	"description": "Lets you kill someone.",
 	"type": "fun",
 	"cooldown": null,
