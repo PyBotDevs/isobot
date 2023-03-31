@@ -139,26 +139,6 @@
       "disabled": false,
       "bugged": false
   },
-  "warn": {
-      "name": "Warn Member",
-      "description": "Warn a member in your guild for a specific reason.",
-      "type": "moderation",
-      "cooldown": null,
-      "args": ["user", "reason"],
-      "usable_by": "moderators with `manage messages` permissions",
-      "disabled": false,
-      "bugged": false
-  },
-  "warns_clear": {
-      "name": "Clear Warnings",
-      "description": "Clear a member's warnings in your guild.",
-      "type": "moderation",
-      "cooldown": null,
-      "args": ["user"],
-      "usable_by": "moderators with `manage messages` permissions",
-      "disabled": false,
-      "bugged": false
-  },
   "deposit": {
       "name": "Deposit Coins",
       "description": "Deposit some or all of your coins into your bank account.",
