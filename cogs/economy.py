@@ -476,7 +476,6 @@ class Economy(commands.Cog):
     @commands.cooldown(1, 1800, commands.BucketType.user)
     async def work(self, ctx: ApplicationContext):
         if userdat[str(ctx.author.id)]["work_job"] == None: return await ctx.respond("You don't currently have a job! Join one by using the `/work_select` command.", ephemeral=True)
-        # TODO: make salaries for different jobs
         if userdat[str(ctx.author.id)]["work_job"] == "Discord mod": i = randint(5000, 10000)
         elif userdat[str(ctx.author.id)]["work_job"] == "YouTuber": i = randint(10000, 15000)
         elif userdat[str(ctx.author.id)]["work_job"] == "Streamer": i = randint(12000, 18000)
@@ -494,8 +493,8 @@ class Economy(commands.Cog):
     )
     async def work_list(self, ctx: ApplicationContext):
         localembed = discord.Embed(
-            title="All jobs currently available",
-            description="To join a job, make sure you meet the required level first.\n\n**Discord mod**: Moderate community servers and earn money from the owner\n  Salary: `5000 - 10000 coins` per shift\n  Level experience: None required\n\n**YouTuber**: Make YouTube videos and earn money from monetization\n  Salary: `10000-15000 coins` per shift\n  Level experience: Level 3\n\n**Streamer**: Stream on Twitch and earn money from viewer donations\n  Salary: `12000-18000 coins` per shift\n  Level experience: Level 5\n\n**Developer**: Write code for *stuff* and make money\n  Salary: `20000-40000 coins` per shift\n  Level experience: Level 10\n\n**Scientist**: Make large amounts of money by working as a scientist at a undisclosed lab\n  Salary: `50000-100000 coins` per shift\n  Level experience: Level 20\n\n**Engineer**: Work as a highly-skilled engineer in a big company and make tons of money\n  Salary: `100000-175000 coins` per shift\n  Level experience: Level 25\n\n**Doctor**: Perform a job as a surgeon in a big hospital and earn money\n  Salary: `200000-300000 coins` per shift\n  Level experience: Level 40"
+            title="List of jobs",
+            description="To join a job, make sure you meet the required level first.\n\n**Discord mod**: Moderate community servers\n  Salary: `5000 - 10000 coins` per shift\n  Level experience: None\n\n**YouTuber**: Make YouTube videos and get monetized\n  Salary: `10000-15000 coins` per shift\n  Level experience: Level 3\n\n**Streamer**: Stream on Twitch recieve viewer donations\n  Salary: `12000-18000 coins` per shift\n  Level experience: Level 5\n\n**Developer**: Write code and make money\n  Salary: `20000-40000 coins` per shift\n  Level experience: Level 10\n\n**Scientist**: Work as a scientist at a undisclosed lab\n  Salary: `50000-100000 coins` per shift\n  Level experience: Level 20\n\n**Engineer**: Do engineering stuff\n  Salary: `100000-175000 coins` per shift\n  Level experience: Level 25\n\n**Doctor**: Work as a surgeon\n  Salary: `200000-300000 coins` per shift\n  Level experience: Level 40"
         )
         localembed.footer(text="More jobs are coming soon!")
         await ctx.respond(embed=localembed)
@@ -517,14 +516,14 @@ class Economy(commands.Cog):
         userdat[str(ctx.author.id)]["work_job"] = job
         save()
         localembed = discord.Embed(title="New job!", description=f"You are now working as a {job}!")
-        await ctx.reply(embed=localembed)
+        await ctx.respond(embed=localembed)
 
     @commands.slash_command(
         name="work_resign",
         description="Quit your job."
     )
     async def work_resign(self, ctx: ApplicationContext):
-        if userdat[str(ctx.author.id)]["work_job"] is not None: return await ctx.respond("You can't quit your job if you don't already have one!", ephemeral=True)
+        if userdat[str(ctx.author.id)]["work_job"] is None: return await ctx.respond("You can't quit your job if you don't already have one!", ephemeral=True)
         userdat[str(ctx.author.id)]["work_job"] = None
         save()
         localembed = discord.Embed(title="Resignation", description="You have successfully rrsigned from your job.")
