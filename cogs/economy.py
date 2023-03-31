@@ -476,7 +476,6 @@ class Economy(commands.Cog):
     @commands.cooldown(1, 1800, commands.BucketType.user)
     async def work(self, ctx: ApplicationContext):
         if userdat[str(ctx.author.id)]["work_job"] == None: return await ctx.respond("You don't currently have a job! Join one by using the `/work_select` command.", ephemeral=True)
-        # TODO: make salaries for different jobs
         if userdat[str(ctx.author.id)]["work_job"] == "Discord mod": i = randint(5000, 10000)
         elif userdat[str(ctx.author.id)]["work_job"] == "YouTuber": i = randint(10000, 15000)
         elif userdat[str(ctx.author.id)]["work_job"] == "Streamer": i = randint(12000, 18000)
