@@ -69,5 +69,34 @@ class Levelling(commands.Cog):
             await ctx.respond(f"{user.display_name}\'s XP count successfully edited. `New XP: {levels[str(user.id)]['xp']}`")
         except KeyError: return await ctx.respond("That user isn't indexed yet.", ephemeral=True)
 
+@special_event.command(
+    name="leaderboard", 
+    description="View the global leaderboard for the special in-game event."
+)
+async def leaderboard(ctx: ApplicationContext):
+    levels_dict = dict()
+    for person in levels:
+        levels_dict[str(person)] = levels[str(person)]["level"]
+    undicted_leaderboard = sorted(levels_dict.items(), key=lambda x:x[1], reverse=True)
+    dicted_leaderboard = dict(undicted_leaderboard)
+    parsed_output = str()
+    y = 1
+    for i in dicted_leaderboard:
+        if y < 10:
+            try:
+                if levels_dict[i] != 0:
+                    user_context = await client.fetch_user(i)
+                    if not user_context.bot and levels_dict[i] != 0:
+                        print(i, levels_dict[i])
+                        if y == 1: yf = ":first_place:"
+                        elif y == 2: yf = ":second_place:"
+                        elif y == 3: yf = ":third_place:"
+                        else: yf = f"#{y}"
+                        parsed_output += f"{yf} **{user_context.name}:** level {levels_dict[i]}\n"
+                        y += 1
+            except discord.errors.NotFound: continue
+    localembed = discord.Embed(title="Global levelling leaderboard", description=parsed_output, color=color)
+    await ctx.respond(embed=localembed)
+
 def setup(bot):
     bot.add_cog(Levelling(bot))
