@@ -1,3 +1,5 @@
+"""The isobot cog file for minigames."""
+
 # Imports
 import discord
 import json
@@ -10,10 +12,10 @@ from discord.ext import commands
 wdir = os.getcwd()
 color = discord.Color.random()
 
-with open(f"{wdir}/database/currency.json", 'r') as f: currency = json.load(f)
+with open(f"{wdir}/database/currency.json", 'r', encoding="utf-8") as f: currency = json.load(f)
 
 def save(): 
-    with open(f"{wdir}/database/currency.json", 'w+') as f: json.dump(currency, f)
+    with open(f"{wdir}/database/currency.json", 'w+', encoding="utf-8") as f: json.dump(currency, f)
 
 # Commands
 class Minigames(commands.Cog):

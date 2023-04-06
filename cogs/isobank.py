@@ -1,3 +1,6 @@
+"""The isobot cog file for the IsoBank system."""
+
+
 # Imports
 import discord
 import json

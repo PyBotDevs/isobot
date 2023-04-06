@@ -1,3 +1,5 @@
+"""The isobot cog file for reddit commands."""
+
 # Imports
 import discord
 import praw

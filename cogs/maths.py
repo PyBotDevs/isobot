@@ -1,6 +1,9 @@
+"""The isobot cog file for maths commands."""
+
 # Imports
 import discord
 from math import sqrt
+from discord.commands import SlashCommandGroup
 from discord.ext import commands
 from discord import ApplicationContext, option
 
@@ -11,6 +14,8 @@ color = discord.Color.random()
 class Maths(commands.Cog):
     def __init__(self, bot): self.bot = bot
     
+    area = SlashCommandGroup("area", "Find area of different figures.")
+
     @commands.slash_command(
         name="squareroot",
         description="Finds the square root of any positive number"
@@ -26,8 +31,8 @@ class Maths(commands.Cog):
         localembed.set_footer(text=f"√({number}) = {result}")
         await ctx.respond(embed=localembed)
     
-    @commands.slash_command(
-        name="area_square",
+    @area.command(
+        name="square",
         description="Finds the area of a square"
     )
     @option(name="length", description="What is the length of one side?", type=int)
@@ -38,8 +43,8 @@ class Maths(commands.Cog):
         localembed.set_footer(text=f"A = s²\n{length} x {length} = {result} sq. units")
         await ctx.respond(embed=localembed)
     
-    @commands.slash_command(
-        name="area_rectangle",
+    @area.command(
+        name="rectangle",
         description="Finds the area of a rectangle"
     )
     @option(name="length", description="What is the length?", type=int)
@@ -52,8 +57,8 @@ class Maths(commands.Cog):
         localembed.set_footer(text=f"A = l x b\n{length} x {breadth} = {result} sq. units")
         await ctx.respond(embed=localembed)
 
-    @commands.slash_command(
-        name="area_circle",
+    @area.command(
+        name="circle",
         description="Finds the area of a circle"
     )
     @option(name="radius", description="What is the radius of the circle?", type=int)
@@ -64,8 +69,8 @@ class Maths(commands.Cog):
         localembed.set_footer(text=f"Taking π as 22/7\nA = πr²\nπ x {radius}² = {result} sq. units")
         await ctx.respond(embed=localembed)
     
-    @commands.slash_command(
-        name="area_triangle",
+    @area.command(
+        name="triangle",
         description="Finds the area of a triangle (using Heron's formula)"
     )
     @option(name="side_length_a", description="What is the length of side A of the triangle?", type=int)

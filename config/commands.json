@@ -139,26 +139,6 @@
       "disabled": false,
       "bugged": false
   },
-  "warn": {
-      "name": "Warn Member",
-      "description": "Warn a member in your guild for a specific reason.",
-      "type": "moderation",
-      "cooldown": null,
-      "args": ["user", "reason"],
-      "usable_by": "moderators with `manage messages` permissions",
-      "disabled": false,
-      "bugged": false
-  },
-  "warns_clear": {
-      "name": "Clear Warnings",
-      "description": "Clear a member's warnings in your guild.",
-      "type": "moderation",
-      "cooldown": null,
-      "args": ["user"],
-      "usable_by": "moderators with `manage messages` permissions",
-      "disabled": false,
-      "bugged": false
-  },
   "deposit": {
       "name": "Deposit Coins",
       "description": "Deposit some or all of your coins into your bank account.",
@@ -569,7 +549,7 @@
 	"disabled": false,
 	"bugged": false
   },
-  "area_square": {
+  "area square": {
 	"name": "Square Area ",
 	"description": "Finds the area of a square.",
 	"type": "maths",
@@ -579,7 +559,7 @@
 	"disabled": false,
 	"bugged": false
   },
-  "area_rectangle": {
+  "area rectangle": {
 	"name": "Rectangle Area",
 	"description": "Finds the area of a rectangle.",
 	"type": "maths",
@@ -589,7 +569,7 @@
 	"disabled": false,
 	"bugged": false
   },
-  "area_circle": {
+  "area circle": {
 	"name": "Circle Area",
 	"description": "Finds the area of a circle. (Takes π as 22/7)",
 	"type": "maths",
@@ -599,7 +579,7 @@
 	"disabled": false,
 	"bugged": false
   },
-  "area_triangle": {
+  "area triangle": {
 	"name": "Triangle Area",
 	"description": "Finds the area of a triangle. (Uses Heron's formula)",
 	"type": "maths",
@@ -636,6 +616,26 @@
 	"cooldown": null,
 	"args": ["cog"],
 	"usable_by": "the developer",
+	"disabled": false,
+	"bugged": false
+  },
+  "treasury": {
+	"name": "Treasury",
+	"description": "View the amount of coins in the isobot treasury.",
+	"type": "economy system",
+	"cooldown": null,
+	"args": null,
+	"usable_by": "everyone",
+	"disabled": false,
+	"bugged": false
+  },
+  "kill": {
+	"name": "Kill",
+	"description": "Lets you kill someone.",
+	"type": "fun",
+	"cooldown": null,
+	"args": ["target"],
+	"usable_by": "everyone",
 	"disabled": false,
 	"bugged": false
   }

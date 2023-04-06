@@ -1,3 +1,5 @@
+"""The isobot cog file for the levelling system."""
+
 # Imports
 import discord
 import json
@@ -9,10 +11,17 @@ from discord.ext import commands
 wdir = os.getcwd()
 color = discord.Color.random()
 
-with open(f"{wdir}/database/levels.json", 'r') as f: levels = json.load(f)
+with open(f"{wdir}/database/levels.json", 'r', encoding="utf-8") as f: levels = json.load(f)
 
 def save():
-    with open(f"{wdir}/database/levels.json", 'w+') as f: json.dump(levels, f, indent=4)
+    with open(f"{wdir}/database/levels.json", 'w+', encoding="utf-8") as f: json.dump(levels, f, indent=4)
+
+# Functions
+def get_xp(id: int) -> int:
+    return levels[str(id)]["xp"]
+
+def get_level(id: int) -> int:
+    return levels[str(id)]["level"]
 
 # Commands
 class Levelling(commands.Cog):
@@ -25,12 +34,12 @@ class Levelling(commands.Cog):
     )
     @option(name="user", description="Who's rank do you want to view?", type=discord.User, default=None)
     async def rank(self, ctx: ApplicationContext, user:discord.User=None):
-        if user == None: user = ctx.author
+        if user is None: user = ctx.author
         try:
             localembed = discord.Embed(title=f"{user.display_name}'s rank", color=color)
             localembed.add_field(name="Level", value=levels[str(user.id)]["level"])
             localembed.add_field(name="XP", value=levels[str(user.id)]["xp"])
-            localembed.set_footer(text="Keep chatting to earn levels!", icon_url=ctx.author.avatar_url)
+            localembed.set_footer(text="Keep chatting to earn levels!")
             await ctx.respond(embed = localembed)
         except KeyError: return await ctx.respond("Looks like that user isn't indexed yet. Try again later.", ephemeral=True)
 

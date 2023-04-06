@@ -1,3 +1,5 @@
+"""The isobot cog file for the economy system."""
+
 # Imports
 import discord
 import os.path
@@ -9,6 +11,7 @@ import asyncio
 from random import randint
 from discord import option, ApplicationContext
 from discord.ext import commands
+from cogs.levelling import get_level
 
 # Classes
 class ShopData:
@@ -31,14 +34,25 @@ wdir = os.getcwd()
 color = discord.Color.random()
 shop_data = ShopData(f"{wdir}/config/shop.json")
 all_item_ids = shop_data.get_item_ids()
+jobs = [
+    "Discord mod",
+    "YouTuber",
+    "Streamer",
+    "Developer",
+    "Scientist",
+    "Engineer",
+    "Doctor"
+]
 
 with open(f"{wdir}/database/currency.json", 'r') as f: currency = json.load(f)
 with open(f"{wdir}/database/items.json", 'r') as f: items = json.load(f)
 with open(f"{wdir}/config/shop.json", 'r') as f: shopitem = json.load(f)
+with open(f"{wdir}/database/user_data.json", 'r') as f: userdat = json.load(f)
 
 def save():
     with open(f"{wdir}/database/currency.json", 'w+') as f: json.dump(currency, f, indent=4)
     with open(f"{wdir}/database/items.json", 'w+') as f: json.dump(items, f, indent=4)
+    with open(f"{wdir}/database/user_data.json", 'w+') as f: json.dump(userdat, f, indent=4)
 
 # Functions
 def get_user_networth(user_id:int):
@@ -64,7 +78,20 @@ def new_bank(id: int):
         currency['bank'][str(id)] = 0
         return 0
     else: return 1
-    
+
+def get_user_count():
+    users = 0
+    for x in currency["wallet"].keys():
+        users += 1
+    return users
+
+def new_userdat(id: int):
+    if str(id) not in userdat.keys(): 
+        userdat[str(id)] = {"work_job": None}
+        save()
+        return 0
+    else: return 1
+
 # Commands
 class Economy(commands.Cog):
     def __init__(self, bot):
@@ -349,10 +376,21 @@ class Economy(commands.Cog):
             if (currency['wallet'][str(ctx.author.id)] < amt): return await ctx.respond('You don\'t have enough balance to buy this.')
             if (shopitem[name]['available'] == False): return await ctx.respond('You can\'t buy this item **dood**')
             if (quantity <= 0): return await ctx.respond('The specified quantity cannot be less than `1`!')
-            currency['wallet'][str(ctx.author.id)] -= int(amt)
+            tax = 3
+            taxable_amount = (amt / 100) * tax
+            rounded_taxable_amount = math.floor(taxable_amount)
+            total_amount = amt + rounded_taxable_amount
+            currency['wallet'][str(ctx.author.id)] -= int(total_amount)
             items[str(ctx.author.id)][str(name)] += quantity
+            currency["treasury"] += rounded_taxable_amount
             save()
-            await ctx.respond(embed=discord.Embed(title=f'You just bought {quantity} {shopitem[name]["stylized name"]}!', description='Thank you for your purchase.', color=discord.Color.green()))
+            localembed = discord.Embed(
+                title=f'You just bought {quantity} {shopitem[name]["stylized name"]}!',
+                description=f"**Your Purchase Invoice**\n\nItem: {quantity} {name.lower()}\n---------------\nBase Amount: {amt} coins\nTax: 3%\nTaxable Amount: {taxable_amount} coins\nTaxable Amount (rounded): {rounded_taxable_amount} coins\n**Charged Amount:** {total_amount} coins",
+                color=discord.Color.green()
+            )
+            localembed.set_footer(text="Thank you for your purchase.")
+            await ctx.respond(embed=localembed)
         except KeyError: await ctx.respond('That item doesn\'t exist.')
 
     @commands.slash_command(
@@ -437,11 +475,60 @@ class Economy(commands.Cog):
     )
     @commands.cooldown(1, 1800, commands.BucketType.user)
     async def work(self, ctx: ApplicationContext):
-        i = randint(10000, 20000)
+        if userdat[str(ctx.author.id)]["work_job"] == None: return await ctx.respond("You don't currently have a job! Join one by using the `/work_select` command.", ephemeral=True)
+        if userdat[str(ctx.author.id)]["work_job"] == "Discord mod": i = randint(5000, 10000)
+        elif userdat[str(ctx.author.id)]["work_job"] == "YouTuber": i = randint(10000, 15000)
+        elif userdat[str(ctx.author.id)]["work_job"] == "Streamer": i = randint(12000, 18000)
+        elif userdat[str(ctx.author.id)]["work_job"] == "Developer": i = randint(20000, 40000)
+        elif userdat[str(ctx.author.id)]["work_job"] == "Scientist": i = randint(50000, 100000)
+        elif userdat[str(ctx.author.id)]["work_job"] == "Engineer": i = randint(100000, 175000)
+        elif userdat[str(ctx.author.id)]["work_job"] == "Doctor": i = randint(200000, 300000)
         currency['wallet'][str(ctx.author.id)] += i
         save()
-        await ctx.respond(f'{ctx.author.mention} worked for a 30-minute shift and earned {i} coins.')
-    
+        await ctx.respond(f'{ctx.author.mention} worked for a 30-minute shift as a {userdat[str(ctx.author.id)]["work_job"]} and earned {i} coins.')
+
+    @commands.slash_command(
+        name="work_list",
+        description="Shows a list of all the jobs currently available."
+    )
+    async def work_list(self, ctx: ApplicationContext):
+        localembed = discord.Embed(
+            title="List of jobs",
+            # description="To join a job, make sure you meet the required level first.\n\n**Discord mod**: Moderate community servers\n  Salary: `5000 - 10000 coins` per shift\n  Level experience: None\n\n**YouTuber**: Make YouTube videos and get monetized\n  Salary: `10000-15000 coins` per shift\n  Level experience: Level 3\n\n**Streamer**: Stream on Twitch recieve viewer donations\n  Salary: `12000-18000 coins` per shift\n  Level experience: Level 5\n\n**Developer**: Write code and make money\n  Salary: `20000-40000 coins` per shift\n  Level experience: Level 10\n\n**Scientist**: Work as a scientist at a undisclosed lab\n  Salary: `50000-100000 coins` per shift\n  Level experience: Level 20\n\n**Engineer**: Do engineering stuff\n  Salary: `100000-175000 coins` per shift\n  Level experience: Level 25\n\n**Doctor**: Work as a surgeon\n  Salary: `200000-300000 coins` per shift\n  Level experience: Level 40"
+            description="To join a job, make sure you meet the required level first.\n\n**Discord mod**\n  Salary: `5000 - 10000 coins` per shift\n  Level experience: None\n\n**YouTuber**\n  Salary: `10000-15000 coins` per shift\n  Level experience: Level 3\n\n**Streamer**\n  Salary: `12000-18000 coins` per shift\n  Level experience: Level 5\n\n**Developer**\n  Salary: `20000-40000 coins` per shift\n  Level experience: Level 10\n\n**Scientist**\n  Salary: `50000-100000 coins` per shift\n  Level experience: Level 20\n\n**Engineer**\n  Salary: `100000-175000 coins` per shift\n  Level experience: Level 25\n\n**Doctor**\n  Salary: `200000-300000 coins` per shift\n  Level experience: Level 40"
+        )
+        await ctx.respond(embed=localembed)
+
+    @commands.slash_command(
+        name="work_select",
+        description="Choose the job you want to work."
+    )
+    @option(name="job", description="What job do you want to work?", choices=jobs, type=str)
+    @commands.cooldown(1, 1800, commands.BucketType.user)
+    async def work_select(self, ctx: ApplicationContext, job: str):
+        if job not in jobs: return await ctx.respond(f"This job does not exist. What kind of a job is even {job}??", ephemeral=True)
+        if job == "YouTuber" and get_level(ctx.author.id) < 3: return await ctx.respond("You currently do not have the required level to perform this job!", ephemeral=True)
+        elif job == "Streamer" and get_level(ctx.author.id) < 5: return await ctx.respond("You currently do not have the required level to perform this job!", ephemeral=True)
+        elif job == "Developer" and get_level(ctx.author.id) < 10: return await ctx.respond("You currently do not have the required level to perform this job!", ephemeral=True)
+        elif job == "Scientist" and get_level(ctx.author.id) < 20: return await ctx.respond("You currently do not have the required level to perform this job!", ephemeral=True)
+        elif job == "Engineer" and get_level(ctx.author.id) < 25: return await ctx.respond("You currently do not have the required level to perform this job!", ephemeral=True)
+        elif job == "Doctor" and get_level(ctx.author.id) < 40: return await ctx.respond("You currently do not have the required level to perform this job!", ephemeral=True)
+        userdat[str(ctx.author.id)]["work_job"] = job
+        save()
+        localembed = discord.Embed(title="New job!", description=f"You are now working as a {job}!")
+        await ctx.respond(embed=localembed)
+
+    @commands.slash_command(
+        name="work_resign",
+        description="Quit your job."
+    )
+    async def work_resign(self, ctx: ApplicationContext):
+        if userdat[str(ctx.author.id)]["work_job"] is None: return await ctx.respond("You can't quit your job if you don't already have one!", ephemeral=True)
+        userdat[str(ctx.author.id)]["work_job"] = None
+        save()
+        localembed = discord.Embed(title="Resignation", description="You have successfully resigned from your job.")
+        await ctx.respond(embed=localembed)
+
     @commands.slash_command(
         name='donate',
         description="Donate money to whoever you want"
@@ -616,6 +703,14 @@ class Economy(commands.Cog):
                 await ctx.respond(embed=e)
             except: await ctx.respond('Looks like that user is not indexed in our server. Try again later.', ephemeral=True)
         except Exception as e: await ctx.respond(f'An error occured: `{e}`. This has automatically been reported to the devs.')
+    
+    @commands.slash_command(
+        name="treasury",
+        description="See the amount of coins in the isobot treasury."
+    )
+    async def treasury(self, ctx: ApplicationContext):
+        localembed = discord.Embed(description="There are currently {currency['treasury']} coins in the isobot treasury.")
+        await ctx.respond(embed=localembed)
 
 # Initialization
 def setup(bot):
