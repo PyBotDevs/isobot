@@ -71,7 +71,7 @@ class Levelling(commands.Cog):
 
 @special_event.command(
     name="leaderboard", 
-    description="View the global leaderboard for the special in-game event."
+    description="View the global leaderboard for user levelling ranks."
 )
 async def leaderboard(ctx: ApplicationContext):
     levels_dict = dict()
