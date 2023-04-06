@@ -639,4 +639,15 @@
 	"disabled": false,
 	"bugged": false
   }
+  ,
+  "leaderboard": {
+	"name": "Levelling Leaderboard",
+	"description": "See the global leaderboard for user levels.",
+	"type": "levelling",
+	"cooldown": null,
+	"args": null,
+	"usable_by": "everyone",
+	"disabled": false,
+	"bugged": false
+  }
 }
