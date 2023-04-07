@@ -13,10 +13,17 @@
 
 Isobot is a simple discord.py-based Python Discord bot made by the [NKA Development Team](https://github.com/PyBotDevs), to represent the original [Heckerbot](https://github.com/notsniped/heckerbot) in an even more efficient, fast, contributable, community-focused and enhanced way.
 
-This open-source project was supposed to represent what the next-generation of Heckerbot will look like, and here it is in full-swing.
+This open-source project was supposed to represent what the next-generation of Heckerbot will look like, and here it is in full-swing, since 2020.
 
-## Why a new project?
-At that time, I wanted to make brand new, cutting-edge features for the old isobot codebase. But in the process, I ran into some codeblocks which prevented me from doing so efficiently. This is why I decided to completely rewrite isobot as codename 'lazer' which is meant to be more future-proof. And it sure was.
+## Why isobot?
+We think isobot can help a multi-purpose economy Discord bot for your server. Apart from the economy system, you also get features for
+* moderation
+* levelling
+* automod
+* server verification (soon)
+* maths commands
+* fun commands
+* and reddit media commands
 
 ## How can I help?
 ***PLEASE SUBMIT ISSUES AND PULL REQUESTS TO THE REPOSITORY!*** It helps us make our work easier c:
