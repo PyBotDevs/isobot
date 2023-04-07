@@ -73,7 +73,7 @@ class Levelling(commands.Cog):
         name="leaderboard", 
         description="View the global leaderboard for user levelling ranks."
     )
-    async def leaderboard(ctx: ApplicationContext):
+    async def leaderboard(self, ctx: ApplicationContext):
         levels_dict = dict()
         for person in levels:
             levels_dict[str(person)] = levels[str(person)]["level"]
