@@ -85,7 +85,7 @@ class Levelling(commands.Cog):
             if y < 10:
                 try:
                     if levels_dict[i] != 0:
-                        user_context = await client.fetch_user(i)
+                        user_context = await commands.fetch_user(i)
                         if not user_context.bot and levels_dict[i] != 0:
                             print(i, levels_dict[i])
                             if y == 1: yf = ":first_place:"
