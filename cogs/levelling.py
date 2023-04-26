@@ -70,10 +70,10 @@ class Levelling(commands.Cog):
         except KeyError: return await ctx.respond("That user isn't indexed yet.", ephemeral=True)
 
     @commands.slash_command(
-        name="leaderboard", 
+        name="leaderboard_levels", 
         description="View the global leaderboard for user levelling ranks."
     )
-    async def leaderboard(self, ctx: ApplicationContext):
+    async def leaderboard_levels(self, ctx: ApplicationContext):
         levels_dict = dict()
         for person in levels:
             levels_dict[str(person)] = levels[str(person)]["level"]
