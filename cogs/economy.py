@@ -711,6 +711,35 @@ class Economy(commands.Cog):
     async def treasury(self, ctx: ApplicationContext):
         localembed = discord.Embed(description="There are currently {currency['treasury']} coins in the isobot treasury.")
         await ctx.respond(embed=localembed)
+    
+    @commands.slash_command(
+        name="leaderboard_nw", 
+        description="View the global leaderboard for net worth."
+    )
+    async def leaderboard_nw(self, ctx: ApplicationContext):
+        nw_dict = dict()
+        for person in currency:
+            nw_dict[str(person)] = int(currency["wallet"][str(person)]) + int(currency["bank"][str(person)])
+        undicted_leaderboard = sorted(nw_dict.items(), key=lambda x:x[1], reverse=True)
+        dicted_leaderboard = dict(undicted_leaderboard)
+        parsed_output = str()
+        y = 1
+        for i in dicted_leaderboard:
+            if y < 5:
+                try:
+                    if nw_dict[i] != 0:
+                        user_context = await commands.fetch_user(i)
+                        if not user_context.bot:
+                            print(i, nw_dict[i])
+                            if y == 1: yf = ":first_place:"
+                            elif y == 2: yf = ":second_place:"
+                            elif y == 3: yf = ":third_place:"
+                            else: yf = f"#{y}"
+                            parsed_output += f"{yf} **{user_context.name}:** {nw_dict[i]} coins\n"
+                            y += 1
+                except discord.errors.NotFound: continue
+        localembed = discord.Embed(title="Global net worth leaderboard", description=parsed_output, color=color)
+        await ctx.respond(embed=localembed)
 
 # Initialization
 def setup(bot):
