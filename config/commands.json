@@ -638,9 +638,8 @@
 	"usable_by": "everyone",
 	"disabled": false,
 	"bugged": false
-  }
-  ,
-  "leaderboard": {
+  },
+  "leaderboard_levels": {
 	"name": "Levelling Leaderboard",
 	"description": "See the global leaderboard for user levels.",
 	"type": "levelling",
