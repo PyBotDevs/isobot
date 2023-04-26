@@ -75,15 +75,15 @@ currency_unused = framework.isobot.currency.CurrencyAPI(f'{wdir}/database/curren
 # isobank = framework.isobank.manager.IsoBankManager(f"{wdir}/database/isobank/accounts.json", f"{wdir}/database/isobank/auth.json")
 isobankauth = framework.isobank.authorize.IsobankAuth(f"{wdir}/database/isobank/auth.json", f"{wdir}/database/isobank/accounts.json")
 
-#Theme Loader
-with open("themes/halloween.theme.json", 'r', encoding="utf-8") as f:
-    theme = json.load(f)
-    try:
-        color_loaded = theme["theme"]["embed_color"]
-        color = int(color_loaded, 16)
-    except KeyError:
-        print(f"{colors.red}The theme file being loaded might be broken. Rolling back to default configuration...{colors.end}")
-        color = discord.Color.random()
+# Theme Loader
+#with open("themes/halloween.theme.json", 'r', encoding="utf-8") as f:
+#    theme = json.load(f)
+#    try:
+#        color_loaded = theme["theme"]["embed_color"]
+#        color = int(color_loaded, 16)
+#    except KeyError:
+#        print(f"{colors.red}The theme file being loaded might be broken. Rolling back to default configuration...{colors.end}")
+#        color = discord.Color.random()
 
 #Events
 @client.event
