@@ -54,7 +54,7 @@ class Osu(commands.Cog):
             e.add_field(name='Sliders', value=beatmap.expand().count_sliders)
             e.add_field(name='HP Drain', value=beatmap.expand().drain)
             await ctx.respond(embed=e)
-        except Exception as f: await ctx.respond(f"An error occured when trying to execute this command.\n```{f.__type__()}: {f}```", ephemeral=True)
+        except Exception as f: await ctx.respond(f"An error occured when trying to execute this command.\n```{type(f).__name__}: {f}```", ephemeral=True)
 
 # Cog Initialization
 def setup(bot): bot.add_cog(Osu(bot))
