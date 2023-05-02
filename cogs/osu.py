@@ -10,7 +10,8 @@ from discord.ext import commands
 class Osu(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        api = OssapiV2(13110, 'UDGR1XA2e406y163lRzzJgs4tQCvu94ehbkXU8w2')
+    
+    api = OssapiV2(13110, 'UDGR1XA2e406y163lRzzJgs4tQCvu94ehbkXU8w2')
     
     @commands.slash_command(
         name="osu_user",
