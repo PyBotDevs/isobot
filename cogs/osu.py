@@ -10,8 +10,7 @@ from discord.ext import commands
 class Osu(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-    
-    api = OssapiV2(13110, 'UDGR1XA2e406y163lRzzJgs4tQCvu94ehbkXU8w2')
+        self.api = OssapiV2(13110, 'UDGR1XA2e406y163lRzzJgs4tQCvu94ehbkXU8w2')
     
     @commands.slash_command(
         name="osu_user",
@@ -20,7 +19,7 @@ class Osu(commands.Cog):
     @option(name="user", description="The name of the user", type=str)
     async def osu_user(self, ctx, *, user:str):
         try:
-            compact_user = api.search(query=user).users.data[0]
+            compact_user = self.api.search(query=user).users.data[0]
             e = discord.Embed(title=f'osu! stats for {user}', color=0xff66aa)
             e.set_thumbnail(url='https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Osu%21_Logo_2016.svg/2048px-Osu%21_Logo_2016.svg.png')
             e.add_field(name='Rank (Global)', value=f'#{compact_user.expand().statistics.global_rank}')
@@ -43,7 +42,7 @@ class Osu(commands.Cog):
     @option(name="query", description="The beatmap's id", type=int)
     async def osu_beatmap(self, ctx, *, query:int):
         try:
-            beatmap = api.beatmap(beatmap_id=query)
+            beatmap = self.api.beatmap(beatmap_id=query)
             e = discord.Embed(title=f'osu! beatmap info for {beatmap.expand()._beatmapset.title} ({beatmap.expand()._beatmapset.title_unicode})', color=0xff66aa)
             e.set_thumbnail(url='https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Osu%21_Logo_2016.svg/2048px-Osu%21_Logo_2016.svg.png')
             #.beatmap.data[0]
