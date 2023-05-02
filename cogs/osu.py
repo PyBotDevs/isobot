@@ -18,7 +18,7 @@ class Osu(commands.Cog):
         description="View information on an osu! player."
     )
     @option(name="user", description="The name of the user", type=str)
-    async def osu_user(ctx, *, user:str):
+    async def osu_user(self, ctx, *, user:str):
         try:
             compact_user = api.search(query=user).users.data[0]
             e = discord.Embed(title=f'osu! stats for {user}', color=0xff66aa)
@@ -41,7 +41,7 @@ class Osu(commands.Cog):
         description="View information on an osu! beatmap."
     )
     @option(name="query", description="The beatmap's id", type=int)
-    async def osu_beatmap(ctx, *, query:int):
+    async def osu_beatmap(self, ctx, *, query:int):
         try:
             beatmap = api.beatmap(beatmap_id=query)
             e = discord.Embed(title=f'osu! beatmap info for {beatmap.expand()._beatmapset.title} ({beatmap.expand()._beatmapset.title_unicode})', color=0xff66aa)
