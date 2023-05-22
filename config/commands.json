@@ -658,5 +658,25 @@
 	"usable_by": "everyone",
 	"disabled": false,
 	"bugged": false
+  },
+  "weather": {
+	"name": "Weather",
+	"description": "See the current weather conditions of your set location, or another location.",
+	"type": "weather",
+	"cooldown": null,
+	"args": ["location (optional, configurable by /weather_set_location)"],
+	"usable_by": "everyone",
+	"disabled": false,
+	"bugged": false
+  },
+  "weather_set_location": {
+	"name": "Weather",
+	"description": "See the current weather conditions of your set location, or another location.",
+	"type": "weather",
+	"cooldown": null,
+	"args": ["location"],
+	"usable_by": "everyone",
+	"disabled": false,
+	"bugged": false
   }
 }
