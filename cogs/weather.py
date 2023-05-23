@@ -25,12 +25,12 @@ class Weather(commands.Cog):
     )
     @option(name="location", description="What location do you want to set?", type=str)
     async def weather_set_location(self, ctx: ApplicationContext, location: str):
-        if str(ctx.author.id) not in user_db: user_db[str(ctx.author.id)] = None
+        if str(ctx.author.id) not in user_db: user_db[str(ctx.author.id)] = {"location": None, "scale": "celsius"}
         test_ping = requests.get(f"https://api.openweathermap.org/data/2.5/weather?q={location}&appid={api_key}").content
         test_ping_json = json.loads(test_ping)
         if test_ping_json["cod"] == 404: return await ctx.respond(":warning: This location does not exist.", ephemeral=True)
         else:
-            user_db[str(ctx.author.id)] = location.lower()
+            user_db[str(ctx.author.id)]["location"] = location.lower()
             save()
             localembed = discord.Embed(description="Your default location has been updated.")
             await ctx.respond(embed=localembed)
@@ -41,12 +41,12 @@ class Weather(commands.Cog):
     )
     @option(name="location", description="The location you want weather info about (leave empty for set location)", type=str, default=None)
     async def weather(self, ctx: ApplicationContext, location: str = None):
-        if str(ctx.author.id) not in user_db: user_db[str(ctx.author.id)] = None
+        if str(ctx.author.id) not in user_db: user_db[str(ctx.author.id)] = {"location": None, "scale": "celsius"}
         if location == None:
-            if user_db[str(ctx.author.id)] == None: return await ctx.respond("You do not have a default location set yet.\nEnter a location name and try again.", ephemeral=True)
-            else: location = user_db[str(ctx.author.id)]
+            if user_db[str(ctx.author.id)]["location"] == None: return await ctx.respond("You do not have a default location set yet.\nEnter a location name and try again.", ephemeral=True)
+            else: location = user_db[str(ctx.author.id)]["location"]
         api_request = requests.get(f"https://api.openweathermap.org/data/2.5/weather?q={location}&appid={api_key}").content
-        req = json.loads(api_request)
+        req: dict = json.loads(api_request)
         print(req)
         if req["cod"] == 404: return await ctx.respond(":x: This location was not found. Check your spelling or try another location instead.", ephemeral=True)
         elif req["cod"] != 200: return await ctx.respond("A slight problem occured when trying to get information. This error has been automatically reported to the devs.", ephemeral=True)
@@ -57,7 +57,7 @@ class Weather(commands.Cog):
         temp = round(req["main"]["temp"] - 273)
         temp_max = round(req["main"]["temp_max"] - 273)
         temp_min = round(req["main"]["temp_min"] - 273)
-        humidity = round(req["rain"]["1h"] * 100)
+        humidity = req["main"]["humidity"]
         sunset = req["sys"]["sunrise"]
         sunrise = req["sys"]["sunset"]
         forcast = req["weather"][0]["main"]
