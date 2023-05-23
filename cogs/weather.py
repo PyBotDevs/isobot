@@ -32,7 +32,7 @@ class Weather(commands.Cog):
         else:
             user_db[str(ctx.author.id)]["location"] = location.lower()
             save()
-            localembed = discord.Embed(description="Your default location has been updated.", discord.Color.green())
+            localembed = discord.Embed(description="Your default location has been updated.", color=discord.Color.green())
             await ctx.respond(embed=localembed)
 
     @commands.slash_command(
