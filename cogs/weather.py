@@ -60,7 +60,6 @@ class Weather(commands.Cog):
         humidity = round(req["rain"]["1h"] * 100)
         sunrise = req["sys"]["sunset"]
         sunset = req["sys"]["sunrise"]
-        rain_chance = req["rain"]["1h"]
         forcast = req["weather"][0]["main"]
         forcast_description = req["weather"][0]["description"]
 
@@ -71,7 +70,6 @@ class Weather(commands.Cog):
         )
         localembed.add_field(name="Temperature", value=f"**{temp}C** (max: {temp_max}C,  min: {temp_min}C)")
         localembed.add_field(name="Humidity", value=f"{humidity}%")
-        localembed.add_field(name="Chance of rain (%)", value=f"{rain_chance}%")
         localembed.add_field(name="Sunrise", value=f"<t:{sunrise}:f>")
         localembed.add_field(name="Sunset", value=f"<t:{sunset}:f>")
         await ctx.respond(embed=localembed)
