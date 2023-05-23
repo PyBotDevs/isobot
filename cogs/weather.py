@@ -32,8 +32,21 @@ class Weather(commands.Cog):
         else:
             user_db[str(ctx.author.id)]["location"] = location.lower()
             save()
-            localembed = discord.Embed(description="Your default location has been updated.")
+            localembed = discord.Embed(description="Your default location has been updated.", discord.Color.green())
             await ctx.respond(embed=localembed)
+
+    @commands.slash_command(
+        name="weather_set_scale",
+        description="Set your preferred unit scale for temperature for the /weather command."
+    )
+    @option(name="scale", description="Which scale do you want to use?", type=str, choices=["Celsius", "Fahrenheit", "Kelvin"])
+    async def weather_set_scale(self, ctx: ApplicationContext, scale: str):
+        if str(ctx.author.id) not in user_db: user_db[str(ctx.author.id)] = {"location": None, "scale": "celsius"}
+        if scale not in ["Celsius", "Fahrenheit", "Kelvin"]: return 1
+        user_db[str(ctx.author.id)]["scale"]: scale
+        save()
+        localembed = discord.Embed(description="Your preferred unit scale has been updated.", color=discord.Color.green())
+        await ctx.respond(embed=localembed)
 
     @commands.slash_command(
         name="weather",
