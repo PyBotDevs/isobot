@@ -24,7 +24,7 @@ class Weather(commands.Cog):
         description="Set your default location for the /weather command."
     )
     @option(name="location", description="What location do you want to set?", type=str)
-    def weather_set_location(ctx: ApplicationContext, location: str):
+    async def weather_set_location(ctx: ApplicationContext, location: str):
         if ctx.author.id not in user_db: user_db[str(ctx.author.id)] = None
         test_ping = requests.get(f"https://api.openweathermap.org/data/2.5/weather?q={location}&appid={api_key}").content
         test_ping_json = json.loads(test_ping)
@@ -40,7 +40,7 @@ class Weather(commands.Cog):
         description="See the current weather conditions of your set location, or another location."
     )
     @option(name="location", description="The location you want weather info about (leave empty for set location)", type=str, default=None)
-    def weather(ctx: ApplicationContext, location: str = None):
+    async def weather(ctx: ApplicationContext, location: str = None):
         if ctx.author.id not in user_db: user_db[str(ctx.author.id)] = None
         if location == None:
             if user_db[str(ctx.author.id)] == None: return await ctx.respond("You do not have a default location set yet.\nEnter a location name and try again.", ephemeral=True)
