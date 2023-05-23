@@ -54,9 +54,18 @@ class Weather(commands.Cog):
 
         # Stripped API request data
         loc_name = req["name"]
-        temp = round(req["main"]["temp"] - 273)
-        temp_max = round(req["main"]["temp_max"] - 273)
-        temp_min = round(req["main"]["temp_min"] - 273)
+        if user_db[str(ctx.author.id)]["scale"] == "celsius":
+            temp = round(req["main"]["temp"] - 273)
+            temp_max = round(req["main"]["temp_max"] - 273)
+            temp_min = round(req["main"]["temp_min"] - 273)
+        elif user_db[str(ctx.author.id)]["scale"] == "fahrenheit":
+            temp = round(((req["main"]["temp"] - 273) * 9/5) + 32)
+            temp_max = round(((req["main"]["temp_max"] - 273) * 9/5) + 32)
+            temp_min = round(((req["main"]["temp_min"] - 273) * 9/5) + 32)
+        else:
+            temp = round(req["main"]["temp"])
+            temp_max = round(req["main"]["temp_max"])
+            temp_min = round(req["main"]["temp_min"])
         humidity = req["main"]["humidity"]
         sunset = req["sys"]["sunrise"]
         sunrise = req["sys"]["sunset"]
@@ -68,7 +77,9 @@ class Weather(commands.Cog):
             description=f"**{forcast}**\n{forcast_description}",
             color=discord.Color.blue()
         )
-        localembed.add_field(name="Temperature", value=f"**{temp}C** (max: {temp_max}C,  min: {temp_min}C)")
+        if user_db[str(ctx.author.id)]["scale"] == "celsius": localembed.add_field(name="Temperature", value=f"**{temp}C** (max: {temp_max}C,  min: {temp_min}C)")
+        elif user_db[str(ctx.author.id)]["scale"] == "fahrenheit": localembed.add_field(name="Temperature", value=f"**{temp}F** (max: {temp_max}F,  min: {temp_min}F)")
+        else: localembed.add_field(name="Temperature", value=f"**{temp}K** (max: {temp_max}K,  min: {temp_min}K)")
         localembed.add_field(name="Humidity", value=f"{humidity}%")
         localembed.add_field(name="Sunrise", value=f"<t:{sunrise}:f>", inline=False)
         localembed.add_field(name="Sunset", value=f"<t:{sunset}:f>", inline=True)
