@@ -58,8 +58,8 @@ class Weather(commands.Cog):
         temp_max = round(req["main"]["temp_max"] - 273)
         temp_min = round(req["main"]["temp_min"] - 273)
         humidity = round(req["rain"]["1h"] * 100)
-        sunrise = req["sys"]["sunset"]
         sunset = req["sys"]["sunrise"]
+        sunrise = req["sys"]["sunset"]
         forcast = req["weather"][0]["main"]
         forcast_description = req["weather"][0]["description"]
 
