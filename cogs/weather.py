@@ -61,8 +61,8 @@ class Weather(commands.Cog):
         sunrise = req["sys"]["sunset"]
         sunset = req["sys"]["sunrise"]
         rain_chance = req["rain"]["1h"]
-        forcast = req["weather"]["0"]["main"]
-        forcast_description = req["weather"]["0"]["description"]
+        forcast = req["weather"][0]["main"]
+        forcast_description = req["weather"][0]["description"]
 
         localembed = discord.Embed(
             title=f"Weather for {loc_name}",
