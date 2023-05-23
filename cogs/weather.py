@@ -70,8 +70,8 @@ class Weather(commands.Cog):
         )
         localembed.add_field(name="Temperature", value=f"**{temp}C** (max: {temp_max}C,  min: {temp_min}C)")
         localembed.add_field(name="Humidity", value=f"{humidity}%")
-        localembed.add_field(name="Sunrise", value=f"<t:{sunrise}:f>")
-        localembed.add_field(name="Sunset", value=f"<t:{sunset}:f>")
+        localembed.add_field(name="Sunrise", value=f"<t:{sunrise}:f>", inline=False)
+        localembed.add_field(name="Sunset", value=f"<t:{sunset}:f>", inline=True)
         await ctx.respond(embed=localembed)
 
 # Initialization
