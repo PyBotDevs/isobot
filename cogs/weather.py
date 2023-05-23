@@ -70,6 +70,7 @@ class Weather(commands.Cog):
         localembed.add_field(name="Chance of rain (%)", value=f"{rain_chance}%")
         localembed.add_field(name="Sunrise", value=f"<t:{sunrise}:f>")
         localembed.add_field(name="Sunset", value=f"<t:{sunset}:f>")
+        await ctx.respond(embed=localembed)
 
 # Initialization
 def setup(bot): bot.add_cog(Weather(bot))
