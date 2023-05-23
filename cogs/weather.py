@@ -54,9 +54,9 @@ class Weather(commands.Cog):
 
         # Stripped API request data
         loc_name = req["name"]
-        temp = 273 - req["main"]["temp"]
-        temp_max = 273 - req["main"]["temp_max"]
-        temp_min = 273 - req["main"]["temp_min"]
+        temp = req["main"]["temp"] - 273
+        temp_max = req["main"]["temp_max"] - 273
+        temp_min = req["main"]["temp_min"] - 273
         humidity = req["main"]["humidity"]
         sunrise = req["sys"]["sunset"]
         sunset = req["sys"]["sunrise"]
