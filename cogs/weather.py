@@ -18,7 +18,7 @@ def save():
 class Weather(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-    
+
     @commands.slash_command(
         name="weather_set_location",
         description="Set your default location for the /weather command."
@@ -47,7 +47,11 @@ class Weather(commands.Cog):
             else: location = user_db[str(ctx.author.id)]
         api_request = requests.get(f"https://api.openweathermap.org/data/2.5/weather?q={location}&appid={api_key}").content
         req = json.loads(api_request)
-        
+        print(req)
+        if req["cod"] == 404: return await ctx.respond(":x: This location was not found. Check your spelling or try another location instead.", ephemeral=True)
+        elif req["cod"] != 200: return await ctx.respond("A slight problem occured when trying to get information. This error has been automatically reported to the devs.", ephemeral=True)
+        else: pass
+
         # Stripped API request data
         loc_name = req["name"]
         temp = 273 - req["main"]["temp"]
@@ -61,8 +65,8 @@ class Weather(commands.Cog):
         forcast_description = req["weather"]["0"]["description"]
 
         localembed = discord.Embed(
-            title=f"Weather for {loc_name}", 
-            description=f"**{forcast}**\n{forcast_description}", 
+            title=f"Weather for {loc_name}",
+            description=f"**{forcast}**\n{forcast_description}",
             color=discord.Color.light_blue()
         )
         localembed.add_field(name="Temperature", value=f"**{temp}C** (max: {temp_max}C,  min: {temp_min}C)")
