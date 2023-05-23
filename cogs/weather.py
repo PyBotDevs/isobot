@@ -43,7 +43,7 @@ class Weather(commands.Cog):
     async def weather_set_scale(self, ctx: ApplicationContext, scale: str):
         if str(ctx.author.id) not in user_db: user_db[str(ctx.author.id)] = {"location": None, "scale": "Celsius"}
         if scale not in ["Celsius", "Fahrenheit", "Kelvin"]: return 1
-        user_db[str(ctx.author.id)]["scale"]: scale
+        user_db[str(ctx.author.id)]["scale"] = scale
         save()
         localembed = discord.Embed(description="Your preferred unit scale has been updated.", color=discord.Color.green())
         await ctx.respond(embed=localembed)
