@@ -296,7 +296,8 @@ active_cogs = [
     "fun",
     "utils",
     "afk",
-    "osu"
+    "osu",
+    "weather"
 ]
 i = 1
 cog_errors = 0
