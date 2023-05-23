@@ -64,7 +64,7 @@ class Weather(commands.Cog):
         forcast_description = req["weather"][0]["description"]
 
         localembed = discord.Embed(
-            title=f"Weather for {loc_name} (:flag_{req['country'].lower()}:)",
+            title=f"Weather for {loc_name} (:flag_{req['sys']['country'].lower()}:)",
             description=f"**{forcast}**\n{forcast_description}",
             color=discord.Color.blue()
         )
