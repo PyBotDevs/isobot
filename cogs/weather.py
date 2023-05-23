@@ -90,8 +90,8 @@ class Weather(commands.Cog):
             description=f"**{forcast}**\n{forcast_description}",
             color=discord.Color.blue()
         )
-        if user_db[str(ctx.author.id)]["scale"] == "celsius": localembed.add_field(name="Temperature", value=f"**{temp}C** (max: {temp_max}C,  min: {temp_min}C)")
-        elif user_db[str(ctx.author.id)]["scale"] == "fahrenheit": localembed.add_field(name="Temperature", value=f"**{temp}F** (max: {temp_max}F,  min: {temp_min}F)")
+        if user_db[str(ctx.author.id)]["scale"] == "Celsius": localembed.add_field(name="Temperature", value=f"**{temp}C** (max: {temp_max}C,  min: {temp_min}C)")
+        elif user_db[str(ctx.author.id)]["scale"] == "Fahrenheit": localembed.add_field(name="Temperature", value=f"**{temp}F** (max: {temp_max}F,  min: {temp_min}F)")
         else: localembed.add_field(name="Temperature", value=f"**{temp}K** (max: {temp_max}K,  min: {temp_min}K)")
         localembed.add_field(name="Humidity", value=f"{humidity}%")
         localembed.add_field(name="Sunrise", value=f"<t:{sunrise}:f>", inline=False)
