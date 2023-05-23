@@ -66,7 +66,7 @@ class Weather(commands.Cog):
         localembed = discord.Embed(
             title=f"Weather for {loc_name}",
             description=f"**{forcast}**\n{forcast_description}",
-            color=discord.Color.light_blue()
+            color=discord.Color.blue()
         )
         localembed.add_field(name="Temperature", value=f"**{temp}C** (max: {temp_max}C,  min: {temp_min}C)")
         localembed.add_field(name="Humidity", value=f"{humidity}%")
