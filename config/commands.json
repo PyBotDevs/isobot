@@ -678,5 +678,15 @@
 	"usable_by": "everyone",
 	"disabled": false,
 	"bugged": false
+  },
+  "weather_set_scale": {
+	"name": "Set weather temperature unit scale",
+	"description": "Set your preferred unit scale for temperature for the `/weather` command.",
+	"type": "weather",
+	"cooldown": null,
+	"args": ["location"],
+	"usable_by": "everyone",
+	"disabled": false,
+	"bugged": false
   }
 }
