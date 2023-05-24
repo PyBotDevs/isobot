@@ -658,5 +658,35 @@
 	"usable_by": "everyone",
 	"disabled": false,
 	"bugged": false
+  },
+  "weather": {
+	"name": "Weather",
+	"description": "See the current weather conditions of your set location, or another location.",
+	"type": "weather",
+	"cooldown": null,
+	"args": ["location (optional, configurable by /weather_set_location)"],
+	"usable_by": "everyone",
+	"disabled": false,
+	"bugged": false
+  },
+  "weather_set_location": {
+	"name": "Set weather default location",
+	"description": "Set your default location for the `/weather` command.",
+	"type": "weather",
+	"cooldown": null,
+	"args": ["location"],
+	"usable_by": "everyone",
+	"disabled": false,
+	"bugged": false
+  },
+  "weather_set_scale": {
+	"name": "Set weather temperature unit scale",
+	"description": "Set your preferred unit scale for temperature for the `/weather` command.",
+	"type": "weather",
+	"cooldown": null,
+	"args": ["scale"],
+	"usable_by": "everyone",
+	"disabled": false,
+	"bugged": false
   }
 }
