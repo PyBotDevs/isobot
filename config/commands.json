@@ -670,8 +670,8 @@
 	"bugged": false
   },
   "weather_set_location": {
-	"name": "Weather",
-	"description": "See the current weather conditions of your set location, or another location.",
+	"name": "Set weather default location",
+	"description": "Set your default location for the `/weather` command.",
 	"type": "weather",
 	"cooldown": null,
 	"args": ["location"],
