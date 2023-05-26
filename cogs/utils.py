@@ -125,6 +125,7 @@ class Utils(commands.Cog):
         description="Talk to ChatGPT and get a response back."
     )
     @option(name="message", description="What do you want to send to ChatGPT?", type=str)
+    @commands.cooldown(1, 1, commands.BucketType.user)
     async def chatgpt(ctx: ApplicationContext, message: str):
         response = openai.generate_response(message)
         localembed = discord.Embed(description=f"```\n{response}\n```", color=discord.Color.random())
