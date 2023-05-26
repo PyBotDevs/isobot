@@ -132,7 +132,7 @@ class Utils(commands.Cog):
         _chat = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=chatgpt_conversation)
         _reply = _chat.choices[0].message.content
         chatgpt_conversation.append({"role": "assistant", "content": _reply})
-        localembed = discord.Embed(description=f"```\n{_reply}\n```", color=discord.Color.random())
+        localembed = discord.Embed(description=f"{_reply}", color=discord.Color.random())
         localembed.set_author(name="ChatGPT", icon_url="https://static.vecteezy.com/system/resources/previews/021/608/790/original/chatgpt-logo-chat-gpt-icon-on-black-background-free-vector.jpg")
         localembed.set_footer(text="Powered by OpenAI")
         await ctx.respond(embed=localembed)
