@@ -8,12 +8,14 @@ import math
 import framework.isobot.embedengine
 from discord import option, ApplicationContext
 from discord.ext import commands
+from chatgpt import ChatGPT
 from cogs.economy import get_wallet, get_bank, get_user_networth, get_user_count
 from cogs.levelling import get_level, get_xp
 from cogs.afk import get_presence
 
 # Variables
 color = discord.Color.random()
+openai = ChatGPT()
 
 # Commands
 class Utils(commands.Cog):
@@ -116,6 +118,18 @@ class Utils(commands.Cog):
         localembed.add_field(name="Uptime History", value="[here](https://stats.uptimerobot.com/PlKOmI0Aw8)")
         localembed.add_field(name="Release Notes", value="[latest](https://github.com/PyBotDevs/isobot/releases/latest)")
         localembed.set_footer(text=f"Requested by {ctx.author.name}", icon_url=ctx.author.avatar_url)
+        await ctx.respond(embed=localembed)
+    
+    @commands.slash_command(
+        name="chatgpt",
+        description="Talk to ChatGPT and get a response back."
+    )
+    @option(name="message", description="What do you want to send to ChatGPT?", type=str)
+    async def chatgpt(ctx: ApplicationContext, message: str):
+        response = openai.generate_response(message)
+        localembed = discord.Embed(description=f"```\n{response}\n```", color=discord.Color.random())
+        localembed.set_author(name="ChatGPT", icon_url="https://static.vecteezy.com/system/resources/previews/021/608/790/original/chatgpt-logo-chat-gpt-icon-on-black-background-free-vector.jpg")
+        localembed.set_footer(text="Powered by OpenAI")
         await ctx.respond(embed=localembed)
 
 # Cog Initialization
