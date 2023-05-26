@@ -16,7 +16,7 @@ from cogs.afk import get_presence
 # Variables
 color = discord.Color.random()
 openai.api_key = os.getenv("chatgpt_API_KEY")
-chatgpt_conversation = list()
+chatgpt_conversation = dict()
 
 # Commands
 class Utils(commands.Cog):
