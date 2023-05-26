@@ -136,7 +136,7 @@ class Utils(commands.Cog):
             _reply = _chat.choices[0].message.content
             chatgpt_conversation[str(ctx.author.id)].append({"role": "assistant", "content": _reply})
         except openai.error.RateLimitError: return await ctx.respond("The OpenAI API is currently being rate-limited. Try again after some time.", ephemeral=True)
-        except openai.error.ServiceUnavailableError: return await ctx.respond("The ChatGPT service is currently down.\nTry again after some time, or check it's status at https://status.openai.com", ephemeral=True)
+        except openai.error.ServiceUnavailableError: return await ctx.respond("The ChatGPT service is currently unavailable.\nTry again after some time, or check it's status at https://status.openai.com", ephemeral=True)
         except openai.error.APIError: return await ctx.respond("ChatGPT encountered an internal error. Please try again.", ephemeral=True)
         except openai.error.Timeout: return await ctx.respond("Your request timed out. Please try again, or wait for a while.", ephemeral=True)
         localembed = discord.Embed(description=f"{_reply}", color=discord.Color.random())
