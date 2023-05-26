@@ -58,6 +58,7 @@ class Weather(commands.Cog):
         if location == None:
             if user_db[str(ctx.author.id)]["location"] == None: return await ctx.respond("You do not have a default location set yet.\nEnter a location name and try again.", ephemeral=True)
             else: location = user_db[str(ctx.author.id)]["location"]
+        location = location.replace(" ", "%20")
         api_request = requests.get(f"https://api.openweathermap.org/data/2.5/weather?q={location}&appid={api_key}").content
         req: dict = json.loads(api_request)
         print(req)
