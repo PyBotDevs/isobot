@@ -688,5 +688,15 @@
 	"usable_by": "everyone",
 	"disabled": false,
 	"bugged": false
+  },
+  "chatgpt": {
+	"name": "ChatGPT",
+	"description": "Talk to ChatGPT and get a response back.",
+	"type": "general utilities",
+	"cooldown": 1,
+	"args": ["message"],
+	"usable_by": "everyone",
+	"disabled": false,
+	"bugged": false
   }
 }

@@ -5,6 +5,7 @@ import discord
 import os
 import psutil
 import math
+import openai
 import framework.isobot.embedengine
 from discord import option, ApplicationContext
 from discord.ext import commands
@@ -14,6 +15,8 @@ from cogs.afk import get_presence
 
 # Variables
 color = discord.Color.random()
+openai.api_key = os.getenv("chatgpt_API_KEY")
+chatgpt_conversation = dict()
 
 # Commands
 class Utils(commands.Cog):
@@ -116,6 +119,29 @@ class Utils(commands.Cog):
         localembed.add_field(name="Uptime History", value="[here](https://stats.uptimerobot.com/PlKOmI0Aw8)")
         localembed.add_field(name="Release Notes", value="[latest](https://github.com/PyBotDevs/isobot/releases/latest)")
         localembed.set_footer(text=f"Requested by {ctx.author.name}", icon_url=ctx.author.avatar_url)
+        await ctx.respond(embed=localembed)
+    
+    @commands.slash_command(
+        name="chatgpt",
+        description="Talk to ChatGPT and get a response back."
+    )
+    @option(name="message", description="What do you want to send to ChatGPT?", type=str)
+    @commands.cooldown(1, 1, commands.BucketType.user)
+    async def chatgpt(self, ctx: ApplicationContext, message: str):
+        if str(ctx.author.id) not in chatgpt_conversation: chatgpt_conversation[str(ctx.author.id)] = [{"role": "system", "content": "You are a intelligent assistant."}]
+        await ctx.defer()
+        try:
+            chatgpt_conversation[str(ctx.author.id)].append({"role": "user", "content": message})
+            _chat = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=chatgpt_conversation[str(ctx.author.id)])
+            _reply = _chat.choices[0].message.content
+            chatgpt_conversation[str(ctx.author.id)].append({"role": "assistant", "content": _reply})
+        except openai.error.RateLimitError: return await ctx.respond("The OpenAI API is currently being rate-limited. Try again after some time.", ephemeral=True)
+        except openai.error.ServiceUnavailableError: return await ctx.respond("The ChatGPT service is currently unavailable.\nTry again after some time, or check it's status at https://status.openai.com", ephemeral=True)
+        except openai.error.APIError: return await ctx.respond("ChatGPT encountered an internal error. Please try again.", ephemeral=True)
+        except openai.error.Timeout: return await ctx.respond("Your request timed out. Please try again, or wait for a while.", ephemeral=True)
+        localembed = discord.Embed(description=f"{_reply}", color=discord.Color.random())
+        localembed.set_author(name="ChatGPT", icon_url="https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/ChatGPT_logo.svg/1200px-ChatGPT_logo.svg.png")
+        localembed.set_footer(text="Powered by OpenAI")
         await ctx.respond(embed=localembed)
 
 # Cog Initialization
