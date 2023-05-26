@@ -135,7 +135,7 @@ class Utils(commands.Cog):
         _reply = _chat.choices[0].message.content
         chatgpt_conversation[str(ctx.author.id)].append({"role": "assistant", "content": _reply})
         localembed = discord.Embed(description=f"{_reply}", color=discord.Color.random())
-        localembed.set_author(name="ChatGPT", icon_url="https://static.vecteezy.com/system/resources/previews/021/608/790/original/chatgpt-logo-chat-gpt-icon-on-black-background-free-vector.jpg")
+        localembed.set_author(name="ChatGPT", icon_url="https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/ChatGPT_logo.svg/1200px-ChatGPT_logo.svg.png")
         localembed.set_footer(text="Powered by OpenAI")
         await ctx.respond(embed=localembed)
 
