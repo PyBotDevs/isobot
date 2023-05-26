@@ -5,17 +5,18 @@ import discord
 import os
 import psutil
 import math
+import openai
 import framework.isobot.embedengine
 from discord import option, ApplicationContext
 from discord.ext import commands
-from chatgpt import ChatGPT
 from cogs.economy import get_wallet, get_bank, get_user_networth, get_user_count
 from cogs.levelling import get_level, get_xp
 from cogs.afk import get_presence
 
 # Variables
 color = discord.Color.random()
-openai = ChatGPT()
+openai.api_key = os.getenv("chatgpt_API_KEY")
+chatgpt_conversation = [{"role": "system", "content": "You are a intelligent assistant."}]
 
 # Commands
 class Utils(commands.Cog):
@@ -127,8 +128,11 @@ class Utils(commands.Cog):
     @option(name="message", description="What do you want to send to ChatGPT?", type=str)
     @commands.cooldown(1, 1, commands.BucketType.user)
     async def chatgpt(ctx: ApplicationContext, message: str):
-        response = openai.generate_response(message)
-        localembed = discord.Embed(description=f"```\n{response}\n```", color=discord.Color.random())
+        chatgpt_conversation.append({"role": "user", "content": message})
+        _chat = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=chatgpt_conversation)
+        _reply = _chat.choices[0].message.content
+        chatgpt_conversation.append({"role": "assistant", "content": reply})
+        localembed = discord.Embed(description=f"```\n{_reply}\n```", color=discord.Color.random())
         localembed.set_author(name="ChatGPT", icon_url="https://static.vecteezy.com/system/resources/previews/021/608/790/original/chatgpt-logo-chat-gpt-icon-on-black-background-free-vector.jpg")
         localembed.set_footer(text="Powered by OpenAI")
         await ctx.respond(embed=localembed)
