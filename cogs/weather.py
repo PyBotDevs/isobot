@@ -28,7 +28,7 @@ class Weather(commands.Cog):
         if str(ctx.author.id) not in user_db: user_db[str(ctx.author.id)] = {"location": None, "scale": "Celsius"}
         test_ping = requests.get(f"https://api.openweathermap.org/data/2.5/weather?q={location}&appid={api_key}").content
         test_ping_json = json.loads(test_ping)
-        if test_ping_json["cod"] == 404: return await ctx.respond(":warning: This location does not exist.", ephemeral=True)
+        if test_ping_json["cod"] == '404': return await ctx.respond(":warning: This location does not exist.", ephemeral=True)
         else:
             user_db[str(ctx.author.id)]["location"] = location.lower()
             save()
@@ -62,8 +62,8 @@ class Weather(commands.Cog):
         api_request = requests.get(f"https://api.openweathermap.org/data/2.5/weather?q={location}&appid={api_key}").content
         req: dict = json.loads(api_request)
         print(req)
-        if req["cod"] == 404: return await ctx.respond(":x: This location was not found. Check your spelling or try another location instead.", ephemeral=True)
-        elif req["cod"] != 200: return await ctx.respond("A slight problem occured when trying to get information. This error has been automatically reported to the devs.", ephemeral=True)
+        if req["cod"] == '404': return await ctx.respond(":x: This location was not found. Check your spelling or try another location instead.", ephemeral=True)
+        elif req["cod"] != '200': return await ctx.respond("A slight problem occured when trying to get information. This error has been automatically reported to the devs.", ephemeral=True)
         else: pass
 
         # Stripped API request data
