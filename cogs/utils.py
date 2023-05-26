@@ -128,6 +128,7 @@ class Utils(commands.Cog):
     @option(name="message", description="What do you want to send to ChatGPT?", type=str)
     @commands.cooldown(1, 1, commands.BucketType.user)
     async def chatgpt(self, ctx: ApplicationContext, message: str):
+        await ctx.defer()
         chatgpt_conversation.append({"role": "user", "content": message})
         _chat = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=chatgpt_conversation)
         _reply = _chat.choices[0].message.content
