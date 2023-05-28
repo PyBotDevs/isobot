@@ -197,7 +197,7 @@ class Economy(commands.Cog):
             x = randint(10, 100)
             currency["wallet"][str(ctx.author.id)] += x
             save()
-            await ctx.respond(embed=discord.Embed(title=random.choice(names), description=f'"Oh you poor beggar, here\'s {x} coin(s) for you. Hope it helps!"'))
+            await ctx.respond(embed=discord.Embed(title=random.choice(names), description=f"Oh you poor beggar, here's {x} coin(s) for you. Hope it helps!"))
         else: await ctx.respond(embed=discord.Embed(title=random.choice(names), description=f'"{random.choice(fail_responses)}"'))
 
     @commands.slash_command(
@@ -208,7 +208,7 @@ class Economy(commands.Cog):
     async def daily(self, ctx: ApplicationContext):
         currency['wallet'][str(ctx.author.id)] += 10000
         save()
-        await ctx.respond(f'You claimed 10000 coins from the daily reward. Check back in 24 hours for your next one!')
+        await ctx.respond('You claimed 10000 coins from the daily reward. Check back in 24 hours for your next one!')
 
     @commands.slash_command(
         name='weekly',
@@ -218,7 +218,7 @@ class Economy(commands.Cog):
     async def weekly(self, ctx: ApplicationContext):
         currency['wallet'][str(ctx.author.id)] += 45000
         save()
-        await ctx.respond(f'You claimed 45000 coins from the weekly reward. Check back in 7 days for your next one!')
+        await ctx.respond('You claimed 45000 coins from the weekly reward. Check back in 7 days for your next one!')
 
     @commands.slash_command(
         name='monthly',
@@ -228,7 +228,7 @@ class Economy(commands.Cog):
     async def monthly(self, ctx: ApplicationContext):
         currency['wallet'][str(ctx.author.id)] += 1000000
         save()
-        await ctx.respond(f'You claimed 1000000 coins from the monthly reward. Check back in 1 month for your next one!')
+        await ctx.respond('You claimed 1000000 coins from the monthly reward. Check back in 1 month for your next one!')
     
     @commands.slash_command(
         name='rob',
@@ -243,17 +243,17 @@ class Economy(commands.Cog):
             x = randint(5000, currency['wallet'][str(user.id)])
             currency['wallet'][str(ctx.author.id)] += x
             currency['wallet'][str(user.id)] -= x
-            await ctx.respond(f'You just stole {x} coins from {user.display_name}! Feels good, doesn\'t it?')
+            await ctx.respond(f"You just stole {x} coins from {user.display_name}! Feels good, doesn't it?")
         else:
             x = randint(5000, currency['wallet'][str(ctx.author.id)])
             currency['wallet'][str(ctx.author.id)] -= x
             currency['wallet'][str(user.id)] += x
-            await ctx.respond(f'LOL YOU GOT CAUGHT! You paid {user.display_name} {x} coins as compensation for your action.')
+            await ctx.respond(f"LOL YOU GOT CAUGHT! You paid {user.display_name} {x} coins as compensation for your action.")
         save()
 
     @commands.slash_command(
         name='bankrob',
-        description='Raids someone\'s bank account'
+        description="Raids someone's bank account"
     )
     @option(name="user", description="Whose bank account do you want to raid?", type=discord.User)
     @commands.cooldown(1, (60*5), commands.BucketType.user)
@@ -264,11 +264,11 @@ class Economy(commands.Cog):
             x = randint(10000, currency['wallet'][str(user.id)])
             currency['wallet'][str(ctx.author.id)] += x
             currency['bank'][str(user.id)] -= x
-            await ctx.respond(f'You raided {user.display_name}\'s bank and ended up looting {x} coins from them! Now thats what I like to call *success*.')
+            await ctx.respond(f"You raided {user.display_name}'s bank and ended up looting {x} coins from them! Now thats what I like to call *success*.")
         else:
             x = 10000
             currency['wallet'][str(ctx.author.id)] -= x
-            await ctx.respond(f'Have you ever thought of this as the outcome? You failed AND ended up getting caught by the police. You just lost {x} coins, you absolute loser.')
+            await ctx.respond(f"Have you ever thought of this as the outcome? You failed AND ended up getting caught by the police. You just lost {x} coins, you absolute loser.")
 
     @commands.slash_command(
         name='hunt',
@@ -276,7 +276,7 @@ class Economy(commands.Cog):
     )
     @commands.cooldown(1, 30, commands.BucketType.user)
     async def hunt(self, ctx: ApplicationContext):
-        if items[str(ctx.author.id)]['rifle'] == 0: return await ctx.respond('I\'d hate to see you hunt with your bare hands. Please buy a hunting rifle from the shop. ||/buy rifle||')
+        if items[str(ctx.author.id)]['rifle'] == 0: return await ctx.respond("I'd hate to see you hunt with your bare hands. Please buy a hunting rifle from the shop. ||/buy rifle||")
         loot = ['rock', 'ant', 'skunk', 'boar', 'deer', 'dragon', 'nothing', 'died']
         choice = random.choice(loot)
         if choice != "nothing" and choice != "died":
@@ -287,7 +287,7 @@ class Economy(commands.Cog):
         elif (choice == "died"):
             currency['wallet'][str(ctx.author.id)] -= 1000
             save()
-            await ctx.respond('Stupid, you died while hunting and lost 1000 coins...')
+            await ctx.respond("Stupid, you died while hunting and lost 1000 coins...")
 
     @commands.slash_command(
         name='fish',
@@ -295,7 +295,7 @@ class Economy(commands.Cog):
     )
     @commands.cooldown(1, 45, commands.BucketType.user)
     async def fish(self, ctx: ApplicationContext):
-        if (items[str(ctx.author.id)]['fishingpole'] == 0): return await ctx.respond('I don\'t think you can fish with your bare hands... or you can just put yo hands in the water bro **giga chad moment**\nAnyway it\'s just better to buy a fishing pole from the shop. ||/buy fishingpole||')
+        if (items[str(ctx.author.id)]['fishingpole'] == 0): return await ctx.respond("I don't think you can fish with your bare hands... or you can just put yo hands in the water bro **giga chad moment**\nAnyway it's just better to buy a fishing pole from the shop. ||/buy fishingpole||")
         loot = ['shrimp', 'fish', 'rare fish', 'exotic fish', 'jellyfish', 'shark', 'nothing']
         choice = random.choice(loot)
         if choice != "nothing":
@@ -310,7 +310,7 @@ class Economy(commands.Cog):
     )
     @commands.cooldown(1, 45, commands.BucketType.user)
     async def dig(self, ctx: ApplicationContext):
-        if (items[str(ctx.author.id)]['shovel'] == 0): return await ctx.respond('You\'re too good to have to dig with your bare hands..... at least I hope so. Please buy a shovel from the shop. ||/buy shovel||')
+        if (items[str(ctx.author.id)]['shovel'] == 0): return await ctx.respond("You're too good to have to dig with your bare hands..... at least I hope so. Please buy a shovel from the shop. ||/buy shovel||")
         loot = [
             'coins',
             'shovel',
@@ -327,7 +327,7 @@ class Economy(commands.Cog):
         if (choice == "coins"):
             currency['wallet'][str(ctx.author.id)] += random.randint('1000', '5000')
             save()
-            await ctx.respond(f'You went digging and found a bunch of coins. Nice!')
+            await ctx.respond('You went digging and found a bunch of coins. Nice!')
         elif choice != "nothing" and choice != "died":
             items[str(ctx.author.id)][choice] += 1
             save()
@@ -655,7 +655,7 @@ class Economy(commands.Cog):
     @option(name="user", description="Whose inventory you want to view?", type=discord.User, default=None)
     async def inventory(self, ctx: ApplicationContext, user:discord.User = None):
         if user == None: user = ctx.author
-        localembed = discord.Embed(title=f'{user.display_name}\'s Inventory')
+        localembed = discord.Embed(title=f"{user.display_name}'s Inventory")
         filtered_utility_items = list()
         filtered_sellables = list()
         filtered_powerups = list()
@@ -696,7 +696,7 @@ class Economy(commands.Cog):
         try:
             if user == None: user = ctx.author
             try:
-                e = discord.Embed(title=f'{user.display_name}\'s balance', color=color)
+                e = discord.Embed(title=f"{user.display_name}'s balance", color=color)
                 e.add_field(name='Cash in wallet', value=f'{currency["wallet"][str(user.id)]} coin(s)', inline=True)
                 e.add_field(name='Cash in bank account', value=f'{currency["bank"][str(user.id)]} coin(s)', inline=True)
                 e.add_field(name="Networth", value=f"{get_user_networth(user.id)} coin(s)", inline=True)
@@ -717,29 +717,32 @@ class Economy(commands.Cog):
         description="View the global leaderboard for net worth."
     )
     async def leaderboard_nw(self, ctx: ApplicationContext):
-        nw_dict = dict()
-        for person in currency:
-            nw_dict[str(person)] = int(currency["wallet"][str(person)]) + int(currency["bank"][str(person)])
-        undicted_leaderboard = sorted(nw_dict.items(), key=lambda x:x[1], reverse=True)
-        dicted_leaderboard = dict(undicted_leaderboard)
-        parsed_output = str()
-        y = 1
-        for i in dicted_leaderboard:
-            if y < 5:
-                try:
-                    if nw_dict[i] != 0:
-                        user_context = await commands.fetch_user(i)
-                        if not user_context.bot:
-                            print(i, nw_dict[i])
-                            if y == 1: yf = ":first_place:"
-                            elif y == 2: yf = ":second_place:"
-                            elif y == 3: yf = ":third_place:"
-                            else: yf = f"#{y}"
-                            parsed_output += f"{yf} **{user_context.name}:** {nw_dict[i]} coins\n"
-                            y += 1
-                except discord.errors.NotFound: continue
-        localembed = discord.Embed(title="Global net worth leaderboard", description=parsed_output, color=color)
-        await ctx.respond(embed=localembed)
+        await ctx.respond("This command is currently disabled due to an internal issue. I apologize for the inconvenience.", ephemeral=True) 
+        #await ctx.defer()
+        #nw_dict = dict()
+        #for person in currency["wallet"]:
+        #    nw_dict[str(person)] = int(currency["wallet"][str(person)]) + int(currency["bank"][str(person)])
+        #undicted_leaderboard = sorted(nw_dict.items(), key=lambda x:x[1], reverse=True)
+        #dicted_leaderboard = dict(undicted_leaderboard)
+        #parsed_output = str()
+        #y = 1
+        #for i in dicted_leaderboard:
+        #    if y < 10:
+        #        try:
+        #            if nw_dict[i] != 0:
+        #                user_context = await discord.ext.commands.Bot.fetch_user(self, int(i))
+        #                if not user_context.bot:
+        #                    print(i, nw_dict[i])
+        #                    if y == 1: yf = ":first_place:"
+        #                    elif y == 2: yf = ":second_place:"
+        #                    elif y == 3: yf = ":third_place:"
+        #                    else: yf = f"#{y}"
+        #                    parsed_output += f"{yf} **{user_context.name}:** {nw_dict[i]} coins\n"
+        #                    y += 1
+        #        except discord.errors.NotFound: continue
+        #        except Exception as e: print(e)
+        #localembed = discord.Embed(title="Global net worth leaderboard", description=parsed_output, color=color)
+        #await ctx.respond(embed=localembed)
 
 # Initialization
 def setup(bot):
