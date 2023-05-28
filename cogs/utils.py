@@ -143,6 +143,34 @@ class Utils(commands.Cog):
         localembed.set_author(name="ChatGPT", icon_url="https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/ChatGPT_logo.svg/1200px-ChatGPT_logo.svg.png")
         localembed.set_footer(text="Powered by OpenAI")
         await ctx.respond(embed=localembed)
+    
+    @commands.slash_command(
+        name="generate_image",
+        description="Generate an image of your choice using the DALL-E modal."
+    )
+    @option(name="prompt", description="What image do you want the bot to generate?", type=str)
+    @commands.cooldown(1, 10, commands.BucketType.user)
+    async def generate_image(self, ctx: ApplicationContext, prompt: str):
+        await ctx.defer()
+        try:
+            response = openai.Completion.create(
+                engine="davinci",
+                prompt=prompt,
+                max_tokens=1024,
+                n=1,
+                stop=None,
+                temperature=0.5,
+            )
+            generated_image_url = response.choices[0].text
+        except openai.error.RateLimitError: return await ctx.respond("The OpenAI API is currently being rate-limited. Try again after some time.", ephemeral=True)
+        except openai.error.ServiceUnavailableError: return await ctx.respond("The ChatGPT service is currently unavailable.\nTry again after some time, or check it's status at https://status.openai.com", ephemeral=True)
+        except openai.error.APIError: return await ctx.respond("ChatGPT encountered an internal error. Please try again.", ephemeral=True)
+        except openai.error.Timeout: return await ctx.respond("Your request timed out. Please try again, or wait for a while.", ephemeral=True)
+        localembed = discord.Embed(title="Here's an image generated using your prompt.", color=discord.Color.random())
+        localembed.set_image(url=generated_image_url)
+        localembed.set_author(name="DALL-E", icon_url="https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/ChatGPT_logo.svg/1200px-ChatGPT_logo.svg.png")
+        localembed.set_footer(text="Powered by OpenAI")
+        await ctx.respond(embed=localembed)
 
 # Cog Initialization
 def setup(bot): bot.add_cog(Utils(bot))
