@@ -63,7 +63,7 @@ class Weather(commands.Cog):
         req: dict = json.loads(api_request)
         print(req)
         if req["cod"] == '404': return await ctx.respond(":x: This location was not found. Check your spelling or try another location instead.", ephemeral=True)
-        elif req["cod"] != '200': return await ctx.respond("A slight problem occured when trying to get information. This error has been automatically reported to the devs.", ephemeral=True)
+        elif req["cod"] != 200: return await ctx.respond("A slight problem occured when trying to get information. This error has been automatically reported to the devs.", ephemeral=True)
         else: pass
 
         # Stripped API request data
