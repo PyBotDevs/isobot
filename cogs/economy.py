@@ -208,7 +208,7 @@ class Economy(commands.Cog):
     async def daily(self, ctx: ApplicationContext):
         currency['wallet'][str(ctx.author.id)] += 10000
         save()
-        await ctx.respond(f'You claimed 10000 coins from the daily reward. Check back in 24 hours for your next one!')
+        await ctx.respond('You claimed 10000 coins from the daily reward. Check back in 24 hours for your next one!')
 
     @commands.slash_command(
         name='weekly',
@@ -218,7 +218,7 @@ class Economy(commands.Cog):
     async def weekly(self, ctx: ApplicationContext):
         currency['wallet'][str(ctx.author.id)] += 45000
         save()
-        await ctx.respond(f'You claimed 45000 coins from the weekly reward. Check back in 7 days for your next one!')
+        await ctx.respond('You claimed 45000 coins from the weekly reward. Check back in 7 days for your next one!')
 
     @commands.slash_command(
         name='monthly',
@@ -228,7 +228,7 @@ class Economy(commands.Cog):
     async def monthly(self, ctx: ApplicationContext):
         currency['wallet'][str(ctx.author.id)] += 1000000
         save()
-        await ctx.respond(f'You claimed 1000000 coins from the monthly reward. Check back in 1 month for your next one!')
+        await ctx.respond('You claimed 1000000 coins from the monthly reward. Check back in 1 month for your next one!')
     
     @commands.slash_command(
         name='rob',
@@ -327,7 +327,7 @@ class Economy(commands.Cog):
         if (choice == "coins"):
             currency['wallet'][str(ctx.author.id)] += random.randint('1000', '5000')
             save()
-            await ctx.respond(f'You went digging and found a bunch of coins. Nice!')
+            await ctx.respond('You went digging and found a bunch of coins. Nice!')
         elif choice != "nothing" and choice != "died":
             items[str(ctx.author.id)][choice] += 1
             save()

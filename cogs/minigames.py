@@ -60,8 +60,8 @@ class Minigames(commands.Cog):
                 await ctx.respond(f'Congrats! Your number was {numb2} and you won **{coins} coins**.')
                 currency["wallet"][ctx.author.id] += coins
                 save()
-            elif numb < numb2: await ctx.respond(f'Wrong! The number was **{numb2}**.')
-            elif numb == numb2: await ctx.respond(f'Rip bozo, you just missed your chance of winning 5 million coins because you didn\'t choose `jackpot` XD')
+            elif numb < numb2: await ctx.respond(f"Wrong! The number was **{numb2}**.")
+            elif numb == numb2: await ctx.respond("Rip bozo, you just missed your chance of winning 5 million coins because you didn't choose `jackpot` XD")
         if msg.content == 'jackpot':
             if numb == numb2:
                 await ctx.respond(f'Congrats! Your luck did you good because your number was {numb2} and you earned **5 million coins**. GG!')
