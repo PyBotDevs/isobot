@@ -717,6 +717,7 @@ class Economy(commands.Cog):
         description="View the global leaderboard for net worth."
     )
     async def leaderboard_nw(self, ctx: ApplicationContext):
+        await ctx.defer()
         nw_dict = dict()
         for person in currency:
             nw_dict[str(person)] = int(currency["wallet"][str(person)]) + int(currency["bank"][str(person)])
