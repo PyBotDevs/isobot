@@ -71,7 +71,7 @@ class plugins:
 
 #Framework Module Loader
 colors = framework.isobot.colors.Colors()
-currency_unused = framework.isobot.currency.CurrencyAPI(f'{wdir}/database/currency.json', f"{wdir}/logs/currency.log")  # Initialize part of the framework (Currency)
+currency_unused = framework.isobot.currency.CurrencyAPI(f"{wdir}/database/currency.json", f"{wdir}/logs/currency.log")  # Initialize part of the framework (Currency)
 # isobank = framework.isobank.manager.IsoBankManager(f"{wdir}/database/isobank/accounts.json", f"{wdir}/database/isobank/auth.json")
 isobankauth = framework.isobank.authorize.IsobankAuth(f"{wdir}/database/isobank/auth.json", f"{wdir}/database/isobank/accounts.json")
 
@@ -164,20 +164,20 @@ async def on_message(ctx):
 async def on_application_command_error(ctx: ApplicationContext, error: discord.DiscordException):
     current_time = datetime.time().strftime("%H:%M:%S")
     if isinstance(error, commands.CommandOnCooldown):
-        await ctx.respond(f':stopwatch: Not now! Please try after **{str(datetime.timedelta(seconds=int(round(error.retry_after))))}**')
-        print(f'[{current_time}] Ignoring exception at {colors.cyan}CommandOnCooldown{colors.end}. Details: This command is currently on cooldown.')
+        await ctx.respond(f":stopwatch: Not now! Please try after **{str(datetime.timedelta(seconds=int(round(error.retry_after))))}**")
+        print(f"[{current_time}] Ignoring exception at {colors.cyan}CommandOnCooldown{colors.end}. Details: This command is currently on cooldown.")
     elif isinstance(error, commands.MissingPermissions):
-        await ctx.respond('You don\'t have permission to do this!', ephemeral=True)
-        print(f'[{current_time}] Ignoring exception at {colors.cyan}MissingPermissions{colors.end}. Details: The user doesn\'t have the required permissions.')
+        await ctx.respond("You don't have permission to do this!", ephemeral=True)
+        print(f"[{current_time}] Ignoring exception at {colors.cyan}MissingPermissions{colors.end}. Details: The user doesn\'t have the required permissions.")
     elif isinstance(error, commands.BadArgument):
-        await ctx.respond(':x: Invalid argument.', delete_after=8)
-        print(f'[{current_time}] Ignoring exception at {colors.cyan}BadArgument{colors.end}.')
+        await ctx.respond(":x: Invalid argument.", delete_after=8)
+        print(f"[{current_time}] Ignoring exception at {colors.cyan}BadArgument{colors.end}.")
     elif isinstance(error, commands.BotMissingPermissions):
-        await ctx.respond(':x: I don\'t have the required permissions to use this.')
-        print(f'[{current_time}] Ignoring exception at {colors.cyan}BotMissingPremissions{colors.end}. Details: The bot doesn\'t have the required permissions.')
+        await ctx.respond(":x: I don\'t have the required permissions to use this.")
+        print(f"[{current_time}] Ignoring exception at {colors.cyan}BotMissingPremissions{colors.end}. Details: The bot doesn\'t have the required permissions.")
     elif isinstance(error, commands.BadBoolArgument):
-        await ctx.respond(':x: Invalid true/false argument.', delete_after=8)
-        print(f'[{current_time}] Ignoring exception at {colors.cyan}BadBoolArgument{colors.end}.')
+        await ctx.respond(":x: Invalid true/false argument.", delete_after=8)
+        print(f"[{current_time}] Ignoring exception at {colors.cyan}BadBoolArgument{colors.end}.")
 
 #Commands
 @client.slash_command(
@@ -307,7 +307,7 @@ for x in active_cogs:
     try: client.load_extension(f"cogs.{x}")
     except Exception as e:
         cog_errors += 1
-        print(f"[main/Cogs] {colors.red}ERROR: Cog \"{x}\" failed to load: {e}{colors.end}")
+        print(f"[main/Cogs] {colors.red}ERROR: Cog '{x}' failed to load: {e}{colors.end}")
 if cog_errors == 0: print(f"[main/Cogs] {colors.green}All cogs successfully loaded.{colors.end}")
 else: print(f"[main/Cogs] {colors.yellow}{cog_errors}/{len(active_cogs)} cogs failed to load.{colors.end}")
 print("--------------------")
