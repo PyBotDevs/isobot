@@ -726,7 +726,7 @@ class Economy(commands.Cog):
         parsed_output = str()
         y = 1
         for i in dicted_leaderboard:
-            if y < 5:
+            if y < 10:
                 try:
                     if nw_dict[i] != 0:
                         user_context = await commands.fetch_user(i)
