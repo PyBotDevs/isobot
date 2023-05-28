@@ -33,7 +33,7 @@ from cogs.isocoin import create_isocoin_key
 client = discord.Bot()
 color = discord.Color.random()
 wdir = os.getcwd()
-reddit = praw.Reddit(client_id='_pazwWZHi9JldA', client_secret='1tq1HM7UMEGIro6LlwtlmQYJ1jB4vQ', user_agent='idk', check_for_async=False)
+reddit = praw.Reddit(client_id='_pazwWZHi9JldA', client_secret=os.environ['reddit_CLIENT_SECRET'], user_agent='idk', check_for_async=False)
 with open('database/items.json', 'r', encoding="utf-8") as f: items = json.load(f)
 with open('config/shop.json', 'r', encoding="utf-8") as f: shopitem = json.load(f)
 with open('database/presence.json', 'r', encoding="utf-8") as f: presence = json.load(f)

@@ -2,6 +2,7 @@
 
 # Imports
 import discord
+import os
 from ossapi import *
 from discord import option, ApplicationContext
 from discord.ext import commands
@@ -10,7 +11,7 @@ from discord.ext import commands
 class Osu(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.api = OssapiV2(13110, 'UDGR1XA2e406y163lRzzJgs4tQCvu94ehbkXU8w2')
+        self.api = OssapiV2(13110, os.environ['ossapi_CLIENT_SECRET'])
     
     @commands.slash_command(
         name="osu_user",

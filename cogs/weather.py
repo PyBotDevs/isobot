@@ -2,11 +2,12 @@
 import discord
 import json
 import requests
+import os
 from discord import ApplicationContext, option
 from discord.ext import commands
 
 # Variables
-api_key = "21cab08deb7b27f4c2b55f3e2df28ea4"
+api_key = os.environ['openweathermap_API_KEY']
 with open("database/weather.json", 'r', encoding="utf-8") as f: user_db = json.load(f)
 
 # Functions

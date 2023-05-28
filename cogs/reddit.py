@@ -3,13 +3,14 @@
 # Imports
 import discord
 import praw
+import os
 from discord import ApplicationContext, option
 from discord.ext import commands
 from random import randint
 
 # Variables
 color = discord.Color.random()
-reddit = praw.Reddit(client_id='_pazwWZHi9JldA', client_secret='1tq1HM7UMEGIro6LlwtlmQYJ1jB4vQ', user_agent='idk', check_for_async=False)
+reddit = praw.Reddit(client_id='_pazwWZHi9JldA', client_secret=os.environ['reddit_CLIENT_SECRET'], user_agent='idk', check_for_async=False)
 
 # Commands
 class RedditMedia(commands.Cog):
