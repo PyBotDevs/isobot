@@ -74,6 +74,7 @@ class Levelling(commands.Cog):
         description="View the global leaderboard for user levelling ranks."
     )
     async def leaderboard_levels(self, ctx: ApplicationContext):
+        await ctx.defer()
         levels_dict = dict()
         for person in levels:
             levels_dict[str(person)] = levels[str(person)]["level"]
