@@ -698,5 +698,15 @@
 	"usable_by": "everyone",
 	"disabled": false,
 	"bugged": false
+  },
+  "generate_image": {
+	"name": "Image Generation",
+	"description": "Generate an image of your choice using the DALL-E modal.",
+	"type": "general utilities",
+	"cooldown": 10,
+	"args": ["prompt"],
+	"usable_by": "everyone",
+	"disabled": false,
+	"bugged": false
   }
 }
