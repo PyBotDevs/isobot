@@ -18,7 +18,7 @@ def save():
 class Weather(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-    
+
     @commands.slash_command(
         name="weather_set_location",
         description="Set your default location for the /weather command."
@@ -47,7 +47,7 @@ class Weather(commands.Cog):
         save()
         localembed = discord.Embed(description="Your preferred unit scale has been updated.", color=discord.Color.green())
         await ctx.respond(embed=localembed)
-    
+
     @commands.slash_command(
         name="weather",
         description="See the current weather conditions of your set location, or another location."
@@ -63,7 +63,9 @@ class Weather(commands.Cog):
         req: dict = json.loads(api_request)
         print(req)
         if req["cod"] == '404': return await ctx.respond(":x: This location was not found. Check your spelling or try another location instead.", ephemeral=True)
-        elif req["cod"] != 200: return await ctx.respond("A slight problem occured when trying to get information. This error has been automatically reported to the devs.", ephemeral=True)
+        elif req["cod"] != 200:
+            print(f"Unable to fetch API request successfully in /weather: Status code {req['cod']}")
+            return await ctx.respond("A slight problem occured when trying to get information. This error has been automatically reported to the devs.", ephemeral=True)
         else: pass
 
         # Stripped API request data
@@ -87,7 +89,7 @@ class Weather(commands.Cog):
         forcast_description = req["weather"][0]["description"]
 
         localembed = discord.Embed(
-            title=f"Weather for {loc_name} :flag_{req['sys']['country'].lower()}:", 
+            title=f"Weather for {loc_name} :flag_{req['sys']['country'].lower()}:",
             description=f"**{forcast}**\n{forcast_description}",
             color=discord.Color.blue()
         )
