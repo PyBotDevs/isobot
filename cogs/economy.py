@@ -8,6 +8,7 @@ import random
 import math
 import utils.logger
 import asyncio
+import framework.isobot.currency
 from random import randint
 from discord import option, ApplicationContext
 from discord.ext import commands
@@ -32,6 +33,7 @@ class ShopData:
 # Variables
 wdir = os.getcwd()
 color = discord.Color.random()
+currency = framework.isobot.currency.CurrencyAPI("database/currency.json", "logs/currency.log")
 shop_data = ShopData(f"{wdir}/config/shop.json")
 all_item_ids = shop_data.get_item_ids()
 jobs = [

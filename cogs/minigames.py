@@ -4,6 +4,7 @@
 import discord
 import json
 import os.path
+import framework.isobot.currency
 from random import randint
 from discord import option, ApplicationContext
 from discord.ext import commands
@@ -11,6 +12,7 @@ from discord.ext import commands
 # Variables
 wdir = os.getcwd()
 color = discord.Color.random()
+currency = framework.isobot.currency.CurrencyAPI("database/currency.json", "logs/currency.log")
 
 with open(f"{wdir}/database/currency.json", 'r', encoding="utf-8") as f: currency = json.load(f)
 

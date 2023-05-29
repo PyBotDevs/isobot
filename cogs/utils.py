@@ -7,6 +7,7 @@ import psutil
 import math
 import openai
 import framework.isobot.embedengine
+import framework.isobot.currency
 from discord import option, ApplicationContext
 from discord.ext import commands
 from cogs.economy import get_wallet, get_bank, get_user_networth, get_user_count
@@ -15,6 +16,7 @@ from cogs.afk import get_presence
 
 # Variables
 color = discord.Color.random()
+currency = framework.isobot.currency.CurrencyAPI("database/currency.json", "logs/currency.log")
 openai.api_key = os.getenv("chatgpt_API_KEY")
 chatgpt_conversation = dict()
 
