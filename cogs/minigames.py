@@ -38,8 +38,7 @@ class Minigames(commands.Cog):
         msg = await commands.wait_for("message", check=check)
         if int(msg.content) == number:
             randcoins = randint(500, 1000)
-            currency["wallet"][str(ctx.author.id)] += randcoins
-            save()
+            currency.add(ctx.author.id, randcoins)
             await ctx.respond(f"Correct! You've just won **{randcoins} coins** by guessing the correct number.")
         else: return await ctx.respond("Too bad bozo, you guessed the number wrong and you won nothing.")
 
@@ -60,21 +59,18 @@ class Minigames(commands.Cog):
         if msg.content == 'low':
             if numb > numb2:
                 await ctx.respond(f'Congrats! Your number was {numb2} and you won **{coins} coins**.')
-                currency["wallet"][ctx.author.id] += coins
-                save()
+                currency.add(ctx.author.id, coins)
             elif numb < numb2: await ctx.respond(f"Wrong! The number was **{numb2}**.")
             elif numb == numb2: await ctx.respond("Rip bozo, you just missed your chance of winning 5 million coins because you didn't choose `jackpot` XD")
         if msg.content == 'jackpot':
             if numb == numb2:
                 await ctx.respond(f'Congrats! Your luck did you good because your number was {numb2} and you earned **5 million coins**. GG!')
-                currency["wallet"][ctx.author.id] += 5000000
-                save()
+                currency.add(ctx.author.id, 5000000)
             else: await ctx.respond(f'Wrong! The number was {numb2}.')
         if msg.content == 'high':
             if numb < numb2:
                 await ctx.respond(f'Congrats! Your number was {numb2} and you earned **{coins} coins**.')
-                currency["wallet"][ctx.author.id] += coins
-                save()
+                currency.add(ctx.author.id, coins)
             else: return await ctx.respond(f'Wrong! The number was {numb2}.')
         else: await ctx.respond(f'wtf is {msg.content}?')
 
