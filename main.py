@@ -61,13 +61,6 @@ if not os.path.isdir("logs"):
         utils.logger.info("Created currency log", nolog=True)
     except Exception as e: utils.logger.error(f"Failed to make log file: {e}", nolog=True)
 
-#Classes
-class plugins:
-    economy = True
-    moderation = True
-    levelling = False
-    music = False
-
 #Framework Module Loader
 colors = framework.isobot.colors.Colors()
 currency_unused = framework.isobot.currency.CurrencyAPI(f"{wdir}/database/currency.json", f"{wdir}/logs/currency.log")  # Initialize part of the framework (Currency)
