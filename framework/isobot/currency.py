@@ -24,6 +24,7 @@ class CurrencyAPI(Colors):
     - treasury_remove(amount)
     - get_wallet(user)
     - get_bank(user)
+    - get_treasury()
     - get_user_networth(user)
     - get_user_count
     - new_wallet(user)
@@ -140,6 +141,11 @@ class CurrencyAPI(Colors):
         """Returns the amount of coins in the user's bank account."""
         with open(self.db_path, 'r') as f: currency = json.load(f)
         return int(currency["bank"][str(user)])
+
+    def get_treasury(self) -> int:
+        """Returns the amount of coins in the treasury."""
+        with open(self.db_path, 'r') as f: currency = json.load(f)
+        return int(currency["treasury"])
     
     def get_user_networth(self, user: discord.User) -> int:
         """Returns the net-worth of the user."""
