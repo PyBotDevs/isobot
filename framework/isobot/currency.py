@@ -18,8 +18,12 @@ class CurrencyAPI(Colors):
     - reset(user)
     - deposit(user, amount)
     - withdraw(user, amount)
-    - wallet(user)
-    - bank(user)"""
+    - get_wallet(user)
+    - get_bank(user)
+    - get_user_networth(user)
+    - get_user_count
+    - new_wallet(user)
+    - new_bank(user)"""
 
     def __init__(self, db_path: str, log_path: str):
         self.db_path = db_path
@@ -85,18 +89,39 @@ class CurrencyAPI(Colors):
             f.close()
         return 0
 
-    def wallet(self, user: discord.User) -> int:
+    def get_wallet(self, user: discord.User) -> int:
         """Returns the amount of coins in the user's wallet."""
         with open(self.db_path, 'r') as f: currency = json.load(f)
         return int(currency["wallet"][str(user)])
 
-    def bank(self, user: discord.User) -> int:
+    def get_bank(self, user: discord.User) -> int:
         """Returns the amount of coins in the user's bank account."""
         with open(self.db_path, 'r') as f: currency = json.load(f)
         return int(currency["bank"][str(user)])
     
-    def net_worth(self, user: discord.User) -> int:
+    def get_user_networth(self, user: discord.User) -> int:
         """Returns the net-worth of the user."""
         with open(self.db_path, 'r') as f: currency = json.load(f)
         nw = int(currency["wallet"][str(user)]) + int(currency["bank"][str(user)]) 
         return nw
+    
+    def get_user_count(self) -> int:
+        """Returns the total number of users cached in the currency database."""
+        with open(self.db_path, 'r') as f: currency = json.load(f)
+        users = 0
+        for x in currency["wallet"].keys(): users += 1
+        return users
+    
+    def new_wallet(self, user: int) -> int:
+        """Makes a new key for a user wallet in the currency database."""
+        with open(self.db_path, 'r') as f: currency = json.load(f)
+        if str(id) not in currency['wallet']:
+            currency['wallet'][str(id)] = 5000
+            return 0
+
+    def new_bank(self, user: int) -> int:
+        """Makes a new key for a user bank account in the currency database."""
+        with open(self.db_path, 'r') as f: currency = json.load(f)
+        if str(id) not in currency['bank']:
+            currency['bank'][str(id)] = 0
+            return 0
