@@ -21,7 +21,7 @@ import framework.isobot.embedengine
 from discord import ApplicationContext, option
 from discord.ext import commands
 from discord.ext.commands import *
-from cogs.economy import new_bank, new_wallet, new_userdat
+from cogs.economy import new_userdat
 from cogs.isocoin import create_isocoin_key
 
 # Slash option types:
@@ -97,8 +97,8 @@ __________________________________________________""")
 
 @client.event
 async def on_message(ctx):
-    new_wallet(ctx.author.id)
-    new_bank(ctx.author.id)
+    currency.new_wallet(ctx.author.id)
+    currency.new_bank(ctx.author.id)
     create_isocoin_key(ctx.author.id)
     new_userdat(ctx.author.id)
     if str(ctx.author.id) not in items: items[str(ctx.author.id)] = {}
