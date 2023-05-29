@@ -84,7 +84,7 @@ class Utils(commands.Cog):
         for p in user.roles:
             if p != user.roles[0]: role_render += f"<@&{p.id}> "
         localembed.add_field(name='Roles', value=role_render, inline=False)
-        localembed.add_field(name="Net worth", value=f"{get_user_networth(user.id)} coins", inline=False)
+        localembed.add_field(name="Net worth", value=f"{currency.get_user_networth(user.id)} coins", inline=False)
         await ctx.respond(embed=localembed)
 
     @commands.slash_command(
@@ -97,9 +97,9 @@ class Utils(commands.Cog):
         localembed = discord.Embed(title=f"{user.display_name}'s isobot stats", color=color)
         localembed.set_thumbnail(url=user.avatar)
         localembed.add_field(name="Level", value=f"Level {get_level(user.id)} ({get_xp(user.id)} XP)", inline=False)
-        localembed.add_field(name="Balance in Wallet", value=f"{get_wallet(user.id)} coins", inline=True)
-        localembed.add_field(name="Balance in Bank Account", value=f"{get_bank(user.id)} coins", inline=True)
-        localembed.add_field(name="Net-Worth", value=f"{get_user_networth(user.id)} coins", inline=True)
+        localembed.add_field(name="Balance in Wallet", value=f"{currency.get_wallet(user.id)} coins", inline=True)
+        localembed.add_field(name="Balance in Bank Account", value=f"{currency.get_bank(user.id)} coins", inline=True)
+        localembed.add_field(name="Net-Worth", value=f"{currency.get_user_networth(user.id)} coins", inline=True)
         # More stats will be added later
         # Maybe I should make a userdat system for collecting statistical data to process and display here, coming in a future update.
         await ctx.respond(embed=localembed)
