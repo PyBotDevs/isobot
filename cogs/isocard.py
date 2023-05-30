@@ -18,12 +18,10 @@ def save():
 def generate_card_id() -> int:
     # Generate 16 random digits and append to a str variable
     new_card_id = str()
-    while new_card_id != "" or new_card_id not in isocard_db.keys():
-        i = 1
-        if len(new_card_id) > 16: new_card_id = ""
-        while i != 16:
-            new_card_id += str(random.randint(0, 9))
-            i += 1
+    i = 1
+    while i != 16:
+        new_card_id += str(random.randint(0, 9))
+        i += 1
     print(new_card_id)
     return new_card_id
 
@@ -46,7 +44,7 @@ class IsoCard(commands.Cog):
                 "cardholder_user_id": ctx.author.id,
                 "cardholder_name": ctx.author.name,
                 "scc": scc,
-                "card_registation_timestamp": round(time.time()),
+                "card_registration_timestamp": round(time.time()),
                 "type": "standard"
             }
             save()
