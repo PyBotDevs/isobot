@@ -46,13 +46,11 @@ jobs = [
     "Doctor"
 ]
 
-# with open(f"{wdir}/database/currency.json", 'r') as f: currency = json.load(f)
 with open(f"{wdir}/database/items.json", 'r') as f: items = json.load(f)
 with open(f"{wdir}/config/shop.json", 'r') as f: shopitem = json.load(f)
 with open(f"{wdir}/database/user_data.json", 'r') as f: userdat = json.load(f)
 
 def save():
-    # with open(f"{wdir}/database/currency.json", 'w+') as f: json.dump(currency, f, indent=4)
     with open(f"{wdir}/database/items.json", 'w+') as f: json.dump(items, f, indent=4)
     with open(f"{wdir}/database/user_data.json", 'w+') as f: json.dump(userdat, f, indent=4)
 
