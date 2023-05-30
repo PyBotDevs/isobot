@@ -21,7 +21,7 @@ import framework.isobot.embedengine
 from discord import ApplicationContext, option
 from discord.ext import commands
 from discord.ext.commands import *
-from cogs.economy import new_bank, new_wallet, new_userdat
+from cogs.economy import new_userdat
 from cogs.isocoin import create_isocoin_key
 
 # Slash option types:
@@ -63,7 +63,7 @@ if not os.path.isdir("logs"):
 
 #Framework Module Loader
 colors = framework.isobot.colors.Colors()
-currency_unused = framework.isobot.currency.CurrencyAPI(f"{wdir}/database/currency.json", f"{wdir}/logs/currency.log")  # Initialize part of the framework (Currency)
+currency = framework.isobot.currency.CurrencyAPI("database/currency.json", "logs/currency.log")
 # isobank = framework.isobank.manager.IsoBankManager(f"{wdir}/database/isobank/accounts.json", f"{wdir}/database/isobank/auth.json")
 # isobankauth = framework.isobank.authorize.IsobankAuth(f"{wdir}/database/isobank/auth.json", f"{wdir}/database/isobank/accounts.json")
 
@@ -97,8 +97,8 @@ __________________________________________________""")
 
 @client.event
 async def on_message(ctx):
-    new_wallet(ctx.author.id)
-    new_bank(ctx.author.id)
+    currency.new_wallet(ctx.author.id)
+    currency.new_bank(ctx.author.id)
     create_isocoin_key(ctx.author.id)
     new_userdat(ctx.author.id)
     if str(ctx.author.id) not in items: items[str(ctx.author.id)] = {}
