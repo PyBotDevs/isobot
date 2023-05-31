@@ -36,22 +36,26 @@ class IsoCard(commands.Cog):
         name="register",
         description="Register a new IsoCard in your account."
     )
-    @option(name="scc", description="The Special Security Code for your new card. (aka. CVV)", type=int)
-    async def register(self, ctx: ApplicationContext, scc: int):
+    @option(name="ssc", description="The Special Security Code for your new card. (aka. CVV)", type=int)
+    async def register(self, ctx: ApplicationContext, ssc: int):
         try:
             new_card_id = generate_card_id()
             isocard_db[str(new_card_id)] = {
                 "cardholder_user_id": ctx.author.id,
                 "cardholder_name": ctx.author.name,
-                "scc": scc,
+                "ssc": ssc, # Special Security Code
                 "card_registration_timestamp": round(time.time()),
-                "type": "standard"
+                "type": "standard",  # Card type
+                "config" : {
+                    "spend_limit": 100000,  # Daily spending limit for IsoCard
+                    "shared_cardholder_ids": []  # Other users who can use this card
+                }
             }
             save()
             localembed = discord.Embed(title=":tada: Congratulations!", description="Your new IsoCard has successfully been registered!", color=discord.Color.green())
             localembed.add_field(name="Cardholder name", value=ctx.author.name, inline=False)
             localembed.add_field(name="Card number", value=new_card_id, inline=False)
-            localembed.add_field(name="SCC", value=f"`{scc}`", inline=True)
+            localembed.add_field(name="SSC", value=f"`{ssc}`", inline=True)
             localembed.add_field(name="Card registration date", value=f"<t:{isocard_db[str(new_card_id)]['card_registration_timestamp']}:d>", inline=False)
             localembed.set_footer(text="Always remember, NEVER share your card info to anyone!")
             await ctx.respond(embed=localembed, ephemeral=True)
