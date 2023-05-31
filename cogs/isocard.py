@@ -48,7 +48,8 @@ class IsoCard(commands.Cog):
                 "type": "standard",  # Card type
                 "config" : {
                     "spend_limit": 100000,  # Daily spending limit for IsoCard
-                    "shared_cardholder_ids": []  # Other users who can use this card
+                    "shared_cardholder_ids": [],  # Other users who can use this card
+                    "card_label": ""
                 }
             }
             save()
