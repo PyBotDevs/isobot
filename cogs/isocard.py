@@ -60,6 +60,56 @@ class IsoCard(commands.Cog):
             localembed.set_footer(text="Always remember, NEVER share your card info to anyone!")
             await ctx.respond(embed=localembed, ephemeral=True)
         except Exception as e: print(e)
+    
+    @isocard.command(
+        name="info",
+        description="View information on your IsoCard."
+    )
+    @option(name="card_number", description="Enter your card number of the card you want to view.", type=int)
+    async def info(self, ctx: ApplicationContext, card_number: int):
+        try:
+            try: card_data = isocard_db[str(card_number)]
+            except KeyError: return await ctx.respond("There was a problem with your card number. Please check it and try again.", ephemeral=True)
+            if card_data["cardholder_user_id"] != ctx.author.id: return await ctx.respond("You do not have permission to access this IsoCard.\n If you think this is an error, please contact the devs.", ephemeral=True)
+            localembed = discord.Embed(
+                title=":credit_card: Your IsoCard information",
+                description=f"**Card type:** {card_data['type']}",
+                color=discord.Color.random()
+            )
+            localembed.add_field(name="Cardholder name", value=card_data['cardholder_name'], inline=True)
+            localembed.add_field(name="Cardholder user id", value=card_data['cardholder_user_id'], inline=True)
+            localembed.add_field(name="Card number", value=card_number, inline=False)
+            localembed.add_field(name="SSC", value=f"`{card_data['ssc']}`", inline=False)
+            localembed.add_field(name="Card registration date", value=f"<t:{card_data['card_registration_timestamp']}:d>", inline=False)
+            localembed.add_field(name="Daily spend limit", value=f"~~{card_data['config']['spend_limit']} coins~~ NA", inline=False)
+            localembed.set_footer(text="Always remember, NEVER share your card info to anyone!")
+            await ctx.respond(embed=localembed, ephemeral=True)
+        except Exception as e: print(e)
+
+    @isocard.command(
+        name="my_cards",
+        description="View a list of all your cards."
+    )
+    async def my_card(self, ctx: ApplicationContext):
+        try:
+            all_card_numbers = isocard_db.keys()
+            your_cards = list()
+            for card in all_card_numbers:
+                if isocard_db[str(card)]["cardholder_user_id"] == ctx.author.id: your_cards.append(str(card))
+            embed_desc = str()
+            sr = 1
+            for card in your_cards: 
+                embed_desc += f"{sr}. {card}\n"
+                sr += 1
+            embed_desc += "\n*Nothing more here*"
+            localembed = discord.Embed(
+                title=":credit_card: My cards",
+                description=embed_desc,
+                color=discord.Color.random()
+            )
+            localembed.set_footer(text="Always remember, NEVER share your card info to anyone!")
+            await ctx.respond(embed=localembed, ephemeral=True)
+        except Exception as e: print(e)
 
 # Initialization
 def setup(bot): bot.add_cog(IsoCard(bot))
