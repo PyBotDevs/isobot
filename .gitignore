@@ -1,7 +1,14 @@
 api/runtimeconfig.json
 database/currency.json
-database/item.json
-database/warnings.json
+database/items.json
+database/isotokens.json
+database/levels.json
+database/presence.json
+database/user_data.json
+database/weather.json
+database/automod.json
+database/isobank/*
+*.log
 *.pyc
 __pycache__
 *.bak
