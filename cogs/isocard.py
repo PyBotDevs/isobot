@@ -115,5 +115,20 @@ class IsoCard(commands.Cog):
             await ctx.respond(embed=localembed, ephemeral=True)
         except Exception as e: print(e)
 
+    @isocard.command(
+        name="options_label",
+        description="Set your IsoCard's label"
+    )
+    @option(name="card_number", description="Enter your card number that you want to work with.", type=int)
+    @option(name="new_label", description="What do you want your new card label to be?", type=str, default=None)
+    async def options_label(self, ctx: ApplicationContext, card_number: int, new_label: str):
+        try: card_data = isocard_db[str(card_number)]
+        except KeyError: return await ctx.respond("There was a problem with your card number. Please check it and try again.", ephemeral=True)
+        if card_data["cardholder_user_id"] != ctx.author.id: return await ctx.respond("You do not have permission to access this IsoCard.\n If you think this is an error, please contact the devs.", ephemeral=True)
+        isocard_db[str(card_number)]["config"]["card_label"] = new_label
+        save()
+        if new_label == None: return await ctx.respond(embed=discord.Embed(description=":white_check_mark: Your card label has been reset.", color=discord.Color.green()), ephemeral=True)
+        else: return await ctx.respond(embed=discord.Embed(description=":white_check_mark: Your card label has been edited.", color=discord.Color.green()), ephemeral=True)
+
 # Initialization
 def setup(bot): bot.add_cog(IsoCard(bot))
