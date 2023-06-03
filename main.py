@@ -6,7 +6,6 @@ import time
 import datetime
 import discord
 import asyncio
-import praw
 import api.auth
 import utils.logger
 import utils.ping
