@@ -5,3 +5,4 @@ database/warnings.json
 *.pyc
 __pycache__
 *.bak
+venv
