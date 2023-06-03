@@ -99,8 +99,10 @@ class IsoCard(commands.Cog):
                 if isocard_db[str(card)]["cardholder_user_id"] == ctx.author.id: your_cards.append(str(card))
             embed_desc = str()
             sr = 1
-            for card in your_cards: 
-                embed_desc += f"{sr}. {card}\n"
+            for card in your_cards:
+                if isocard_db[str(card)]["config"]["card_label"] != None:
+                    embed_desc += f"{sr}. **{card}**: {isocard_db[str(card)]['config']['card_label']}\n"
+                else: embed_desc += f"{sr}. **{card}**\n"
                 sr += 1
             embed_desc += "\n*Nothing more here*"
             localembed = discord.Embed(
