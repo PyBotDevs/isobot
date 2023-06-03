@@ -80,6 +80,7 @@ class IsoCard(commands.Cog):
             localembed.add_field(name="Cardholder name", value=card_data['cardholder_name'], inline=True)
             localembed.add_field(name="Cardholder user id", value=card_data['cardholder_user_id'], inline=True)
             localembed.add_field(name="Card number", value=card_number, inline=False)
+            if card_data["config"]["card_label"] != None: localembed.add_field(name="Card Label", value=f"'{card_data['config']['card_label']}'", inline=True)
             localembed.add_field(name="SSC", value=f"`{card_data['ssc']}`", inline=False)
             localembed.add_field(name="Card registration date", value=f"<t:{card_data['card_registration_timestamp']}:d>", inline=False)
             localembed.add_field(name="Daily spend limit", value=f"~~{card_data['config']['spend_limit']} coins~~ NA", inline=False)
