@@ -29,7 +29,7 @@ def generate_card_id() -> int:
 class IsoCard(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-    
+
     isocard = SlashCommandGroup("isocard", "Commands used for managing and handling IsoCard.")
 
     @isocard.command(
@@ -61,7 +61,7 @@ class IsoCard(commands.Cog):
             localembed.set_footer(text="Always remember, NEVER share your card info to anyone!")
             await ctx.respond(embed=localembed, ephemeral=True)
         except Exception as e: print(e)
-    
+
     @isocard.command(
         name="info",
         description="View information on your IsoCard."
