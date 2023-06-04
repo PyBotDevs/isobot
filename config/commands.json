@@ -708,5 +708,15 @@
 	"usable_by": "everyone",
 	"disabled": false,
 	"bugged": false
+  },
+  "owoify": {
+	"name": "Owoify",
+	"description": "Lets you owoify any text you want (uwu girl moment)",
+	"type": "fun",
+	"cooldown": null,
+	"args": ["text"],
+	"usable_by": "everyone",
+	"disabled": false,
+	"bugged": false
   }
 }

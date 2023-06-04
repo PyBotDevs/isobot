@@ -59,6 +59,20 @@ class Fun(commands.Cog):
             f"{target.display_name} tried to do a wheelie on their bike without wearing a helmet and fell off."
         ]
         await ctx.respond(random.choice(responses))
+    
+    @commands.slash_command(
+        name="owoify",
+        description="Owoify any text you want!"
+    )
+    @option(name="text", description="The text you want to owoify", type=str)
+    async def owoify(self, ctx: ApplicationContext, text: str):
+        text = text.replace("r", "w")
+        text = text.replace("l", "w")
+        text = text.replace("the", "da")
+        text = text.replace("you", "u")
+        text = text.replace("your", "ur")
+        text += random.choice([" uwu", " owo", " UwU", " OwO", " XDDD", " :D", " ;-;", " <3", " ^-^", " >-<"])
+        await ctx.respond(text)
 
 # Initialization
 def setup(bot): bot.add_cog(Fun(bot))
