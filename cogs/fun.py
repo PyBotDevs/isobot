@@ -55,7 +55,7 @@ class Fun(commands.Cog):
             f"{target.display_name} lost a game in fortnite and broke their phone in a rage.",
             f"{target.display_name} tried murdering {ctx.author.display_name} but *accidentally* pointed the gun the wrong way.",
             f"{target.display_name} forgot to pay their life tax.",
-            f"{target.display_name} ripped and destoryed their birth certificate. Now they don't exist anymore.",
+            f"{target.display_name} ripped and destroyed their birth certificate. Now they don't exist anymore.",
             f"{target.display_name} tried to do a wheelie on their bike without wearing a helmet and fell off."
         ]
         await ctx.respond(random.choice(responses))
