@@ -23,6 +23,7 @@ We think isobot can help a multi-purpose economy Discord bot for your server. Ap
 * server verification (soon)
 * maths commands
 * fun commands
+* ChatGPT and AI image generation commands
 * and reddit media commands
 
 ## How can I help?
