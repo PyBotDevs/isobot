@@ -88,8 +88,8 @@ __________________________________________________""")
     time.sleep(1)
     print(f'[main/Client] Logged in as {client.user.name}.\n[main/Client] Ready to accept commands.')
     await client.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name="GitHub"), status=discord.Status.idle)
-    print(f'[main/LOG] {colors.green}Status set to IDLE. Rich presence set.{colors.end}')
-    print("[main/FLASK] Starting pinger service...")
+    print(f'[main/Log] {colors.green}Status set to IDLE. Rich presence set.{colors.end}')
+    print("[main/Flask] Starting pinger service...")
     utils.ping.host()
     time.sleep(5)
 
@@ -303,10 +303,10 @@ if cog_errors == 0: print(f"[main/Cogs] {colors.green}All cogs successfully load
 else: print(f"[main/Cogs] {colors.yellow}{cog_errors}/{len(active_cogs)} cogs failed to load.{colors.end}")
 print("--------------------")
 if api.auth.get_mode():
-    print(f"[main/CLIENT] Starting client in {colors.cyan}Replit mode{colors.end}...")
+    print(f"[main/Client] Starting client in {colors.cyan}Replit mode{colors.end}...")
     client.run(os.getenv("TOKEN"))
 else:
-    print(f"[main/CLIENT] Starting client in {colors.orange}local mode{colors.end}...")
+    print(f"[main/Client] Starting client in {colors.orange}local mode{colors.end}...")
     client.run(api.auth.get_token())
 
 
