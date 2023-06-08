@@ -89,16 +89,6 @@
       "disabled": true,
       "bugged": false
   },
-  "sync": {
-      "name": "Sync Databases",
-      "description": "Re-caches and reloads all of the bot databases on memory.",
-      "type": "DevTools",
-      "cooldown": null,
-      "args": null,
-      "usable_by": "the developer",
-      "disabled": false,
-      "bugged": false
-  },
   "modify_balance": {
       "name": "Modify Balance",
       "description": "Modify a user's wallet balance.",

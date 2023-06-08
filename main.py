@@ -200,21 +200,6 @@ async def help(ctx: ApplicationContext, command: str = None):
         await ctx.author.send(embed=localembed)
         await ctx.respond("Check your direct messages.", ephemeral=True)
 
-# DevTools commands
-@client.slash_command(
-    name='sync',
-    description='Syncs all of the local databases with their latest version'
-)
-async def sync(ctx: ApplicationContext):
-    if ctx.author.id != 738290097170153472: return await ctx.respond('Sorry, this command is only for my developer\'s use.')
-    try:
-        with open('database/items.json', 'r') as f: items = json.load(f)
-        with open('config/shop.json', 'r') as f: shopitem = json.load(f)
-        await ctx.respond('Databases resynced.', ephemeral=True)
-    except Exception as e:
-        print(e)
-        await ctx.respond('An error occured while resyncing. Check console.', ephemeral=True)
-
 # Cog Commands (these cannot be moved into a cog)
 cogs = client.create_group("cog", "Commands for working with isobot cogs.")
 
