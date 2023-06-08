@@ -65,14 +65,18 @@ colors = framework.isobot.colors.Colors()
 currency = framework.isobot.currency.CurrencyAPI("database/currency.json", "logs/currency.log")
 
 # Theme Loader
-#with open("themes/halloween.theme.json", 'r', encoding="utf-8") as f:
-#    theme = json.load(f)
-#    try:
-#        color_loaded = theme["theme"]["embed_color"]
-#        color = int(color_loaded, 16)
-#    except KeyError:
-#        print(f"{colors.red}The theme file being loaded might be broken. Rolling back to default configuration...{colors.end}")
-#        color = discord.Color.random()
+themes = False  # True: enables themes; False: disables themes;
+
+if themes:
+    with open("themes/halloween.theme.json", 'r', encoding="utf-8") as f:
+        theme = json.load(f)
+        try:
+            color_loaded = theme["theme"]["embed_color"]
+            color = int(color_loaded, 16)
+        except KeyError:
+            print(f"{colors.red}The theme file being loaded might be broken. Rolling back to default configuration...{colors.end}")
+            color = discord.Color.random()
+else: color = discord.Color.random()
 
 #Events
 @client.event
