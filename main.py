@@ -63,34 +63,35 @@ if not os.path.isdir("logs"):
 #Framework Module Loader
 colors = framework.isobot.colors.Colors()
 currency = framework.isobot.currency.CurrencyAPI("database/currency.json", "logs/currency.log")
-# isobank = framework.isobank.manager.IsoBankManager(f"{wdir}/database/isobank/accounts.json", f"{wdir}/database/isobank/auth.json")
-# isobankauth = framework.isobank.authorize.IsobankAuth(f"{wdir}/database/isobank/auth.json", f"{wdir}/database/isobank/accounts.json")
 
 # Theme Loader
-#with open("themes/halloween.theme.json", 'r', encoding="utf-8") as f:
-#    theme = json.load(f)
-#    try:
-#        color_loaded = theme["theme"]["embed_color"]
-#        color = int(color_loaded, 16)
-#    except KeyError:
-#        print(f"{colors.red}The theme file being loaded might be broken. Rolling back to default configuration...{colors.end}")
-#        color = discord.Color.random()
+themes = False  # True: enables themes; False: disables themes;
+
+if themes:
+    with open("themes/halloween.theme.json", 'r', encoding="utf-8") as f:
+        theme = json.load(f)
+        try:
+            color_loaded = theme["theme"]["embed_color"]
+            color = int(color_loaded, 16)
+        except KeyError:
+            print(f"{colors.red}The theme file being loaded might be broken. Rolling back to default configuration...{colors.end}")
+            color = discord.Color.random()
+else: color = discord.Color.random()
 
 #Events
 @client.event
 async def on_ready():
     print("""
 Isobot  Copyright (C) 2022  PyBotDevs/NKA
-This program comes with ABSOLUTELY NO WARRANTY; for details run `/w'.
+This program comes with ABSOLUTELY NO WARRANTY.
 This is free software, and you are welcome to redistribute it
-under certain conditions; run `/c' for details.
+under certain conditions.
 __________________________________________________""")
-    time.sleep(2)
-    print(f'Logged in as {client.user.name}.')
-    print('Ready to accept commands.')
+    time.sleep(1)
+    print(f'[main/Client] Logged in as {client.user.name}.\n[main/Client] Ready to accept commands.')
     await client.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name="GitHub"), status=discord.Status.idle)
-    print(f'[main/LOG] {colors.green}Status set to IDLE. Rich presence set.{colors.end}')
-    print("[main/FLASK] Starting pinger service...")
+    print(f'[main/Log] {colors.green}Status set to IDLE. Rich presence set.{colors.end}')
+    print("[main/Flask] Starting pinger service...")
     utils.ping.host()
     time.sleep(5)
 
@@ -102,7 +103,7 @@ async def on_message(ctx):
     new_userdat(ctx.author.id)
     if str(ctx.author.id) not in items: items[str(ctx.author.id)] = {}
     if str(ctx.author.id) not in levels: levels[str(ctx.author.id)] = {"xp": 0, "level": 0}
-    if str(ctx.guild.id) not in automod_config: 
+    if str(ctx.guild.id) not in automod_config:
         automod_config[str(ctx.guild.id)] = {
             "swear_filter": {
                 "enabled": False,
@@ -289,10 +290,10 @@ if cog_errors == 0: print(f"[main/Cogs] {colors.green}All cogs successfully load
 else: print(f"[main/Cogs] {colors.yellow}{cog_errors}/{len(active_cogs)} cogs failed to load.{colors.end}")
 print("--------------------")
 if api.auth.get_mode():
-    print(f"[main/CLIENT] Starting client in {colors.cyan}Replit mode{colors.end}...")
+    print(f"[main/Client] Starting client in {colors.cyan}Replit mode{colors.end}...")
     client.run(os.getenv("TOKEN"))
 else:
-    print(f"[main/CLIENT] Starting client in {colors.orange}local mode{colors.end}...")
+    print(f"[main/Client] Starting client in {colors.orange}local mode{colors.end}...")
     client.run(api.auth.get_token())
 
 
