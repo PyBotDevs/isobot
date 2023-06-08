@@ -63,8 +63,6 @@ if not os.path.isdir("logs"):
 #Framework Module Loader
 colors = framework.isobot.colors.Colors()
 currency = framework.isobot.currency.CurrencyAPI("database/currency.json", "logs/currency.log")
-# isobank = framework.isobank.manager.IsoBankManager(f"{wdir}/database/isobank/accounts.json", f"{wdir}/database/isobank/auth.json")
-# isobankauth = framework.isobank.authorize.IsobankAuth(f"{wdir}/database/isobank/auth.json", f"{wdir}/database/isobank/accounts.json")
 
 # Theme Loader
 #with open("themes/halloween.theme.json", 'r', encoding="utf-8") as f:
