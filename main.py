@@ -85,9 +85,8 @@ This program comes with ABSOLUTELY NO WARRANTY.
 This is free software, and you are welcome to redistribute it
 under certain conditions.
 __________________________________________________""")
-    print(f'Logged in as {client.user.name}.')
-    print('Ready to accept commands.')
     time.sleep(1)
+    print(f'[main/Client] Logged in as {client.user.name}.\n[main/Client] Ready to accept commands.')
     await client.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name="GitHub"), status=discord.Status.idle)
     print(f'[main/LOG] {colors.green}Status set to IDLE. Rich presence set.{colors.end}')
     print("[main/FLASK] Starting pinger service...")
