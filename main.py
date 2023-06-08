@@ -81,9 +81,9 @@ currency = framework.isobot.currency.CurrencyAPI("database/currency.json", "logs
 async def on_ready():
     print("""
 Isobot  Copyright (C) 2022  PyBotDevs/NKA
-This program comes with ABSOLUTELY NO WARRANTY; for details run `/w'.
+This program comes with ABSOLUTELY NO WARRANTY.
 This is free software, and you are welcome to redistribute it
-under certain conditions; run `/c' for details.
+under certain conditions.
 __________________________________________________""")
     time.sleep(2)
     print(f'Logged in as {client.user.name}.')
