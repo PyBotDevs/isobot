@@ -694,7 +694,7 @@
 	"description": "Generate an image of your choice using the DALL-E modal.",
 	"type": "general utilities",
 	"cooldown": 10,
-	"args": ["prompt"],
+	"args": ["prompt", "resolution (optional)"],
 	"usable_by": "everyone",
 	"disabled": false,
 	"bugged": false
