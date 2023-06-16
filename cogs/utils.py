@@ -150,9 +150,17 @@ class Utils(commands.Cog):
         description="Generate an image of your choice using the DALL-E modal."
     )
     @option(name="prompt", description="What image do you want the bot to generate?", type=str)
-    @option(name="resolution", description="Set a custom resolution for your generated image", type=str, default="512x512")
+    @option(name="resolution", description="Set a custom resolution for your generated image (format: {width}x{height})", type=str, default="512x512")
     @commands.cooldown(1, 10, commands.BucketType.user)
     async def generate_image(self, ctx: ApplicationContext, prompt: str, resolution: str = "512x512"):
+        parsed_resolution: list = resolution.split("x")
+        max_index: int = 0
+        for index in parsed_resolution: max_index += 1
+        if max_index < 2 or max_index > 2: return await ctx.respond("Your resolution format is malformed. Please check it and try again.", ephemeral=True)
+        res_width = parsed_resolution[0]
+        res_height = parsed_resolution[1]
+        if res_width < 1 or res_height < 1: return await ctx.respond("Your resolution's width and height values need to be at least 1 pixel or higher.", ephermeral=True)
+        if res_width > 3840 or res_height > 2160: return await ctx.respond("Your image output resolution cannot be higher than 4K UHD. (3840 × 2160)", ephmeral=True)
         await ctx.defer()
         try:
             response = openai.Image.create(
