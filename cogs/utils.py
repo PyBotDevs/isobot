@@ -150,7 +150,7 @@ class Utils(commands.Cog):
         description="Generate an image of your choice using the DALL-E modal."
     )
     @option(name="prompt", description="What image do you want the bot to generate?", type=str)
-    @option(name="resolution", description="Set a custom resolution for your generated image (format: {width}x{height})", type=str, default="512x512")
+    @option(name="resolution", description="Set a custom resolution for your generated image", type=str, default="512x512", choices=["256x256", "512x512", "1024x1024"])
     @commands.cooldown(1, 10, commands.BucketType.user)
     async def generate_image(self, ctx: ApplicationContext, prompt: str, resolution: str = "512x512"):
         parsed_resolution: list = resolution.split("x")
