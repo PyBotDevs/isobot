@@ -159,8 +159,8 @@ class Utils(commands.Cog):
         if max_index < 2 or max_index > 2: return await ctx.respond("Your resolution format is malformed. Please check it and try again.", ephemeral=True)
         res_width = parsed_resolution[0]
         res_height = parsed_resolution[1]
-        if res_width < 1 or res_height < 1: return await ctx.respond("Your resolution's width and height values need to be at least 1 pixel or higher.", ephermeral=True)
-        if res_width > 3840 or res_height > 2160: return await ctx.respond("Your image output resolution cannot be higher than 4K UHD. (3840 × 2160)", ephmeral=True)
+        if res_width < 256 or res_height < 256: return await ctx.respond("Your custom resolution needs to be at least 256p or higher.", ephermeral=True)
+        if res_width > 1024 or res_height > 1024: return await ctx.respond("Your image output resolution cannot be higher than 1024p.", ephmeral=True)
         await ctx.defer()
         try:
             response = openai.Image.create(
