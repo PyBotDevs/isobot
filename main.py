@@ -170,6 +170,8 @@ async def on_application_command_error(ctx: ApplicationContext, error: discord.D
     elif isinstance(error, commands.BadBoolArgument):
         await ctx.respond(":x: Invalid true/false argument.", delete_after=8)
         print(f"[{current_time}] Ignoring exception at {colors.cyan}BadBoolArgument{colors.end}.")
+    else:
+        await ctx.respond(f"An uncaught error occured while running the command.\n```\n{error}\n```")
 
 #Commands
 @client.slash_command(
