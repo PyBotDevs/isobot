@@ -150,14 +150,15 @@ class Utils(commands.Cog):
         description="Generate an image of your choice using the DALL-E modal."
     )
     @option(name="prompt", description="What image do you want the bot to generate?", type=str)
+    @option(name="resolution", description="Set a custom resolution for your generated image", type=str, default="512x512")
     @commands.cooldown(1, 10, commands.BucketType.user)
-    async def generate_image(self, ctx: ApplicationContext, prompt: str):
+    async def generate_image(self, ctx: ApplicationContext, prompt: str, resolution: str = "512x512"):
         await ctx.defer()
         try:
             response = openai.Image.create(
                 prompt=prompt,
                 n=1,
-                size="512x512"
+                size=resolution
             )
             generated_image_url = response['data'][0]['url']
         except openai.error.RateLimitError: return await ctx.respond("The OpenAI API is currently being rate-limited. Try again after some time.", ephemeral=True)
