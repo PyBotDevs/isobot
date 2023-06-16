@@ -170,8 +170,8 @@ class Utils(commands.Cog):
             )
             generated_image_url = response['data'][0]['url']
         except openai.error.RateLimitError: return await ctx.respond("The OpenAI API is currently being rate-limited. Try again after some time.", ephemeral=True)
-        except openai.error.ServiceUnavailableError: return await ctx.respond("The ChatGPT service is currently unavailable.\nTry again after some time, or check it's status at https://status.openai.com", ephemeral=True)
-        except openai.error.APIError: return await ctx.respond("ChatGPT encountered an internal error. Please try again.", ephemeral=True)
+        except openai.error.ServiceUnavailableError: return await ctx.respond("The OpenAI service is currently unavailable.\nTry again after some time, or check it's status at https://status.openai.com", ephemeral=True)
+        except openai.error.APIError: return await ctx.respond("DALL-E encountered an internal error. Please try again.", ephemeral=True)
         except openai.error.Timeout: return await ctx.respond("Your request timed out. Please try again, or wait for a while.", ephemeral=True)
         localembed = discord.Embed(title="Here's an image generated using your prompt.", color=discord.Color.random())
         localembed.set_image(url=generated_image_url)
