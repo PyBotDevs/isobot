@@ -157,8 +157,8 @@ class Utils(commands.Cog):
         max_index: int = 0
         for index in parsed_resolution: max_index += 1
         if max_index < 2 or max_index > 2: return await ctx.respond("Your resolution format is malformed. Please check it and try again.", ephemeral=True)
-        res_width = parsed_resolution[0]
-        res_height = parsed_resolution[1]
+        res_width = int(parsed_resolution[0])
+        res_height = int(parsed_resolution[1])
         if res_width < 256 or res_height < 256: return await ctx.respond("Your custom resolution needs to be at least 256p or higher.", ephermeral=True)
         if res_width > 1024 or res_height > 1024: return await ctx.respond("Your image output resolution cannot be higher than 1024p.", ephemeral=True)
         await ctx.defer()
