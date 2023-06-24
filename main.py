@@ -17,6 +17,8 @@ import framework.isobot.colors
 import framework.isobank.authorize
 import framework.isobank.manager
 import framework.isobot.embedengine
+import framework.isobot.db.Items
+import framework.isobot.db.Levels
 from discord import ApplicationContext, option
 from discord.ext import commands
 from discord.ext.commands import *
@@ -32,19 +34,19 @@ from cogs.isocoin import create_isocoin_key
 client = discord.Bot()
 color = discord.Color.random()
 wdir = os.getcwd()
-with open('database/items.json', 'r', encoding="utf-8") as f: items = json.load(f)
-with open('config/shop.json', 'r', encoding="utf-8") as f: shopitem = json.load(f)
+# with open('database/items.json', 'r', encoding="utf-8") as f: items = json.load(f)
+# with open('config/shop.json', 'r', encoding="utf-8") as f: shopitem = json.load(f)
 with open('database/presence.json', 'r', encoding="utf-8") as f: presence = json.load(f)
-with open('database/levels.json', 'r', encoding="utf-8") as f: levels = json.load(f)
+# with open('database/levels.json', 'r', encoding="utf-8") as f: levels = json.load(f)
 with open('config/commands.json', 'r', encoding="utf-8") as f: commandsdb = json.load(f)
 with open('database/automod.json', 'r', encoding="utf-8") as f: automod_config = json.load(f)
 cmd_list = commandsdb.keys()
 
 #Pre-Initialization Commands
 def save():
-    with open('database/items.json', 'w+', encoding="utf-8") as f: json.dump(items, f, indent=4)
+    # with open('database/items.json', 'w+', encoding="utf-8") as f: json.dump(items, f, indent=4)
     with open('database/presence.json', 'w+', encoding="utf-8") as f: json.dump(presence, f, indent=4)
-    with open('database/levels.json', 'w+', encoding="utf-8") as f: json.dump(levels, f, indent=4)
+    # with open('database/levels.json', 'w+', encoding="utf-8") as f: json.dump(levels, f, indent=4)
     with open('database/automod.json', 'w+', encoding="utf-8") as f: json.dump(automod_config, f, indent=4)
 
 if not os.path.isdir("logs"):
@@ -63,6 +65,8 @@ if not os.path.isdir("logs"):
 #Framework Module Loader
 colors = framework.isobot.colors.Colors()
 currency = framework.isobot.currency.CurrencyAPI("database/currency.json", "logs/currency.log")
+items = framework.isobot.currency.Items("database/items.json", None)
+levels = framework.isobot.currency.Levels("database/levels.json", None)
 
 # Theme Loader
 themes = False  # True: enables themes; False: disables themes;
@@ -101,8 +105,8 @@ async def on_message(ctx):
     currency.new_bank(ctx.author.id)
     create_isocoin_key(ctx.author.id)
     new_userdat(ctx.author.id)
-    if str(ctx.author.id) not in items: items[str(ctx.author.id)] = {}
-    if str(ctx.author.id) not in levels: levels[str(ctx.author.id)] = {"xp": 0, "level": 0}
+    items.new(ctx.author.id)
+    levels.new(ctx.author.id)
     if str(ctx.guild.id) not in automod_config:
         automod_config[str(ctx.guild.id)] = {
             "swear_filter": {
@@ -114,9 +118,6 @@ async def on_message(ctx):
                 }
             }
         }
-    for z in shopitem:
-        if z in items[str(ctx.author.id)]: pass
-        else: items[str(ctx.author.id)][str(z)] = 0
     save()
     uList = list()
     if str(ctx.guild.id) in presence:
@@ -133,15 +134,15 @@ async def on_message(ctx):
         await asyncio.sleep(5)
         await m1.delete()
     if not ctx.author.bot:
-        levels[str(ctx.author.id)]["xp"] += randint(1, 5)
+        levels.add_xp(ctx.author.id) += randint(1, 5)
         xpreq = 0
-        for level in range(int(levels[str(ctx.author.id)]["level"])):
+        for level in range(int(levels.get_level(ctx.author.id))):
             xpreq += 50
             if xpreq >= 5000: break
-        if levels[str(ctx.author.id)]["xp"] >= xpreq:
-            levels[str(ctx.author.id)]["xp"] = 0
-            levels[str(ctx.author.id)]["level"] += 1
-            await ctx.author.send(f"{ctx.author.mention}, you just ranked up to **level {levels[str(ctx.author.id)]['level']}**. Nice!")
+        if levels.get_xp(ctx.author.id) >= xpreq:
+            levels.reset_xp(ctx.author.id) = 0
+            levels.add_levels(ctx.author.id) += 1
+            await ctx.author.send(f"{ctx.author.mention}, you just ranked up to **level {levels.get_level(ctx.author.id)}**. Nice!")
         save()
         if automod_config[str(ctx.guild.id)]["swear_filter"]["enabled"] == True:
             if automod_config[str(ctx.guild.id)]["swear_filter"]["keywords"]["use_default"] and any(x in ctx.content.lower() for x in automod_config[str(ctx.guild.id)]["swear_filter"]["keywords"]["default"]):
