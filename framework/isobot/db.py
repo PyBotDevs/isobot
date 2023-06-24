@@ -24,10 +24,7 @@ class Items(Colors):
     def new(self, user_id: discord.User) -> int:
         with open(self.db_path, 'r') as f: items = json.load(f)
         if str(user_id) not in items: items[str(user_id)] = {}
-        with open("config/shop.json", "r") as f: 
-            all_shopitems = json.load(f)
-            shopitem = list()
-            for x in all_shopitems: shopitem.append(x)
+        with open("config/shop.json", 'r') as f: shopitem = json.load(f)
         for z in shopitem.keys():
             if z in items[str(user_id)]: pass
             else: items[str(user_id)][str(z)] = 0
