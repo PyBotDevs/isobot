@@ -6,6 +6,7 @@ from discord import User
 import datetime
 
 def get_time():
+    """Fetches and returns the current time."""
     return datetime.datetime.now().strftime("%H:%M:%S")
 
 class Colors:
