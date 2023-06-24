@@ -8,7 +8,7 @@ import math
 import openai
 import framework.isobot.embedengine
 import framework.isobot.currency
-import framework.isobot.db.Levels
+import framework.isobot.db
 from discord import option, ApplicationContext
 from discord.ext import commands
 from cogs.afk import get_presence
