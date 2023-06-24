@@ -8,9 +8,9 @@ import math
 import openai
 import framework.isobot.embedengine
 import framework.isobot.currency
+import framework.isobot.db.Levels
 from discord import option, ApplicationContext
 from discord.ext import commands
-from cogs.levelling import get_level, get_xp
 from cogs.afk import get_presence
 
 # Variables
@@ -18,6 +18,7 @@ color = discord.Color.random()
 currency = framework.isobot.currency.CurrencyAPI("database/currency.json", "logs/currency.log")
 openai.api_key = os.getenv("chatgpt_API_KEY")
 chatgpt_conversation = dict()
+levels = framework.isobot.db.Levels("database/levels.json", None)
 
 # Commands
 class Utils(commands.Cog):
@@ -95,7 +96,7 @@ class Utils(commands.Cog):
         if user is None: user = ctx.author
         localembed = discord.Embed(title=f"{user.display_name}'s isobot stats", color=color)
         localembed.set_thumbnail(url=user.avatar)
-        localembed.add_field(name="Level", value=f"Level {get_level(user.id)} ({get_xp(user.id)} XP)", inline=False)
+        localembed.add_field(name="Level", value=f"Level {levels.get_level(user.id)} ({levels.get_xp(user.id)} XP)", inline=False)
         localembed.add_field(name="Balance in Wallet", value=f"{currency.get_wallet(user.id)} coins", inline=True)
         localembed.add_field(name="Balance in Bank Account", value=f"{currency.get_bank(user.id)} coins", inline=True)
         localembed.add_field(name="Net-Worth", value=f"{currency.get_user_networth(user.id)} coins", inline=True)
