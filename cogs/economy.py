@@ -9,7 +9,7 @@ import math
 import utils.logger
 import asyncio
 import framework.isobot.currency
-import framework.isobot.db.Levels
+import framework.isobot.db
 from random import randint
 from discord import option, ApplicationContext
 from discord.ext import commands
