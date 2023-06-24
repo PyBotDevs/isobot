@@ -128,14 +128,14 @@ async def on_message(ctx):
         await asyncio.sleep(5)
         await m1.delete()
     if not ctx.author.bot:
-        levels.add_xp(ctx.author.id) += randint(1, 5)
+        levels.add_xp(ctx.author.id, randint(1, 5))
         xpreq = 0
         for level in range(int(levels.get_level(ctx.author.id))):
             xpreq += 50
             if xpreq >= 5000: break
         if levels.get_xp(ctx.author.id) >= xpreq:
-            levels.reset_xp(ctx.author.id) = 0
-            levels.add_levels(ctx.author.id) += 1
+            levels.reset_xp(ctx.author.id)
+            levels.add_levels(ctx.author.id, 1)
             await ctx.author.send(f"{ctx.author.mention}, you just ranked up to **level {levels.get_level(ctx.author.id)}**. Nice!")
         save()
         if automod_config[str(ctx.guild.id)]["swear_filter"]["enabled"] == True:
