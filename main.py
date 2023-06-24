@@ -17,8 +17,7 @@ import framework.isobot.colors
 import framework.isobank.authorize
 import framework.isobank.manager
 import framework.isobot.embedengine
-import framework.isobot.db.Items
-import framework.isobot.db.Levels
+import framework.isobot.db
 from discord import ApplicationContext, option
 from discord.ext import commands
 from discord.ext.commands import *
