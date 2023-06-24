@@ -54,7 +54,7 @@ class Levelling(commands.Cog):
     async def edit_rank(self, ctx: ApplicationContext, user:discord.User, new_rank:int):
         if ctx.author.id != 738290097170153472: return await ctx.respond("This command isn't for you.", ephemeral=True)
         try:
-            levels.edit_level(user.id) = new_rank
+            levels.edit_level(user.id, new_rank)
             await ctx.respond(f"{user.display_name}\'s rank successfully edited. `New Rank: {levels.get_level(user.id)}`")
         except KeyError: return await ctx.respond("That user isn't indexed yet.", ephemeral=True)
 
@@ -67,7 +67,7 @@ class Levelling(commands.Cog):
     async def edit_xp(self, ctx: ApplicationContext, user:discord.User, new_xp:int):
         if ctx.author.id != 738290097170153472: return await ctx.respond("This command isn't for you.", ephemeral=True)
         try:
-            levels.edit_xp(user.id) = new_xp
+            levels.edit_xp(user.id, new_xp)
             await ctx.respond(f"{user.display_name}\'s XP count successfully edited. `New XP: {levels.get_xp(user.id)}`")
         except KeyError: return await ctx.respond("That user isn't indexed yet.", ephemeral=True)
 
