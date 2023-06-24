@@ -4,24 +4,26 @@
 import discord
 import json
 import os.path
+import framework.isobot.db.Levels
 from discord import option, ApplicationContext
 from discord.ext import commands
 
 # Variables
 wdir = os.getcwd()
 color = discord.Color.random()
+levels = framework.isobot.db.Levels(f"{wdir}/database/levels.json", None)
 
-with open(f"{wdir}/database/levels.json", 'r', encoding="utf-8") as f: levels = json.load(f)
+# with open(f"{wdir}/database/levels.json", 'r', encoding="utf-8") as f: levels = json.load(f)
 
-def save():
-    with open(f"{wdir}/database/levels.json", 'w+', encoding="utf-8") as f: json.dump(levels, f, indent=4)
+# def save():
+#     with open(f"{wdir}/database/levels.json", 'w+', encoding="utf-8") as f: json.dump(levels, f, indent=4)
 
 # Functions
-def get_xp(id: int) -> int:
-    return levels[str(id)]["xp"]
+# def get_xp(id: int) -> int:
+#     return levels[str(id)]["xp"]
 
-def get_level(id: int) -> int:
-    return levels[str(id)]["level"]
+# def get_level(id: int) -> int:
+#     return levels[str(id)]["level"]
 
 # Commands
 class Levelling(commands.Cog):
@@ -37,8 +39,8 @@ class Levelling(commands.Cog):
         if user is None: user = ctx.author
         try:
             localembed = discord.Embed(title=f"{user.display_name}'s rank", color=color)
-            localembed.add_field(name="Level", value=levels[str(user.id)]["level"])
-            localembed.add_field(name="XP", value=levels[str(user.id)]["xp"])
+            localembed.add_field(name="Level", value=levels.get_level(user.id))
+            localembed.add_field(name="XP", value=levels.get_xp(user.id))
             localembed.set_footer(text="Keep chatting to earn levels!")
             await ctx.respond(embed = localembed)
         except KeyError: return await ctx.respond("Looks like that user isn't indexed yet. Try again later.", ephemeral=True)
@@ -52,8 +54,8 @@ class Levelling(commands.Cog):
     async def edit_rank(self, ctx: ApplicationContext, user:discord.User, new_rank:int):
         if ctx.author.id != 738290097170153472: return await ctx.respond("This command isn't for you.", ephemeral=True)
         try:
-            levels[str(user.id)]["level"] = new_rank
-            await ctx.respond(f"{user.display_name}\'s rank successfully edited. `New Rank: {levels[str(user.id)]['level']}`")
+            levels.edit_level(user.id) = new_rank
+            await ctx.respond(f"{user.display_name}\'s rank successfully edited. `New Rank: {levels.get_level(user.id)}`")
         except KeyError: return await ctx.respond("That user isn't indexed yet.", ephemeral=True)
 
     @commands.slash_command(
@@ -65,8 +67,8 @@ class Levelling(commands.Cog):
     async def edit_xp(self, ctx: ApplicationContext, user:discord.User, new_xp:int):
         if ctx.author.id != 738290097170153472: return await ctx.respond("This command isn't for you.", ephemeral=True)
         try:
-            levels[str(user.id)]["xp"] = new_xp
-            await ctx.respond(f"{user.display_name}\'s XP count successfully edited. `New XP: {levels[str(user.id)]['xp']}`")
+            levels.edit_xp(user.id) = new_xp
+            await ctx.respond(f"{user.display_name}\'s XP count successfully edited. `New XP: {levels.get_xp(user.id)}`")
         except KeyError: return await ctx.respond("That user isn't indexed yet.", ephemeral=True)
 
     @commands.slash_command(
@@ -76,7 +78,7 @@ class Levelling(commands.Cog):
     async def leaderboard_levels(self, ctx: ApplicationContext):
         levels_dict = dict()
         for person in levels:
-            levels_dict[str(person)] = levels[str(person)]["level"]
+            levels_dict[str(person)] = levels.get_level(person)
         undicted_leaderboard = sorted(levels_dict.items(), key=lambda x:x[1], reverse=True)
         dicted_leaderboard = dict(undicted_leaderboard)
         parsed_output = str()
