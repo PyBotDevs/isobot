@@ -2,7 +2,7 @@
 
 # Imports
 import json
-import discord
+from discord import User
 import datetime
 
 def get_time():
@@ -22,7 +22,7 @@ class Items(Colors):
         self.log_path = log_path
         print(f"[Framework/Loader] {Colors.green}Items database initialized.{Colors.end}")
     
-    def new(self, user_id: discord.User) -> int:
+    def new(self, user_id: User) -> int:
         with open(self.db_path, 'r') as f: items = json.load(f)
         if str(user_id) not in items: items[str(user_id)] = {}
         with open("config/shop.json", 'r') as f: shopitem = json.load(f)
@@ -32,13 +32,13 @@ class Items(Colors):
         with open(self.db_path, 'w+') as f: json.dump(items, f, indent=4)
         return 0
     
-    def add_item(self, user_id: discord.User, item: str, quantity: int) -> int:
+    def add_item(self, user_id: User, item: str, quantity: int) -> int:
         with open(self.db_path, 'r') as f: items = json.load(f)
         items[str(user_id)][item] += quantity
         with open(self.db_path, 'w+') as f: json.dump(items, f, indent=4)
         return 0
 
-    def remove_item(self, user_id: discord.User, item: str, quantity: int) -> int:
+    def remove_item(self, user_id: User, item: str, quantity: int) -> int:
         with open(self.db_path, 'r') as f: items = json.load(f)
         items[str(user_id)][item] -= quantity
         with open(self.db_path, 'w+') as f: json.dump(items, f, indent=4)
@@ -51,7 +51,7 @@ class Levels(Colors):
         self.log_path = log_path
         print(f"[Framework/Loader] {Colors.green}Levels database initialized.{Colors.end}")
     
-    def new(self, user_id: discord.User) -> int:
+    def new(self, user_id: User) -> int:
         with open(self.db_path, 'r') as f: levels = json.load(f)
         if str(user_id) not in levels: 
             levels[str(user_id)] = {
@@ -61,57 +61,57 @@ class Levels(Colors):
         with open(self.db_path, 'w+') as f: json.dump(levels, f, indent=4)
         return 0
 
-    def get_level(self, user_id: discord.User) -> int:
+    def get_level(self, user_id: User) -> int:
         with open(self.db_path, 'r') as f: levels = json.load(f)
         return levels[str(user_id)]["level"]
     
-    def get_xp(self, user_id: discord.User) -> int:
+    def get_xp(self, user_id: User) -> int:
         with open(self.db_path, 'r') as f: levels = json.load(f)
         return levels[str(user_id)]["xp"]
     
-    def add_levels(self, user_id: discord.User, level: int):
+    def add_levels(self, user_id: User, level: int):
         with open(self.db_path, 'r') as f: levels = json.load(f)
         levels[str(user_id)]["level"] += level
         with open(self.db_path, 'w+') as f: json.dump(levels, f, indent=4)
         return 0
     
-    def remove_levels(self, user_id: discord.User, level: int):
+    def remove_levels(self, user_id: User, level: int):
         with open(self.db_path, 'r') as f: levels = json.load(f)
         levels[str(user_id)]["level"] += level
         with open(self.db_path, 'w+') as f: json.dump(levels, f, indent=4)
         return 0
     
-    def reset_level(self, user_id: discord.User):
+    def reset_level(self, user_id: User):
         with open(self.db_path, 'r') as f: levels = json.load(f)
         levels[str(user_id)]["level"] = 0
         with open(self.db_path, 'w+') as f: json.dump(levels, f, indent=4)
         return 0
     
-    def add_xp(self, user_id: discord.User, xp: int):
+    def add_xp(self, user_id: User, xp: int):
         with open(self.db_path, 'r') as f: levels = json.load(f)
         levels[str(user_id)]["xp"] += xp
         with open(self.db_path, 'w+') as f: json.dump(levels, f, indent=4)
         return 0
     
-    def remove_xp(self, user_id: discord.User, xp: int):
+    def remove_xp(self, user_id: User, xp: int):
         with open(self.db_path, 'r') as f: levels = json.load(f)
         levels[str(user_id)]["xp"] += xp
         with open(self.db_path, 'w+') as f: json.dump(levels, f, indent=4)
         return 0
     
-    def reset_xp(self, user_id: discord.User):
+    def reset_xp(self, user_id: User):
         with open(self.db_path, 'r') as f: levels = json.load(f)
         levels[str(user_id)]["xp"] = 0
         with open(self.db_path, 'w+') as f: json.dump(levels, f, indent=4)
         return 0
     
-    def edit_level(self, user_id: discord.User, level: int):
+    def edit_level(self, user_id: User, level: int):
         with open(self.db_path, 'r') as f: levels = json.load(f)
         levels[str(user_id)]["level"] = level
         with open(self.db_path, 'w+') as f: json.dump(levels, f, indent=4)
         return 0
     
-    def edit_xp(self, user_id: discord.User, xp: int):
+    def edit_xp(self, user_id: User, xp: int):
         with open(self.db_path, 'r') as f: levels = json.load(f)
         levels[str(user_id)]["xp"] = xp
         with open(self.db_path, 'w+') as f: json.dump(levels, f, indent=4)
@@ -124,28 +124,28 @@ class Weather(Colors):
         self.log_path = log_path
         print(f"[Framework/Loader] {Colors.green}Weather database initialized.{Colors.end}")
         
-    def new(self, user_id: discord.User):
+    def new(self, user_id: User):
         with open("database/weather.json", 'r', encoding="utf-8") as f: user_db = json.load(f)
         if str(user_id) not in user_db: user_db[str(user_id)] = {"location": None, "scale": "Celsius"}
         with open("database/weather.json", 'w+', encoding="utf-8") as f: json.dump(user_db, f, indent=4)
         return 0
     
-    def set_scale(self, user_id: discord.User, scale: str) -> int:
+    def set_scale(self, user_id: User, scale: str) -> int:
         with open("database/weather.json", 'r', encoding="utf-8") as f: user_db = json.load(f)
         user_db[str(user_id)]["scale"] = scale
         with open("database/weather.json", 'w+', encoding="utf-8") as f: json.dump(user_db, f, indent=4)
         return 0
 
-    def set_default_location(self, user_id: discord.User, location: str) -> int:
+    def set_default_location(self, user_id: User, location: str) -> int:
         with open("database/weather.json", 'r', encoding="utf-8") as f: user_db = json.load(f)
         user_db[str(user_id)]["location"] = location
         with open("database/weather.json", 'w+', encoding="utf-8") as f: json.dump(user_db, f, indent=4)
         return 0
 
-    def get_scale(self, user_id: discord.User):
+    def get_scale(self, user_id: User):
         with open("database/weather.json", 'r', encoding="utf-8") as f: user_db = json.load(f)
         return user_db[str(user_id)]["scale"]
 
-    def get_default_location(self, user_id: discord.User):
+    def get_default_location(self, user_id: User):
         with open("database/weather.json", 'r', encoding="utf-8") as f: user_db = json.load(f)
         return user_db[str(user_id)]["location"]
