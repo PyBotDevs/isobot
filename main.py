@@ -33,19 +33,14 @@ from cogs.isocoin import create_isocoin_key
 client = discord.Bot()
 color = discord.Color.random()
 wdir = os.getcwd()
-# with open('database/items.json', 'r', encoding="utf-8") as f: items = json.load(f)
-# with open('config/shop.json', 'r', encoding="utf-8") as f: shopitem = json.load(f)
 with open('database/presence.json', 'r', encoding="utf-8") as f: presence = json.load(f)
-# with open('database/levels.json', 'r', encoding="utf-8") as f: levels = json.load(f)
 with open('config/commands.json', 'r', encoding="utf-8") as f: commandsdb = json.load(f)
 with open('database/automod.json', 'r', encoding="utf-8") as f: automod_config = json.load(f)
 cmd_list = commandsdb.keys()
 
 #Pre-Initialization Commands
 def save():
-    # with open('database/items.json', 'w+', encoding="utf-8") as f: json.dump(items, f, indent=4)
     with open('database/presence.json', 'w+', encoding="utf-8") as f: json.dump(presence, f, indent=4)
-    # with open('database/levels.json', 'w+', encoding="utf-8") as f: json.dump(levels, f, indent=4)
     with open('database/automod.json', 'w+', encoding="utf-8") as f: json.dump(automod_config, f, indent=4)
 
 if not os.path.isdir("logs"):
