@@ -5,7 +5,7 @@ import json
 import discord
 import datetime
 
-def get_time(self):
+def get_time():
     return datetime.datetime.now().strftime("%H:%M:%S")
 
 class Colors:
@@ -16,6 +16,7 @@ class Colors:
     end = '\033[0m'
 
 class Items(Colors):
+    """Class to interact the items db"""
     def __init__(self, db_path: str, log_path: str):
         self.db_path = db_path
         self.log_path = log_path
@@ -44,6 +45,7 @@ class Items(Colors):
         return 0
     
 class Levels(Colors):
+    """Class to interact the levels db"""
     def __init__(self, db_path: str, log_path: str):
         self.db_path = db_path
         self.log_path = log_path
@@ -51,10 +53,11 @@ class Levels(Colors):
     
     def new(self, user_id: discord.User) -> int:
         with open(self.db_path, 'r') as f: levels = json.load(f)
-        if str(user_id) not in levels: levels[str(user_id)] = {
-            "xp": 0, 
-            "level": 0
-        }
+        if str(user_id) not in levels: 
+            levels[str(user_id)] = {
+                "xp": 0, 
+                "level": 0
+            }
         with open(self.db_path, 'w+') as f: json.dump(levels, f, indent=4)
         return 0
 
