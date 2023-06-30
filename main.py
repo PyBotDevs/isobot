@@ -9,14 +9,10 @@ import asyncio
 import api.auth
 import utils.logger
 import utils.ping
-from framework import *
 from math import floor
 from random import randint
-import framework.isobot.currency
-import framework.isobot.colors
-import framework.isobank.authorize
-import framework.isobank.manager
-import framework.isobot.embedengine
+from framework.isobot import currency, colors, embedengine
+from framework.isobank import authorize, manager
 from discord import ApplicationContext, option
 from discord.ext import commands
 from discord.ext.commands import *
@@ -61,8 +57,8 @@ if not os.path.isdir("logs"):
     except Exception as e: utils.logger.error(f"Failed to make log file: {e}", nolog=True)
 
 #Framework Module Loader
-colors = framework.isobot.colors.Colors()
-currency = framework.isobot.currency.CurrencyAPI("database/currency.json", "logs/currency.log")
+colors = colors.Colors()
+currency = currency.CurrencyAPI("database/currency.json", "logs/currency.log")
 
 # Theme Loader
 themes = False  # True: enables themes; False: disables themes;
