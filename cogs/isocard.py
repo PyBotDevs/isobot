@@ -38,29 +38,27 @@ class IsoCard(commands.Cog):
     )
     @option(name="ssc", description="The Special Security Code for your new card. (aka. CVV)", type=int)
     async def register(self, ctx: ApplicationContext, ssc: int):
-        try:
-            new_card_id = generate_card_id()
-            isocard_db[str(new_card_id)] = {
-                "cardholder_user_id": ctx.author.id,
-                "cardholder_name": ctx.author.name,
-                "ssc": ssc, # Special Security Code
-                "card_registration_timestamp": round(time.time()),
-                "type": "standard",  # Card type
-                "config" : {
-                    "spend_limit": 100000,  # Daily spending limit for IsoCard
-                    "shared_cardholder_ids": [],  # Other users who can use this card
-                    "card_label": None
-                }
+        new_card_id = generate_card_id()
+        isocard_db[str(new_card_id)] = {
+            "cardholder_user_id": ctx.author.id,
+            "cardholder_name": ctx.author.name,
+            "ssc": ssc, # Special Security Code
+            "card_registration_timestamp": round(time.time()),
+            "type": "standard",  # Card type
+            "config" : {
+                "spend_limit": 100000,  # Daily spending limit for IsoCard
+                "shared_cardholder_ids": [],  # Other users who can use this card
+                "card_label": None
             }
-            save()
-            localembed = discord.Embed(title=":tada: Congratulations!", description="Your new IsoCard has successfully been registered!", color=discord.Color.green())
-            localembed.add_field(name="Cardholder name", value=ctx.author.name, inline=False)
-            localembed.add_field(name="Card number", value=new_card_id, inline=False)
-            localembed.add_field(name="SSC", value=f"`{ssc}`", inline=True)
-            localembed.add_field(name="Card registration date", value=f"<t:{isocard_db[str(new_card_id)]['card_registration_timestamp']}:d>", inline=False)
-            localembed.set_footer(text="Always remember, NEVER share your card info to anyone!")
-            await ctx.respond(embed=localembed, ephemeral=True)
-        except Exception as e: print(e)
+        }
+        save()
+        localembed = discord.Embed(title=":tada: Congratulations!", description="Your new IsoCard has successfully been registered!", color=discord.Color.green())
+        localembed.add_field(name="Cardholder name", value=ctx.author.name, inline=False)
+        localembed.add_field(name="Card number", value=new_card_id, inline=False)
+        localembed.add_field(name="SSC", value=f"`{ssc}`", inline=True)
+        localembed.add_field(name="Card registration date", value=f"<t:{isocard_db[str(new_card_id)]['card_registration_timestamp']}:d>", inline=False)
+        localembed.set_footer(text="Always remember, NEVER share your card info to anyone!")
+        await ctx.respond(embed=localembed, ephemeral=True)
 
     @isocard.command(
         name="info",
@@ -93,27 +91,25 @@ class IsoCard(commands.Cog):
         description="View a list of all your cards."
     )
     async def my_card(self, ctx: ApplicationContext):
-        try:
-            all_card_numbers = isocard_db.keys()
-            your_cards = list()
-            for card in all_card_numbers:
-                if isocard_db[str(card)]["cardholder_user_id"] == ctx.author.id: your_cards.append(str(card))
-            embed_desc = str()
-            sr = 1
-            for card in your_cards:
-                if isocard_db[str(card)]["config"]["card_label"] != None:
-                    embed_desc += f"{sr}. **{card}**: {isocard_db[str(card)]['config']['card_label']}\n"
-                else: embed_desc += f"{sr}. **{card}**\n"
-                sr += 1
-            embed_desc += "\n*Nothing more here*"
-            localembed = discord.Embed(
-                title=":credit_card: My cards",
-                description=embed_desc,
-                color=discord.Color.random()
-            )
-            localembed.set_footer(text="Always remember, NEVER share your card info to anyone!")
-            await ctx.respond(embed=localembed, ephemeral=True)
-        except Exception as e: print(e)
+        all_card_numbers = isocard_db.keys()
+        your_cards = list()
+        for card in all_card_numbers:
+            if isocard_db[str(card)]["cardholder_user_id"] == ctx.author.id: your_cards.append(str(card))
+        embed_desc = str()
+        sr = 1
+        for card in your_cards:
+            if isocard_db[str(card)]["config"]["card_label"] != None:
+                embed_desc += f"{sr}. **{card}**: {isocard_db[str(card)]['config']['card_label']}\n"
+            else: embed_desc += f"{sr}. **{card}**\n"
+            sr += 1
+        embed_desc += "\n*Nothing more here*"
+        localembed = discord.Embed(
+            title=":credit_card: My cards",
+            description=embed_desc,
+            color=discord.Color.random()
+        )
+        localembed.set_footer(text="Always remember, NEVER share your card info to anyone!")
+        await ctx.respond(embed=localembed, ephemeral=True)
 
     @isocard.command(
         name="options_label",

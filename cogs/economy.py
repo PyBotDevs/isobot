@@ -374,7 +374,6 @@ class Economy(commands.Cog):
             localembed.set_footer(text='Thank you for your business.')
             await ctx.respond(embed=localembed)
         except KeyError: await ctx.respond('what are you doing that item doesn\'t even exist')
-        except Exception as e: await ctx.respond(f'An error occured while processing this request. ```{e}```')
     
     @commands.slash_command(
         name="gift",
@@ -508,7 +507,6 @@ class Economy(commands.Cog):
             currency.add(id, amount)
             currency.remove(ctx.author.id, amount)
         except KeyError: return await ctx.respond("Unfortunately, we couldn't find that user in our database. Try double-checking the ID you've provided.", ephemeral=True)
-        except Exception as e: return await ctx.respond(e) 
         localembed = discord.Embed(title="Donation Successful", description=f"You successfully donated {amount} coins to {reciever_info.name}!", color=discord.Color.green())
         localembed.add_field(name="Your ID", value=ctx.author.id, inline=True)
         localembed.add_field(name="Reciever's ID", value=id, inline=True)
@@ -656,7 +654,6 @@ class Economy(commands.Cog):
                 e.add_field(name="Networth", value=f"{currency.get_user_networth(user.id)} coin(s)", inline=True)
                 await ctx.respond(embed=e)
             except: await ctx.respond('Looks like that user is not indexed in our server. Try again later.', ephemeral=True)
-        except Exception as e: await ctx.respond(f'An error occured: `{e}`. This has automatically been reported to the devs.')
     
     @commands.slash_command(
         name="treasury",
@@ -694,7 +691,6 @@ class Economy(commands.Cog):
         #                    parsed_output += f"{yf} **{user_context.name}:** {nw_dict[i]} coins\n"
         #                    y += 1
         #        except discord.errors.NotFound: continue
-        #        except Exception as e: print(e)
         #localembed = discord.Embed(title="Global net worth leaderboard", description=parsed_output, color=color)
         #await ctx.respond(embed=localembed)
 
