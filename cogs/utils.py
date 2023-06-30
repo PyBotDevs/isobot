@@ -6,8 +6,7 @@ import os
 import psutil
 import math
 import openai
-import framework.isobot.embedengine
-import framework.isobot.currency
+from framework.isobot import currency, embedengine
 from discord import option, ApplicationContext
 from discord.ext import commands
 from cogs.levelling import get_level, get_xp
@@ -15,7 +14,7 @@ from cogs.afk import get_presence
 
 # Variables
 color = discord.Color.random()
-currency = framework.isobot.currency.CurrencyAPI("database/currency.json", "logs/currency.log")
+currency = currency.CurrencyAPI("database/currency.json", "logs/currency.log")
 openai.api_key = os.getenv("chatgpt_API_KEY")
 chatgpt_conversation = dict()
 
@@ -54,7 +53,7 @@ class Utils(commands.Cog):
     @option(name="footer_icon_url", description="The icon you want to show in the embed's footer (URL ONLY)", type=str, default=None)
     async def embedbuilder(self, ctx: ApplicationContext, title: str, description: str, image_url: str = None, thumbnail_url: str = None, color: int = None, footer_text: str = None, footer_icon_url: str = None):
         await ctx.respond("Embed Built!", ephemeral=True)
-        await ctx.channel.send(embed=framework.isobot.embedengine.embed(title, description, image=image_url, thumbnail=thumbnail_url, color=color, footer_text=footer_text, footer_img=footer_icon_url))
+        await ctx.channel.send(embed=embedengine.embed(title, description, image=image_url, thumbnail=thumbnail_url, color=color, footer_text=footer_text, footer_img=footer_icon_url))
 
     @commands.slash_command(
         name='whoami',
