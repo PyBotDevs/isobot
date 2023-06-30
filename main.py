@@ -26,7 +26,6 @@ from cogs.isocoin import create_isocoin_key
 #Variables
 client = discord.Bot()
 color = discord.Color.random()
-wdir = os.getcwd()
 with open('database/items.json', 'r', encoding="utf-8") as f: items = json.load(f)
 with open('config/shop.json', 'r', encoding="utf-8") as f: shopitem = json.load(f)
 with open('database/presence.json', 'r', encoding="utf-8") as f: presence = json.load(f)
