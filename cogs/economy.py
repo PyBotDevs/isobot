@@ -596,7 +596,7 @@ class Economy(commands.Cog):
     async def networth(self, ctx: ApplicationContext, user: discord.User=None):
         if user == None: user = ctx.author
         try:
-            ntw = get_user_networth(user.id)
+            ntw = currency.get_user_networth(user.id)
             localembed = discord.Embed(name=f"{user.display_name}'s networth", description=f"{ntw} coins", color=color)
             await ctx.respond(embed=localembed)
         except KeyError: return await ctx.respond("Looks like that user isn't cached yet. Please try again later.", ephemeral=True)
