@@ -30,7 +30,6 @@ class Fun(commands.Cog):
                 s = strok.lower()
                 for i, c in enumerate(s): var += random.choice(words[c])
                 return await ctx.respond(f"{var}")
-        except Exception as e: return await ctx.respond(f"{type(e).__name__}: {e}")
         var = ''.join(arr)
         await ctx.respond(f"{var}")
 

@@ -42,20 +42,18 @@ class Osu(commands.Cog):
     )
     @option(name="query", description="The beatmap's id", type=int)
     async def osu_beatmap(self, ctx, *, query:int):
-        try:
-            beatmap = self.api.beatmap(beatmap_id=query)
-            e = discord.Embed(title=f'osu! beatmap info for {beatmap.expand()._beatmapset.title} ({beatmap.expand()._beatmapset.title_unicode})', color=0xff66aa)
-            e.set_thumbnail(url='https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Osu%21_Logo_2016.svg/2048px-Osu%21_Logo_2016.svg.png')
-            #.beatmap.data[0]
-            e.add_field(name='Artist', value=f'{beatmap.expand()._beatmapset.artist} ({beatmap.expand()._beatmapset.artist_unicode})')
-            e.add_field(name='Mapper', value=beatmap.expand()._beatmapset.creator)
-            e.add_field(name='Difficulty', value=f'{beatmap.expand().difficulty_rating} stars')
-            e.add_field(name='BPM', value=beatmap.expand().bpm)
-            e.add_field(name='Circles', value=beatmap.expand().count_circles)
-            e.add_field(name='Sliders', value=beatmap.expand().count_sliders)
-            e.add_field(name='HP Drain', value=beatmap.expand().drain)
-            await ctx.respond(embed=e)
-        except Exception as f: await ctx.respond(f"An error occured when trying to execute this command.\n```{type(f).__name__}: {f}```", ephemeral=True)
+        beatmap = self.api.beatmap(beatmap_id=query)
+        e = discord.Embed(title=f'osu! beatmap info for {beatmap.expand()._beatmapset.title} ({beatmap.expand()._beatmapset.title_unicode})', color=0xff66aa)
+        e.set_thumbnail(url='https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Osu%21_Logo_2016.svg/2048px-Osu%21_Logo_2016.svg.png')
+        #.beatmap.data[0]
+        e.add_field(name='Artist', value=f'{beatmap.expand()._beatmapset.artist} ({beatmap.expand()._beatmapset.artist_unicode})')
+        e.add_field(name='Mapper', value=beatmap.expand()._beatmapset.creator)
+        e.add_field(name='Difficulty', value=f'{beatmap.expand().difficulty_rating} stars')
+        e.add_field(name='BPM', value=beatmap.expand().bpm)
+        e.add_field(name='Circles', value=beatmap.expand().count_circles)
+        e.add_field(name='Sliders', value=beatmap.expand().count_sliders)
+        e.add_field(name='HP Drain', value=beatmap.expand().drain)
+        await ctx.respond(embed=e)
 
 # Cog Initialization
 def setup(bot): bot.add_cog(Osu(bot))
