@@ -1,3 +1,5 @@
+"""The isobot module for managing the currency db"""
+
 import json
 import discord
 import datetime

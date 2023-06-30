@@ -1,4 +1,5 @@
 """The library used for designing and outputting Discord embeds."""
+
 import discord
 from discord import Color
 
