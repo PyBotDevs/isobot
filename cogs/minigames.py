@@ -2,14 +2,12 @@
 
 # Imports
 import discord
-import os.path
 import framework.isobot.currency
 from random import randint
 from discord import ApplicationContext
 from discord.ext import commands
 
 # Variables
-wdir = os.getcwd()
 color = discord.Color.random()
 currency = framework.isobot.currency.CurrencyAPI("database/currency.json", "logs/currency.log")
 

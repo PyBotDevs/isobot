@@ -3,18 +3,16 @@
 # Imports
 import discord
 import json
-import os.path
 from discord import option, ApplicationContext
 from discord.ext import commands
 
 # Variables
-wdir = os.getcwd()
 color = discord.Color.random()
 
-with open(f"{wdir}/database/levels.json", 'r', encoding="utf-8") as f: levels = json.load(f)
+with open("database/levels.json", 'r', encoding="utf-8") as f: levels = json.load(f)
 
 def save():
-    with open(f"{wdir}/database/levels.json", 'w+', encoding="utf-8") as f: json.dump(levels, f, indent=4)
+    with open("database/levels.json", 'w+', encoding="utf-8") as f: json.dump(levels, f, indent=4)
 
 # Functions
 def get_xp(id: int) -> int:

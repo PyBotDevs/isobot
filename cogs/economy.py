@@ -2,7 +2,6 @@
 
 # Imports
 import discord
-import os.path
 import json
 import random
 import math
@@ -31,10 +30,9 @@ class ShopData:
         return json_list
 
 # Variables
-wdir = os.getcwd()
 color = discord.Color.random()
 currency = framework.isobot.currency.CurrencyAPI("database/currency.json", "logs/currency.log")
-shop_data = ShopData(f"{wdir}/config/shop.json")
+shop_data = ShopData("config/shop.json")
 all_item_ids = shop_data.get_item_ids()
 jobs = [
     "Discord mod",
@@ -46,13 +44,13 @@ jobs = [
     "Doctor"
 ]
 
-with open(f"{wdir}/database/items.json", 'r') as f: items = json.load(f)
-with open(f"{wdir}/config/shop.json", 'r') as f: shopitem = json.load(f)
-with open(f"{wdir}/database/user_data.json", 'r') as f: userdat = json.load(f)
+with open("database/items.json", 'r') as f: items = json.load(f)
+with open("config/shop.json", 'r') as f: shopitem = json.load(f)
+with open("database/user_data.json", 'r') as f: userdat = json.load(f)
 
 def save():
-    with open(f"{wdir}/database/items.json", 'w+') as f: json.dump(items, f, indent=4)
-    with open(f"{wdir}/database/user_data.json", 'w+') as f: json.dump(userdat, f, indent=4)
+    with open("database/items.json", 'w+') as f: json.dump(items, f, indent=4)
+    with open("database/user_data.json", 'w+') as f: json.dump(userdat, f, indent=4)
 
 # Functions
 def new_userdat(id: int):

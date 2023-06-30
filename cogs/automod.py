@@ -3,18 +3,17 @@
 # Imports
 import discord
 import json
-import os
 from discord import option, ApplicationContext
 from discord.ext import commands
 
 # Variables
-wdir = os.getcwd()
+
 color = discord.Color.random()
 
-with open(f'{wdir}/database/automod.json', 'r', encoding="utf-8") as f: automod_config = json.load(f)
+with open('database/automod.json', 'r', encoding="utf-8") as f: automod_config = json.load(f)
 
 def save():
-    with open(f'{wdir}/database/automod.json', 'w+', encoding="utf-8") as f: json.dump(automod_config, f, indent=4)
+    with open('database/automod.json', 'w+', encoding="utf-8") as f: json.dump(automod_config, f, indent=4)
 
 # Commands
 class Automod(commands.Cog):
