@@ -7,16 +7,11 @@ import datetime
 import discord
 import asyncio
 import api.auth
-import utils.logger
-import utils.ping
-from framework import *
+from utils import logger, ping
 from math import floor
 from random import randint
-import framework.isobot.currency
-import framework.isobot.colors
-import framework.isobank.authorize
-import framework.isobank.manager
-import framework.isobot.embedengine
+from framework.isobot import currency, colors, embedengine
+from framework.isobank import authorize, manager
 from discord import ApplicationContext, option
 from discord.ext import commands
 from discord.ext.commands import *
@@ -51,18 +46,18 @@ if not os.path.isdir("logs"):
     os.mkdir('logs')
     try:
         open('logs/info-log.txt', 'x', encoding="utf-8")
-        utils.logger.info("Created info log", nolog=True)
+        logger.info("Created info log", nolog=True)
         time.sleep(0.5)
         open('logs/error-log.txt', 'x', encoding="utf-8")
-        utils.logger.info("Created error log", nolog=True)
+        logger.info("Created error log", nolog=True)
         time.sleep(0.5)
         open('logs/currency.log', 'x', encoding="utf-8")
-        utils.logger.info("Created currency log", nolog=True)
-    except Exception as e: utils.logger.error(f"Failed to make log file: {e}", nolog=True)
+        logger.info("Created currency log", nolog=True)
+    except Exception as e: logger.error(f"Failed to make log file: {e}", nolog=True)
 
 #Framework Module Loader
-colors = framework.isobot.colors.Colors()
-currency = framework.isobot.currency.CurrencyAPI("database/currency.json", "logs/currency.log")
+colors = colors.Colors()
+currency = currency.CurrencyAPI("database/currency.json", "logs/currency.log")
 
 # Theme Loader
 themes = False  # True: enables themes; False: disables themes;
@@ -92,7 +87,7 @@ __________________________________________________""")
     await client.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name="GitHub"), status=discord.Status.idle)
     print(f'[main/Log] {colors.green}Status set to IDLE. Rich presence set.{colors.end}')
     print("[main/Flask] Starting pinger service...")
-    utils.ping.host()
+    ping.host()
     time.sleep(5)
 
 @client.event

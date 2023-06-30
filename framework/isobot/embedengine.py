@@ -1,6 +1,6 @@
 """The library used for designing and outputting Discord embeds."""
+
 import discord
-from discord import Color
 
 def embed(title: str, desc: str, *, image: str = None, thumbnail: str = None, color:int=None, footer_text: str = None, footer_img: str = None):
     """Designs a Discord embed.
@@ -10,8 +10,8 @@ def embed(title: str, desc: str, *, image: str = None, thumbnail: str = None, co
     - If the color is set as "rand", then it will return the embed with a random color.
     - If a color is not set, it will appear as Discord's blurple embed color.
     """
-    if color == -1: color = Color.random()
-    elif color == None: color = Color.blurple()
+    if color == -1: color = discord.Color.random()
+    elif color == None: color = discord.Color.blurple()
     local_embed = discord.Embed(
         title=title,
         description=desc,
