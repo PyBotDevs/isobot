@@ -2,7 +2,6 @@
 
 # Imports
 import discord
-import os.path
 import framework.isobot.currency
 from random import randint
 from discord import ApplicationContext

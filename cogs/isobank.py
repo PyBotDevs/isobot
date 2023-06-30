@@ -4,7 +4,6 @@
 # Imports
 import discord
 import json
-import os.path
 from discord import option, ApplicationContext
 from discord.ext import commands
 import framework.isobank.manager

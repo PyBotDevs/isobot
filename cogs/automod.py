@@ -3,7 +3,6 @@
 # Imports
 import discord
 import json
-import os
 from discord import option, ApplicationContext
 from discord.ext import commands
 

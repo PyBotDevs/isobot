@@ -2,7 +2,6 @@
 
 # Imports
 import discord
-import os.path
 import json
 import random
 import math
