@@ -7,8 +7,7 @@ import datetime
 import discord
 import asyncio
 import api.auth
-import utils.logger
-import utils.ping
+from utils import logger, ping
 from math import floor
 from random import randint
 from framework.isobot import currency, colors, embedengine
@@ -47,14 +46,14 @@ if not os.path.isdir("logs"):
     os.mkdir('logs')
     try:
         open('logs/info-log.txt', 'x', encoding="utf-8")
-        utils.logger.info("Created info log", nolog=True)
+        logger.info("Created info log", nolog=True)
         time.sleep(0.5)
         open('logs/error-log.txt', 'x', encoding="utf-8")
-        utils.logger.info("Created error log", nolog=True)
+        logger.info("Created error log", nolog=True)
         time.sleep(0.5)
         open('logs/currency.log', 'x', encoding="utf-8")
-        utils.logger.info("Created currency log", nolog=True)
-    except Exception as e: utils.logger.error(f"Failed to make log file: {e}", nolog=True)
+        logger.info("Created currency log", nolog=True)
+    except Exception as e: logger.error(f"Failed to make log file: {e}", nolog=True)
 
 #Framework Module Loader
 colors = colors.Colors()
@@ -88,7 +87,7 @@ __________________________________________________""")
     await client.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name="GitHub"), status=discord.Status.idle)
     print(f'[main/Log] {colors.green}Status set to IDLE. Rich presence set.{colors.end}')
     print("[main/Flask] Starting pinger service...")
-    utils.ping.host()
+    ping.host()
     time.sleep(5)
 
 @client.event
