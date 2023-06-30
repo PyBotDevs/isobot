@@ -2,11 +2,10 @@
 
 # Imports
 import discord
-import json
 import os.path
 import framework.isobot.currency
 from random import randint
-from discord import option, ApplicationContext
+from discord import ApplicationContext
 from discord.ext import commands
 
 # Variables

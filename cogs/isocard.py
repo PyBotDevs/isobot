@@ -3,7 +3,6 @@
 # Imports
 import discord
 import json
-import os
 import random
 import time
 from discord import option, ApplicationContext, SlashCommandGroup

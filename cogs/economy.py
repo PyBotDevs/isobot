@@ -165,7 +165,6 @@ class Economy(commands.Cog):
         ]
         if (randint(1, 100) >= 50):
             x = randint(10, 100)
-            currency.get_wallet(ctx.author.id) += x
             currency.add(ctx.author.id, x)
             await ctx.respond(embed=discord.Embed(title=random.choice(names), description=f"Oh you poor beggar, here's {x} coin(s) for you. Hope it helps!"))
         else: await ctx.respond(embed=discord.Embed(title=random.choice(names), description=f'"{random.choice(fail_responses)}"'))
@@ -595,7 +594,7 @@ class Economy(commands.Cog):
     async def networth(self, ctx: ApplicationContext, user: discord.User=None):
         if user == None: user = ctx.author
         try:
-            ntw = get_user_networth(user.id)
+            ntw = currency.get_user_networth(user.id)
             localembed = discord.Embed(name=f"{user.display_name}'s networth", description=f"{ntw} coins", color=color)
             await ctx.respond(embed=localembed)
         except KeyError: return await ctx.respond("Looks like that user isn't cached yet. Please try again later.", ephemeral=True)
