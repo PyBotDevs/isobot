@@ -165,7 +165,6 @@ class Economy(commands.Cog):
         ]
         if (randint(1, 100) >= 50):
             x = randint(10, 100)
-            currency.get_wallet(ctx.author.id) += x
             currency.add(ctx.author.id, x)
             await ctx.respond(embed=discord.Embed(title=random.choice(names), description=f"Oh you poor beggar, here's {x} coin(s) for you. Hope it helps!"))
         else: await ctx.respond(embed=discord.Embed(title=random.choice(names), description=f'"{random.choice(fail_responses)}"'))
