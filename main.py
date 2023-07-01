@@ -10,7 +10,7 @@ import api.auth
 from utils import logger, ping
 from math import floor
 from random import randint
-from framework.isobot import currency, colors, embedengine
+from framework.isobot import currency, colors, embedengine, settings
 from framework.isobank import authorize, manager
 from discord import ApplicationContext, option
 from discord.ext import commands
@@ -57,6 +57,7 @@ if not os.path.isdir("logs"):
 #Framework Module Loader
 colors = colors.Colors()
 currency = currency.CurrencyAPI("database/currency.json", "logs/currency.log")
+settings = settings.Configurator()
 
 # Theme Loader
 themes = False  # True: enables themes; False: disables themes;
@@ -95,6 +96,7 @@ async def on_message(ctx):
     currency.new_bank(ctx.author.id)
     create_isocoin_key(ctx.author.id)
     new_userdat(ctx.author.id)
+    settings.generate(ctx.author.id)
     if str(ctx.author.id) not in items: items[str(ctx.author.id)] = {}
     if str(ctx.author.id) not in levels: levels[str(ctx.author.id)] = {"xp": 0, "level": 0}
     if str(ctx.guild.id) not in automod_config:
@@ -135,7 +137,8 @@ async def on_message(ctx):
         if levels[str(ctx.author.id)]["xp"] >= xpreq:
             levels[str(ctx.author.id)]["xp"] = 0
             levels[str(ctx.author.id)]["level"] += 1
-            await ctx.author.send(f"{ctx.author.mention}, you just ranked up to **level {levels[str(ctx.author.id)]['level']}**. Nice!")
+            if settings.fetch_setting(ctx.author.id, "levelup_messages") == True:
+                await ctx.author.send(f"{ctx.author.mention}, you just ranked up to **level {levels[str(ctx.author.id)]['level']}**. Nice!")
         save()
         if automod_config[str(ctx.guild.id)]["swear_filter"]["enabled"] == True:
             if automod_config[str(ctx.guild.id)]["swear_filter"]["keywords"]["use_default"] and any(x in ctx.content.lower() for x in automod_config[str(ctx.guild.id)]["swear_filter"]["keywords"]["default"]):
@@ -255,6 +258,23 @@ async def reload(ctx: ApplicationContext, cog: str):
                 color=discord.Color.red()
             )
         )
+
+# Settings commands
+config = client.create_group("settings", "Commands used to change bot settings.")
+
+@config.command(
+    name="levelup_messages",
+    description="Configure whether you want to be notified for level ups or not."
+)
+@option(name="enabled", description="Do you want this setting enabled?", type=bool)
+async def levelup_messages(ctx: ApplicationContext, enabled: bool):
+    if settings.fetch_setting(ctx.author.id, "levelup_messages") == enabled: return await ctx.respond("This is already done.", ephemeral=True)
+    settings.edit_setting(ctx.author.id, "levelup_messages", enabled)
+    localembed = discord.Embed(
+        description="Setting successfully updated.",
+        color=discord.Color.green()
+    )
+    await ctx.respond(embed=localembed)
 
 # Initialization
 active_cogs = [
