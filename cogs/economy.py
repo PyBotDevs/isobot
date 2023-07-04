@@ -642,15 +642,14 @@ class Economy(commands.Cog):
     )
     @option(name="user", description="Which user do you want to view information on?", type=discord.User, default=None)
     async def balance(self, ctx: ApplicationContext, user=None):
+        if user == None: user = ctx.author
         try:
-            if user == None: user = ctx.author
-            try:
-                e = discord.Embed(title=f"{user.display_name}'s balance", color=color)
-                e.add_field(name='Cash in wallet', value=f'{currency.get_wallet(user.id)} coin(s)', inline=True)
-                e.add_field(name='Cash in bank account', value=f'{currency.get_bank(user.id)} coin(s)', inline=True)
-                e.add_field(name="Networth", value=f"{currency.get_user_networth(user.id)} coin(s)", inline=True)
-                await ctx.respond(embed=e)
-            except: await ctx.respond('Looks like that user is not indexed in our server. Try again later.', ephemeral=True)
+            e = discord.Embed(title=f"{user.display_name}'s balance", color=color)
+            e.add_field(name='Cash in wallet', value=f'{currency.get_wallet(user.id)} coin(s)', inline=True)
+            e.add_field(name='Cash in bank account', value=f'{currency.get_bank(user.id)} coin(s)', inline=True)
+            e.add_field(name="Networth", value=f"{currency.get_user_networth(user.id)} coin(s)", inline=True)
+            await ctx.respond(embed=e)
+        except KeyError: await ctx.respond('Looks like that user is not indexed in our server. Try again later.', ephemeral=True)
     
     @commands.slash_command(
         name="treasury",
