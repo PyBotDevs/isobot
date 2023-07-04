@@ -212,14 +212,23 @@ async def load(ctx: ApplicationContext, cog: str):
     try:
         client.load_extension(f"cogs.{cog}")
         await ctx.respond(embed=discord.Embed(description=f"{cog} cog successfully loaded.", color=discord.Color.green()))
-    except Exception as e:
-        await ctx.respond(
+    except discord.errors.ExtensionNotFound:
+        return await ctx.respond(
             embed=discord.Embed(
                 title=f"{cog} failed to load",
-                description=f"```{type(e).__name__}: {e}```",
+                description="Cog does not exist.",
                 color=discord.Color.red()
             )
         )
+    except discord.errors.ExtensionAlreadyLoaded:
+        return await ctx.respond(
+            embed=discord.Embed(
+                title=f"{cog} failed to load",
+                description="Cog does not exist.",
+                color=discord.Color.red()
+            )
+        )
+
 
 @cogs.command(
     name="disable",
@@ -231,14 +240,16 @@ async def disable(ctx: ApplicationContext, cog: str):
     try:
         client.unload_extension(f"cogs.{cog}")
         await ctx.respond(embed=discord.Embed(description=f"{cog} cog successfully disabled.", color=discord.Color.green()))
-    except Exception as e:
-        await ctx.respond(
+    except discord.errors.ExtensionNotFound:
+        return await ctx.respond(
             embed=discord.Embed(
                 title=f"{cog} failed to disable",
-                description=f"```{type(e).__name__}: {e}```",
+                description="Cog does not exist.",
                 color=discord.Color.red()
             )
         )
+
+
 
 @cogs.command(
     name="reload",
@@ -250,11 +261,11 @@ async def reload(ctx: ApplicationContext, cog: str):
     try:
         client.reload_extension(f"cogs.{cog}")
         await ctx.respond(embed=discord.Embed(description=f"{cog} cog successfully reloaded.", color=discord.Color.green()))
-    except Exception as e:
-        await ctx.respond(
+    except discord.errors.ExtensionNotFound:
+        return await ctx.respond(
             embed=discord.Embed(
                 title=f"{cog} failed to reload",
-                description=f"```{type(e).__name__}: {e}```",
+                description="Cog does not exist.",
                 color=discord.Color.red()
             )
         )
