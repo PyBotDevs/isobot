@@ -40,7 +40,9 @@ class Configurator(Colors):
         """Modifies the value of a user setting."""
         with open("config/settings.json", 'r', encoding="utf-8") as f: db = json.load(f)
         db[str(user_id)][setting] = value
+        with open("config/settings.json", 'w+', encoding="utf-8") as f: json.dump(db, f, indent=4)
         return 0
+
     def reset(self, user_id: int):
         """Completely resets the specified user's configuration."""
         with open("config/settings.json", 'r', encoding="utf-8") as f: db = json.load(f)
@@ -50,4 +52,3 @@ class Configurator(Colors):
         db[str(user_id)] = template
         with open("config/settings.json", 'w+', encoding="utf-8") as f: json.dump(db, f, indent=4)
         return 0
-        
