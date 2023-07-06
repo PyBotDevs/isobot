@@ -35,6 +35,7 @@ cmd_list = commandsdb.keys()
 
 #Pre-Initialization Commands
 def save():
+    """Dumps all cached data to the local databases."""
     with open('database/items.json', 'w+', encoding="utf-8") as f: json.dump(items, f, indent=4)
     with open('database/presence.json', 'w+', encoding="utf-8") as f: json.dump(presence, f, indent=4)
     with open('database/levels.json', 'w+', encoding="utf-8") as f: json.dump(levels, f, indent=4)
@@ -76,6 +77,7 @@ else: color = discord.Color.random()
 #Events
 @client.event
 async def on_ready():
+    """This event is fired when the bot client is ready"""
     print("""
 Isobot  Copyright (C) 2022  PyBotDevs/NKA
 This program comes with ABSOLUTELY NO WARRANTY.
@@ -92,6 +94,7 @@ __________________________________________________""")
 
 @client.event
 async def on_message(ctx):
+    """This event is fired whenever a message is sent (in a readable channel)"""
     currency.new_wallet(ctx.author.id)
     currency.new_bank(ctx.author.id)
     create_isocoin_key(ctx.author.id)
@@ -153,6 +156,7 @@ async def on_message(ctx):
 #Error handler
 @client.event
 async def on_application_command_error(ctx: ApplicationContext, error: discord.DiscordException):
+    """An event handler to handle command exceptions when things go wrong."""
     current_time = datetime.time().strftime("%H:%M:%S")
     if isinstance(error, commands.CommandOnCooldown):
         await ctx.respond(f":stopwatch: Not now! Please try after **{str(datetime.timedelta(seconds=int(round(error.retry_after))))}**")
@@ -179,6 +183,7 @@ async def on_application_command_error(ctx: ApplicationContext, error: discord.D
 )
 @option(name="command", description="Which command do you need help with?", type=str, default=None)
 async def help(ctx: ApplicationContext, command: str = None):
+    """Gives you help with a specific command, or shows a list of all commands"""
     if command is not None:
         try:
             localembed = discord.Embed(
@@ -221,6 +226,7 @@ cogs = client.create_group("cog", "Commands for working with isobot cogs.")
 )
 @option(name="cog", description="What cog do you want to load?", type=str)
 async def load(ctx: ApplicationContext, cog: str):
+    """Loads a cog."""
     if ctx.author.id != 738290097170153472:
         return await ctx.respond("You can't use this command!", ephemeral=True)
     try:
@@ -254,6 +260,7 @@ async def load(ctx: ApplicationContext, cog: str):
 )
 @option(name="cog", description="What cog do you want to disable?", type=str)
 async def disable(ctx: ApplicationContext, cog: str):
+    """Disables a cog."""
     if ctx.author.id != 738290097170153472:
         return await ctx.respond("You can't use this command!", ephemeral=True)
     try:
@@ -279,6 +286,7 @@ async def disable(ctx: ApplicationContext, cog: str):
 )
 @option(name="cog", description="What cog do you want to reload?", type=str)
 async def reload(ctx: ApplicationContext, cog: str):
+    """Reloads a cog."""
     if ctx.author.id != 738290097170153472:
         return await ctx.respond("You can't use this command!", ephemeral=True)
     try:
@@ -307,6 +315,7 @@ config = client.create_group("settings", "Commands used to change bot settings."
 )
 @option(name="enabled", description="Do you want this setting enabled?", type=bool)
 async def levelup_messages(ctx: ApplicationContext, enabled: bool):
+    """Configure whether you want to be notified for level ups or not."""
     if settings.fetch_setting(ctx.author.id, "levelup_messages") == enabled:
         return await ctx.respond("This is already done.", ephemeral=True)
     settings.edit_setting(ctx.author.id, "levelup_messages", enabled)
