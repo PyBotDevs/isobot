@@ -11,7 +11,6 @@ from utils import logger, ping
 from math import floor
 from random import randint
 from framework.isobot import currency, colors, settings
-# from framework.isobank import authorize, manager
 from discord import ApplicationContext, option
 from discord.ext import commands
 from discord.ext.commands import *
