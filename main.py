@@ -51,7 +51,8 @@ if not os.path.isdir("logs"):
         time.sleep(0.5)
         open('logs/currency.log', 'x', encoding="utf-8")
         logger.info("Created currency log", nolog=True)
-    except Exception as e: logger.error(f"Failed to make log file: {e}", nolog=True)
+    except Exception as e: 
+        logger.error(f"Failed to make log file: {e}", nolog=True)
 
 #Framework Module Loader
 colors = colors.Colors()
@@ -96,8 +97,10 @@ async def on_message(ctx):
     create_isocoin_key(ctx.author.id)
     new_userdat(ctx.author.id)
     settings.generate(ctx.author.id)
-    if str(ctx.author.id) not in items: items[str(ctx.author.id)] = {}
-    if str(ctx.author.id) not in levels: levels[str(ctx.author.id)] = {"xp": 0, "level": 0}
+    if str(ctx.author.id) not in items: 
+        items[str(ctx.author.id)] = {}
+    if str(ctx.author.id) not in levels: 
+        levels[str(ctx.author.id)] = {"xp": 0, "level": 0}
     if str(ctx.guild.id) not in automod_config:
         automod_config[str(ctx.guild.id)] = {
             "swear_filter": {
@@ -178,18 +181,29 @@ async def on_application_command_error(ctx: ApplicationContext, error: discord.D
 async def help(ctx: ApplicationContext, command: str = None):
     if command is not None:
         try:
-            localembed = discord.Embed(title=f"{commandsdb[command]['name']} Command (/{command})", description=commandsdb[command]['description'], color=color)
+            localembed = discord.Embed(
+                title=f"{commandsdb[command]['name']} Command (/{command})",
+                description=commandsdb[command]['description'],
+                color=color
+            )
             localembed.add_field(name="Command Type", value=commandsdb[command]['type'], inline=False)
-            if commandsdb[command]['cooldown'] is not None: localembed.add_field(name="Cooldown", value=f"{str(datetime.timedelta(seconds=commandsdb[command]['cooldown']))}", inline=False)
+            if commandsdb[command]['cooldown'] is not None:
+                localembed.add_field(name="Cooldown", value=f"{str(datetime.timedelta(seconds=commandsdb[command]['cooldown']))}", inline=False)
             localembed.add_field(name="Usable By", value=commandsdb[command]['usable_by'], inline=False)
             if commandsdb[command]['args'] is not None:
                 args = ""
                 for arg in commandsdb[command]['args']: args += f"`{arg}` "
                 localembed.add_field(name="Arguments", value=args, inline=False)
-            if commandsdb[command]['bugged'] is True: localembed.set_footer(text="⚠ This command might be bugged (experiencing issues), but will be fixed later.")
-            if commandsdb[command]['disabled'] is True: localembed.set_footer(text="⚠ This command is currently disabled")
+            if commandsdb[command]['bugged'] is True:
+                localembed.set_footer(text="⚠ This command might be bugged (experiencing issues), but will be fixed later.")
+            if commandsdb[command]['disabled'] is True:
+                localembed.set_footer(text="⚠ This command is currently disabled")
             await ctx.respond(embed=localembed)
-        except KeyError: return await ctx.respond(embed=discord.Embed(description=f"No results found for {command}."), ephemeral=True)
+        except KeyError: 
+            return await ctx.respond(
+                embed=discord.Embed(description=f"No results found for {command}."),
+                ephemeral=True
+            )
     else:
         commands_list = ""
         for _command in commandsdb:
@@ -207,10 +221,16 @@ cogs = client.create_group("cog", "Commands for working with isobot cogs.")
 )
 @option(name="cog", description="What cog do you want to load?", type=str)
 async def load(ctx: ApplicationContext, cog: str):
-    if ctx.author.id != 738290097170153472: return await ctx.respond("You can't use this command!", ephemeral=True)
+    if ctx.author.id != 738290097170153472: 
+        return await ctx.respond("You can't use this command!", ephemeral=True)
     try:
         client.load_extension(f"cogs.{cog}")
-        await ctx.respond(embed=discord.Embed(description=f"{cog} cog successfully loaded.", color=discord.Color.green()))
+        await ctx.respond(
+            embed=discord.Embed(
+                description=f"{cog} cog successfully loaded.", 
+                color=discord.Color.green()
+            )
+        )
     except discord.errors.ExtensionNotFound:
         return await ctx.respond(
             embed=discord.Embed(
@@ -234,10 +254,16 @@ async def load(ctx: ApplicationContext, cog: str):
 )
 @option(name="cog", description="What cog do you want to disable?", type=str)
 async def disable(ctx: ApplicationContext, cog: str):
-    if ctx.author.id != 738290097170153472: return await ctx.respond("You can't use this command!", ephemeral=True)
+    if ctx.author.id != 738290097170153472:
+        return await ctx.respond("You can't use this command!", ephemeral=True)
     try:
         client.unload_extension(f"cogs.{cog}")
-        await ctx.respond(embed=discord.Embed(description=f"{cog} cog successfully disabled.", color=discord.Color.green()))
+        await ctx.respond(
+            embed=discord.Embed(
+                description=f"{cog} cog successfully disabled.",
+                color=discord.Color.green()
+            )
+        )
     except discord.errors.ExtensionNotFound:
         return await ctx.respond(
             embed=discord.Embed(
@@ -253,10 +279,16 @@ async def disable(ctx: ApplicationContext, cog: str):
 )
 @option(name="cog", description="What cog do you want to reload?", type=str)
 async def reload(ctx: ApplicationContext, cog: str):
-    if ctx.author.id != 738290097170153472: return await ctx.respond("You can't use this command!", ephemeral=True)
+    if ctx.author.id != 738290097170153472:
+        return await ctx.respond("You can't use this command!", ephemeral=True)
     try:
         client.reload_extension(f"cogs.{cog}")
-        await ctx.respond(embed=discord.Embed(description=f"{cog} cog successfully reloaded.", color=discord.Color.green()))
+        await ctx.respond(
+            embed=discord.Embed(
+                description=f"{cog} cog successfully reloaded.", 
+                color=discord.Color.green()
+            )
+        )
     except discord.errors.ExtensionNotFound:
         return await ctx.respond(
             embed=discord.Embed(
@@ -275,7 +307,8 @@ config = client.create_group("settings", "Commands used to change bot settings."
 )
 @option(name="enabled", description="Do you want this setting enabled?", type=bool)
 async def levelup_messages(ctx: ApplicationContext, enabled: bool):
-    if settings.fetch_setting(ctx.author.id, "levelup_messages") == enabled: return await ctx.respond("This is already done.", ephemeral=True)
+    if settings.fetch_setting(ctx.author.id, "levelup_messages") == enabled:
+        return await ctx.respond("This is already done.", ephemeral=True)
     settings.edit_setting(ctx.author.id, "levelup_messages", enabled)
     localembed = discord.Embed(
         description="Setting successfully updated.",
