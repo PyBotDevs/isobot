@@ -183,18 +183,18 @@ async def help(ctx: ApplicationContext, command: str = None):
             if commandsdb[command]['cooldown'] is not None: localembed.add_field(name="Cooldown", value=f"{str(datetime.timedelta(seconds=commandsdb[command]['cooldown']))}", inline=False)
             localembed.add_field(name="Usable By", value=commandsdb[command]['usable_by'], inline=False)
             if commandsdb[command]['args'] is not None:
-                r = ""
-                for x in commandsdb[command]['args']: r += f"`{x}` "
-                localembed.add_field(name="Arguments", value=r, inline=False)
+                args = ""
+                for arg in commandsdb[command]['args']: args += f"`{arg}` "
+                localembed.add_field(name="Arguments", value=args, inline=False)
             if commandsdb[command]['bugged'] is True: localembed.set_footer(text="⚠ This command might be bugged (experiencing issues), but will be fixed later.")
             if commandsdb[command]['disabled'] is True: localembed.set_footer(text="⚠ This command is currently disabled")
             await ctx.respond(embed=localembed)
         except KeyError: return await ctx.respond(embed=discord.Embed(description=f"No results found for {command}."), ephemeral=True)
     else:
-        r = ""
-        for x in commandsdb:
-            if commandsdb[x]["type"] != "DevTools": r += f"`/{x}`\n"
-        localembed = discord.Embed(title="Isobot Command Help", description=f"**Bot Commands:**\n{r}", color = color)
+        commands_list = ""
+        for _command in commandsdb:
+            if commandsdb[_command]["type"] != "DevTools": commands_list += f"`/{_command}`\n"
+        localembed = discord.Embed(title="Isobot Command Help", description=f"**Bot Commands:**\n{commands_list}", color = color)
         await ctx.author.send(embed=localembed)
         await ctx.respond("Check your direct messages.", ephemeral=True)
 
