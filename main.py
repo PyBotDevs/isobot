@@ -137,10 +137,10 @@ async def on_message(ctx):
         if levels[str(ctx.author.id)]["xp"] >= xpreq:
             levels[str(ctx.author.id)]["xp"] = 0
             levels[str(ctx.author.id)]["level"] += 1
-            if settings.fetch_setting(ctx.author.id, "levelup_messages") == True:
+            if settings.fetch_setting(ctx.author.id, "levelup_messages") is True:
                 await ctx.author.send(f"{ctx.author.mention}, you just ranked up to **level {levels[str(ctx.author.id)]['level']}**. Nice!")
         save()
-        if automod_config[str(ctx.guild.id)]["swear_filter"]["enabled"] == True:
+        if automod_config[str(ctx.guild.id)]["swear_filter"]["enabled"] is True:
             if automod_config[str(ctx.guild.id)]["swear_filter"]["keywords"]["use_default"] and any(x in ctx.content.lower() for x in automod_config[str(ctx.guild.id)]["swear_filter"]["keywords"]["default"]):
                 await ctx.delete()
                 await ctx.channel.send(f'{ctx.author.mention} watch your language.', delete_after=5)
