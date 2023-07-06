@@ -228,7 +228,6 @@ async def load(ctx: ApplicationContext, cog: str):
             )
         )
 
-
 @cogs.command(
     name="disable",
     description="Disables a cog."
@@ -247,8 +246,6 @@ async def disable(ctx: ApplicationContext, cog: str):
                 color=discord.Color.red()
             )
         )
-
-
 
 @cogs.command(
     name="reload",
