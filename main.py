@@ -51,7 +51,7 @@ if not os.path.isdir("logs"):
         time.sleep(0.5)
         open('logs/currency.log', 'x', encoding="utf-8")
         logger.info("Created currency log", nolog=True)
-    except Exception as e:
+    except IOError as e:
         logger.error(f"Failed to make log file: {e}", nolog=True)
 
 #Framework Module Loader
