@@ -35,10 +35,10 @@ cmd_list = commandsdb.keys()
 #Pre-Initialization Commands
 def save():
     """Dumps all cached data to the local databases."""
-    with open('database/items.json', 'w+', encoding="utf-8") as f: json.dump(items, f, indent=4)
-    with open('database/presence.json', 'w+', encoding="utf-8") as f: json.dump(presence, f, indent=4)
-    with open('database/levels.json', 'w+', encoding="utf-8") as f: json.dump(levels, f, indent=4)
-    with open('database/automod.json', 'w+', encoding="utf-8") as f: json.dump(automod_config, f, indent=4)
+    with open('database/items.json', 'w+', encoding="utf-8") as e: json.dump(items, e, indent=4)
+    with open('database/presence.json', 'w+', encoding="utf-8") as e: json.dump(presence, e, indent=4)
+    with open('database/levels.json', 'w+', encoding="utf-8") as e: json.dump(levels, e, indent=4)
+    with open('database/automod.json', 'w+', encoding="utf-8") as e: json.dump(automod_config, e, indent=4)
 
 if not os.path.isdir("logs"):
     os.mkdir('logs')
@@ -120,12 +120,12 @@ async def on_message(ctx):
     save()
     uList = list()
     if str(ctx.guild.id) in presence:
-        for x in presence[str(ctx.guild.id)].keys(): uList.append(x)
+        for userid in presence[str(ctx.guild.id)].keys(): uList.append(userid)
     else: pass
-    for i in uList:
-        if i in ctx.content and not ctx.author.bot:
-            fetch_user = client.get_user(id(i))
-            await ctx.channel.send(f"{fetch_user.display_name} went AFK <t:{floor(presence[str(ctx.guild.id)][str(i)]['time'])}:R>: {presence[str(ctx.guild.id)][str(i)]['response']}")
+    for user in uList:
+        if user in ctx.content and not ctx.author.bot:
+            fetch_user = client.get_user(id(user))
+            await ctx.channel.send(f"{fetch_user.display_name} went AFK <t:{floor(presence[str(ctx.guild.id)][str(user)]['time'])}:R>: {presence[str(ctx.guild.id)][str(user)]['response']}")
     if str(ctx.guild.id) in presence and str(ctx.author.id) in presence[str(ctx.guild.id)]:
         del presence[str(ctx.guild.id)][str(ctx.author.id)]
         save()
