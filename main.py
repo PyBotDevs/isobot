@@ -13,7 +13,6 @@ from random import randint
 from framework.isobot import currency, colors, settings
 from discord import ApplicationContext, option
 from discord.ext import commands
-#from discord.ext.commands import *
 from cogs.economy import new_userdat
 from cogs.isocoin import create_isocoin_key
 
