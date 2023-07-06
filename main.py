@@ -51,7 +51,7 @@ if not os.path.isdir("logs"):
         time.sleep(0.5)
         open('logs/currency.log', 'x', encoding="utf-8")
         logger.info("Created currency log", nolog=True)
-    except Exception as e: 
+    except Exception as e:
         logger.error(f"Failed to make log file: {e}", nolog=True)
 
 #Framework Module Loader
@@ -97,9 +97,9 @@ async def on_message(ctx):
     create_isocoin_key(ctx.author.id)
     new_userdat(ctx.author.id)
     settings.generate(ctx.author.id)
-    if str(ctx.author.id) not in items: 
+    if str(ctx.author.id) not in items:
         items[str(ctx.author.id)] = {}
-    if str(ctx.author.id) not in levels: 
+    if str(ctx.author.id) not in levels:
         levels[str(ctx.author.id)] = {"xp": 0, "level": 0}
     if str(ctx.guild.id) not in automod_config:
         automod_config[str(ctx.guild.id)] = {
@@ -199,7 +199,7 @@ async def help(ctx: ApplicationContext, command: str = None):
             if commandsdb[command]['disabled'] is True:
                 localembed.set_footer(text="⚠ This command is currently disabled")
             await ctx.respond(embed=localembed)
-        except KeyError: 
+        except KeyError:
             return await ctx.respond(
                 embed=discord.Embed(description=f"No results found for {command}."),
                 ephemeral=True
@@ -221,13 +221,13 @@ cogs = client.create_group("cog", "Commands for working with isobot cogs.")
 )
 @option(name="cog", description="What cog do you want to load?", type=str)
 async def load(ctx: ApplicationContext, cog: str):
-    if ctx.author.id != 738290097170153472: 
+    if ctx.author.id != 738290097170153472:
         return await ctx.respond("You can't use this command!", ephemeral=True)
     try:
         client.load_extension(f"cogs.{cog}")
         await ctx.respond(
             embed=discord.Embed(
-                description=f"{cog} cog successfully loaded.", 
+                description=f"{cog} cog successfully loaded.",
                 color=discord.Color.green()
             )
         )
@@ -285,7 +285,7 @@ async def reload(ctx: ApplicationContext, cog: str):
         client.reload_extension(f"cogs.{cog}")
         await ctx.respond(
             embed=discord.Embed(
-                description=f"{cog} cog successfully reloaded.", 
+                description=f"{cog} cog successfully reloaded.",
                 color=discord.Color.green()
             )
         )
