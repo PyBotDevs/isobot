@@ -11,10 +11,8 @@ from utils import logger, ping
 from math import floor
 from random import randint
 from framework.isobot import currency, colors, settings
-# from framework.isobank import authorize, manager
 from discord import ApplicationContext, option
 from discord.ext import commands
-from discord.ext.commands import *
 from cogs.economy import new_userdat
 from cogs.isocoin import create_isocoin_key
 
@@ -36,10 +34,11 @@ cmd_list = commandsdb.keys()
 
 #Pre-Initialization Commands
 def save():
-    with open('database/items.json', 'w+', encoding="utf-8") as f: json.dump(items, f, indent=4)
-    with open('database/presence.json', 'w+', encoding="utf-8") as f: json.dump(presence, f, indent=4)
-    with open('database/levels.json', 'w+', encoding="utf-8") as f: json.dump(levels, f, indent=4)
-    with open('database/automod.json', 'w+', encoding="utf-8") as f: json.dump(automod_config, f, indent=4)
+    """Dumps all cached data to the local databases."""
+    with open('database/items.json', 'w+', encoding="utf-8") as e: json.dump(items, e, indent=4)
+    with open('database/presence.json', 'w+', encoding="utf-8") as e: json.dump(presence, e, indent=4)
+    with open('database/levels.json', 'w+', encoding="utf-8") as e: json.dump(levels, e, indent=4)
+    with open('database/automod.json', 'w+', encoding="utf-8") as e: json.dump(automod_config, e, indent=4)
 
 if not os.path.isdir("logs"):
     os.mkdir('logs')
@@ -52,7 +51,8 @@ if not os.path.isdir("logs"):
         time.sleep(0.5)
         open('logs/currency.log', 'x', encoding="utf-8")
         logger.info("Created currency log", nolog=True)
-    except Exception as e: logger.error(f"Failed to make log file: {e}", nolog=True)
+    except IOError as e:
+        logger.error(f"Failed to make log file: {e}", nolog=True)
 
 #Framework Module Loader
 colors = colors.Colors()
@@ -76,6 +76,7 @@ else: color = discord.Color.random()
 #Events
 @client.event
 async def on_ready():
+    """This event is fired when the bot client is ready"""
     print("""
 Isobot  Copyright (C) 2022  PyBotDevs/NKA
 This program comes with ABSOLUTELY NO WARRANTY.
@@ -92,13 +93,16 @@ __________________________________________________""")
 
 @client.event
 async def on_message(ctx):
+    """This event is fired whenever a message is sent (in a readable channel)"""
     currency.new_wallet(ctx.author.id)
     currency.new_bank(ctx.author.id)
     create_isocoin_key(ctx.author.id)
     new_userdat(ctx.author.id)
     settings.generate(ctx.author.id)
-    if str(ctx.author.id) not in items: items[str(ctx.author.id)] = {}
-    if str(ctx.author.id) not in levels: levels[str(ctx.author.id)] = {"xp": 0, "level": 0}
+    if str(ctx.author.id) not in items:
+        items[str(ctx.author.id)] = {}
+    if str(ctx.author.id) not in levels:
+        levels[str(ctx.author.id)] = {"xp": 0, "level": 0}
     if str(ctx.guild.id) not in automod_config:
         automod_config[str(ctx.guild.id)] = {
             "swear_filter": {
@@ -116,12 +120,12 @@ async def on_message(ctx):
     save()
     uList = list()
     if str(ctx.guild.id) in presence:
-        for x in presence[str(ctx.guild.id)].keys(): uList.append(x)
+        for userid in presence[str(ctx.guild.id)].keys(): uList.append(userid)
     else: pass
-    for i in uList:
-        if i in ctx.content and not ctx.author.bot:
-            fetch_user = client.get_user(id(i))
-            await ctx.channel.send(f"{fetch_user.display_name} went AFK <t:{floor(presence[str(ctx.guild.id)][str(i)]['time'])}:R>: {presence[str(ctx.guild.id)][str(i)]['response']}")
+    for user in uList:
+        if user in ctx.content and not ctx.author.bot:
+            fetch_user = client.get_user(id(user))
+            await ctx.channel.send(f"{fetch_user.display_name} went AFK <t:{floor(presence[str(ctx.guild.id)][str(user)]['time'])}:R>: {presence[str(ctx.guild.id)][str(user)]['response']}")
     if str(ctx.guild.id) in presence and str(ctx.author.id) in presence[str(ctx.guild.id)]:
         del presence[str(ctx.guild.id)][str(ctx.author.id)]
         save()
@@ -137,10 +141,10 @@ async def on_message(ctx):
         if levels[str(ctx.author.id)]["xp"] >= xpreq:
             levels[str(ctx.author.id)]["xp"] = 0
             levels[str(ctx.author.id)]["level"] += 1
-            if settings.fetch_setting(ctx.author.id, "levelup_messages") == True:
+            if settings.fetch_setting(ctx.author.id, "levelup_messages") is True:
                 await ctx.author.send(f"{ctx.author.mention}, you just ranked up to **level {levels[str(ctx.author.id)]['level']}**. Nice!")
         save()
-        if automod_config[str(ctx.guild.id)]["swear_filter"]["enabled"] == True:
+        if automod_config[str(ctx.guild.id)]["swear_filter"]["enabled"] is True:
             if automod_config[str(ctx.guild.id)]["swear_filter"]["keywords"]["use_default"] and any(x in ctx.content.lower() for x in automod_config[str(ctx.guild.id)]["swear_filter"]["keywords"]["default"]):
                 await ctx.delete()
                 await ctx.channel.send(f'{ctx.author.mention} watch your language.', delete_after=5)
@@ -151,6 +155,7 @@ async def on_message(ctx):
 #Error handler
 @client.event
 async def on_application_command_error(ctx: ApplicationContext, error: discord.DiscordException):
+    """An event handler to handle command exceptions when things go wrong."""
     current_time = datetime.time().strftime("%H:%M:%S")
     if isinstance(error, commands.CommandOnCooldown):
         await ctx.respond(f":stopwatch: Not now! Please try after **{str(datetime.timedelta(seconds=int(round(error.retry_after))))}**")
@@ -177,25 +182,37 @@ async def on_application_command_error(ctx: ApplicationContext, error: discord.D
 )
 @option(name="command", description="Which command do you need help with?", type=str, default=None)
 async def help(ctx: ApplicationContext, command: str = None):
+    """Gives you help with a specific command, or shows a list of all commands"""
     if command is not None:
         try:
-            localembed = discord.Embed(title=f"{commandsdb[command]['name']} Command (/{command})", description=commandsdb[command]['description'], color=color)
+            localembed = discord.Embed(
+                title=f"{commandsdb[command]['name']} Command (/{command})",
+                description=commandsdb[command]['description'],
+                color=color
+            )
             localembed.add_field(name="Command Type", value=commandsdb[command]['type'], inline=False)
-            if commandsdb[command]['cooldown'] is not None: localembed.add_field(name="Cooldown", value=f"{str(datetime.timedelta(seconds=commandsdb[command]['cooldown']))}", inline=False)
+            if commandsdb[command]['cooldown'] is not None:
+                localembed.add_field(name="Cooldown", value=f"{str(datetime.timedelta(seconds=commandsdb[command]['cooldown']))}", inline=False)
             localembed.add_field(name="Usable By", value=commandsdb[command]['usable_by'], inline=False)
             if commandsdb[command]['args'] is not None:
-                r = ""
-                for x in commandsdb[command]['args']: r += f"`{x}` "
-                localembed.add_field(name="Arguments", value=r, inline=False)
-            if commandsdb[command]['bugged'] is True: localembed.set_footer(text="⚠ This command might be bugged (experiencing issues), but will be fixed later.")
-            if commandsdb[command]['disabled'] is True: localembed.set_footer(text="⚠ This command is currently disabled")
+                args = ""
+                for arg in commandsdb[command]['args']: args += f"`{arg}` "
+                localembed.add_field(name="Arguments", value=args, inline=False)
+            if commandsdb[command]['bugged'] is True:
+                localembed.set_footer(text="⚠ This command might be bugged (experiencing issues), but will be fixed later.")
+            if commandsdb[command]['disabled'] is True:
+                localembed.set_footer(text="⚠ This command is currently disabled")
             await ctx.respond(embed=localembed)
-        except KeyError: return await ctx.respond(embed=discord.Embed(description=f"No results found for {command}."), ephemeral=True)
+        except KeyError:
+            return await ctx.respond(
+                embed=discord.Embed(description=f"No results found for {command}."),
+                ephemeral=True
+            )
     else:
-        r = ""
-        for x in commandsdb:
-            if commandsdb[x]["type"] != "DevTools": r += f"`/{x}`\n"
-        localembed = discord.Embed(title="Isobot Command Help", description=f"**Bot Commands:**\n{r}", color = color)
+        commands_list = ""
+        for _command in commandsdb:
+            if commandsdb[_command]["type"] != "DevTools": commands_list += f"`/{_command}`\n"
+        localembed = discord.Embed(title="Isobot Command Help", description=f"**Bot Commands:**\n{commands_list}", color = color)
         await ctx.author.send(embed=localembed)
         await ctx.respond("Check your direct messages.", ephemeral=True)
 
@@ -208,10 +225,17 @@ cogs = client.create_group("cog", "Commands for working with isobot cogs.")
 )
 @option(name="cog", description="What cog do you want to load?", type=str)
 async def load(ctx: ApplicationContext, cog: str):
-    if ctx.author.id != 738290097170153472: return await ctx.respond("You can't use this command!", ephemeral=True)
+    """Loads a cog."""
+    if ctx.author.id != 738290097170153472:
+        return await ctx.respond("You can't use this command!", ephemeral=True)
     try:
         client.load_extension(f"cogs.{cog}")
-        await ctx.respond(embed=discord.Embed(description=f"{cog} cog successfully loaded.", color=discord.Color.green()))
+        await ctx.respond(
+            embed=discord.Embed(
+                description=f"{cog} cog successfully loaded.",
+                color=discord.Color.green()
+            )
+        )
     except discord.errors.ExtensionNotFound:
         return await ctx.respond(
             embed=discord.Embed(
@@ -229,17 +253,23 @@ async def load(ctx: ApplicationContext, cog: str):
             )
         )
 
-
 @cogs.command(
     name="disable",
     description="Disables a cog."
 )
 @option(name="cog", description="What cog do you want to disable?", type=str)
 async def disable(ctx: ApplicationContext, cog: str):
-    if ctx.author.id != 738290097170153472: return await ctx.respond("You can't use this command!", ephemeral=True)
+    """Disables a cog."""
+    if ctx.author.id != 738290097170153472:
+        return await ctx.respond("You can't use this command!", ephemeral=True)
     try:
         client.unload_extension(f"cogs.{cog}")
-        await ctx.respond(embed=discord.Embed(description=f"{cog} cog successfully disabled.", color=discord.Color.green()))
+        await ctx.respond(
+            embed=discord.Embed(
+                description=f"{cog} cog successfully disabled.",
+                color=discord.Color.green()
+            )
+        )
     except discord.errors.ExtensionNotFound:
         return await ctx.respond(
             embed=discord.Embed(
@@ -249,18 +279,23 @@ async def disable(ctx: ApplicationContext, cog: str):
             )
         )
 
-
-
 @cogs.command(
     name="reload",
     description="Reloads a cog."
 )
 @option(name="cog", description="What cog do you want to reload?", type=str)
 async def reload(ctx: ApplicationContext, cog: str):
-    if ctx.author.id != 738290097170153472: return await ctx.respond("You can't use this command!", ephemeral=True)
+    """Reloads a cog."""
+    if ctx.author.id != 738290097170153472:
+        return await ctx.respond("You can't use this command!", ephemeral=True)
     try:
         client.reload_extension(f"cogs.{cog}")
-        await ctx.respond(embed=discord.Embed(description=f"{cog} cog successfully reloaded.", color=discord.Color.green()))
+        await ctx.respond(
+            embed=discord.Embed(
+                description=f"{cog} cog successfully reloaded.",
+                color=discord.Color.green()
+            )
+        )
     except discord.errors.ExtensionNotFound:
         return await ctx.respond(
             embed=discord.Embed(
@@ -279,7 +314,9 @@ config = client.create_group("settings", "Commands used to change bot settings."
 )
 @option(name="enabled", description="Do you want this setting enabled?", type=bool)
 async def levelup_messages(ctx: ApplicationContext, enabled: bool):
-    if settings.fetch_setting(ctx.author.id, "levelup_messages") == enabled: return await ctx.respond("This is already done.", ephemeral=True)
+    """Configure whether you want to be notified for level ups or not."""
+    if settings.fetch_setting(ctx.author.id, "levelup_messages") == enabled:
+        return await ctx.respond("This is already done.", ephemeral=True)
     settings.edit_setting(ctx.author.id, "levelup_messages", enabled)
     localembed = discord.Embed(
         description="Setting successfully updated.",
@@ -310,7 +347,7 @@ for x in active_cogs:
     print(f"[main/Cogs] Loading isobot Cog ({i}/{len(active_cogs)})")
     i += 1
     try: client.load_extension(f"cogs.{x}")
-    except Exception as e:
+    except discord.errors.ExtensionFailed as e:
         cog_errors += 1
         print(f"[main/Cogs] {colors.red}ERROR: Cog '{x}' failed to load: {e}{colors.end}")
 if cog_errors == 0: print(f"[main/Cogs] {colors.green}All cogs successfully loaded.{colors.end}")
