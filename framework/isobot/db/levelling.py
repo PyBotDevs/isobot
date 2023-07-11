@@ -26,7 +26,7 @@ class Levelling():
             levels[str(user_id)] = {"xp": 0, "level": 0}
             self.save(levels)
             return 0
-        else: return 1
+        return 1
 
     def set_level(self, user_id: int, count: int) -> int:
         """Sets a new level for the specified user."""
