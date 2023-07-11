@@ -79,3 +79,8 @@ class Levelling():
         """Fetches a user's current xp."""
         levels = self.load()
         return levels[str(user_id)]["xp"]
+    
+    def get_raw(self):
+        """Fetches and returns the raw json data in the levelling database."""
+        levels = self.load()
+        return levels
