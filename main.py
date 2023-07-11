@@ -147,7 +147,7 @@ async def on_message(ctx):
             if automod_config[str(ctx.guild.id)]["swear_filter"]["keywords"]["use_default"] and any(x in ctx.content.lower() for x in automod_config[str(ctx.guild.id)]["swear_filter"]["keywords"]["default"]):
                 await ctx.delete()
                 await ctx.channel.send(f'{ctx.author.mention} watch your language.', delete_after=5)
-            elif automod_config[str(ctx.guild.id)]["swear_filter"]["keywords"]["custom"] is not [] and any(x in ctx.content.lower() for x in automod_config[str(ctx.guild.id)]["swear_filter"]["keywords"]["custom"]):
+            elif automod_config[str(ctx.guild.id)]["swear_filter"]["keywords"]["custom"] != [] and any(x in ctx.content.lower() for x in automod_config[str(ctx.guild.id)]["swear_filter"]["keywords"]["custom"]):
                 await ctx.delete()
                 await ctx.channel.send(f'{ctx.author.mention} watch your language.', delete_after=5)
 
