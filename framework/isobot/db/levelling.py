@@ -46,7 +46,7 @@ class Levelling():
         """Fetches a user's current level."""
         levels = self.load()
         return levels[str(user_id)]["level"]
- 
+
     def get_xp(self, user_id: int) -> int:
         """Fetches a user's current xp."""
         levels = self.load()
