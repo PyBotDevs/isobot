@@ -132,14 +132,14 @@ async def on_message(ctx):
         await asyncio.sleep(5)
         await m1.delete()
     if not ctx.author.bot:
-        levelling.set_xp(ctx.author.id, levelling.get_xp(ctx.author.id) += randint(1, 5))
+        levelling.add_xp(ctx.author.id, randint(1, 5))
         xpreq = 0
         for level in range(levelling.get_level(ctx.author.id)):
             xpreq += 50
             if xpreq >= 5000: break
         if levelling.get_xp(ctx.author.id) >= xpreq:
             levelling.set_xp(ctx.author.id, 0)
-            levelling.set_level(ctx.author.id, levelling.get_level(ctx.author.id) += 1)
+            levelling.add_levels(ctx.author.id, 1)
             if settings.fetch_setting(ctx.author.id, "levelup_messages") is True:
                 await ctx.author.send(f"{ctx.author.mention}, you just ranked up to **level {levelling.get_level(ctx.author.id)}**. Nice!")
         save()
