@@ -42,6 +42,34 @@ class Levelling():
         self.save(levels)
         return 0
 
+    def add_levels(self, user_id: int, count: int) -> int:
+        """Adds a specified amount of levels to the specified user."""
+        levels = self.load()
+        levels[str(user_id)]["levels"] += count
+        self.save(levels)
+        return 0
+
+    def remove_levels(self, user_id: int, count: int) -> int:
+        """Removes a specified amount of levels from the specified user."""
+        levels = self.load()
+        levels[str(user_id)]["levels"] -= count
+        self.save(levels)
+        return 0
+
+    def add_xp(self, user_id: int, count: int) -> int:
+        """Adds a specified amount of xp to the specified user."""
+        levels = self.load()
+        levels[str(user_id)]["xp"] += count
+        self.save(levels)
+        return 0
+
+    def remove_xp(self, user_id: int, count: int) -> int:
+        """Removes a specified amount of xp from the specified user."""
+        levels = self.load()
+        levels[str(user_id)]["xp"] -= count
+        self.save(levels)
+        return 0
+
     def get_level(self, user_id: int) -> int:
         """Fetches a user's current level."""
         levels = self.load()
