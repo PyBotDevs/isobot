@@ -11,6 +11,7 @@ from utils import logger, ping
 from math import floor
 from random import randint
 from framework.isobot import currency, colors, settings
+from framework.isobot.db import levelling
 from discord import ApplicationContext, option
 from discord.ext import commands
 from cogs.economy import new_userdat
@@ -27,7 +28,6 @@ color = discord.Color.random()
 with open('database/items.json', 'r', encoding="utf-8") as f: items = json.load(f)
 with open('config/shop.json', 'r', encoding="utf-8") as f: shopitem = json.load(f)
 with open('database/presence.json', 'r', encoding="utf-8") as f: presence = json.load(f)
-with open('database/levels.json', 'r', encoding="utf-8") as f: levels = json.load(f)
 with open('config/commands.json', 'r', encoding="utf-8") as f: commandsdb = json.load(f)
 with open('database/automod.json', 'r', encoding="utf-8") as f: automod_config = json.load(f)
 cmd_list = commandsdb.keys()
@@ -37,7 +37,6 @@ def save():
     """Dumps all cached data to the local databases."""
     with open('database/items.json', 'w+', encoding="utf-8") as e: json.dump(items, e, indent=4)
     with open('database/presence.json', 'w+', encoding="utf-8") as e: json.dump(presence, e, indent=4)
-    with open('database/levels.json', 'w+', encoding="utf-8") as e: json.dump(levels, e, indent=4)
     with open('database/automod.json', 'w+', encoding="utf-8") as e: json.dump(automod_config, e, indent=4)
 
 if not os.path.isdir("logs"):
@@ -58,6 +57,7 @@ if not os.path.isdir("logs"):
 colors = colors.Colors()
 currency = currency.CurrencyAPI("database/currency.json", "logs/currency.log")
 settings = settings.Configurator()
+levelling = levelling.Levelling()
 
 # Theme Loader
 themes = False  # True: enables themes; False: disables themes;
@@ -101,8 +101,7 @@ async def on_message(ctx):
     settings.generate(ctx.author.id)
     if str(ctx.author.id) not in items:
         items[str(ctx.author.id)] = {}
-    if str(ctx.author.id) not in levels:
-        levels[str(ctx.author.id)] = {"xp": 0, "level": 0}
+    levelling.generate(ctx.author.id)
     if str(ctx.guild.id) not in automod_config:
         automod_config[str(ctx.guild.id)] = {
             "swear_filter": {
@@ -133,16 +132,16 @@ async def on_message(ctx):
         await asyncio.sleep(5)
         await m1.delete()
     if not ctx.author.bot:
-        levels[str(ctx.author.id)]["xp"] += randint(1, 5)
+        levelling.set_xp(ctx.author.id, levelling.get_xp(ctx.author.id) += randint(1, 5))
         xpreq = 0
-        for level in range(int(levels[str(ctx.author.id)]["level"])):
+        for level in range(levelling.get_level(ctx.author.id)):
             xpreq += 50
             if xpreq >= 5000: break
-        if levels[str(ctx.author.id)]["xp"] >= xpreq:
-            levels[str(ctx.author.id)]["xp"] = 0
-            levels[str(ctx.author.id)]["level"] += 1
+        if levelling.get_xp(ctx.author.id) >= xpreq:
+            levelling.set_xp(ctx.author.id, 0)
+            levelling.set_level(ctx.author.id, levelling.get_level(ctx.author.id) += 1)
             if settings.fetch_setting(ctx.author.id, "levelup_messages") is True:
-                await ctx.author.send(f"{ctx.author.mention}, you just ranked up to **level {levels[str(ctx.author.id)]['level']}**. Nice!")
+                await ctx.author.send(f"{ctx.author.mention}, you just ranked up to **level {levelling.get_level(ctx.author.id)}**. Nice!")
         save()
         if automod_config[str(ctx.guild.id)]["swear_filter"]["enabled"] is True:
             if automod_config[str(ctx.guild.id)]["swear_filter"]["keywords"]["use_default"] and any(x in ctx.content.lower() for x in automod_config[str(ctx.guild.id)]["swear_filter"]["keywords"]["default"]):
