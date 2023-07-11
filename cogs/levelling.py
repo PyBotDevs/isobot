@@ -5,27 +5,17 @@ import discord
 import json
 from discord import option, ApplicationContext
 from discord.ext import commands
+from framework.isobot.db import levelling
 
 # Variables
 color = discord.Color.random()
-
-with open("database/levels.json", 'r', encoding="utf-8") as f: levels = json.load(f)
-
-def save():
-    with open("database/levels.json", 'w+', encoding="utf-8") as f: json.dump(levels, f, indent=4)
-
-# Functions
-def get_xp(id: int) -> int:
-    return levels[str(id)]["xp"]
-
-def get_level(id: int) -> int:
-    return levels[str(id)]["level"]
+levelling = levelling.Levelling()
 
 # Commands
 class Levelling(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-    
+
     @commands.slash_command(
         name="rank",
         description="Shows your rank or another user's rank"
@@ -35,8 +25,8 @@ class Levelling(commands.Cog):
         if user is None: user = ctx.author
         try:
             localembed = discord.Embed(title=f"{user.display_name}'s rank", color=color)
-            localembed.add_field(name="Level", value=levels[str(user.id)]["level"])
-            localembed.add_field(name="XP", value=levels[str(user.id)]["xp"])
+            localembed.add_field(name="Level", value=levelling.get_level(user.id))
+            localembed.add_field(name="XP", value=levelling.get_xp(user.id))
             localembed.set_footer(text="Keep chatting to earn levels!")
             await ctx.respond(embed = localembed)
         except KeyError: return await ctx.respond("Looks like that user isn't indexed yet. Try again later.", ephemeral=True)
@@ -50,8 +40,8 @@ class Levelling(commands.Cog):
     async def edit_rank(self, ctx: ApplicationContext, user:discord.User, new_rank:int):
         if ctx.author.id != 738290097170153472: return await ctx.respond("This command isn't for you.", ephemeral=True)
         try:
-            levels[str(user.id)]["level"] = new_rank
-            await ctx.respond(f"{user.display_name}\'s rank successfully edited. `New Rank: {levels[str(user.id)]['level']}`")
+            levelling.set_level(user.id, new_rank)
+            await ctx.respond(f"{user.display_name}\'s rank successfully edited. `New Rank: {levelling.get_level(user.id)}`")
         except KeyError: return await ctx.respond("That user isn't indexed yet.", ephemeral=True)
 
     @commands.slash_command(
@@ -63,15 +53,16 @@ class Levelling(commands.Cog):
     async def edit_xp(self, ctx: ApplicationContext, user:discord.User, new_xp:int):
         if ctx.author.id != 738290097170153472: return await ctx.respond("This command isn't for you.", ephemeral=True)
         try:
-            levels[str(user.id)]["xp"] = new_xp
-            await ctx.respond(f"{user.display_name}\'s XP count successfully edited. `New XP: {levels[str(user.id)]['xp']}`")
+            levelling.set_xp(user.id, new_xp)
+            await ctx.respond(f"{user.display_name}\'s XP count successfully edited. `New XP: {levelling.get_xp(user.id)}`")
         except KeyError: return await ctx.respond("That user isn't indexed yet.", ephemeral=True)
 
     @commands.slash_command(
-        name="leaderboard_levels", 
+        name="leaderboard_levels",
         description="View the global leaderboard for user levelling ranks."
     )
     async def leaderboard_levels(self, ctx: ApplicationContext):
+        levels = levelling.get_raw()
         levels_dict = dict()
         for person in levels:
             levels_dict[str(person)] = levels[str(person)]["level"]
