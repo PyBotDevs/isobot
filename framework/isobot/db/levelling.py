@@ -19,12 +19,14 @@ class Levelling():
         return 0
 
     def generate(self, user_id: int) -> int:
-        """Generates a new data key for the specified user."""
+        """Generates a new data key for the specified user.\n
+        Returns `0` if the request was successful, returns `1` if the data key already exists."""
         levels = self.load()
         if str(user_id) not in levels:
             levels[str(user_id)] = {"xp": 0, "level": 0}
-        self.save(levels)
-        return 0
+            self.save(levels)
+            return 0
+        else: return 1
 
     def set_level(self, user_id: int, count: int) -> int:
         """Sets a new level for the specified user."""
