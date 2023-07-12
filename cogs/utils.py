@@ -190,4 +190,6 @@ class Utils(commands.Cog):
         await ctx.respond(embed=localembed)
 
 # Cog Initialization
-def setup(bot): bot.add_cog(Utils(bot))
+def setup(bot):
+    """Initializes the cog."""
+    bot.add_cog(Utils(bot))
