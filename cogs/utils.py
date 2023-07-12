@@ -1,11 +1,11 @@
 """The isobot cog file for utility commands."""
 
 # Imports
-import discord
 import os
 import psutil
 import math
 import openai
+import discord
 from framework.isobot import currency, embedengine
 from framework.isobot.db import levelling
 from discord import option, ApplicationContext
