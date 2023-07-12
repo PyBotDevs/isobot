@@ -42,7 +42,11 @@ class Utils(commands.Cog):
     )
     async def repo(self, ctx: ApplicationContext):
         """Shows the open-source code links for isobot."""
-        localembed = discord.Embed(title="Source-code Repositories", description="See and contribute to **isobot's [GitHub repository](https://github.com/PyBotDevs/isobot)**\nSee our **[GitHub organization](https://github.com/PyBotDevs)**", color=color)
+        localembed = discord.Embed(
+            title="Source-code Repositories",
+            description="See and contribute to **isobot's [GitHub repository](https://github.com/PyBotDevs/isobot)**\nSee our **[GitHub organization](https://github.com/PyBotDevs)**",
+            color=color
+        )
         await ctx.respond(embed=localembed)
 
     @commands.slash_command(
@@ -59,7 +63,17 @@ class Utils(commands.Cog):
     async def embedbuilder(self, ctx: ApplicationContext, title: str, description: str, image_url: str = None, thumbnail_url: str = None, color: int = None, footer_text: str = None, footer_icon_url: str = None):
         """Builds a custom embed however you want."""
         await ctx.respond("Embed Built!", ephemeral=True)
-        await ctx.channel.send(embed=embedengine.embed(title, description, image=image_url, thumbnail=thumbnail_url, color=color, footer_text=footer_text, footer_img=footer_icon_url))
+        await ctx.channel.send(
+            embed=embedengine.embed(
+                title,
+                description,
+                image=image_url,
+                thumbnail=thumbnail_url,
+                color=color,
+                footer_text=footer_text,
+                footer_img=footer_icon_url
+            )
+        )
 
     @commands.slash_command(
         name='whoami',
@@ -75,7 +89,8 @@ class Utils(commands.Cog):
         pfp = user.avatar
         localembed_desc = f"`AKA` {displayname}"
         presence = get_presence(ctx.author.id, ctx.guild.id)
-        if presence is not False: localembed_desc += f"\n`🌙 AFK` {presence['response']} - <t:{math.floor(presence['time'])}>"
+        if presence is not False: 
+            localembed_desc += f"\n`🌙 AFK` {presence['response']} - <t:{math.floor(presence['time'])}>"
         localembed = discord.Embed(
             title=f'User Info on {username}',
             description=localembed_desc
@@ -102,10 +117,26 @@ class Utils(commands.Cog):
         if user is None: user = ctx.author
         localembed = discord.Embed(title=f"{user.display_name}'s isobot stats", color=color)
         localembed.set_thumbnail(url=user.avatar)
-        localembed.add_field(name="Level", value=f"Level {levelling.get_level(user.id)} ({levelling.get_xp(user.id)} XP)", inline=False)
-        localembed.add_field(name="Balance in Wallet", value=f"{currency.get_wallet(user.id)} coins", inline=True)
-        localembed.add_field(name="Balance in Bank Account", value=f"{currency.get_bank(user.id)} coins", inline=True)
-        localembed.add_field(name="Net-Worth", value=f"{currency.get_user_networth(user.id)} coins", inline=True)
+        localembed.add_field(
+            name="Level",
+            value=f"Level {levelling.get_level(user.id)} ({levelling.get_xp(user.id)} XP)",
+            inline=False
+        )
+        localembed.add_field(
+            name="Balance in Wallet",
+            value=f"{currency.get_wallet(user.id)} coins",
+            inline=True
+        )
+        localembed.add_field(
+            name="Balance in Bank Account",
+            value=f"{currency.get_bank(user.id)} coins",
+            inline=True
+        )
+        localembed.add_field(
+            name="Net-Worth",
+            value=f"{currency.get_user_networth(user.id)} coins",
+            inline=True
+        )
         # More stats will be added later
         # Maybe I should make a userdat system for collecting statistical data to process and display here, coming in a future update.
         await ctx.respond(embed=localembed)
@@ -138,11 +169,20 @@ class Utils(commands.Cog):
     @commands.cooldown(1, 1, commands.BucketType.user)
     async def chatgpt(self, ctx: ApplicationContext, message: str):
         """Talk to ChatGPT and get a response back."""
-        if str(ctx.author.id) not in chatgpt_conversation: chatgpt_conversation[str(ctx.author.id)] = [{"role": "system", "content": "You are a intelligent assistant."}]
+        if str(ctx.author.id) not in chatgpt_conversation: 
+            chatgpt_conversation[str(ctx.author.id)] = [
+                    {
+                        "role": "system",
+                        "content": "You are a intelligent assistant."
+                    }
+                ]
         await ctx.defer()
         try:
             chatgpt_conversation[str(ctx.author.id)].append({"role": "user", "content": message})
-            _chat = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=chatgpt_conversation[str(ctx.author.id)])
+            _chat = openai.ChatCompletion.create(
+                model="gpt-3.5-turbo",
+                messages=chatgpt_conversation[str(ctx.author.id)]
+            )
             _reply = _chat.choices[0].message.content
             chatgpt_conversation[str(ctx.author.id)].append({"role": "assistant", "content": _reply})
         except openai.error.RateLimitError: return await ctx.respond("The OpenAI API is currently being rate-limited. Try again after some time.", ephemeral=True)
