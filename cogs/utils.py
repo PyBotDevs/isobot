@@ -82,7 +82,8 @@ class Utils(commands.Cog):
     @option(name="user", description="Who do you want to know about?", type=discord.User, default=None)
     async def whoami(self, ctx: ApplicationContext, user: discord.User=None):
         """Shows information on a user."""
-        if user is None: user = ctx.author
+        if user is None: 
+            user = ctx.author
         username = user
         displayname = user.display_name
         registered = user.joined_at.strftime("%b %d, %Y, %T")
@@ -101,8 +102,9 @@ class Utils(commands.Cog):
         localembed.add_field(name='Joined Discord on', value=registered, inline=False)
         localembed.add_field(name='Avatar URL', value=f"[here!]({pfp})", inline=True)
         role_render = ""
-        for p in user.roles:
-            if p != user.roles[0]: role_render += f"<@&{p.id}> "
+        for role in user.roles:
+            if role != user.roles[0]: 
+                role_render += f"<@&{role.id}> "
         localembed.add_field(name='Roles', value=role_render, inline=False)
         localembed.add_field(name="Net worth", value=f"{currency.get_user_networth(user.id)} coins", inline=False)
         await ctx.respond(embed=localembed)
@@ -114,7 +116,8 @@ class Utils(commands.Cog):
     @option(name="user", description="Whose isobot profile do you want to view?", type=discord.User, default=None)
     async def profile(self, ctx: ApplicationContext, user: discord.User = None):
         """Shows basic stats about your isobot profile, or someone else's profile stats."""
-        if user is None: user = ctx.author
+        if user is None: 
+            user = ctx.author
         localembed = discord.Embed(title=f"{user.display_name}'s isobot stats", color=color)
         localembed.set_thumbnail(url=user.avatar)
         localembed.add_field(
@@ -169,7 +172,7 @@ class Utils(commands.Cog):
     @commands.cooldown(1, 1, commands.BucketType.user)
     async def chatgpt(self, ctx: ApplicationContext, message: str):
         """Talk to ChatGPT and get a response back."""
-        if str(ctx.author.id) not in chatgpt_conversation: 
+        if str(ctx.author.id) not in chatgpt_conversation:
             chatgpt_conversation[str(ctx.author.id)] = [
                     {
                         "role": "system",
@@ -185,10 +188,14 @@ class Utils(commands.Cog):
             )
             _reply = _chat.choices[0].message.content
             chatgpt_conversation[str(ctx.author.id)].append({"role": "assistant", "content": _reply})
-        except openai.error.RateLimitError: return await ctx.respond("The OpenAI API is currently being rate-limited. Try again after some time.", ephemeral=True)
-        except openai.error.ServiceUnavailableError: return await ctx.respond("The ChatGPT service is currently unavailable.\nTry again after some time, or check it's status at https://status.openai.com", ephemeral=True)
-        except openai.error.APIError: return await ctx.respond("ChatGPT encountered an internal error. Please try again.", ephemeral=True)
-        except openai.error.Timeout: return await ctx.respond("Your request timed out. Please try again, or wait for a while.", ephemeral=True)
+        except openai.error.RateLimitError:
+            return await ctx.respond("The OpenAI API is currently being rate-limited. Try again after some time.", ephemeral=True)
+        except openai.error.ServiceUnavailableError:
+            return await ctx.respond("The ChatGPT service is currently unavailable.\nTry again after some time, or check it's status at https://status.openai.com", ephemeral=True)
+        except openai.error.APIError:
+            return await ctx.respond("ChatGPT encountered an internal error. Please try again.", ephemeral=True)
+        except openai.error.Timeout:
+            return await ctx.respond("Your request timed out. Please try again, or wait for a while.", ephemeral=True)
         localembed = discord.Embed(description=f"{_reply}", color=discord.Color.random())
         localembed.set_author(name="ChatGPT", icon_url="https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/ChatGPT_logo.svg/1200px-ChatGPT_logo.svg.png")
         localembed.set_footer(text="Powered by OpenAI")
@@ -205,12 +212,16 @@ class Utils(commands.Cog):
         """Generate an image of your choice using the DALL-E modal."""
         parsed_resolution: list = resolution.split("x")
         max_index: int = 0
-        for index in parsed_resolution: max_index += 1
-        if max_index < 2 or max_index > 2: return await ctx.respond("Your resolution format is malformed. Please check it and try again.", ephemeral=True)
+        for index in parsed_resolution:
+            max_index += 1
+        if max_index < 2 or max_index > 2:
+            return await ctx.respond("Your resolution format is malformed. Please check it and try again.", ephemeral=True)
         res_width = int(parsed_resolution[0])
         res_height = int(parsed_resolution[1])
-        if res_width < 256 or res_height < 256: return await ctx.respond("Your custom resolution needs to be at least 256p or higher.", ephermeral=True)
-        if res_width > 1024 or res_height > 1024: return await ctx.respond("Your image output resolution cannot exceed 1024p.", ephemeral=True)
+        if res_width < 256 or res_height < 256:
+            return await ctx.respond("Your custom resolution needs to be at least 256p or higher.", ephermeral=True)
+        if res_width > 1024 or res_height > 1024:
+            return await ctx.respond("Your image output resolution cannot exceed 1024p.", ephemeral=True)
         await ctx.defer()
         try:
             response = openai.Image.create(
@@ -219,10 +230,14 @@ class Utils(commands.Cog):
                 size=resolution
             )
             generated_image_url = response['data'][0]['url']
-        except openai.error.RateLimitError: return await ctx.respond("The OpenAI API is currently being rate-limited. Try again after some time.", ephemeral=True)
-        except openai.error.ServiceUnavailableError: return await ctx.respond("The OpenAI service is currently unavailable.\nTry again after some time, or check it's status at https://status.openai.com", ephemeral=True)
-        except openai.error.APIError: return await ctx.respond("DALL-E encountered an internal error. Please try again.", ephemeral=True)
-        except openai.error.Timeout: return await ctx.respond("Your request timed out. Please try again, or wait for a while.", ephemeral=True)
+        except openai.error.RateLimitError:
+            return await ctx.respond("The OpenAI API is currently being rate-limited. Try again after some time.", ephemeral=True)
+        except openai.error.ServiceUnavailableError:
+            return await ctx.respond("The OpenAI service is currently unavailable.\nTry again after some time, or check it's status at https://status.openai.com", ephemeral=True)
+        except openai.error.APIError:
+            return await ctx.respond("DALL-E encountered an internal error. Please try again.", ephemeral=True)
+        except openai.error.Timeout:
+            return await ctx.respond("Your request timed out. Please try again, or wait for a while.", ephemeral=True)
         localembed = discord.Embed(title="Here's an image generated using your prompt.", color=discord.Color.random())
         localembed.set_image(url=generated_image_url)
         localembed.set_author(name="DALL-E", icon_url="https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/ChatGPT_logo.svg/1200px-ChatGPT_logo.svg.png")
