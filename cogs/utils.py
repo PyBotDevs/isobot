@@ -63,7 +63,10 @@ class Utils(commands.Cog):
     @option(name="user", description="Who do you want to know about?", type=discord.User, default=None)
     async def whoami(self, ctx: ApplicationContext, user: discord.User=None):
         if user is None: user = ctx.author
-        username = user
+        discrim = user.name.split("#")
+        username = user.name
+        if discrim[-1] == 0:
+            username = user.name.replace("#0", "")
         displayname = user.display_name
         registered = user.joined_at.strftime("%b %d, %Y, %T")
         pfp = user.avatar
