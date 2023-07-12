@@ -21,15 +21,18 @@ chatgpt_conversation = dict()
 
 # Commands
 class Utils(commands.Cog):
+    """The utils cog class."""
+
     def __init__(self, bot):
         self.bot = bot
 
     @commands.slash_command(
         name='echo',
-        description='Sends a bot message in the channel'
+        description='Sends a bot message in the channel.'
     )
     @option(name="text", description="What do you want to send?", type=str)
     async def echo(self, ctx: ApplicationContext, text: str):
+        """Sends a bot message in the channel."""
         await ctx.respond("Echoed!", ephemeral=True)
         await ctx.channel.send(text)
 
@@ -38,12 +41,13 @@ class Utils(commands.Cog):
         description="Shows the open-source code links for isobot."
     )
     async def repo(self, ctx: ApplicationContext):
+        """Shows the open-source code links for isobot."""
         localembed = discord.Embed(title="Source-code Repositories", description="See and contribute to **isobot's [GitHub repository](https://github.com/PyBotDevs/isobot)**\nSee our **[GitHub organization](https://github.com/PyBotDevs)**", color=color)
         await ctx.respond(embed=localembed)
 
     @commands.slash_command(
         name="embedbuilder",
-        description="Builds a custom embed however you want"
+        description="Builds a custom embed however you want."
     )
     @option(name="title", description="The title of the embed", type=str)
     @option(name="description", description="The body of the embed", type=str)
@@ -53,15 +57,17 @@ class Utils(commands.Cog):
     @option(name="footer_text", description="The text at the footer of the embed", type=str, default=None)
     @option(name="footer_icon_url", description="The icon you want to show in the embed's footer (URL ONLY)", type=str, default=None)
     async def embedbuilder(self, ctx: ApplicationContext, title: str, description: str, image_url: str = None, thumbnail_url: str = None, color: int = None, footer_text: str = None, footer_icon_url: str = None):
+        """Builds a custom embed however you want."""
         await ctx.respond("Embed Built!", ephemeral=True)
         await ctx.channel.send(embed=embedengine.embed(title, description, image=image_url, thumbnail=thumbnail_url, color=color, footer_text=footer_text, footer_img=footer_icon_url))
 
     @commands.slash_command(
         name='whoami',
-        description='Shows information on a user'
+        description='Shows information on a user.'
     )
     @option(name="user", description="Who do you want to know about?", type=discord.User, default=None)
     async def whoami(self, ctx: ApplicationContext, user: discord.User=None):
+        """Shows information on a user."""
         if user is None: user = ctx.author
         username = user
         displayname = user.display_name
@@ -88,10 +94,11 @@ class Utils(commands.Cog):
 
     @commands.slash_command(
         name="profile",
-        description="Shows basic stats about your isobot profile, or someone else's profile stats"
+        description="Shows basic stats about your isobot profile, or someone else's profile stats."
     )
     @option(name="user", description="Whose isobot profile do you want to view?", type=discord.User, default=None)
     async def profile(self, ctx: ApplicationContext, user: discord.User = None):
+        """Shows basic stats about your isobot profile, or someone else's profile stats."""
         if user is None: user = ctx.author
         localembed = discord.Embed(title=f"{user.display_name}'s isobot stats", color=color)
         localembed.set_thumbnail(url=user.avatar)
@@ -105,9 +112,10 @@ class Utils(commands.Cog):
 
     @commands.slash_command(
         name="status",
-        description="Shows the current client info"
+        description="Shows the current client info."
     )
     async def status(self, ctx: ApplicationContext):
+        """Shows the current client info."""
         os_name = os.name
         sys_ram = str(f"{psutil.virtual_memory()[2]}GiB")
         sys_cpu = str(f"{psutil.cpu_percent(1)}%")
@@ -129,6 +137,7 @@ class Utils(commands.Cog):
     @option(name="message", description="What do you want to send to ChatGPT?", type=str)
     @commands.cooldown(1, 1, commands.BucketType.user)
     async def chatgpt(self, ctx: ApplicationContext, message: str):
+        """Talk to ChatGPT and get a response back."""
         if str(ctx.author.id) not in chatgpt_conversation: chatgpt_conversation[str(ctx.author.id)] = [{"role": "system", "content": "You are a intelligent assistant."}]
         await ctx.defer()
         try:
@@ -153,6 +162,7 @@ class Utils(commands.Cog):
     @option(name="resolution", description="Set a custom resolution for your generated image", type=str, default="512x512", choices=["256x256", "512x512", "1024x1024"])
     @commands.cooldown(1, 10, commands.BucketType.user)
     async def generate_image(self, ctx: ApplicationContext, prompt: str, resolution: str = "512x512"):
+        """Generate an image of your choice using the DALL-E modal."""
         parsed_resolution: list = resolution.split("x")
         max_index: int = 0
         for index in parsed_resolution: max_index += 1
