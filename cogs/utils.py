@@ -2,8 +2,8 @@
 
 # Imports
 import os
-import psutil
 import math
+import psutil
 import openai
 import discord
 from framework.isobot import currency, embedengine
