@@ -82,7 +82,7 @@ class Utils(commands.Cog):
     @option(name="user", description="Who do you want to know about?", type=discord.User, default=None)
     async def whoami(self, ctx: ApplicationContext, user: discord.User=None):
         """Shows information on a user."""
-        if user is None: 
+        if user is None:
             user = ctx.author
         username = user
         displayname = user.display_name
@@ -103,7 +103,7 @@ class Utils(commands.Cog):
         localembed.add_field(name='Avatar URL', value=f"[here!]({pfp})", inline=True)
         role_render = ""
         for role in user.roles:
-            if role != user.roles[0]: 
+            if role != user.roles[0]:
                 role_render += f"<@&{role.id}> "
         localembed.add_field(name='Roles', value=role_render, inline=False)
         localembed.add_field(name="Net worth", value=f"{currency.get_user_networth(user.id)} coins", inline=False)
@@ -116,7 +116,7 @@ class Utils(commands.Cog):
     @option(name="user", description="Whose isobot profile do you want to view?", type=discord.User, default=None)
     async def profile(self, ctx: ApplicationContext, user: discord.User = None):
         """Shows basic stats about your isobot profile, or someone else's profile stats."""
-        if user is None: 
+        if user is None:
             user = ctx.author
         localembed = discord.Embed(title=f"{user.display_name}'s isobot stats", color=color)
         localembed.set_thumbnail(url=user.avatar)
