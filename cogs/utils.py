@@ -89,7 +89,7 @@ class Utils(commands.Cog):
         pfp = user.avatar
         localembed_desc = f"`AKA` {displayname}"
         presence = get_presence(ctx.author.id, ctx.guild.id)
-        if presence is not False: 
+        if presence is not False:
             localembed_desc += f"\n`🌙 AFK` {presence['response']} - <t:{math.floor(presence['time'])}>"
         localembed = discord.Embed(
             title=f'User Info on {username}',
