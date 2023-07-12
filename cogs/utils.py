@@ -29,7 +29,7 @@ class Utils(commands.Cog):
         description='Sends a bot message in the channel'
     )
     @option(name="text", description="What do you want to send?", type=str)
-    async def echo(self, ctx: ApplicationContext, text:str):
+    async def echo(self, ctx: ApplicationContext, text: str):
         await ctx.respond("Echoed!", ephemeral=True)
         await ctx.channel.send(text)
 
@@ -121,7 +121,7 @@ class Utils(commands.Cog):
         localembed.add_field(name="Release Notes", value="[latest](https://github.com/PyBotDevs/isobot/releases/latest)")
         localembed.set_footer(text=f"Requested by {ctx.author.name}", icon_url=ctx.author.avatar_url)
         await ctx.respond(embed=localembed)
-    
+
     @commands.slash_command(
         name="chatgpt",
         description="Talk to ChatGPT and get a response back."
@@ -144,7 +144,7 @@ class Utils(commands.Cog):
         localembed.set_author(name="ChatGPT", icon_url="https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/ChatGPT_logo.svg/1200px-ChatGPT_logo.svg.png")
         localembed.set_footer(text="Powered by OpenAI")
         await ctx.respond(embed=localembed)
-    
+
     @commands.slash_command(
         name="generate_image",
         description="Generate an image of your choice using the DALL-E modal."
