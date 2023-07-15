@@ -141,6 +141,7 @@ class IsoCard(commands.Cog):
                     description="Please wait patiently until the merchant has verified the transaction.",
                     color=discord.Color.green()
                 )
+                await ctx.respond(embed=localembed, ephemeral=True)
         except KeyError: return await ctx.respond("This transaction verification code is invalid.")
 
 # Initialization
