@@ -110,6 +110,37 @@ def checkpayment():
         "exception": type(e).__name__
     }, 500
 
+@app.route('/account', methods=["GET"])
+def account():
+    try:
+        args = request.args
+        isocard_number = args.get("cardnumber")
+        ssc = args.get("ssc")
+        if isocards[str(isocard_number)]["ssc"] == ssc:
+            card_data = isocards[str(isocard_number)]
+            del card_data["config"]
+            del card_data["ssc"]
+            card_data["account_balance"] = currency.get_wallet(card_data["user_id"])
+            return {
+                "code": 200,
+                "card_info": card_data
+            }, 200
+        else: return {
+            "code": 403,
+            "message": "Incorrect IsoCard SSC.",
+            "exception": "InvalidSSC"
+        }
+    except KeyError: return {
+        "code": 404,
+        "message": "Card number is invalid.",
+        "exception": "InvalidIsoCard"
+    }, 404
+    except Exception as e: return {
+        "code": 500,
+        "message": f"Failed to fetch account info: {e}",
+        "exception": type(e).__name__
+    }
+
 # TODO: test this system and make sure it works
 
 # Initialization
