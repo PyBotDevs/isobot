@@ -113,7 +113,7 @@ def checkpayment():
 # TODO: test this system and make sure it works
 
 # Initialization
-def run(): app.run(host="0.0.0.0", port=6969)
+def run(): app.run(host="0.0.0.0", port=4800)
 
 t = Thread(target=run)
 t.daemon = True
