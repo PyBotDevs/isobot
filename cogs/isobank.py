@@ -6,13 +6,13 @@ import discord
 import json
 from discord import option, ApplicationContext
 from discord.ext import commands
-import framework.isobank.manager
+from framework.isobank import manager, authorize
 
 # Variables
 color = discord.Color.random()
 
 # Isobot Framework
-isobankauth = framework.isobank.authorize.IsobankAuth("database/isobank/auth.json", "database/isobank/accounts.json")
+isobankauth = authorize.IsobankAuth("database/isobank/auth.json", "database/isobank/accounts.json")
 
 # Commands
 class IsoBank(commands.Cog):
