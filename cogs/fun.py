@@ -22,14 +22,13 @@ class Fun(commands.Cog):
     )
     @option(name="strok", description="What do you want to translate?", type=str)
     async def stroketranslate(self, ctx: ApplicationContext, strok: str):
-        try:
-            if len(strok) > 300: return await ctx.respond("Please use no more than `300` character length", ephemeral=True)
-            else:
-                with open(f"{os.getcwd()}/config/words.json", "r", encoding="utf-8") as f: words = json.load(f)
-                var = str()
-                s = strok.lower()
-                for i, c in enumerate(s): var += random.choice(words[c])
-                return await ctx.respond(f"{var}")
+        if len(strok) > 300: return await ctx.respond("Please use no more than `300` character length", ephemeral=True)
+        else:
+            with open(f"{os.getcwd()}/config/words.json", "r", encoding="utf-8") as f: words = json.load(f)
+            var = str()
+            s = strok.lower()
+            for i, c in enumerate(s): var += random.choice(words[c])
+            return await ctx.respond(f"{var}")
         var = ''.join(arr)
         await ctx.respond(f"{var}")
 
