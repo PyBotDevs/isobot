@@ -45,14 +45,14 @@ class Levelling():
     def add_levels(self, user_id: int, count: int) -> int:
         """Adds a specified amount of levels to the specified user."""
         levels = self.load()
-        levels[str(user_id)]["levels"] += count
+        levels[str(user_id)]["level"] += count
         self.save(levels)
         return 0
 
     def remove_levels(self, user_id: int, count: int) -> int:
         """Removes a specified amount of levels from the specified user."""
         levels = self.load()
-        levels[str(user_id)]["levels"] -= count
+        levels[str(user_id)]["level"] -= count
         self.save(levels)
         return 0
 
