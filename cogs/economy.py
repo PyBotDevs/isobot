@@ -8,26 +8,11 @@ import math
 import utils.logger
 import asyncio
 import framework.isobot.currency
+from framework.isobot.shop import ShopData
 from framework.isobot.db import levelling
 from random import randint
 from discord import option, ApplicationContext
 from discord.ext import commands
-
-# Classes
-class ShopData:
-    def __init__(self, db_path: str):
-        self.db_path = db_path 
-        with open(db_path, 'r') as f: self.config = json.load(f)
-        
-    def get_item_ids(self) -> list:
-        json_list = list()
-        for h in self.config: json_list.append(str(h))
-        return json_list
-    
-    def get_item_names(self) -> list:
-        json_list = list()
-        for h in self.config: json_list.append(str(h["stylized name"]))
-        return json_list
 
 # Variables
 color = discord.Color.random()
@@ -35,6 +20,7 @@ currency = framework.isobot.currency.CurrencyAPI("database/currency.json", "logs
 levelling = levelling.Levelling()
 shop_data = ShopData("config/shop.json")
 all_item_ids = shop_data.get_item_ids()
+shopitem = shop_data.get_raw_data()
 jobs = [
     "Discord mod",
     "YouTuber",
@@ -46,7 +32,6 @@ jobs = [
 ]
 
 with open("database/items.json", 'r') as f: items = json.load(f)
-with open("config/shop.json", 'r') as f: shopitem = json.load(f)
 with open("database/user_data.json", 'r') as f: userdat = json.load(f)
 
 def save():
