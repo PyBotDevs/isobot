@@ -2,7 +2,6 @@
 
 # Imports
 import discord
-import json
 import random
 import math
 import utils.logger
