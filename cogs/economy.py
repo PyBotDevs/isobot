@@ -9,7 +9,7 @@ import utils.logger
 import asyncio
 import framework.isobot.currency
 from framework.isobot.shop import ShopData
-from framework.isobot.db import levelling, items
+from framework.isobot.db import levelling, items, userdata
 from random import randint
 from discord import option, ApplicationContext
 from discord.ext import commands
@@ -19,6 +19,7 @@ color = discord.Color.random()
 currency = framework.isobot.currency.CurrencyAPI("database/currency.json", "logs/currency.log")
 levelling = levelling.Levelling()
 items = items.Items()
+userdata = userdata.UserData()
 shop_data = ShopData("config/shop.json")
 all_item_ids = shop_data.get_item_ids()
 shopitem = shop_data.get_raw_data()
@@ -31,19 +32,6 @@ jobs = [
     "Engineer",
     "Doctor"
 ]
-
-with open("database/user_data.json", 'r') as f: userdat = json.load(f)
-
-def save():
-    with open("database/user_data.json", 'w+') as f: json.dump(userdat, f, indent=4)
-
-# Functions
-def new_userdat(id: int):
-    if str(id) not in userdat.keys(): 
-        userdat[str(id)] = {"work_job": None}
-        save()
-        return 0
-    else: return 1
 
 # Commands
 class Economy(commands.Cog):
@@ -410,16 +398,17 @@ class Economy(commands.Cog):
     )
     @commands.cooldown(1, 1800, commands.BucketType.user)
     async def work(self, ctx: ApplicationContext):
-        if userdat[str(ctx.author.id)]["work_job"] == None: return await ctx.respond("You don't currently have a job! Join one by using the `/work_select` command.", ephemeral=True)
-        if userdat[str(ctx.author.id)]["work_job"] == "Discord mod": i = randint(5000, 10000)
-        elif userdat[str(ctx.author.id)]["work_job"] == "YouTuber": i = randint(10000, 15000)
-        elif userdat[str(ctx.author.id)]["work_job"] == "Streamer": i = randint(12000, 18000)
-        elif userdat[str(ctx.author.id)]["work_job"] == "Developer": i = randint(20000, 40000)
-        elif userdat[str(ctx.author.id)]["work_job"] == "Scientist": i = randint(50000, 100000)
-        elif userdat[str(ctx.author.id)]["work_job"] == "Engineer": i = randint(100000, 175000)
-        elif userdat[str(ctx.author.id)]["work_job"] == "Doctor": i = randint(200000, 300000)
+        job_name = userdata.fetch(ctx.author.id, "work_job")
+        if job_name == None: return await ctx.respond("You don't currently have a job! Join one by using the `/work_select` command.", ephemeral=True)
+        if job_name == "Discord mod": i = randint(5000, 10000)
+        elif job_name == "YouTuber": i = randint(10000, 15000)
+        elif job_name == "Streamer": i = randint(12000, 18000)
+        elif job_name == "Developer": i = randint(20000, 40000)
+        elif job_name == "Scientist": i = randint(50000, 100000)
+        elif job_name == "Engineer": i = randint(100000, 175000)
+        elif job_name == "Doctor": i = randint(200000, 300000)
         currency.add(ctx.author.id, i)
-        await ctx.respond(f'{ctx.author.mention} worked for a 30-minute shift as a {userdat[str(ctx.author.id)]["work_job"]} and earned {i} coins.')
+        await ctx.respond(f'{ctx.author.mention} worked for a 30-minute shift as a {job_name} and earned {i} coins.')
 
     @commands.slash_command(
         name="work_list",
@@ -447,8 +436,7 @@ class Economy(commands.Cog):
         elif job == "Scientist" and levelling.get_level(ctx.author.id) < 20: return await ctx.respond("You currently do not have the required level to perform this job!", ephemeral=True)
         elif job == "Engineer" and levelling.get_level(ctx.author.id) < 25: return await ctx.respond("You currently do not have the required level to perform this job!", ephemeral=True)
         elif job == "Doctor" and levelling.get_level(ctx.author.id) < 40: return await ctx.respond("You currently do not have the required level to perform this job!", ephemeral=True)
-        userdat[str(ctx.author.id)]["work_job"] = job
-        save()
+        userdata.set(ctx.author.id, "work_job", job)
         localembed = discord.Embed(title="New job!", description=f"You are now working as a {job}!")
         await ctx.respond(embed=localembed)
 
@@ -457,9 +445,8 @@ class Economy(commands.Cog):
         description="Quit your job."
     )
     async def work_resign(self, ctx: ApplicationContext):
-        if userdat[str(ctx.author.id)]["work_job"] is None: return await ctx.respond("You can't quit your job if you don't already have one!", ephemeral=True)
-        userdat[str(ctx.author.id)]["work_job"] = None
-        save()
+        if userdata.fetch(ctx.author.id, "work_job") is None: return await ctx.respond("You can't quit your job if you don't already have one!", ephemeral=True)
+        userdata.set(ctx.author.id, "work_job", None)
         localembed = discord.Embed(title="Resignation", description="You have successfully resigned from your job.")
         await ctx.respond(embed=localembed)
 
