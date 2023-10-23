@@ -37,14 +37,14 @@ class Items():
         """Adds an item of choice to a specific user id."""
         items = self.load()
         items[str(user_id)][item] += quantity
-        self.save()
+        self.save(items)
         return 0
 
     def remove_item(self, user_id: int, item: str, *, quantity: int = 1) -> int:
         """Removes an item of choice from a specific user id."""
         items = self.load()
         items[str(user_id)][item] += quantity
-        self.save()
+        self.save(items)
         return 0
 
     def fetch_item_count(self, user_id: int, item: str) -> int:
