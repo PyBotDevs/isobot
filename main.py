@@ -11,7 +11,7 @@ from utils import logger, ping
 from math import floor
 from random import randint
 from framework.isobot import currency, colors, settings
-from framework.isobot.db import levelling
+from framework.isobot.db import levelling, items
 from discord import ApplicationContext, option
 from discord.ext import commands
 from cogs.economy import new_userdat
@@ -25,7 +25,6 @@ from cogs.isocoin import create_isocoin_key
 #Variables
 client = discord.Bot()
 color = discord.Color.random()
-with open('database/items.json', 'r', encoding="utf-8") as f: items = json.load(f)
 with open('config/shop.json', 'r', encoding="utf-8") as f: shopitem = json.load(f)
 with open('database/presence.json', 'r', encoding="utf-8") as f: presence = json.load(f)
 with open('config/commands.json', 'r', encoding="utf-8") as f: commandsdb = json.load(f)
@@ -35,7 +34,6 @@ cmd_list = commandsdb.keys()
 #Pre-Initialization Commands
 def save():
     """Dumps all cached data to the local databases."""
-    with open('database/items.json', 'w+', encoding="utf-8") as e: json.dump(items, e, indent=4)
     with open('database/presence.json', 'w+', encoding="utf-8") as e: json.dump(presence, e, indent=4)
     with open('database/automod.json', 'w+', encoding="utf-8") as e: json.dump(automod_config, e, indent=4)
 
@@ -58,6 +56,7 @@ colors = colors.Colors()
 currency = currency.CurrencyAPI("database/currency.json", "logs/currency.log")
 settings = settings.Configurator()
 levelling = levelling.Levelling()
+items = items.Items()
 
 # Theme Loader
 themes = False  # True: enables themes; False: disables themes;
@@ -99,8 +98,7 @@ async def on_message(ctx):
     create_isocoin_key(ctx.author.id)
     new_userdat(ctx.author.id)
     settings.generate(ctx.author.id)
-    if str(ctx.author.id) not in items:
-        items[str(ctx.author.id)] = {}
+    items.generate(ctx.author.id)
     levelling.generate(ctx.author.id)
     if str(ctx.guild.id) not in automod_config:
         automod_config[str(ctx.guild.id)] = {
@@ -113,9 +111,6 @@ async def on_message(ctx):
                 }
             }
         }
-    for z in shopitem:
-        if z in items[str(ctx.author.id)]: pass
-        else: items[str(ctx.author.id)][str(z)] = 0
     save()
     uList = list()
     if str(ctx.guild.id) in presence:
