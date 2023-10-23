@@ -350,8 +350,7 @@ class Economy(commands.Cog):
             localembed.set_footer(text='Thank you for your business.')
             await ctx.respond(embed=localembed)
         except KeyError: await ctx.respond('what are you doing that item doesn\'t even exist')
-    
-    # TODO: Migrate items db from direct to framework for "gift()" command
+
     @commands.slash_command(
         name="gift",
         description="Gifts a (giftable) item to anyone you want"
