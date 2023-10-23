@@ -9,7 +9,7 @@ import utils.logger
 import asyncio
 import framework.isobot.currency
 from framework.isobot.shop import ShopData
-from framework.isobot.db import levelling
+from framework.isobot.db import levelling, items
 from random import randint
 from discord import option, ApplicationContext
 from discord.ext import commands
@@ -18,6 +18,7 @@ from discord.ext import commands
 color = discord.Color.random()
 currency = framework.isobot.currency.CurrencyAPI("database/currency.json", "logs/currency.log")
 levelling = levelling.Levelling()
+items = items.Items()
 shop_data = ShopData("config/shop.json")
 all_item_ids = shop_data.get_item_ids()
 shopitem = shop_data.get_raw_data()
@@ -31,11 +32,9 @@ jobs = [
     "Doctor"
 ]
 
-with open("database/items.json", 'r') as f: items = json.load(f)
 with open("database/user_data.json", 'r') as f: userdat = json.load(f)
 
 def save():
-    with open("database/items.json", 'w+') as f: json.dump(items, f, indent=4)
     with open("database/user_data.json", 'w+') as f: json.dump(userdat, f, indent=4)
 
 # Functions
@@ -84,28 +83,27 @@ class Economy(commands.Cog):
         localembed = discord.Embed(title="You opened a lootbox!", description=f"The amazing rewards of your {lootbox} lootbox behold you...", color=discord.Color.gold())
         if lootbox == "normal lootbox":
             currency.add(ctx.author.id, normal_loot[0])
-            items[str(ctx.author.id)][normal_loot[1]] += 1
-            items[str(ctx.author.id)][normal_loot[2]] += 1
+            items.add_item(ctx.author.id, normal_loot[1])
+            items.add_item(ctx.author.id, normal_loot[2])
             localembed.add_field(name="Coins gained", value=f"**{normal_loot[0]}** coins", inline=False)
             localembed.add_field(name="Items recieved", value=f"You got **1 {normal_loot[1]}**!\nYou got **1 {normal_loot[2]}**!", inline=False)
         if lootbox == "large lootbox":
             currency.add(ctx.author.id, large_loot[0])
-            items[str(ctx.author.id)][large_loot[1]] += 1
-            items[str(ctx.author.id)][large_loot[2]] += 1
-            items[str(ctx.author.id)][large_loot[3]] += 1
+            items.add_item(ctx.author.id, large_loot[1])
+            items.add_item(ctx.author.id, large_loot[2])
+            items.add_item(ctx.author.id, large_loot[3])
             localembed.add_field(name="Coins gained", value=f"**{large_loot[0]}** coins", inline=False)
             localembed.add_field(name="Items recieved", value=f"You got **1 {large_loot[1]}**!\nYou got **1 {large_loot[2]}**!\nYou got **1 {large_loot[3]}**!", inline=False)
         if lootbox == "special lootbox":
             currency.add(ctx.author.id, special_loot[0])
-            items[str(ctx.author.id)][special_loot[1]] += 1
-            items[str(ctx.author.id)][special_loot[2]] += 1
-            items[str(ctx.author.id)][special_loot[3]] += 1
-            items[str(ctx.author.id)][special_loot[4]] += 1
-            items[str(ctx.author.id)][special_loot[5]] += 1
+            items.add_item(ctx.author.id, special_loot[1])
+            items.add_item(ctx.author.id, special_loot[2])
+            items.add_item(ctx.author.id, special_loot[3])
+            items.add_item(ctx.author.id, special_loot[4])
+            items.add_item(ctx.author.id, special_loot[5])
             localembed.add_field(name="Coins gained", value=f"**{special_loot[0]}** coins", inline=False)
             localembed.add_field(name="Items recieved", value=f"You got **1 {special_loot[1]}**!\nYou got **1 {special_loot[2]}**!\nYou got **1 {special_loot[3]}**!\nYou got **1 {special_loot[4]}**!\nYou got **1 {special_loot[5]}**!", inline=False)
         await ctx.respond(embed=localembed)
-        save()
     
     @commands.slash_command(
         name='beg', 
@@ -225,13 +223,12 @@ class Economy(commands.Cog):
     )
     @commands.cooldown(1, 30, commands.BucketType.user)
     async def hunt(self, ctx: ApplicationContext):
-        if items[str(ctx.author.id)]['rifle'] == 0: return await ctx.respond("I'd hate to see you hunt with your bare hands. Please buy a hunting rifle from the shop. ||/buy rifle||")
+        if items.fetch_item_count(ctx.author.id, "rifle") == 0: return await ctx.respond("I'd hate to see you hunt with your bare hands. Please buy a hunting rifle from the shop. ||/buy rifle||")
         loot = ['rock', 'ant', 'skunk', 'boar', 'deer', 'dragon', 'nothing', 'died']
         choice = random.choice(loot)
         if choice != "nothing" and choice != "died":
-            items[str(ctx.author.id)][choice] += 1
+            items.add_item(ctx.author.id, choice)
             await ctx.respond(f"You found a {choice} while hunting!")
-            save()
         elif (choice == "nothing"): await ctx.respond('You found absolutely **nothing** while hunting.')
         elif (choice == "died"):
             currency.remove(ctx.author.id, 1000)
@@ -243,12 +240,11 @@ class Economy(commands.Cog):
     )
     @commands.cooldown(1, 45, commands.BucketType.user)
     async def fish(self, ctx: ApplicationContext):
-        if (items[str(ctx.author.id)]['fishingpole'] == 0): return await ctx.respond("I don't think you can fish with your bare hands... or you can just put yo hands in the water bro **giga chad moment**\nAnyway it's just better to buy a fishing pole from the shop. ||/buy fishingpole||")
+        if items.fetch_item_count(ctx.author.id, "fishingpole") == 0: return await ctx.respond("I don't think you can fish with your bare hands... or you can just put yo hands in the water bro **giga chad moment**\nAnyway it's just better to buy a fishing pole from the shop. ||/buy fishingpole||")
         loot = ['shrimp', 'fish', 'rare fish', 'exotic fish', 'jellyfish', 'shark', 'nothing']
         choice = random.choice(loot)
         if choice != "nothing":
-            items[str(ctx.author.id)][choice] += 1
-            save()
+            items.add_item(ctx.author.id, choice)
             await ctx.respond(f'You found a {choice} while hunting!')
         else: await ctx.respond('Looks like the fish were weary of your rod. You caught nothing.')
 
@@ -258,7 +254,7 @@ class Economy(commands.Cog):
     )
     @commands.cooldown(1, 45, commands.BucketType.user)
     async def dig(self, ctx: ApplicationContext):
-        if (items[str(ctx.author.id)]['shovel'] == 0): return await ctx.respond("You're too good to have to dig with your bare hands..... at least I hope so. Please buy a shovel from the shop. ||/buy shovel||")
+        if items.fetch_item_count(ctx.author.id, "shovel") == 0: return await ctx.respond("You're too good to have to dig with your bare hands..... at least I hope so. Please buy a shovel from the shop. ||/buy shovel||")
         loot = [
             'coins',
             'shovel',
@@ -276,8 +272,7 @@ class Economy(commands.Cog):
             currency.add(ctx.author.id, random.randint('1000', '5000'))
             await ctx.respond('You went digging and found a bunch of coins. Nice!')
         elif choice != "nothing" and choice != "died":
-            items[str(ctx.author.id)][choice] += 1
-            save()
+            items.add_item(ctx.author.id, choice)
             await ctx.respond(f'You found a {choice} while digging ')
         elif (choice == "nothing"): await ctx.respond('After some time of digging you eventually gave up. You got nothing.')
         elif (choice == "died"):
@@ -327,9 +322,8 @@ class Economy(commands.Cog):
             rounded_taxable_amount = math.floor(taxable_amount)
             total_amount = amt + rounded_taxable_amount
             currency.remove(ctx.author.id, total_amount)
-            items[str(ctx.author.id)][str(name)] += quantity
+            items.add_item(ctx.author.id, str(name), quantity=quantity)
             currency.treasury_add(rounded_taxable_amount)
-            save()
             localembed = discord.Embed(
                 title=f'You just bought {quantity} {shopitem[name]["stylized name"]}!',
                 description=f"**Your Purchase Invoice**\n\nItem: {quantity} {name.lower()}\n---------------\nBase Amount: {amt} coins\nTax: 3%\nTaxable Amount: {taxable_amount} coins\nTaxable Amount (rounded): {rounded_taxable_amount} coins\n**Charged Amount:** {total_amount} coins",
@@ -348,16 +342,16 @@ class Economy(commands.Cog):
     async def sell(self, ctx: ApplicationContext, name: str, quantity: int=1):
         try:
             if shopitem[name]["sellable"] != True: return await ctx.respond('Dumb, you can\'t sell this item.')
-            if quantity > items[str(ctx.author.id)][str(name)]: return await ctx.respond('You can\'t sell more than you have.')
-            items[str(ctx.author.id)][str(name)] -= quantity
+            if quantity > items.fetch_item_count(ctx.author.id, str(name)): return await ctx.respond('You can\'t sell more than you have.')
+            items.remove_item(ctx.author.id, str(name), quantity=quantity)
             ttl = shopitem[name]["sell price"]*quantity
             currency.add(ctx.author.id, int(ttl))
-            save()
             localembed = discord.Embed(title='Item sold', description=f'You successfully sold {quantity} {name} for {ttl} coins!', color=color)
             localembed.set_footer(text='Thank you for your business.')
             await ctx.respond(embed=localembed)
         except KeyError: await ctx.respond('what are you doing that item doesn\'t even exist')
     
+    # TODO: Migrate items db from direct to framework for "gift()" command
     @commands.slash_command(
         name="gift",
         description="Gifts a (giftable) item to anyone you want"
@@ -368,18 +362,17 @@ class Economy(commands.Cog):
     async def gift(self, ctx: ApplicationContext, user:discord.User, item:str, amount:int=1):
         try:
             if amount < 1: return await ctx.respond("You can't gift less than 1 of those!", ephemeral=True)
-            elif items[str(ctx.author.id)][item] < amount: return await ctx.respond("You don't have enough of those to gift!", ephemeral=True)
+            elif items.fetch_item_count(ctx.author.id, item) < amount: return await ctx.respond("You don't have enough of those to gift!", ephemeral=True)
             elif shopitem[item]["giftable"] == False: return await ctx.respond("You can't sell that item!", ephemeral=True)
-            items[str(user.id)][item] += amount
-            items[str(ctx.author.id)][item] -= amount
-            save()
+            items.add_item(user.id, item, amount=amount)
+            items.remove_item(ctx.author.id, item, amount=amount)
             localembed = discord.Embed(
                 title="Gift successful!",
                 description=f"You just gifted {amount} **{item}**s to {user.display_name}!",
                 color=discord.Color.green()
             )
-            localembed.add_field(name="Now they have", value=f"**{items[str(user.id)][item]} {item}**s")
-            localembed.add_field(name="and you have", value=f"**{items[str(ctx.author.id)][item]} {item}**s")
+            localembed.add_field(name="Now they have", value=f"**{items.fetch_item_count(user.id, item)} {item}**s")
+            localembed.add_field(name="and you have", value=f"**{items.fetch_item_count(ctx.author.id, item)} {item}**s")
             await ctx.respond(embed=localembed)
         except KeyError as e: 
             utils.logger.error(e)
@@ -507,7 +500,7 @@ class Economy(commands.Cog):
     async def scout(self, ctx: ApplicationContext):
         if (randint(1, 100) <= 90):
             x = randint(550, 2000)
-            if items[str(ctx.author.id)]['binoculars'] >= 1:
+            if items.fetch_item_count(ctx.author.id, "binoculars") >= 1:
                 x *= 1.425
                 x = math.floor(x)
             else: pass
@@ -527,10 +520,9 @@ class Economy(commands.Cog):
         ie = shopitem.keys()
         items_reward = [random.choice(list(ie)), random.choice(list(ie)), random.choice(list(ie))]
         currency.add(ctx.author.id, coins_reward)
-        items[str(ctx.author.id)][items_reward[0]] += 1
-        items[str(ctx.author.id)][items_reward[1]] += 1
-        items[str(ctx.author.id)][items_reward[2]] += 1
-        save()
+        items.add_item(ctx.author.id, items_reward[0])
+        items.add_item(ctx.author.id, items_reward[1])
+        items.add_item(ctx.author.id, items_reward[2])
         localembed = discord.Embed(title="Autogrind has completed!", description=f"**Your rewards**\n\nYou got **{coins_reward}** coins!\nYou got **1 {shopitem[items_reward[0]]['stylized name']}**!\nYou got **1 {shopitem[items_reward[1]]['stylized name']}**!\nYou got **1 {shopitem[items_reward[2]]['stylized name']}!**", color=discord.Color.green())
         await ctx.author.send(embed = localembed)
 
@@ -605,17 +597,17 @@ class Economy(commands.Cog):
             elif shopitem[x]['collection'] == "power-up": filtered_powerups.append(x)
             elif shopitem[x]['collection'] == "lootbox": filtered_lootboxes.append(x)
         for g in filtered_utility_items:
-            if items[str(user.id)][g] != 0:
-                parsed_utility_items += f"{shopitem[g]['stylized name']} `ID: {g}`: {items[str(user.id)][g]}\n"
+            if items.fetch_item_count(user.id, g) != 0:
+                parsed_utility_items += f"{shopitem[g]['stylized name']} `ID: {g}`: {items.fetch_item_count(user.id, g)}\n"
         for g in filtered_sellables:
-            if items[str(user.id)][g] != 0:
-                parsed_sellables += f"{shopitem[g]['stylized name']} `ID: {g}`: {items[str(user.id)][g]}\n"
+            if items.fetch_item_count(user.id, g) != 0:
+                parsed_sellables += f"{shopitem[g]['stylized name']} `ID: {g}`: {items.fetch_item_count(user.id, g)}\n"
         for g in filtered_powerups:
-            if items[str(user.id)][g] != 0:
-                parsed_powerups += f"{shopitem[g]['stylized name']} `ID: {g}`: {items[str(user.id)][g]}\n"
+            if items.fetch_item_count(user.id, g) != 0:
+                parsed_powerups += f"{shopitem[g]['stylized name']} `ID: {g}`: {items.fetch_item_count(user.id, g)}\n"
         for g in filtered_lootboxes:
-            if items[str(user.id)][g] != 0:
-                parsed_lootboxes += f"{shopitem[g]['stylized name']} `ID: {g}`: {items[str(user.id)][g]}\n"
+            if items.fetch_item_count(user.id, g) != 0:
+                parsed_lootboxes += f"{shopitem[g]['stylized name']} `ID: {g}`: {items.fetch_item_count(user.id, g)}\n"
         if parsed_utility_items != "": localembed.add_field(name='Utility', value=parsed_utility_items, inline=False)
         if parsed_sellables != "": localembed.add_field(name='Sellables', value=parsed_sellables, inline=False)
         if parsed_powerups != "": localembed.add_field(name='Power-ups', value=parsed_powerups, inline=False)
