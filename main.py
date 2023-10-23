@@ -11,10 +11,9 @@ from utils import logger, ping
 from math import floor
 from random import randint
 from framework.isobot import currency, colors, settings
-from framework.isobot.db import levelling, items
+from framework.isobot.db import levelling, items, userdata
 from discord import ApplicationContext, option
 from discord.ext import commands
-from cogs.economy import new_userdat
 from cogs.isocoin import create_isocoin_key
 
 # Slash option types:
@@ -57,6 +56,7 @@ currency = currency.CurrencyAPI("database/currency.json", "logs/currency.log")
 settings = settings.Configurator()
 levelling = levelling.Levelling()
 items = items.Items()
+userdata = userdata.UserData()
 
 # Theme Loader
 themes = False  # True: enables themes; False: disables themes;
@@ -96,7 +96,7 @@ async def on_message(ctx):
     currency.new_wallet(ctx.author.id)
     currency.new_bank(ctx.author.id)
     create_isocoin_key(ctx.author.id)
-    new_userdat(ctx.author.id)
+    userdata.generate(ctx.author.id)
     settings.generate(ctx.author.id)
     items.generate(ctx.author.id)
     levelling.generate(ctx.author.id)
