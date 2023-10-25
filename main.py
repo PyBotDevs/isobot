@@ -11,7 +11,7 @@ from utils import logger, ping
 from math import floor
 from random import randint
 from framework.isobot import currency, colors, settings
-from framework.isobot.db import levelling, items, userdata
+from framework.isobot.db import levelling, items, userdata, automod
 from discord import ApplicationContext, option
 from discord.ext import commands
 from cogs.isocoin import create_isocoin_key
@@ -57,6 +57,7 @@ settings = settings.Configurator()
 levelling = levelling.Levelling()
 items = items.Items()
 userdata = userdata.UserData()
+automod = automod.Automod()
 
 # Theme Loader
 themes = False  # True: enables themes; False: disables themes;
@@ -100,18 +101,7 @@ async def on_message(ctx):
     settings.generate(ctx.author.id)
     items.generate(ctx.author.id)
     levelling.generate(ctx.author.id)
-    if str(ctx.guild.id) not in automod_config:
-        automod_config[str(ctx.guild.id)] = {
-            "swear_filter": {
-                "enabled": False,
-                "keywords": {
-                    "use_default": True,
-                    "default": ["fuck", "shit", "pussy", "penis", "cock", "vagina", "sex", "moan", "bitch", "hoe", "nigga", "nigger", "xxx", "porn"],
-                    "custom": []
-                }
-            }
-        }
-    save()
+    automod.generate(ctx.guild.id)
     uList = list()
     if str(ctx.guild.id) in presence:
         for userid in presence[str(ctx.guild.id)].keys(): uList.append(userid)
