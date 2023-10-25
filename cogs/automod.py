@@ -2,18 +2,13 @@
 
 # Imports
 import discord
-import json
 from discord import option, ApplicationContext
 from discord.ext import commands
+from framework.isobot.db import automod
 
 # Variables
-
 color = discord.Color.random()
-
-with open('database/automod.json', 'r', encoding="utf-8") as f: automod_config = json.load(f)
-
-def save():
-    with open('database/automod.json', 'w+', encoding="utf-8") as f: json.dump(automod_config, f, indent=4)
+automod = automod.Automod()
 
 # Commands
 class Automod(commands.Cog):
@@ -25,7 +20,7 @@ class Automod(commands.Cog):
         description="Shows the current automod configuration for your server"
     )
     async def automod(self, ctx: ApplicationContext):
-        loaded_config = automod_config[str(ctx.guild.id)]
+        loaded_config = automod.fetch_config(ctx.guild.id)
         localembed = discord.Embed(title=f"{ctx.guild.name}\'s automod configuration", descripton="Use the `/automod_set` command to change your server's automod configuration.", color=color)
         localembed.set_thumbnail(url=ctx.guild.icon_url)
         localembed.add_field(name="Swear-filter", value=loaded_config["swear_filter"]["enabled"])
@@ -39,13 +34,11 @@ class Automod(commands.Cog):
     )
     @option(name="toggle", description="Do you want to turn it on or off?", type=bool)
     async def automod_swearfilter(self, ctx: ApplicationContext, toggle:bool):
-        loaded_config = automod_config[str(ctx.guild.id)]
         if not ctx.author.guild_permissions.administrator: return await ctx.respond("You cannot use this command. If you think this is a mistake, please contact your server owner/administrator.", ephemeral=True)
-        if loaded_config["swear_filter"]["enabled"] == toggle: return await ctx.respond(f"That automod option is already set to `{toggle}`.", ephemeral=True)
-        loaded_config["swear_filter"]["enabled"] = toggle
+        if automod.fetch_config(ctx.guild.id)["swear_filter"]["enabled"] == toggle: return await ctx.respond(f"That automod option is already set to `{toggle}`.", ephemeral=True)
+        automod.swearfilter_enabled(ctx.guild.id, toggle)
         if toggle is True: await ctx.respond("Swear-filter successfully **enabled**.", ephemeral=True)
         elif toggle is False: await ctx.respond("Swear-filter successfully **disabled**.", ephemeral=True)
-        save()
 
     @commands.slash_command(
         name="automod_use_default_keywords",
@@ -53,20 +46,18 @@ class Automod(commands.Cog):
     )
     @option(name="toggle", description="Do you want to turn it on or off?", type=bool)
     async def automod_use_default_keywords(self, ctx: ApplicationContext, toggle:bool):
-        loaded_config = automod_config[str(ctx.guild.id)]
         if not ctx.author.guild_permissions.administrator: return await ctx.respond("You cannot use this command. If you think this is a mistake, please contact your server owner/administrator.", ephemeral=True)
-        if loaded_config["swear_filter"]["keywords"]["use_default"] == toggle: return await ctx.respond(f"That automod option is already set to `{toggle}`.", ephemeral=True)
-        loaded_config["swear_filter"]["keywords"]["use_default"] = toggle
+        if automod.fetch_config(ctx.guild.id)["swear_filter"]["keywords"]["use_default"] == toggle: return await ctx.respond(f"That automod option is already set to `{toggle}`.", ephemeral=True)
+        automod.swearfilter_usedefaultkeywords(ctx.guild.id, toggle)
         if toggle is True: await ctx.respond("Using default swear-filter keywords successfully **enabled**.", ephemeral=True)
         elif toggle is False: await ctx.respond("Using default swear-filter keywords successfully **disabled**.", ephemeral=True)
-        save()
 
     @commands.slash_command(
         name="automod_view_custom_keywords",
         description="Shows a list of the custom automod swear-filter keywords set for your server",
     )
     async def automod_view_custom_keywords(self, ctx: ApplicationContext):
-        loaded_config = automod_config[str(ctx.guild.id)]
+        loaded_config = automod.fetch_config(ctx.guild.id)
         out = ""
         if loaded_config["swear_filter"]["keywords"]["custom"] != []:
             i = 0
@@ -85,10 +76,9 @@ class Automod(commands.Cog):
     @option(name="keyword", description="What keyword do you want to add?", type=str)
     async def automod_add_custom_keyword(self, ctx: ApplicationContext, keyword:str):
         if not ctx.author.guild_permissions.administrator: return await ctx.respond("You cannot use this command. If you think this is a mistake, please contact your server owner/administrator.", ephemeral=True)
-        loaded_config = automod_config[str(ctx.guild.id)]
+        loaded_config = automod.fetch_config(ctx.guild.id)
         if keyword not in loaded_config["swear_filter"]["keywords"]["custom"]:
-            loaded_config["swear_filter"]["keywords"]["custom"].append(keyword)
-            save()
+            automod.swearfilter_addkeyword(ctx.guild.id, keyword)
             localembed = discord.Embed(description=f"New swear-filter keyword `{keyword}` successfully added to configuration.", color=discord.Color.green())
             await ctx.respond(embed=localembed, ephemeral=True)
         else: return await ctx.respond("That keyword is already added in your automod configuration.", ephemeral=True)
@@ -98,12 +88,9 @@ class Automod(commands.Cog):
         description="Removes a custom keyword (matching its id) from your server's swear-filter"
     )
     @option(name="id", description="What's the id of the keyword to remove (can be found in bold through /automod_view_custom_keywords", type=int)
-    async def automod_remove_custom_keyword(self, ctx: ApplicationContext, id:int):
-        loaded_config = automod_config[str(ctx.guild.id)]
+    async def automod_remove_custom_keyword(self, ctx: ApplicationContext, id: int):
         try:
-            data = loaded_config["swear_filter"]["keywords"]["custom"]
-            data.pop(id-1)
-            save()
+            automod.swearfilter_removekeyword(ctx.guild.id, id)
             return await ctx.respond(f"Keyword (id: `{id}`) successfully removed from swear-filter configuration.")
         except IndexError: await ctx.respond("That keyword id doesn't exist. Please specify a valid id and try again.", ephemeral=True)
 
