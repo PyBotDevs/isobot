@@ -49,8 +49,5 @@ class Items():
 
     def fetch_item_count(self, user_id: int, item: str) -> int:
         """Fetches and returns the amount of a specific item owned by the user."""
-        try:
-            items = self.load()
-            #print(items[str(user_id)])
-            return items[str(user_id)][item]
-        except Exception as e: print(e)
+        items = self.load()
+        return items[str(user_id)][item]
