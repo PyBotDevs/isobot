@@ -23,7 +23,7 @@ class Weather(Colors):
 
     def save(self, data: dict) -> int:
         """Dumps all cached data to your local machine."""
-        with open("database/weather.json", 'w+', encoding="utf-8") as f: json.dump(data, f, indent=4)
+        with open("database/weather.json", 'w+', encoding="utf-8") as f: json.dump(data, f)
         return 0
 
     def new(self, user_id: User):

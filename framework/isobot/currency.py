@@ -44,7 +44,7 @@ class CurrencyAPI(Colors):
         """Adds balance to the specified user."""
         with open(self.db_path, 'r') as f: currency = json.load(f)
         currency["wallet"][str(user)] += int(amount)
-        with open(self.db_path, 'w+') as f: json.dump(currency, f, indent=4)
+        with open(self.db_path, 'w+') as f: json.dump(currency, f)
         with open(self.log_path, 'a') as f:
             f.write(f'{self.get_time()} framework.isobot.currency User({user}): Added {amount} coins to wallet\n')
             f.close()
@@ -54,7 +54,7 @@ class CurrencyAPI(Colors):
         """Adds balance to the specified user's bank account."""
         with open(self.db_path, 'r') as f: currency = json.load(f)
         currency["bank"][str(user)] += int(amount)
-        with open(self.db_path, 'w+') as f: json.dump(currency, f, indent=4)
+        with open(self.db_path, 'w+') as f: json.dump(currency, f)
         with open(self.log_path, 'a') as f:
             f.write(f'{self.get_time()} framework.isobot.currency User({user}): Added {amount} coins to bank\n')
             f.close()
@@ -64,7 +64,7 @@ class CurrencyAPI(Colors):
         """Removes balance from the specified user."""
         with open(self.db_path, 'r') as f: currency = json.load(f)
         currency["wallet"][str(user)] -= int(amount)
-        with open(self.db_path, 'w+') as f: json.dump(currency, f, indent=4)
+        with open(self.db_path, 'w+') as f: json.dump(currency, f)
         with open(self.log_path, 'a') as f:
             f.write(f'{self.get_time()} framework.isobot.currency User({user}): Removed {amount} coins from wallet\n')
             f.close()
@@ -74,7 +74,7 @@ class CurrencyAPI(Colors):
         """Removes balance from the specified user's bank account."""
         with open(self.db_path, 'r') as f: currency = json.load(f)
         currency["bank"][str(user)] -= int(amount)
-        with open(self.db_path, 'w+') as f: json.dump(currency, f, indent=4)
+        with open(self.db_path, 'w+') as f: json.dump(currency, f)
         with open(self.log_path, 'a') as f:
             f.write(f'{self.get_time()} framework.isobot.currency User({user}): Removed {amount} coins from bank\n')
             f.close()
@@ -85,7 +85,7 @@ class CurrencyAPI(Colors):
         with open(self.db_path, 'r') as f: currency = json.load(f)
         currency["wallet"][str(user)] = 0
         currency["bank"][str(user)] = 0
-        with open(self.db_path, 'w+') as f: json.dump(currency, f, indent=4)
+        with open(self.db_path, 'w+') as f: json.dump(currency, f)
         print(f"[Framework/CurrencyAPI] Currency data for \"{user}\" has been wiped")
         with open(self.log_path, 'a') as f:
             f.write(f'{self.get_time()} framework.isobot.currency User({user}): Wiped all currency data\n')
@@ -97,7 +97,7 @@ class CurrencyAPI(Colors):
         with open(self.db_path, 'r') as f: currency = json.load(f)
         currency["bank"][str(user)] += int(amount)
         currency["wallet"][str(user)] -= int(amount)
-        with open(self.db_path, 'w+') as f: json.dump(currency, f, indent=4)
+        with open(self.db_path, 'w+') as f: json.dump(currency, f)
         print(f"[Framework/CurrencyAPI] Moved {amount} coins to bank. User: {user} [{user}]")
         with open(self.log_path, 'a') as f:
             f.write(f'{self.get_time()} framework.isobot.currency User({user}): Moved {amount} coins from wallet to bank\n')
@@ -109,7 +109,7 @@ class CurrencyAPI(Colors):
         with open(self.db_path, 'r') as f: currency = json.load(f)
         currency["wallet"][str(user)] += int(amount)
         currency["bank"][str(user)] -= int(amount)
-        with open(self.db_path, 'w+') as f: json.dump(currency, f, indent=4)
+        with open(self.db_path, 'w+') as f: json.dump(currency, f)
         print(f"[Framework/CurrencyAPI] Moved {amount} coins to wallet. User: {user} [{user}]")
         with open(self.log_path, 'a') as f:
             f.write(f'{self.get_time()} framework.isobot.currency User({user}): Moved {amount} coins from bank to wallet\n')
@@ -119,7 +119,7 @@ class CurrencyAPI(Colors):
     def treasury_add(self, amount: int) -> int:
         with open(self.db_path, 'r') as f: currency = json.load(f)
         currency["treasury"] += int(amount)
-        with open(self.db_path, 'w+') as f: json.dump(currency, f, indent=4)
+        with open(self.db_path, 'w+') as f: json.dump(currency, f)
         with open(self.log_path, 'a') as f:
             f.write(f'{self.get_time()} framework.isobot.currency Treasury: Added {amount} coins to treasury\n')
             f.close()
@@ -128,7 +128,7 @@ class CurrencyAPI(Colors):
     def treasury_remove(self, amount: int) -> int:
         with open(self.db_path, 'r') as f: currency = json.load(f)
         currency["treasury"] -= int(amount)
-        with open(self.db_path, 'w+') as f: json.dump(currency, f, indent=4)
+        with open(self.db_path, 'w+') as f: json.dump(currency, f)
         with open(self.log_path, 'a') as f:
             f.write(f'{self.get_time()} framework.isobot.currency Treasury: Removed {amount} coins from treasury\n')
             f.close()

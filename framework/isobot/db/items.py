@@ -20,7 +20,7 @@ class Items():
 
     def save(self, data: dict) -> int:
         """Dumps all cached data to your local machine."""
-        with open("database/items.json", 'w+', encoding="utf8") as f: json.dump(data, f, indent=4)
+        with open("database/items.json", 'w+', encoding="utf8") as f: json.dump(data, f)
         return 0
 
     def generate(self, user_id: int) -> int:
