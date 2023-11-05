@@ -15,7 +15,7 @@ class Levelling():
 
     def save(self, data: dict) -> int:
         """Dumps all cached data to your local machine."""
-        with open("database/levels.json", 'w+', encoding="utf8") as f: json.dump(data, f, indent=4)
+        with open("database/levels.json", 'w+', encoding="utf8") as f: json.dump(data, f)
         return 0
 
     def generate(self, user_id: int) -> int:
@@ -79,7 +79,7 @@ class Levelling():
         """Fetches a user's current xp."""
         levels = self.load()
         return levels[str(user_id)]["xp"]
-    
+
     def get_raw(self):
         """Fetches and returns the raw json data in the levelling database."""
         levels = self.load()
