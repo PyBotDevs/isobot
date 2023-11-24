@@ -48,3 +48,8 @@ class Presence():
                 "time": presence[str(guild_id)][str(user_id)]['time']
             }
         else: return 1
+
+    def get_raw(self) -> dict:
+        """Returns the entire raw presence database. Can be useful for complex data operations on the database."""
+        presence = self.load()
+        return presence
