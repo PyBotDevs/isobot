@@ -13,8 +13,8 @@ color = discord.Color.random()
 # Commands
 class Maths(commands.Cog):
     def __init__(self, bot): self.bot = bot
-    
-    area = SlashCommandGroup("area", "Find area of different figures.")
+
+    math = SlashCommandGroup("math", "Use various math tools.")
 
     @commands.slash_command(
         name="squareroot",
@@ -30,9 +30,9 @@ class Maths(commands.Cog):
         localembed = discord.Embed(title=f"Square root of {number}", description=result, color=color)
         localembed.set_footer(text=f"√({number}) = {result}")
         await ctx.respond(embed=localembed)
-    
-    @area.command(
-        name="square",
+
+    @math.command(
+        name="area_square",
         description="Finds the area of a square"
     )
     @option(name="length", description="What is the length of one side?", type=int)
@@ -42,9 +42,9 @@ class Maths(commands.Cog):
         localembed = discord.Embed(title=f"Area of square of side {length} units", description=f"{result} sq. units", color=color)
         localembed.set_footer(text=f"A = s²\n{length} x {length} = {result} sq. units")
         await ctx.respond(embed=localembed)
-    
-    @area.command(
-        name="rectangle",
+
+    @math.command(
+        name="area_rectangle",
         description="Finds the area of a rectangle"
     )
     @option(name="length", description="What is the length?", type=int)
@@ -57,8 +57,8 @@ class Maths(commands.Cog):
         localembed.set_footer(text=f"A = l x b\n{length} x {breadth} = {result} sq. units")
         await ctx.respond(embed=localembed)
 
-    @area.command(
-        name="circle",
+    @math.command(
+        name="area_circle",
         description="Finds the area of a circle"
     )
     @option(name="radius", description="What is the radius of the circle?", type=int)
@@ -73,9 +73,9 @@ class Maths(commands.Cog):
         elif pi == "3.14": localembed.set_footer(text=f"Taking π as 3.14\nA = πr²\nπ x {radius}² = {result} sq. units")
         elif pi == "3":localembed.set_footer(text=f"Taking π as 3\nA = πr²\nπ x {radius}² = {result} sq. units")
         await ctx.respond(embed=localembed)
-    
-    @area.command(
-        name="triangle",
+
+    @math.command(
+        name="area_triangle",
         description="Finds the area of a triangle (using Heron's formula)"
     )
     @option(name="side_length_a", description="What is the length of side A of the triangle?", type=int)
