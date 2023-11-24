@@ -16,7 +16,7 @@ class Maths(commands.Cog):
 
     math = SlashCommandGroup("math", "Use various math tools.")
 
-    @commands.slash_command(
+    @math.command(
         name="squareroot",
         description="Finds the square root of any positive number"
     )
