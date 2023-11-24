@@ -10,7 +10,7 @@ from framework.isobot import currency, embedengine
 from framework.isobot.db import levelling
 from discord import option, ApplicationContext
 from discord.ext import commands
-from cogs.afk import get_presence
+from framework.isobot.db.presence import Presence
 
 # Variables
 color = discord.Color.random()
@@ -18,6 +18,7 @@ currency = currency.CurrencyAPI("database/currency.json", "logs/currency.log")
 levelling = levelling.Levelling()
 openai.api_key = os.getenv("chatgpt_API_KEY")
 chatgpt_conversation = dict()
+_presence = Presence()
 
 # Commands
 class Utils(commands.Cog):
@@ -91,7 +92,7 @@ class Utils(commands.Cog):
         registered = user.joined_at.strftime("%b %d, %Y, %T")
         pfp = user.avatar
         localembed_desc = f"`AKA` {displayname}"
-        presence = get_presence(ctx.author.id, ctx.guild.id)
+        presence = _presence.get_presence(ctx.guild.id, ctx.user.id)
         if presence is not False:
             localembed_desc += f"\n`🌙 AFK` {presence['response']} - <t:{math.floor(presence['time'])}>"
         localembed = discord.Embed(
