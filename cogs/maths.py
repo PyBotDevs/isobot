@@ -13,7 +13,7 @@ color = discord.Color.random()
 # Commands
 class Maths(commands.Cog):
     def __init__(self, bot): self.bot = bot
-    
+
     math = SlashCommandGroup("math", "Use various math tools.")
 
     @commands.slash_command(
@@ -30,7 +30,7 @@ class Maths(commands.Cog):
         localembed = discord.Embed(title=f"Square root of {number}", description=result, color=color)
         localembed.set_footer(text=f"√({number}) = {result}")
         await ctx.respond(embed=localembed)
-    
+
     @math.command(
         name="area_square",
         description="Finds the area of a square"
@@ -42,7 +42,7 @@ class Maths(commands.Cog):
         localembed = discord.Embed(title=f"Area of square of side {length} units", description=f"{result} sq. units", color=color)
         localembed.set_footer(text=f"A = s²\n{length} x {length} = {result} sq. units")
         await ctx.respond(embed=localembed)
-    
+
     @math.command(
         name="area_rectangle",
         description="Finds the area of a rectangle"
@@ -73,7 +73,7 @@ class Maths(commands.Cog):
         elif pi == "3.14": localembed.set_footer(text=f"Taking π as 3.14\nA = πr²\nπ x {radius}² = {result} sq. units")
         elif pi == "3":localembed.set_footer(text=f"Taking π as 3\nA = πr²\nπ x {radius}² = {result} sq. units")
         await ctx.respond(embed=localembed)
-    
+
     @math.command(
         name="area_triangle",
         description="Finds the area of a triangle (using Heron's formula)"
