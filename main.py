@@ -11,7 +11,7 @@ from utils import logger, ping
 from math import floor
 from random import randint
 from framework.isobot import currency, colors, settings
-from framework.isobot.db import levelling, items, userdata, automod
+from framework.isobot.db import levelling, items, userdata, automod, presence as _presence
 from discord import ApplicationContext, option
 from discord.ext import commands
 from cogs.isocoin import create_isocoin_key
@@ -25,7 +25,6 @@ from cogs.isocoin import create_isocoin_key
 client = discord.Bot()
 color = discord.Color.random()
 with open('config/shop.json', 'r', encoding="utf-8") as f: shopitem = json.load(f)
-with open('database/presence.json', 'r', encoding="utf-8") as f: presence = json.load(f)
 with open('config/commands.json', 'r', encoding="utf-8") as f: commandsdb = json.load(f)
 with open('database/automod.json', 'r', encoding="utf-8") as f: automod_config = json.load(f)
 cmd_list = commandsdb.keys()
@@ -33,7 +32,6 @@ cmd_list = commandsdb.keys()
 #Pre-Initialization Commands
 def save():
     """Dumps all cached data to the local databases."""
-    with open('database/presence.json', 'w+', encoding="utf-8") as e: json.dump(presence, e, indent=4)
     with open('database/automod.json', 'w+', encoding="utf-8") as e: json.dump(automod_config, e, indent=4)
 
 if not os.path.isdir("logs"):
@@ -58,6 +56,7 @@ levelling = levelling.Levelling()
 items = items.Items()
 userdata = userdata.UserData()
 automod = automod.Automod()
+_presence = _presence.Presence()
 
 # Theme Loader
 themes = False  # True: enables themes; False: disables themes;
@@ -103,6 +102,7 @@ async def on_message(ctx):
     levelling.generate(ctx.author.id)
     automod.generate(ctx.guild.id)
     uList = list()
+    presence = _presence.get_raw()
     if str(ctx.guild.id) in presence:
         for userid in presence[str(ctx.guild.id)].keys(): uList.append(userid)
     else: pass
@@ -111,8 +111,7 @@ async def on_message(ctx):
             fetch_user = client.get_user(id(user))
             await ctx.channel.send(f"{fetch_user.display_name} went AFK <t:{floor(presence[str(ctx.guild.id)][str(user)]['time'])}:R>: {presence[str(ctx.guild.id)][str(user)]['response']}")
     if str(ctx.guild.id) in presence and str(ctx.author.id) in presence[str(ctx.guild.id)]:
-        del presence[str(ctx.guild.id)][str(ctx.author.id)]
-        save()
+        _presence.remove_afk(ctx.guild.id, ctx.author.id)
         m1 = await ctx.channel.send(f"Welcome back {ctx.author.mention}. Your AFK has been removed.")
         await asyncio.sleep(5)
         await m1.delete()
