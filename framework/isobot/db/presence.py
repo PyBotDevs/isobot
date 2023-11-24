@@ -26,7 +26,7 @@ class Presence():
         exctime = time.time()
         if str(guild_id) not in presence: presence[str(guild_id)] = {}
         presence[str(guild_id)][str(user_id)] = {"type": "afk", "time": exctime, "response": response}
-        self.save()
+        self.save(presence)
         return 0
 
     def remove_afk(self, guild_id: int, user_id: int) -> int:
@@ -34,7 +34,7 @@ class Presence():
         presence = self.load()
         try:
             del presence[str(guild_id)][str(user_id)]
-            self.save()
+            self.save(presence)
             return 0
         except KeyError: return 1
     
