@@ -1,0 +1,195 @@
+/* Imports */
+@import url('https://fonts.googleapis.com/css2?family=Darumadrop+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP&display=swap');
+
+/* General */
+body {
+    margin: 0px;
+    padding: 0px;
+    background-color: black;
+    color: white;
+    font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+button {
+    padding: 10px;
+    border-radius: 100px;
+    color: black;
+    background-color: white;
+    font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 17px;
+    border: none;
+    box-shadow: 3px 3px 10px 1px rgb(31, 31, 31);
+}
+button:hover {
+    color: rgb(174, 16, 206);
+    cursor: pointer;
+    box-shadow: 0px 0px 10px 1px rgb(174, 16, 206);
+}
+button:active {
+    color: rgb(174, 16, 206);
+    background-color: rgb(221, 221, 221);
+    box-shadow: 0px 0px 10px 1px rgb(174, 16, 206);
+}
+
+/* Top Nav Bar */
+#top-nav-bar {
+    position: fixed;
+    background-color: rgba(19, 19, 19, 0.8);
+    backdrop-filter: blur(30px);
+    width: 100%;
+    padding: 20px;
+    font-size: 17px;
+    z-index: 10;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+}
+#top-nav-bar label {
+    margin: 16px;
+}
+.nav-item {
+    padding: 10px;
+    border-radius: 100px;
+    color: black;
+    background-color: white;
+    box-shadow: 0px 0px 10px 3px rgb(31, 31, 31);
+}
+.nav-item:hover {
+    color: rgb(174, 16, 206);
+    cursor: pointer;
+    box-shadow: 0px 0px 10px 1px rgb(219, 40, 255);
+}
+#top-nav-bar #title {
+    font-weight: normal;
+    font-size: 24px;
+    margin-left: 0px;
+    font-family: 'Josefin Sans', sans-serif;
+}
+#top-nav-bar #title:hover {
+    cursor: pointer;
+}
+#top-nav-bar #invite-rd {
+    color: white;
+    background: linear-gradient(to bottom right, rgb(174, 16, 206) 0%, rgb(8, 8, 8) 100%);
+    font-weight: bold;
+}
+/* Extra Eyecandy */
+.separator {
+    border-radius: 100px;
+    width: 100px;
+    background-color: white;
+    height: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    box-shadow: 3px 3px 10px 1px rgb(31, 31, 31);
+}
+.python3-highlight {
+    background: linear-gradient(to bottom right, #306998 0%, #FFD43B 100%);
+    width: fit-content;
+    color: black;
+}
+.discord-highlight {
+    background-color: #5865F2;
+    width: fit-content;
+    color: white;
+}
+.github-highlight {
+    background-color: #000000;
+    width: fit-content;
+    color: white;
+}
+.green-highlight {
+    background-color: green;
+    width: fit-content;
+    color: white;
+}
+
+/* Main Page Content */
+.jap {
+    font-family: 'Noto Serif JP', serif;
+}
+#page-content-container {
+    margin-left: 5%;
+    margin-right: 5%;
+}
+.item-card {
+    background-color: rgb(26, 26, 26);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0px 0px 10px 15px rgb(10, 10, 10); /* rgb(100, 100, 233) rgb(27, 27, 199)*/ 
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+#heading-card {
+    background: linear-gradient(to bottom right, rgb(174, 16, 206) 0%, rgb(8, 8, 8) 100%);
+}
+#heading-card #title {
+    font-size: 50px;
+    font-style: italic;
+    font-weight: bold;
+    font-family: 'Josefin Sans', sans-serif;
+}
+#heading-card #jap-title {
+    font-size: 26px;
+    font-style: italic;
+    font-weight: bold;
+    font-family: 'Josefin Sans', sans-serif;
+}
+#heading-card #subtitle {
+    font-size: 21px;
+}
+#heading-card #invite-button {
+    width: 100%;
+    margin-top: 20px;
+}
+
+#what-is-isobot-card {
+    text-align: left;
+}
+#what-is-isobot-card #title {
+    font-size: 40px;
+    font-weight: 800;
+    background: linear-gradient(to bottom right, rgb(174, 16, 206) 0%, rgb(8, 8, 8) 100%);
+}
+#what-is-isobot-card .subtitle {
+    font-size: 32px;
+    font-weight: bold;
+}
+
+#why-to-use-card {
+    text-align: left;
+}
+#why-to-use-card #title {
+    font-size: 40px;
+    font-weight: 800;
+    background: linear-gradient(to bottom right, rgb(174, 16, 206) 0%, rgb(8, 8, 8) 100%);
+}
+#why-to-use-card .subtitle {
+    font-size: 32px;
+    font-weight: bold;
+}
+#invite-card-end #title {
+    font-size: 35px;
+    font-style: italic;
+    font-weight: bold;
+    font-family: 'Josefin Sans', sans-serif;
+}
+#invite-card-end #invite-button {
+    width: 100%;
+    margin-top: 20px;
+}
+
+
+/* Footer */
+#footer {
+    margin-top: 75px;
+    background-color: rgb(19, 19, 19);
+    font-size: 12px;
+    font-family: 'Roboto Mono', monospace;
+    text-align: center;
+    padding: 10px;
+    box-shadow: 0px 0px 10px 8px rgb(10, 10, 10);
+}

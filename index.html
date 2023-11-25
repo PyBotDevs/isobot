@@ -11,3 +11,70 @@
         ->> WE RESERVE THE RIGHT TO CHANGE the deployment services or strategies at any given time without prior notice.
 -->
 
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>isobot</title>
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <link rel="shortcut icon" href="resources/nka_white.png">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <noscript>This app requires JavaScript to function. Please enable it in your browser settings.</noscript>
+    <body>
+        <div id="top-nav-bar">
+            <label id="title">isobot</label>
+            <label class="nav-item" id="invite-rd" onclick="rd('invite')">Add to Server</label>
+            <label class="nav-item" id="github-rd" onclick="rd('git')">Repository</label>
+            <label class="nav-item" id="commands-list-rd" onclick="rd('commands')">Commands</label>
+            <label class="nav-item" id="changelog-rd" onclick="rd('changelog')">Changelog</label>
+            <label class="nav-item" id="uptime-rd" onclick="rd('uptime')">Uptime Status</label>
+            <label class="nav-item" id="discord-rd" onclick="rd('server')">Discord Server</label>
+        </div>
+        <br><br><br>
+        <center>
+            <div id="page-content-container">
+                <div class="item-card" id="heading-card">
+                    <label id="title">isobot</label>
+                    <br>
+                    <label class="jap" id="jap-title">アイソボット</label>
+                    <div class="separator"></div>
+                    <p id="subtitle">The Discord bot to make your server (a little bit) better.</p>
+                    <button id="invite-button" onclick="rd('invite')">Add To Your Discord Server!</button>
+                </div>
+                <br>
+                <div class="item-card" id="what-is-isobot-card">
+                    <label id="title">What is isobot?<br><div class="separator"></div></label>
+                    <p>
+                        Isobot is a simple discord.py-based Python Discord bot made by the NKA Development Team, to represent the original Heckerbot in an even more efficient, fast, contributable, community-focused and enhanced way.
+                    </p>
+                </div>
+                <br>
+                <div class="item-card" id="why-to-use-card">
+                    <label id="title">Why isobot?<br><div class="separator"></div></label>
+                    <p>
+                        We think isobot can help a multi-purpose economy Discord bot for your server. Apart from the economy system, you also get features for
+                        <br>
+                        <ul>
+                            <li>Moderation</li>
+                            <li>Levelling</li>
+                            <li>Automod</li>
+                            <li>Server Verification <sup>(soon)</sup></li>
+                            <li>Maths Commands</li>
+                            <li>Fun Commands</li>
+                            <li>ChatGPT and AI Image Generation Commands, and</li>
+                            <li>Reddit Media Commands</li>
+                        </ul>
+                    </p>
+                </div>
+                <br>
+                <div class="item-card" id="invite-card-end">
+                    <label id="title">Like What You See?</label>
+                    <br>
+                    <button id="invite-button" onclick="rd('invite')">Add To Your Discord Server!</button>
+                </div>
+            </div>
+        </center>
+        <div id="footer">isobot &copy; NKA 2020-present | This page and the bot associated (isobot) are open-source, licensed with GPL-3.0, and hosted on GitHub.</div>
+    </body>
+    <script src="main.js"></script>
+</html>
