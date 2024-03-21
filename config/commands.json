@@ -708,5 +708,65 @@
 	"usable_by": "everyone",
 	"disabled": false,
 	"bugged": false
+  },
+  "hackertext": {
+	"name": "Hacker Text",
+	"description": "Turns your text into m4st3r h4xx0r text to make yourself look like a skid",
+	"type": "fun",
+	"cooldown": null,
+	"args": ["text"],
+	"usable_by": "everyone",
+	"disabled": false,
+	"bugged": false
+  },
+  "math volume_cuboid": {
+	"name": "Cuboid Volume",
+	"description": "Find the volume of a cuboid.\n This command can also be used to find the volume of a cube, by leaving out the `breadth` and `height` arguments.",
+	"type": "maths",
+	"cooldown": null,
+	"args": ["length", "breadth (optional)", "height (optional)"],
+	"usable_by": "everyone",
+	"disabled": false,
+	"bugged": false
+  },
+  "math volume_sphere": {
+	"name": "Sphere Volume",
+	"description": "Find the volume of a sphere using radius.",
+	"type": "maths",
+	"cooldown": null,
+	"args": ["radius"],
+	"usable_by": "everyone",
+	"disabled": false,
+	"bugged": false
+  },
+  "math volume_hemisphere": {
+	"name": "Hemisphere Volume",
+	"description": "Find the volume of a hemisphere using radius.",
+	"type": "maths",
+	"cooldown": null,
+	"args": ["radius"],
+	"usable_by": "everyone",
+	"disabled": false,
+	"bugged": false
+  },
+  "math volume_cone": {
+	"name": "Cone Volume",
+	"description": "Find the volume of a cone using base radius and height.",
+	"type": "maths",
+	"cooldown": null,
+	"args": ["radius", "height"],
+	"usable_by": "everyone",
+	"disabled": false,
+	"bugged": false
+  },
+  "math volume_cylinder": {
+	"name": "Cylinder Volume",
+	"description": "Find the volume of a cylinder using radius and height.",
+	"type": "maths",
+	"cooldown": null,
+	"args": ["radius", "height"],
+	"usable_by": "everyone",
+	"disabled": false,
+	"bugged": false
   }
 }
