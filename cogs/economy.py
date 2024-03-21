@@ -321,7 +321,7 @@ class Economy(commands.Cog):
             currency.treasury_add(rounded_taxable_amount)
             localembed = discord.Embed(
                 title=f'You just bought {quantity} {shopitem[name]["stylized name"]}!',
-                description=f"**Your Purchase Invoice**\n\nItem: {quantity} {name.lower()}\n---------------\nBase Amount: {amt} coins\nTax: 3%\nTaxable Amount: {taxable_amount} coins\nTaxable Amount (rounded): {rounded_taxable_amount} coins\n**Charged Amount:** {total_amount} coins",
+                description=f"**Your Purchase Invoice**\n\nItem: {quantity} {name.lower()}\nName of User: {ctx.author.display_name}\n---------------\nBase Amount: {amt} coins\nStore Purchase Tax: 3%\nTaxable Amount: {taxable_amount} coins\nTaxable Amount (rounded): {rounded_taxable_amount} coins\n**Charged Amount:** {total_amount} coins\n---------------\n*This is a 100% non-refundable purchase.\nThe charged amount has been automatically deducted from your account and you have received your items.\nFor any descrepancies, please contact @notsniped on Discord.*",
                 color=discord.Color.green()
             )
             localembed.set_footer(text="Thank you for your purchase!")
