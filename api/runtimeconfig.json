@@ -3,5 +3,11 @@
     "secret": "",
     "public_key": "",
     "runtime_options": [],
-	"replit": true
+    "replit": false,
+    "other_keys": {
+        "openweathermap": "",
+        "reddit": "",
+        "ossapi": "",
+        "chatgpt": ""
+    }
 }
