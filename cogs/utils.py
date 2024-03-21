@@ -6,6 +6,7 @@ import math
 import psutil
 import openai
 import discord
+from api import auth
 from framework.isobot import currency, embedengine, commands as cmds
 from framework.isobot.db import levelling
 from discord import option, ApplicationContext
@@ -17,7 +18,8 @@ from framework.isobot.db.presence import Presence
 color = discord.Color.random()
 currency = currency.CurrencyAPI("database/currency.json", "logs/currency.log")
 levelling = levelling.Levelling()
-openai.api_key = os.getenv("chatgpt_API_KEY")
+# openai.api_key = os.getenv("chatgpt_API_KEY")
+openai.api_key = auth.ext_token('chatgpt')
 chatgpt_conversation = dict()
 _presence = Presence()
 

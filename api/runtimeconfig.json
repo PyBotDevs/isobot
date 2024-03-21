@@ -2,6 +2,21 @@
     "token": "",
     "secret": "",
     "public_key": "",
-    "runtime_options": [],
-	"replit": true
+    "runtime_options": {
+        "themes": false,
+        "log_messages": true,
+        "guild_log_blacklist": {},
+        "only_log_whitelist": false,
+        "guild_log_whitelist": {},
+        "ping_server_override": false,
+        "debug_mode": false,
+        "show_ping_on_startup": true
+    },
+    "replit": false,
+    "other_keys": {
+        "openweathermap": "",
+        "reddit": "",
+        "ossapi": "",
+        "chatgpt": ""
+    }
 }
