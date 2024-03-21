@@ -117,7 +117,14 @@ class Economy(commands.Cog):
             "notsniped",
             "Discord",
             "notsniped's imaginary gf",
-            "Technoblade"
+            "Technoblade",
+            "Andrew Tate",
+            "Your best friend who gave up on you",
+            "Your old 6th grade crush",
+            "Michael Jackson",
+            "Your maths teacher",
+            "Galaxy",
+            "Taylor Swift"
         ]
         fail_responses = [
             "Maybe another day.",
@@ -130,7 +137,8 @@ class Economy(commands.Cog):
             "Go get a life.",
             "Stop begging. Get a job.",
             "I think I know what you're gonna do with that money.",
-            "Debloat notsniped's code and he will probably give you money."
+            "Debloat notsniped's code and he will probably give you money.",
+            "If you win a chess match against Xyren she will give you money."
         ]
         if (randint(1, 100) >= 50):
             x = randint(10, 100)
@@ -172,7 +180,7 @@ class Economy(commands.Cog):
     @option(name="user", description="Who do you want to rob?", type=discord.User)
     @commands.cooldown(1, 60, commands.BucketType.user)
     async def rob(self, ctx: ApplicationContext, user:discord.User):
-        if currency.get_wallet(user.id) < 5000: return await ctx.respond('They has less than 5000 coins on them. Don\'t waste your time...') 
+        if currency.get_wallet(user.id) < 5000: return await ctx.respond('They have less than 5000 coins on them. Don\'t waste your time...')
         elif currency.get_wallet(ctx.author.id) < 5000: return await ctx.respond('You have less than 5k coins in your wallet. Play fair dude.')
         if randint(1, 100) <= 50:
             x = randint(5000, currency.get_wallet(user.id))
@@ -202,7 +210,7 @@ class Economy(commands.Cog):
         else:
             x = 10000
             currency.remove(ctx.author.id, x)
-            await ctx.respond(f"Have you ever thought of this as the outcome? You failed AND ended up getting caught by the police. You just lost {x} coins, you absolute loser.")
+            await ctx.respond(f"Have you ever thought of this as the outcome? You failed AND ended up getting caught by the police. That's insane! You just lost {x} coins, you absolute loser.")
 
     @commands.slash_command(
         name='hunt',
@@ -313,10 +321,10 @@ class Economy(commands.Cog):
             currency.treasury_add(rounded_taxable_amount)
             localembed = discord.Embed(
                 title=f'You just bought {quantity} {shopitem[name]["stylized name"]}!',
-                description=f"**Your Purchase Invoice**\n\nItem: {quantity} {name.lower()}\n---------------\nBase Amount: {amt} coins\nTax: 3%\nTaxable Amount: {taxable_amount} coins\nTaxable Amount (rounded): {rounded_taxable_amount} coins\n**Charged Amount:** {total_amount} coins",
+                description=f"**Your Purchase Invoice**\n\nItem: {quantity} {name.lower()}\nName of User: {ctx.author.display_name}\n---------------\nBase Amount: {amt} coins\nStore Purchase Tax: 3%\nTaxable Amount: {taxable_amount} coins\nTaxable Amount (rounded): {rounded_taxable_amount} coins\n**Charged Amount:** {total_amount} coins\n---------------\n*This is a 100% non-refundable purchase.\nThe charged amount has been automatically deducted from your account and you have received your items.\nFor any descrepancies, please contact @notsniped on Discord.*",
                 color=discord.Color.green()
             )
-            localembed.set_footer(text="Thank you for your purchase.")
+            localembed.set_footer(text="Thank you for your purchase!")
             await ctx.respond(embed=localembed)
         except KeyError: await ctx.respond('That item doesn\'t exist.')
 
