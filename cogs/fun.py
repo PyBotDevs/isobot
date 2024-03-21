@@ -64,6 +64,7 @@ class Fun(commands.Cog):
     )
     @option(name="text", description="The text you want to owoify", type=str)
     async def owoify(self, ctx: ApplicationContext, text: str):
+        """Owoify any text you want!"""
         text = text.replace("r", "w")
         text = text.replace("l", "w")
         text = text.replace("the", "da")
