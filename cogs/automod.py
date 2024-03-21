@@ -14,7 +14,7 @@ automod = automod.Automod()
 class Automod(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-    
+
     @commands.slash_command(
         name="automod",
         description="Shows the current automod configuration for your server"
