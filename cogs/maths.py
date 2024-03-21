@@ -22,7 +22,7 @@ class Maths(commands.Cog):
     )
     @option(name="number", description="Which number do you want to find the root of?", type=int)
     async def squareroot(self, ctx: ApplicationContext, number: int):
-        if number < 0: 
+        if number < 0:
             localembed = discord.Embed(description="The square root of a negative number is an imaginary number.", color=color)
             localembed.set_footer(text=f"√({number}) = i√{number}")
             return await ctx.respond(embed=localembed)

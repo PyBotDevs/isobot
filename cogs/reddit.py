@@ -17,7 +17,7 @@ reddit = praw.Reddit(client_id='_pazwWZHi9JldA', client_secret=auth.ext_token('r
 class RedditMedia(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-    
+
     @commands.slash_command(
         name='memes',
         description='Finely hand-picks a high-quality meme from the depths of reddit.'

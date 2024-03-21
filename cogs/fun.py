@@ -15,7 +15,7 @@ color = discord.Color.random()
 class Fun(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        
+
     @commands.slash_command(
         name='stroketranslate',
         description='Gives you the ability to make full words and sentences from a cluster of letters'
@@ -39,7 +39,7 @@ class Fun(commands.Cog):
     @option(name="question", description="What do you want to predict?", type=str)
     async def prediction(self, ctx: ApplicationContext, question: str):
         await ctx.respond(f"My prediction is... **{random.choice(['Yes', 'No'])}!**")
-    
+
     @commands.slash_command(
         name="kill",
         description="Kills someone."
@@ -57,7 +57,7 @@ class Fun(commands.Cog):
             f"{target.display_name} tried to do a wheelie on their bike without wearing a helmet and fell off."
         ]
         await ctx.respond(random.choice(responses))
-    
+
     @commands.slash_command(
         name="owoify",
         description="Owoify any text you want!"

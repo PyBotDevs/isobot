@@ -36,7 +36,7 @@ jobs = [
 class Economy(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-    
+
     @commands.slash_command(
         name='openlootbox',
         description='Opens lootbox(es) in your inventory'
@@ -91,9 +91,9 @@ class Economy(commands.Cog):
             localembed.add_field(name="Coins gained", value=f"**{special_loot[0]}** coins", inline=False)
             localembed.add_field(name="Items recieved", value=f"You got **1 {special_loot[1]}**!\nYou got **1 {special_loot[2]}**!\nYou got **1 {special_loot[3]}**!\nYou got **1 {special_loot[4]}**!\nYou got **1 {special_loot[5]}**!", inline=False)
         await ctx.respond(embed=localembed)
-    
+
     @commands.slash_command(
-        name='beg', 
+        name='beg',
         description='Begs for some quick cash'
     )
     @commands.cooldown(1, 15, commands.BucketType.user)
@@ -164,7 +164,7 @@ class Economy(commands.Cog):
     async def monthly(self, ctx: ApplicationContext):
         currency.add(ctx.author.id, 1000000)
         await ctx.respond('You claimed 1000000 coins from the monthly reward. Check back in 1 month for your next one!')
-    
+
     @commands.slash_command(
         name='rob',
         description='Robs someone for their money'
@@ -265,7 +265,7 @@ class Economy(commands.Cog):
         elif (choice == "died"):
             currency.remove(ctx.author.id, 2000)
             await ctx.respond('YOU FELL INTO YOUR OWN TRAP AND DIED LMFAO\nYou lost 2000 coins in the process.')
-    
+
     @commands.slash_command(
         name='shop',
         description='Views and buys items from the shop'
@@ -274,7 +274,7 @@ class Economy(commands.Cog):
     async def shop(self, ctx: ApplicationContext, item:str=None):
         if item == None:
             localembed = discord.Embed(
-                title='The Shop!', 
+                title='The Shop!',
                 description='**Tools**\n\n1) Hunting Rifle `ID: rifle`: A tool used for hunting animals. (10000 coins)\n2) Fishing Pole `ID: fishingpole`: A tool used for fishing. It lets you use /fish command. (6500 coins)\n3) Shovel `ID: shovel`: You can use this tool to dig stuff from the ground. (3000 coins)\n4) Binoculars `ID: binoculars`: Try scouting with these binoculars, maybe you can find more with it. (14850 coins)'
             )
             localembed.set_footer(text='Page 1 | Tools | This command is in development. More items will be added soon!')
@@ -360,10 +360,10 @@ class Economy(commands.Cog):
             localembed.add_field(name="Now they have", value=f"**{items.fetch_item_count(user.id, item)} {item}**s")
             localembed.add_field(name="and you have", value=f"**{items.fetch_item_count(ctx.author.id, item)} {item}**s")
             await ctx.respond(embed=localembed)
-        except KeyError as e: 
+        except KeyError as e:
             utils.logger.error(e)
             await ctx.respond(f"wtf is {item}?")
-    
+
     @commands.slash_command(
         name='modify_balance',
         description="Modifies user balance (Normal Digit: Adds Balance; Negative Digit: Removes Balance)"
@@ -387,10 +387,10 @@ class Economy(commands.Cog):
         if amount <= 0: return await ctx.respond('The amount you want to give must be greater than `0` coins!', ephemeral=True)
         if amount > int(currency.get_wallet(ctx.author.id)): return await ctx.respond('You don\'t have enough coins in your wallet to do this.', ephemeral=True)
         else:
-            currency.remove(ctx.author.id, amount)            
+            currency.remove(ctx.author.id, amount)
             currency.add(user.id, amount)
             await ctx.respond(f':gift: {ctx.author.mention} just gifted {amount} coin(s) to {user.display_name}!')
-    
+
     @commands.slash_command(
         name='work',
         description='Work for a 30-minute shift and earn cash.'
@@ -476,9 +476,9 @@ class Economy(commands.Cog):
         localembed2.add_field(name="Your ID", value=id, inline=True)
         await ctx.respond(embed=localembed)
         await reciever_info.send(embed=localembed2)
-    
+
     @commands.slash_command(
-        name='scout', 
+        name='scout',
         description='Scouts your area for coins'
     )
     @commands.cooldown(1, 30, commands.BucketType.user)
@@ -546,7 +546,7 @@ class Economy(commands.Cog):
         localembed.add_field(name="You previously had", value=f"`{currency.get_wallet(ctx.author.id) - int(amount)} coins` in your wallet")
         localembed.add_field(name="Now you have", value=f"`{currency.get_wallet(ctx.author.id)} coins` in your wallet")
         await ctx.respond(embed=localembed)
-    
+
     @commands.slash_command(
         name="networth",
         description="Get your networth, or another user's networth"
@@ -559,9 +559,9 @@ class Economy(commands.Cog):
             localembed = discord.Embed(name=f"{user.display_name}'s networth", description=f"{ntw} coins", color=color)
             await ctx.respond(embed=localembed)
         except KeyError: return await ctx.respond("Looks like that user isn't cached yet. Please try again later.", ephemeral=True)
-    
+
     @commands.slash_command(
-        name='inventory', 
+        name='inventory',
         description='Shows the items you (or someone else) own'
     )
     @option(name="user", description="Whose inventory you want to view?", type=discord.User, default=None)
@@ -600,7 +600,7 @@ class Economy(commands.Cog):
         await ctx.respond(embed=localembed)
 
     @commands.slash_command(
-        name='balance', 
+        name='balance',
         description='Shows your own or another user\'s balance.'
     )
     @option(name="user", description="Which user do you want to view information on?", type=discord.User, default=None)
@@ -613,7 +613,7 @@ class Economy(commands.Cog):
             e.add_field(name="Networth", value=f"{currency.get_user_networth(user.id)} coin(s)", inline=True)
             await ctx.respond(embed=e)
         except KeyError: await ctx.respond('Looks like that user is not indexed in our server. Try again later.', ephemeral=True)
-    
+
     @commands.slash_command(
         name="treasury",
         description="See the amount of coins in the isobot treasury."
@@ -621,13 +621,13 @@ class Economy(commands.Cog):
     async def treasury(self, ctx: ApplicationContext):
         localembed = discord.Embed(description=f"There are currently {currency.get_treasury()} coins in the isobot treasury.")
         await ctx.respond(embed=localembed)
-    
+
     @commands.slash_command(
-        name="leaderboard_nw", 
+        name="leaderboard_nw",
         description="View the global leaderboard for net worth."
     )
     async def leaderboard_nw(self, ctx: ApplicationContext):
-        await ctx.respond("This command is currently disabled due to an internal issue. I apologize for the inconvenience.", ephemeral=True) 
+        await ctx.respond("This command is currently disabled due to an internal issue. I apologize for the inconvenience.", ephemeral=True)
         #await ctx.defer()
         #nw_dict = dict()
         #for person in currency["wallet"]:
