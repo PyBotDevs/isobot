@@ -92,5 +92,74 @@ class Maths(commands.Cog):
         localembed.set_footer(text="s = (a + b + c) / 2\nA = √(s x (s - a) x (s - b) x (s - c))")
         await ctx.respond(embed=localembed)
 
-# Cog Initialization
-def setup(bot): bot.add_cog(Maths(bot))
+    # Volume Commands
+    @math.command(
+        name="volume_cuboid",
+        description="Find the volume of a cuboid (use only length for volume of cube)"
+    )
+    @option(name="length", description="The length of the cuboid", type=float)
+    @option(name="breadth", description="The breadth of the cuboid", type=float, default=None)
+    @option(name="height", description="The height/depth of the cuboid", type=float, default=None)
+    async def volume_cuboid(self, ctx: ApplicationContext, length: float, breadth: float = None, height: float = None):
+        if (breadth != None and height == None) or (height != None and breadth == None): return await ctx.respond("Both `breadth` and `height` arguments needs to be filled!")
+        if breadth == None and height == None:
+            breadth = length
+            height = length
+        result = length * breadth * height
+        localembed = discord.Embed(title=f"Volume of cuboid (l: {length}, b: {breadth}, h: {height})", description=f"{result} cu. units", color=color)
+        localembed.set_footer(text=f"v = (l x b x h)\n{length} x {breadth} x {height} = {result} cu. units")
+        await ctx.respond(embed=localembed)
+
+    @math.command(
+        name="volume_sphere",
+        description="Find the volume of a sphere"
+    )
+    @option(name="radius", description="The radius of the corresponding sphere", type=float)
+    async def volume_sphere(self, ctx: ApplicationContext, radius: float):
+        if radius < 0: return await ctx.respond("The radius of the sphere cannot be negative.")
+        result = ((22/7) * (radius ** 3)) * 4/3
+        localembed = discord.Embed(title=f"Volume of sphere of radius {radius} units", description=f"{result} cu. units", color=color)
+        localembed.set_footer(text=f"Taking π as 22/7\nv = 4/3 x πr\u00B3\n4/3 x π x {radius}\u00B3 = {result} cu. units")
+        await ctx.respond(embed=localembed)
+
+    @math.command(
+        name="volume_hemisphere",
+        description="Find the volume of a hemisphere"
+    )
+    @option(name="radius", description="The radius of the corresponding hemisphere", type=float)
+    async def volume_sphere(self, ctx: ApplicationContext, radius: float):
+        if radius < 0: return await ctx.respond("The radius of the hemisphere cannot be negative.")
+        result = ((22/7) * (radius ** 3)) * 2/3
+        localembed = discord.Embed(title=f"Volume of hemisphere of radius {radius} units", description=f"{result} cu. units", color=color)
+        localembed.set_footer(text=f"Taking π as 22/7\nv = 2/3 x πr\u00B3\n2/3 x π x {radius}\u00B3 = {result} cu. units")
+        await ctx.respond(embed=localembed)
+
+    @math.command(
+        name="volume_cylinder",
+        description="Find the volume of a cylinder"
+    )
+    @option(name="radius", description="The radius of the cylinder", type=float)
+    @option(name="height", description="The height of the cylinder", type=float)
+    async def volume_cylinder(self, ctx: ApplicationContext, radius: float, height: float):
+        if radius < 0 or height < 0: return await ctx.respond("The `radius` and `height` arguments cannot be negative!")
+        result = ((22/7) * (radius ** 2)) * height
+        localembed = discord.Embed(title=f"Volume of cylinder (radius: {radius}, height: {height})", description=f"{result} cu. units", color=color)
+        localembed.set_footer(text=f"Taking π as 22/7\nv = πr²h\nπ x {radius}² x {height} = {result} cu. units")
+        await ctx.respond(embed=localembed)
+
+    @math.command(
+        name="volume_cone",
+        description="Find the volume of a cone"
+    )
+    @option(name="radius", description="The radius of the base of the cone", type=float)
+    @option(name="height", description="The height of the cone", type=float)
+    async def volume_cylinder(self, ctx: ApplicationContext, radius: float, height: float):
+        if radius < 0 or height < 0: return await ctx.respond("The `radius` and `height` arguments cannot be negative!")
+        result = (1/3) * (((22/7) * (radius ** 2)) * height)
+        localembed = discord.Embed(title=f"Volume of cone (base radius: {radius}, height: {height})", description=f"{result} cu. units", color=color)
+        localembed.set_footer(text=f"Taking π as 22/7\nv = 1/3 x πr²h\n1/3 x π x {radius}² x {height} = {result} cu. units")
+        await ctx.respond(embed=localembed)
+
+# Initialization
+def setup(bot):
+    bot.add_cog(Maths(bot))
