@@ -3,6 +3,7 @@ import discord
 import json
 import requests
 import os
+from api import auth
 from framework.isobot.db import weather
 from discord import ApplicationContext, option
 from discord.ext import commands

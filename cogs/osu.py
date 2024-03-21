@@ -3,6 +3,7 @@
 # Imports
 import discord
 import os
+from api import auth
 from ossapi import *
 from discord import option, ApplicationContext
 from discord.ext import commands

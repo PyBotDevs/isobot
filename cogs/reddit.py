@@ -4,6 +4,7 @@
 import discord
 import praw
 import os
+from api import auth
 from discord import ApplicationContext, option
 from discord.ext import commands
 from random import randint
