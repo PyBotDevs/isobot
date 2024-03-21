@@ -580,15 +580,18 @@ class Economy(commands.Cog):
         filtered_sellables = list()
         filtered_powerups = list()
         filtered_lootboxes = list()
+        filtered_collectables = list()
         parsed_utility_items = str()
         parsed_sellables = str()
         parsed_powerups = str()
         parsed_lootboxes = str()
+        parsed_collectables = str()
         for x in shopitem:
             if shopitem[x]['collection'] == "utility": filtered_utility_items.append(x)
             elif shopitem[x]['collection'] == "sellable": filtered_sellables.append(x)
             elif shopitem[x]['collection'] == "power-up": filtered_powerups.append(x)
             elif shopitem[x]['collection'] == "lootbox": filtered_lootboxes.append(x)
+            elif shopitem[x]['collection'] == "collectable": filtered_collectables.append(x)
         for g in filtered_utility_items:
             if items.fetch_item_count(user.id, g) != 0:
                 parsed_utility_items += f"{shopitem[g]['stylized name']} `ID: {g}`: {items.fetch_item_count(user.id, g)}\n"
@@ -601,10 +604,14 @@ class Economy(commands.Cog):
         for g in filtered_lootboxes:
             if items.fetch_item_count(user.id, g) != 0:
                 parsed_lootboxes += f"{shopitem[g]['stylized name']} `ID: {g}`: {items.fetch_item_count(user.id, g)}\n"
+        for g in filtered_collectables:
+            if items.fetch_item_count(user.id, g) != 0:
+                parsed_collectables += f"{shopitem[g]['stylized name']} `ID: {g}`: {items.fetch_item_count(user.id, g)}\n"
         if parsed_utility_items != "": localembed.add_field(name='Utility', value=parsed_utility_items, inline=False)
         if parsed_sellables != "": localembed.add_field(name='Sellables', value=parsed_sellables, inline=False)
         if parsed_powerups != "": localembed.add_field(name='Power-ups', value=parsed_powerups, inline=False)
         if parsed_lootboxes != "": localembed.add_field(name='Power-ups', value=parsed_lootboxes, inline=False)
+        if parsed_collectables != "": localembed.add_field(name='Collectables', value=parsed_collectables, inline=False)
         await ctx.respond(embed=localembed)
 
     @commands.slash_command(
