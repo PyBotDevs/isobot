@@ -30,7 +30,7 @@ def get_secret():
 
 def get_public_key():
     """Returns the bot's public key in `runtimeconfig.json`, if it exists."""
-    if config["public_key"]: return config["public_key"]
+    if config["public_key"] != "": return config["public_key"]
     else: return "Public key has not been set."
 
 def get_mode() -> bool:
