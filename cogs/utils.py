@@ -6,6 +6,7 @@ import math
 import psutil
 import openai
 import discord
+from api import auth
 from framework.isobot import currency, embedengine, commands as cmds
 from framework.isobot.db import levelling
 from discord import option, ApplicationContext
