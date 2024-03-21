@@ -9,6 +9,7 @@ import discord
 from framework.isobot import currency, embedengine, commands as cmds
 from framework.isobot.db import levelling
 from discord import option, ApplicationContext
+from discord.commands import SlashCommandGroup
 from discord.ext import commands
 from framework.isobot.db.presence import Presence
 
@@ -251,6 +252,73 @@ class Utils(commands.Cog):
     #    await ctx.respond(embed=localembed)
         localembed = discord.Embed(title="Discontinuation of isobot AI commands", description="Thank you for showing your interest in the isobot AI commands!\nUnfortunately, due to prolonged issues with OpenAI integration, we are temporarily discontinuing all AI-related commands.\nDon't worry, because sometime, in the (not so distant) future, isobot AI commands will be making a sure return for everyone to enjoy.\n\n- NKA Development Team")
         await ctx.respond(embed=localembed)
+
+    commandmanager = SlashCommandGroup("commandmanager", "Manage isobot's command registry.")
+
+    @commandmanager.command(
+        name="list_all_commands",
+        description="Lists all of isobot's commands."
+    )
+    async def list_all_commands(self, ctx: ApplicationContext):
+        if ctx.author.id != 738290097170153472:
+            return await ctx.respond("You can't use this command!", ephemeral=True)
+        all_cmds = _commands.list_commands()
+        parsed_output = str()
+        for cmd in all_cmds:
+            parsed_output += f"\n`{cmd}`"
+        await ctx.respond(parsed_output)
+
+    @commandmanager.command(
+        name="switch_flag",
+        description="Switches a flag for a specific command."
+    )
+    @option(name="command", description="The command entry that you want to manipulate", type=str)
+    @option(name="flag", description="The flag that you want to enable", type=str, choices=["disabled", "bugged"])
+    @option(name="status", description="Choose whether you want the flag to be True or False.", type=bool)
+    async def switch_flag(self, ctx: ApplicationContext, command: str, flag: str, status: bool):
+        if ctx.author.id != 738290097170153472:
+            return await ctx.respond("You can't use this command!", ephemeral=True)
+        if flag == "disabled": _commands.command_disabled_flag(command, status)
+        elif flag == "bugged": _commands.command_bugged_flag(command, status)
+        await ctx.respond(f":white_check_mark: Flag edited successfully for `/{command}`.")
+
+    @commandmanager.command(
+        name="remove",
+        description="Removes a command permanently from the command registry."
+    )
+    @option(name="command", description="The command that you want to remove.", type=str)
+    async def _remove(self, ctx: ApplicationContext, command: str):
+        if ctx.author.id != 738290097170153472:
+            return await ctx.respond("You can't use this command!", ephemeral=True)
+        _commands.remove_command(command)
+        await ctx.respond(f":white_check_mark: Command `/{command}` successfully removed from database.")
+
+    @commandmanager.command(
+        name="add",
+        description="Add new command to the command registry."
+    )
+    @option(name="command_name", description="What is the actual command name?", type=str)
+    @option(name="stylized_name", description="Enter a good-looking version of the command name.", type=str)
+    @option(name="description", description="Enter a description for this command.", type=str)
+    @option(name="command_type", description="What category does this command belong to?", type=str)
+    @option(name="usable_by", description="Who can use this command?", type=str)
+    @option(name="cooldown", description="How many seconds is the command cooldown for?", type=int, default=None)
+    async def _add(self, ctx: ApplicationContext, command_name: str, stylized_name: str, description: str, command_type: str, usable_by: str, cooldown: int = None):
+        if ctx.author.id != 738290097170153472:
+            return await ctx.respond("You can't use this command!", ephemeral=True)
+        _commands.add_command(
+            command_name,
+            stylized_name,
+            description,
+            command_type,
+            usable_by,
+            cooldown=cooldown
+        )
+        localembed = discord.Embed(title=":white_check_mark: New Command Successfully Added!", description=f"`/{command_name}\n\n{description}`", color=discord.Color.green())
+        localembed.add_field(name="Command Type", value=command_type)
+        localembed.add_field(name="Usable By", value=usable_by)
+        localembed.add_field(name="Cooldown", value=cooldown)
+        await ctx.respond(embed=embed)
 
 # Cog Initialization
 def setup(bot):
