@@ -1,0 +1,22 @@
+# For cogs/utils.py
+
+from translate import Translator
+
+@commands.command(
+        name="translate",
+        description="Translates text from any language to another language."
+    )
+    @option(name="text", desciption="The text you want to translate", type=str)
+    @option(name="target_language", description="The language to which you want to translate", type=str)
+    @option(name="base_language", description="The language from which you want to translate (default: english)", type=str, default="en")
+    async def translate(self, ctx: ApplicationContext, text: str, target_language: str, base_language: str = "en"):
+        """Translates text from any language to another language."""
+        translator = Translator(from_lang=base_language, to_lang=target_language)
+        translation = translator.translate(text)
+        localembed = discord.Embed(
+            title=f'Translation of "{text}"',
+            description=translation,
+            color=discord.Color.random()
+        )
+        localembed.set_footer(text=f"Translated from {base_language}\nTranslated to {target_language}")
+        await ctx.respond(embed=localembed)
