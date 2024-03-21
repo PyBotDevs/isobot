@@ -12,8 +12,8 @@ from discord.ext import commands
 class Osu(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.api = OssapiV2(13110, os.environ['ossapi_CLIENT_SECRET'])
-    
+        self.api = OssapiV2(13110, auth.ext_token("ossapi"))
+
     @commands.slash_command(
         name="osu_user",
         description="View information on an osu! player."
