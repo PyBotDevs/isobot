@@ -36,3 +36,12 @@ def get_public_key():
 def get_mode() -> bool:
     """Returns a boolean of the current runtime mode.\n\nReturns `True` if replit mode is active, returns `False` if replit mode is inactive."""
     return config["replit"]
+
+def ext_token(token_name: str) -> str:
+    """Returns an external extra authorization token from `runtimeconfig.json`, if it exists."""
+    return str(config["other_keys"][token_name])
+    #except KeyError: return "This external authorization key does not exist."
+
+def get_runtime_options() -> dict:
+    """Returns a dict of all the client's runtime configuration options, as well as their respective values."""
+    return dict(config["runtime_options"])
