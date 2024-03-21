@@ -10,7 +10,7 @@ from random import randint
 
 # Variables
 color = discord.Color.random()
-reddit = praw.Reddit(client_id='_pazwWZHi9JldA', client_secret=os.environ['reddit_CLIENT_SECRET'], user_agent='idk', check_for_async=False)
+reddit = praw.Reddit(client_id='_pazwWZHi9JldA', client_secret=auth.ext_token('reddit'), user_agent='idk', check_for_async=False)
 
 # Commands
 class RedditMedia(commands.Cog):

@@ -8,7 +8,8 @@ from discord import ApplicationContext, option
 from discord.ext import commands
 
 # Variables
-api_key = os.environ['openweathermap_API_KEY']
+#api_key = os.environ['openweathermap_API_KEY']
+api_key = auth.ext_token('openweathermap')
 weather = weather.Weather()
 
 # Commands

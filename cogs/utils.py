@@ -17,7 +17,9 @@ from framework.isobot.db.presence import Presence
 color = discord.Color.random()
 currency = currency.CurrencyAPI("database/currency.json", "logs/currency.log")
 levelling = levelling.Levelling()
-openai.api_key = os.getenv("chatgpt_API_KEY")
+_commands = cmds.Commands()
+# openai.api_key = os.getenv("chatgpt_API_KEY")
+openai.api_key = auth.ext_token('chatgpt')
 chatgpt_conversation = dict()
 _presence = Presence()
 
