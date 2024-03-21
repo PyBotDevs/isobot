@@ -653,6 +653,56 @@ class Economy(commands.Cog):
         #localembed = discord.Embed(title="Global net worth leaderboard", description=parsed_output, color=color)
         #await ctx.respond(embed=localembed)
 
+    @commands.slash_command(
+        name="hack",
+        description="Hack people's wallets (digitally) for cash!"
+    )
+    @option(name="user", description="Which user do you want to attempt to hack?", type=discord.User)
+    @commands.cooldown(1, 30, commands.BucketType.user)
+    async def hack(self, ctx: ApplicationContext, user: discord.User):
+        """Hack people's wallets (digitally) for cash!"""
+        if items.fetch_item_count(ctx.author.id, "computer") == 0: return await ctx.respond("You can't hack people without a computer! This ain't the matrix. Go get yourself some cash and buy a powerful workstation to hack people from. ||/buy computer||")
+        if randint(1, 100) <= 15:
+           response = [
+               "You accidentally tried hacking a cybercrime organization and they ended up injecting malware into your computer. Now your computer won't boot anymore! Too bad bozo.",
+               "Your computer overheated while hacking the person, and the CPU died. Looks like someone forgot to clean out their fans.",
+               "Your computer's graphics card had a tough time keeping up and exploded. No more GPU for you.",
+               "Your computer experienced a power malfunction and the power supply gave up. For the love of god FIX YOUR POWER OUTLET ALREADY"
+           ]
+           items.remove_item(ctx.author.id, "computer", quantity=1)
+           r = random.choice(response)
+           localembed = discord.Embed(title="Hacking failure", description=r)
+        else:
+            if currency.get_wallet(user.id) < 5000: return await ctx.respond("The person you're trying to hack has less than 5000 coins in their wallet. Not worth risking your computer over them. (for now)")
+            ch = random.randint(0, 1)
+            if ch == 1:
+                profit = random.randint(5000, currency.get_wallet(user.id))
+                currency.remove(user.id, profit)
+                currency.add(ctx.author.id, profit)
+                localembed = discord.Embed(title="Hacking Successful!", description=f"You were able to prove your hacking skills useful, and you got **{profit} coins** from {user.display_name}'s wallet!", color=discord.Color.random())
+                return await ctx.respond(embed=localembed)
+            else: return await ctx.respond("You tried hacking {user.display_name}, but unlucky you, your computer couldn't hack into their wallet. Sad.")
+
+    @commands.slash_command(
+        name="all_item_ids",
+        description="Shows all the item ids that you can use in isobot."
+    )
+    @option(name="search", description="Use a search query to filter item ids.", type=str, default=None)
+    async def all_item_ids(self, ctx: ApplicationContext, search: str = None):
+        """Shows all the item ids that you can use in isobot."""
+        item_ids: list = shop_data.get_item_ids()
+        if search == None:
+            parsed_result = str()
+            for _item in item_ids: parsed_result += f"\n`{_item}`"
+            localembed = discord.Embed(title="All Item Ids", description=parsed_result)
+        else:
+            parsed_result = str()
+            for _item in item_ids:
+                if search in _item: parsed_result += f"\n`{_item}`"
+            if parsed_result == "": parsed_result = "*No search results were found. :(*"
+            localembed = discord.Embed(title=f"Item Ids (search query: {search})", description=parsed_result)
+        await ctx.respond(embed=localembed)
+
 # Initialization
 def setup(bot):
     bot.add_cog(Economy(bot))
