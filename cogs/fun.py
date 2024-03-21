@@ -73,5 +73,22 @@ class Fun(commands.Cog):
         text += random.choice([" uwu", " owo", " UwU", " OwO", " XDDD", " :D", " ;-;", " <3", " ^-^", " >-<"])
         await ctx.respond(text)
 
+    @commands.slash_command(
+        name="hackertext",
+        description="Turn any text into m4st3r h4xx0r text."
+    )
+    @option(name="text", description="The text that you want to convert", type=str)
+    async def hackertext(self, ctx: ApplicationContext, text: str):
+        """Turn any text into m4st3r h4xx0r text."""
+        text = text.lower()
+        text = text.replace("a", "4")
+        text = text.replace("l", "1")
+        text = text.replace("e", "3")
+        text = text.replace("o", "0")
+        text = text.replace("c", "x")
+        text = text.replace("u", "x")
+        text = text.replace("t", "7")
+        await ctx.respond(text)
+
 # Initialization
 def setup(bot): bot.add_cog(Fun(bot))
