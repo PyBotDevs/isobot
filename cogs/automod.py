@@ -21,7 +21,7 @@ class Automod(commands.Cog):
     )
     async def automod(self, ctx: ApplicationContext):
         loaded_config = automod.fetch_config(ctx.guild.id)
-        localembed = discord.Embed(title=f"{ctx.guild.name}\'s automod configuration", descripton="Use the `/automod_set` command to change your server's automod configuration.", color=color)
+        localembed = discord.Embed(title=f"{ctx.guild.name}\'s automod configuration", description="Use the `/automod_set` command to change your server's automod configuration.", color=color)
         localembed.set_thumbnail(url=ctx.guild.icon_url)
         localembed.add_field(name="Swear-filter", value=loaded_config["swear_filter"]["enabled"])
         localembed.add_field(name="Swear-filter Keywords Count", value=f"{int(len(loaded_config['swear_filter']['keywords']['default'])) + int(len(loaded_config['swear_filter']['keywords']['custom']))} words")
