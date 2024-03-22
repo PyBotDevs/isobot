@@ -10,10 +10,17 @@ class ShopData:
         self.db_path = db_path
         with open(db_path, 'r') as f: self.db = json.load(f)
 
-    def get_item_ids(self) -> list:
+    def get_item_ids(self, *, limited: bool = False) -> list:
         """Fetches and returns all of the shop item ids."""
         json_list = list()
-        for h in self.db: json_list.append(str(h))
+        if limited:
+            cnt = 0
+            for item in self.db:
+                if cnt <= 24:
+                    cnt += 1
+                    json_list.append(str(item))
+        else:
+            for h in self.db: json_list.append(str(h))
         return json_list
 
     def get_item_names(self) -> list:
