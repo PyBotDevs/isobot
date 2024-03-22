@@ -1,4 +1,7 @@
-import time, datetime
+# Imports
+import time
+import datetime
+
 log_path = "logs/info-log.txt"
 error_path = "logs/error-log.txt"
 class colours:
