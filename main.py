@@ -73,7 +73,7 @@ if api.auth.get_runtime_options()["themes"]:
             color_loaded = theme["theme"]["embed_color"]
             color = int(color_loaded, 16)
         except KeyError:
-            print(f"{colors.red}The theme file being loaded might be broken. Rolling back to default configuration...{colors.end}")
+            logger.warn("The theme file being loaded might be broken. Rolling back to default configuration...", module="main/Themes")
             color = discord.Color.random()
 else: color = discord.Color.random()
 
