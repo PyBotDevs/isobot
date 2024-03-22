@@ -20,7 +20,6 @@ from cogs.isocoin import create_isocoin_key
 # Variables
 client = discord.Bot()
 color = discord.Color.random()
-cmd_list = commandsdb.keys()
 
 if not os.path.isdir("logs"):
     os.mkdir('logs')
