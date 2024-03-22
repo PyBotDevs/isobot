@@ -318,7 +318,7 @@ active_cogs = [
     "fun",
     "utils",
     "afk",
-    "osu",
+    # "osu",  Disabled due to ossapi library metadata issues. (will probably remove osu cog anyway, because cog code is outdated with ossapi library)
     "weather",
     "isocard"
 ]
