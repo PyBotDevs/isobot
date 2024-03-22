@@ -5,7 +5,7 @@ import os.path
 import json
 import time
 import datetime
-import discord
+import discord, discord.errors
 import asyncio
 import api.auth
 from utils import logger, ping
@@ -129,28 +129,20 @@ async def on_message(ctx):
                 await ctx.delete()
                 await ctx.channel.send(f'{ctx.author.mention} watch your language.', delete_after=5)
 
-#Error handler
+# Error handler
 @client.event
 async def on_application_command_error(ctx: ApplicationContext, error: discord.DiscordException):
-    """An event handler to handle command exceptions when things go wrong."""
+    """An event handler to handle command exceptions when things go wrong.\n\nSome exceptions may be pre-handled, but any unhandable exceptions will be logged as an error."""
     current_time = datetime.time().strftime("%H:%M:%S")
-    if isinstance(error, commands.CommandOnCooldown):
-        await ctx.respond(f":stopwatch: Not now! Please try after **{str(datetime.timedelta(seconds=int(round(error.retry_after))))}**")
-        print(f"[{current_time}] Ignoring exception at {colors.cyan}CommandOnCooldown{colors.end}. Details: This command is currently on cooldown.")
-    elif isinstance(error, commands.MissingPermissions):
-        await ctx.respond("You don't have permission to do this!", ephemeral=True)
-        print(f"[{current_time}] Ignoring exception at {colors.cyan}MissingPermissions{colors.end}. Details: The user doesn\'t have the required permissions.")
-    elif isinstance(error, commands.BadArgument):
-        await ctx.respond(":x: Invalid argument.", delete_after=8)
-        print(f"[{current_time}] Ignoring exception at {colors.cyan}BadArgument{colors.end}.")
-    elif isinstance(error, commands.BotMissingPermissions):
-        await ctx.respond(":x: I don\'t have the required permissions to use this.")
-        print(f"[{current_time}] Ignoring exception at {colors.cyan}BotMissingPremissions{colors.end}. Details: The bot doesn\'t have the required permissions.")
-    elif isinstance(error, commands.BadBoolArgument):
-        await ctx.respond(":x: Invalid true/false argument.", delete_after=8)
-        print(f"[{current_time}] Ignoring exception at {colors.cyan}BadBoolArgument{colors.end}.")
-    else:
-        await ctx.respond(f"An uncaught error occured while running the command.\n```\n{error}\n```")
+    if not api.auth.get_runtime_options()["debug_mode"]:
+        if isinstance(error, commands.CommandOnCooldown): await ctx.respond(f":stopwatch: Not now! Please try after **{str(datetime.timedelta(seconds=int(round(error.retry_after))))}**")
+        elif isinstance(error, commands.MissingPermissions): await ctx.respond(":warning: You don't have the required server permissions to run this command!", ephemeral=True)
+        elif isinstance(error, commands.BadArgument): await ctx.respond(":x: Invalid argument.", ephemeral=True)
+        elif isinstance(error, commands.BotMissingPermissions): await ctx.respond(":x: I don\'t have the required permissions to use this.\nIf you think this is a mistake, please go to server settings and fix isobot's role permissions.")
+        elif isinstance(error, commands.BadBoolArgument): await ctx.respond(":x: Invalid true/false argument.", ephemeral=True)
+        else:
+            logger.error(f"Command failure: An uncaught error occured while running the command.\n   >>> {error}", module="main/Client")
+            await ctx.respond(f"An uncaught error occured while running the command. (don't worry, developers will fix this soon)\n```\n{error}\n```")
 
 # Commands
 @client.slash_command(
