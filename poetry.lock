@@ -6,6 +6,30 @@ category = "main"
 optional = false
 python-versions = ">=3.6"
 
+[[package]]
+name = "framework"
+version = "1.0.0"
+description = "NKA Framework Package for isobot"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[[package]]
+name = "utils"
+version = "1.0.0"
+description = "Utility package support for isobot"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[[package]]
+name = "api"
+version = "1.0.0"
+description = "Discord API login system for isobot"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
 [package.dependencies]
 aiosignal = ">=1.1.2"
 async-timeout = ">=4.0.0a3,<5.0"
