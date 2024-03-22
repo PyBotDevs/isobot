@@ -163,6 +163,7 @@ async def on_application_command_error(ctx: ApplicationContext, error: discord.D
 @option(name="command", description="Which command do you need help with?", type=str, default=None)
 async def help(ctx: ApplicationContext, command: str = None):
     """Gives you help with a specific command, or shows a list of all commands"""
+    commandsdb = _commands.fetch_raw()
     if command is not None:
         try:
             localembed = discord.Embed(
