@@ -1,20 +1,13 @@
 # Imports
 import json
+from framework.isobot.colors import Colors as colors
 from discord import User
 
-# Classes
-class Colors:
-    """Contains general stdout colors."""
-    cyan = '\033[96m'
-    red = '\033[91m'
-    green = '\033[92m'
-    end = '\033[0m'
-
 # Functions
-class Weather(Colors):
+class Weather():
     """Class to manage the weather db"""
     def __init__(self):
-        print(f"[Framework/Loader] {Colors.green}Weather database initialized.{Colors.end}")
+        print(f"[Framework/Loader] {colors.green}Weather database initialized.{colors.end}")
 
     def load(self) -> dict:
         """Fetches and returns the latest data from the levelling database."""

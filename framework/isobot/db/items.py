@@ -1,6 +1,7 @@
 """The framework module library used for managing isobot's items database."""
 # Imports
 import json
+from framework.isobot.colors import Colors as colors
 from framework.isobot.shop import ShopData
 
 # Variables
@@ -11,7 +12,7 @@ shopitem = shop.get_item_ids()
 class Items():
     """Used to initialize the items database."""
     def __init__(self):
-        print("[framework/db/Levelling] Items db library initialized.")
+        print(f"[framework/db/Levelling] {colors.green}Items db library initialized.{colors.end}")
 
     def load(self) -> dict:
         """Fetches and returns the latest data from the items database."""

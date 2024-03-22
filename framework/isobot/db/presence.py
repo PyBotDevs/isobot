@@ -3,13 +3,14 @@
 # Imports
 import json
 import time
+from framework.isobot.colors import Colors as colors
 
 # Functions
 class Presence():
     """Used to initialize the User Presence system."""
     def __init__(self):
-        print("[framework/db/UserData] Presence database initialized.")
-    
+        print(f"[framework/db/UserData] {colors.green}Presence database initialized.{colors.end}")
+
     def load(self) -> dict:
         """Fetches and returns the latest data from the presence database."""
         with open("database/presence.json", 'r', encoding="utf8") as f: db = json.load(f)
