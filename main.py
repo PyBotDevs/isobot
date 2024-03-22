@@ -126,6 +126,31 @@ async def on_message(ctx):
             elif _discrim == "0000": logger.info(f"[DM] New message received from {_user}[webhook] ({ctx.author.display_name})", timestamp=True)
             else: logger.info(f"[DM] New message received from {ctx.author} ({ctx.author.display_name})", timestamp=True)
     if not ctx.author.bot:
+        currency.new_wallet(ctx.author.id)
+        currency.new_bank(ctx.author.id)
+        create_isocoin_key(ctx.author.id)
+        userdata.generate(ctx.author.id)
+        settings.generate(ctx.author.id)
+        items.generate(ctx.author.id)
+        levelling.generate(ctx.author.id)
+        try: automod.generate(ctx.guild.id)
+        except AttributeError: pass
+        try:
+            uList = list()
+            presence = _presence.get_raw()
+            if str(ctx.guild.id) in presence:
+                for userid in presence[str(ctx.guild.id)].keys(): uList.append(userid)
+            else: pass
+            for user in uList:
+                if user in ctx.content and not ctx.author.bot:
+                    fetch_user = client.get_user(id(user))
+                    await ctx.channel.send(f"{fetch_user.display_name} went AFK <t:{floor(presence[str(ctx.guild.id)][str(user)]['time'])}:R>: {presence[str(ctx.guild.id)][str(user)]['response']}")
+            if str(ctx.guild.id) in presence and str(ctx.author.id) in presence[str(ctx.guild.id)]:
+                _presence.remove_afk(ctx.guild.id, ctx.author.id)
+                m1 = await ctx.channel.send(f"Welcome back {ctx.author.mention}. Your AFK has been removed.")
+                await asyncio.sleep(5)
+                await m1.delete()
+        except AttributeError: pass
         levelling.add_xp(ctx.author.id, randint(1, 5))
         xpreq = 0
         for level in range(levelling.get_level(ctx.author.id)):
