@@ -21,6 +21,7 @@ from cogs.isocoin import create_isocoin_key
 # Variables
 client = discord.Bot()
 color = discord.Color.random()
+start_time = ""
 
 # Pre-Initialization Commands
 def initial_setup():
