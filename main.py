@@ -17,12 +17,7 @@ from discord import ApplicationContext, option
 from discord.ext import commands
 from cogs.isocoin import create_isocoin_key
 
-# Slash option types:
-# Just use variable types to define option types.
-# For example, if the option has to be only str:
-# @option(name="something", description="A description", type=str)
-
-#Variables
+# Variables
 client = discord.Bot()
 color = discord.Color.random()
 with open('config/shop.json', 'r', encoding="utf-8") as f: shopitem = json.load(f)
@@ -49,7 +44,7 @@ if not os.path.isdir("logs"):
     except IOError as e:
         logger.error(f"Failed to make log file: {e}", nolog=True)
 
-#Framework Module Loader
+# Framework Module Loader
 colors = colors.Colors()
 currency = currency.CurrencyAPI("database/currency.json", "logs/currency.log")
 settings = settings.Configurator()
@@ -73,7 +68,7 @@ if themes:
             color = discord.Color.random()
 else: color = discord.Color.random()
 
-#Events
+# Events
 @client.event
 async def on_ready():
     """This event is fired when the bot client is ready"""
@@ -159,7 +154,7 @@ async def on_application_command_error(ctx: ApplicationContext, error: discord.D
     else:
         await ctx.respond(f"An uncaught error occured while running the command.\n```\n{error}\n```")
 
-#Commands
+# Commands
 @client.slash_command(
     name="help",
     description="Gives you help with a specific command, or shows a list of all commands"
@@ -196,7 +191,7 @@ async def help(ctx: ApplicationContext, command: str = None):
         commands_list = ""
         for _command in commandsdb:
             if commandsdb[_command]["type"] != "DevTools": commands_list += f"`/{_command}`\n"
-        localembed = discord.Embed(title="Isobot Command Help", description=f"**Bot Commands:**\n{commands_list}", color = color)
+        localembed = discord.Embed(title="Isobot Command Help", description=f"**Bot Commands:**\n{commands_list}", color=color)
         await ctx.author.send(embed=localembed)
         await ctx.respond("Check your direct messages.", ephemeral=True)
 
