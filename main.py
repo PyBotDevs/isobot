@@ -21,19 +21,39 @@ from cogs.isocoin import create_isocoin_key
 client = discord.Bot()
 color = discord.Color.random()
 
-if not os.path.isdir("logs"):
-    os.mkdir('logs')
+# Pre-Initialization Commands
+def initial_setup():
+    """Runs the initial setup for isobot's directories.\nThis creates missing directories, new log files, as well as new databases for any missing `.json` database files."""
     try:
-        open('logs/info-log.txt', 'x', encoding="utf-8")
-        logger.info("Created info log", nolog=True)
-        time.sleep(0.5)
-        open('logs/error-log.txt', 'x', encoding="utf-8")
-        logger.info("Created error log", nolog=True)
-        time.sleep(0.5)
-        open('logs/currency.log', 'x', encoding="utf-8")
-        logger.info("Created currency log", nolog=True)
-    except IOError as e:
-        logger.error(f"Failed to make log file: {e}", nolog=True)
+        paths = ["database", "config", "logs", "themes"]
+        for p in paths:
+            if not os.path.isdir(p):
+                logger.warn(f"'{p}' directory appears to be missing. Created new directory for '{p}'.", module="main/Setup", nolog=True)
+                os.mkdir(p)
+    except: logger.error(f"Failed to make directory: {e}", module="main/Setup")
+    try:
+        databases = ["automod", "currency", "isocard", "isotokens", "items", "levels", "presence", "user_data", "weather"]
+        for f in databases:
+            if not os.path.isfile(f"database/{f}.json"):
+                logger.warn(f"[main/Setup] '{f}.json' was not found in database directory. Creating new database...", module="main/Setup", nolog=True)
+                if f == "currency": open(f"database/{f}.json", 'x', encoding="utf-8").write('{"treasury": 1000000, "wallet": {}, "bank": {}}')
+                else: open(f"database/{f}.json", 'x', encoding="utf-8").write("{}")
+                time.sleep(0.5)
+    except IOError as e: logger.error(f"Failed to make database file: {e}", module="main/Setup")
+    try:
+        if not os.path.isfile("logs/info-log.txt"):
+            open('logs/info-log.txt', 'x', encoding="utf-8")
+            logger.info("Created info log", module="main/Setup", nolog=True)
+            time.sleep(0.5)
+        if not os.path.isfile("logs/error-log.txt"):
+            open('logs/error-log.txt', 'x', encoding="utf-8")
+            logger.info("Created error log", module="main/Setup", nolog=True)
+            time.sleep(0.5)
+        if not os.path.isfile("logs/currency.log"):
+            open('logs/currency.log', 'x', encoding="utf-8")
+            logger.info("Created currency log", module="main/Setup", nolog=True)
+            time.sleep(0.5)
+    except IOError as e: logger.error(f"Failed to make log file: {e}", module="main/Setup", nolog=True)
 
 # Framework Module Loader
 colors = colors.Colors()
@@ -285,6 +305,7 @@ async def levelup_messages(ctx: ApplicationContext, enabled: bool):
     await ctx.respond(embed=localembed)
 
 # Initialization
+initial_setup()  # Check for any missing sub-directories or databases in bot directory
 active_cogs = [
     "economy",
     "maths",
