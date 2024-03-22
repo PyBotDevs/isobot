@@ -42,10 +42,13 @@ class Presence():
     def get_presence(self, guild_id: int, user_id: int) -> dict:
         """Returns a `dict` of the specified user's current AFK status in the guild. Returns `1` if the user is not in the presence database."""
         presence = self.load()
+        if str(guild_id) not in presence:
+            presence[str(guild_id)] = {}
+            self.save(presence)
         if str(user_id) in presence[str(guild_id)]:
             return {
-                "afk": True, 
-                "response": presence[str(guild_id)][str(user_id)]['response'], 
+                "afk": True,
+                "response": presence[str(guild_id)][str(user_id)]['response'],
                 "time": presence[str(guild_id)][str(user_id)]['time']
             }
         else: return 1
