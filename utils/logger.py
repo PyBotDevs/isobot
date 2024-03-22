@@ -23,7 +23,8 @@ def info(text:str, *, nolog=False, module=None, timestamp=False):
     if nolog == True: pass
     else:
       with open(log_path, 'a') as f:
-          f.write(f'[{current_time}/INFO] {text}\n')
+          if module is not None: f.write(f'[{current_time}] [{module}] {text}\n')
+          else: f.write(f'[{current_time}] {text}\n')
           f.close()
 
 def warn(text:str, *, nolog=False, module=None):
