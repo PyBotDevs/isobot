@@ -144,15 +144,19 @@ async def on_message(ctx):
             levelling.set_xp(ctx.author.id, 0)
             levelling.add_levels(ctx.author.id, 1)
             if settings.fetch_setting(ctx.author.id, "levelup_messages") is True:
-                await ctx.author.send(f"{ctx.author.mention}, you just ranked up to **level {levelling.get_level(ctx.author.id)}**. Nice!")
-        save()
-        if automod_config[str(ctx.guild.id)]["swear_filter"]["enabled"] is True:
-            if automod_config[str(ctx.guild.id)]["swear_filter"]["keywords"]["use_default"] and any(x in ctx.content.lower() for x in automod_config[str(ctx.guild.id)]["swear_filter"]["keywords"]["default"]):
-                await ctx.delete()
-                await ctx.channel.send(f'{ctx.author.mention} watch your language.', delete_after=5)
-            elif automod_config[str(ctx.guild.id)]["swear_filter"]["keywords"]["custom"] != [] and any(x in ctx.content.lower() for x in automod_config[str(ctx.guild.id)]["swear_filter"]["keywords"]["custom"]):
-                await ctx.delete()
-                await ctx.channel.send(f'{ctx.author.mention} watch your language.', delete_after=5)
+                try:
+                    await ctx.author.send(f"{ctx.author.mention}, you just ranked up to **level {levelling.get_level(ctx.author.id)}**. Nice!")
+                except discord.errors.Forbidden:
+                    logger.warn("Unable to send level up message to {ctx.author} ({ctx.author.id}), as they are not accepting DMs from isobot. This ID has been added to `levelup_messages` blacklist.", module="main/Levelling")
+                    settings.edit_setting(ctx.author.id, "levelup_messages", False)
+        try:
+            automod_config = automod.fetch_config(ctx.guild.id)
+            if automod_config["swear_filter"]["enabled"] is True:
+                if (automod_config["swear_filter"]["keywords"]["use_default"] and any(x in ctx.content.lower() for x in automod_config["swear_filter"]["keywords"]["default"])) or (automod_config["swear_filter"]["keywords"]["custom"] != [] and any(x in ctx.content.lower() for x in automod_config["swear_filter"]["keywords"]["custom"])):
+                    await ctx.delete()
+                    await ctx.channel.send(f'{ctx.author.mention} watch your language.', delete_after=5)
+        except AttributeError: pass
+
 @client.event
 async def after_invoke(ctx):
     logger.info(f"A command has been successfully run by {ctx.author.display_name}", module="main/Client", timestamp=True)
