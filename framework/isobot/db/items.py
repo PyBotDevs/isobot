@@ -52,3 +52,10 @@ class Items():
         """Fetches and returns the amount of a specific item owned by the user."""
         items = self.load()
         return items[str(user_id)][item]
+
+    def delete_user(self, user_id: int) -> int:
+        """Deletes all user items data for the respective user."""
+        items = self.load()
+        del items[str(user_id)]
+        self.save(items)
+        return 0

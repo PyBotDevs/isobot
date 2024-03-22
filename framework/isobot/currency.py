@@ -30,7 +30,8 @@ class CurrencyAPI(Colors):
     - get_user_networth(user)
     - get_user_count
     - new_wallet(user)
-    - new_bank(user)"""
+    - new_bank(user)
+    - delete_user(user)"""
 
     def __init__(self, db_path: str, log_path: str):
         self.db_path = db_path
@@ -175,3 +176,14 @@ class CurrencyAPI(Colors):
         if str(id) not in currency['bank']:
             currency['bank'][str(id)] = 0
             return 0
+
+    def delete_user(self, user: int) -> int:
+        """Permanently deletes all user data for the respective user."""
+        currency = self.load()
+        if str(user) in currency['wallet']: del currency['wallet'][str(user)]
+        if str(user) in currency['bank']: del currency['bank'][str(user)]
+        self.save(currency)
+        with open(self.log_path, 'a') as f:
+            f.write(f'{self.get_time()} framework.isobot.currency User({user}): Successfully deleted all user data from currency database.\n')
+            f.close()
+        return 0

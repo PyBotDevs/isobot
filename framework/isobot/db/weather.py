@@ -44,3 +44,10 @@ class Weather():
     def get_default_location(self, user_id: User):
         user_db = self.load()
         return user_db[str(user_id)]["location"]
+
+    def delete_user(self, user_id: int) -> int:
+        """Deletes all user weather data for the respective user."""
+        user_db = self.load()
+        del user_db[str(user_id)]
+        self.save(user_db)
+        return 0

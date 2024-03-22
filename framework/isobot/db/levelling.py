@@ -85,3 +85,10 @@ class Levelling():
         """Fetches and returns the raw json data in the levelling database."""
         levels = self.load()
         return levels
+
+    def delete_user(self, user_id: int) -> int:
+        """Deletes all user levelling data for the respective user."""
+        levels = self.load()
+        del levels[str(user_id)]
+        self.save(levels)
+        return 0
