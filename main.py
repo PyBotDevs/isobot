@@ -1,3 +1,4 @@
+"""Isobot, the bot to make your server (a little bit) better.\n\nisobot (C) NKA 2022-2024.\nRun `/credits` in the Discord bot to see the credits.\n\nWARNING: This client is meant to be run standalone. Not as a Python import."""
 # Imports
 import os
 import os.path
