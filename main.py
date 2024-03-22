@@ -11,8 +11,9 @@ import api.auth
 from utils import logger, ping
 from math import floor
 from random import randint
-from framework.isobot import currency, colors, settings
-from framework.isobot.db import levelling, items, userdata, automod, presence as _presence
+from framework.isobot import currency, colors, settings, commands as _commands
+from framework.isobot.shop import ShopData
+from framework.isobot.db import levelling, items, userdata, automod, weather, presence as _presence
 from discord import ApplicationContext, option
 from discord.ext import commands
 from cogs.isocoin import create_isocoin_key
@@ -64,6 +65,9 @@ items = items.Items()
 userdata = userdata.UserData()
 automod = automod.Automod()
 _presence = _presence.Presence()
+weather = weather.Weather()
+_commands = _commands.Commands()
+shop_data = ShopData("config/shop.json")
 
 # Theme Loader
 if api.auth.get_runtime_options()["themes"]:
@@ -304,6 +308,29 @@ async def levelup_messages(ctx: ApplicationContext, enabled: bool):
         color=discord.Color.green()
     )
     await ctx.respond(embed=localembed)
+
+# Extra commands
+@client.slash_command(
+    name="delete_my_data",
+    description="Deletes all of your isobot data permanently."
+)
+async def delete_my_data(ctx: ApplicationContext):
+    """Deletes all of your isobot data permanently."""
+    currency.delete_user(ctx.author.id)
+    levelling.delete_user(ctx.author.id)
+    items.delete_user(ctx.author.id)
+    userdata.delete_user(ctx.author.id)
+    weather.delete_user(ctx.author.id)
+    localembed = discord.Embed(title=":white_check_mark: Successfully deleted all of your isobot data.", color=discord.Color.green())
+    localembed.add_field(
+        name="What has been deleted",
+        value="- Your currency wallet and bank data\n- Your user levels\n- Items in your inventory\n- Weather save data\n- All of your isobot user settings"
+    )
+    localembed.add_field(
+        name="What has not been deleted",
+        value="- Any isobot data relating to your servers"
+    )
+    await ctx.respond(embed=localembed, ephemeral=True)
 
 @client.slash_command(
     name="credits",
