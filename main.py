@@ -153,6 +153,9 @@ async def on_message(ctx):
             elif automod_config[str(ctx.guild.id)]["swear_filter"]["keywords"]["custom"] != [] and any(x in ctx.content.lower() for x in automod_config[str(ctx.guild.id)]["swear_filter"]["keywords"]["custom"]):
                 await ctx.delete()
                 await ctx.channel.send(f'{ctx.author.mention} watch your language.', delete_after=5)
+@client.event
+async def after_invoke(ctx):
+    logger.info(f"A command has been successfully run by {ctx.author.display_name}", module="main/Client", timestamp=True)
 
 # Error handler
 @client.event
