@@ -25,13 +25,17 @@ def info(text:str, *, nolog=False, module=None, timestamp=False):
       with open(log_path, 'a') as f:
           f.write(f'[{current_time}/INFO] {text}\n')
           f.close()
-def warn(text:str, *, nolog=False):
+
+def warn(text:str, *, nolog=False, module=None):
+    """Logs a client warning to the console and the log file.\n`nolog=True` option skips logging to file."""
     current_time = datetime.datetime.now().strftime("%H:%M:%S")
-    print(f'[{current_time}/WARN] {text}')
+    if module is not None: print(f'{colours.warning}[{module}] WARN: {text}{colours.end}')
+    else: print(f'{colours.warning}WARN: {text}{colours.end}')
     if nolog == True: pass
     else:
       with open(log_path, 'a') as f:
-          f.write(f'[{current_time}/WARN] {text}\n')
+          if module is not None: f.write(f'[{current_time}] [{module}] WARN: {text}\n')
+          else: f.write(f'[{current_time}] WARN: {text}\n')
           f.close()
 def error(text:str, *, nolog=False):
     current_time = datetime.datetime.now().strftime("%H:%M:%S")
