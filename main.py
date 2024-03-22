@@ -20,15 +20,7 @@ from cogs.isocoin import create_isocoin_key
 # Variables
 client = discord.Bot()
 color = discord.Color.random()
-with open('config/shop.json', 'r', encoding="utf-8") as f: shopitem = json.load(f)
-with open('config/commands.json', 'r', encoding="utf-8") as f: commandsdb = json.load(f)
-with open('database/automod.json', 'r', encoding="utf-8") as f: automod_config = json.load(f)
 cmd_list = commandsdb.keys()
-
-#Pre-Initialization Commands
-def save():
-    """Dumps all cached data to the local databases."""
-    with open('database/automod.json', 'w+', encoding="utf-8") as e: json.dump(automod_config, e, indent=4)
 
 if not os.path.isdir("logs"):
     os.mkdir('logs')
