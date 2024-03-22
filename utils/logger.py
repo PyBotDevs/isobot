@@ -7,6 +7,7 @@ error_path = "logs/error-log.txt"
 class colours:
     error = '\033[91m'
     success = '\033[92m'
+    warning = '\033[33m'
     end = '\033[0m'
 def info(text:str, *, nolog=False):
     current_time = datetime.datetime.now().strftime("%H:%M:%S")
