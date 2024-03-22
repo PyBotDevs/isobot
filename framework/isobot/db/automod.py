@@ -2,12 +2,13 @@
 
 # Imports
 import json
+from framework.isobot.colors import Colors as colors
 
 # Functions
 class Automod():
     """Initializes the Automod database system."""
     def __init__(self):
-        print("[framework/db/Automod] Automod db library initialized.")
+        print(f"[framework/db/Automod] {colors.green}Automod db library initialized.{colors.end}")
 
     def load(self) -> dict:
         """Fetches and returns the latest data from the items database."""

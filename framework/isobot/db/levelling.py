@@ -1,12 +1,13 @@
 """The framework module library used for managing isobot's levelling database."""
 # Imports
 import json
+from framework.isobot.colors import Colors as colors
 
 # Functions
 class Levelling():
     """Used to initialize the levelling database."""
     def __init__(self):
-        print("[framework/db/Levelling] Levelling db library initialized.")
+        print(f"[framework/db/Levelling] {colors.green}Levelling db library initialized.{colors.end}")
 
     def load(self) -> dict:
         """Fetches and returns the latest data from the levelling database."""

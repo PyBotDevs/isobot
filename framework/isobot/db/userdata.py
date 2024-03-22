@@ -2,12 +2,13 @@
 
 # Imports
 import json
+from framework.isobot.colors import Colors as colors
 
 # Functions
 class UserData():
     """Used to initialize the UserData system."""
     def __init__(self):
-        print("[framework/db/UserData] UserData library initialized.")
+        print(f"[framework/db/UserData] {colors.green}UserData library initialized.{colors.end}")
 
     def load(self) -> dict:
         """Fetches and returns the latest data from the levelling database."""
