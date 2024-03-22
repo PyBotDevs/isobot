@@ -41,34 +41,35 @@ class CurrencyAPI(Colors):
     def get_time(self):
         return datetime.datetime.now().strftime("%H:%M:%S")
 
+    def log(self, data: str):
+        """Logs new information to the currency log."""
+        with open(self.log_path, 'a', encoding="utf-8") as f:
+            f.write(f'{self.get_time()} framework.isobot.currency {data}\n')
+            f.close()
+        return 0
+
     def add(self, user: discord.User, amount: int) -> int:
         """Adds balance to the specified user."""
         with open(self.db_path, 'r') as f: currency = json.load(f)
         currency["wallet"][str(user)] += int(amount)
-        with open(self.db_path, 'w+') as f: json.dump(currency, f)
-        with open(self.log_path, 'a') as f:
-            f.write(f'{self.get_time()} framework.isobot.currency User({user}): Added {amount} coins to wallet\n')
-            f.close()
+        self.save(currency)
+        self.log(f"User({user}): Added {amount} coins to wallet")
         return 0
     
     def bank_add(self, user: discord.User, amount: int) -> int:
         """Adds balance to the specified user's bank account."""
         with open(self.db_path, 'r') as f: currency = json.load(f)
         currency["bank"][str(user)] += int(amount)
-        with open(self.db_path, 'w+') as f: json.dump(currency, f)
-        with open(self.log_path, 'a') as f:
-            f.write(f'{self.get_time()} framework.isobot.currency User({user}): Added {amount} coins to bank\n')
-            f.close()
+        self.save(currency)
+        self.log(f"User({user}): Added {amount} coins to bank")
         return 0
 
     def remove(self, user: discord.User, amount: int) -> int:
         """Removes balance from the specified user."""
         with open(self.db_path, 'r') as f: currency = json.load(f)
         currency["wallet"][str(user)] -= int(amount)
-        with open(self.db_path, 'w+') as f: json.dump(currency, f)
-        with open(self.log_path, 'a') as f:
-            f.write(f'{self.get_time()} framework.isobot.currency User({user}): Removed {amount} coins from wallet\n')
-            f.close()
+        self.save(currency)
+        self.log(f"User({user}): Removed {amount} coins from wallet")
         return 0
     
     def bank_remove(self, user: discord.User, amount: int) -> int:
@@ -79,6 +80,7 @@ class CurrencyAPI(Colors):
         with open(self.log_path, 'a') as f:
             f.write(f'{self.get_time()} framework.isobot.currency User({user}): Removed {amount} coins from bank\n')
             f.close()
+        self.log(f"")
         return 0
 
     def reset(self, user: discord.User) -> int:
@@ -91,6 +93,7 @@ class CurrencyAPI(Colors):
         with open(self.log_path, 'a') as f:
             f.write(f'{self.get_time()} framework.isobot.currency User({user}): Wiped all currency data\n')
             f.close()
+        self.log(f"")
         return 0
 
     def deposit(self, user: discord.User, amount: int) -> int:
@@ -103,6 +106,7 @@ class CurrencyAPI(Colors):
         with open(self.log_path, 'a') as f:
             f.write(f'{self.get_time()} framework.isobot.currency User({user}): Moved {amount} coins from wallet to bank\n')
             f.close()
+        self.log(f"")
         return 0
 
     def withdraw(self, user: discord.User, amount: int) -> int:
@@ -115,6 +119,7 @@ class CurrencyAPI(Colors):
         with open(self.log_path, 'a') as f:
             f.write(f'{self.get_time()} framework.isobot.currency User({user}): Moved {amount} coins from bank to wallet\n')
             f.close()
+        self.log(f"")
         return 0
     
     def treasury_add(self, amount: int) -> int:
@@ -124,15 +129,14 @@ class CurrencyAPI(Colors):
         with open(self.log_path, 'a') as f:
             f.write(f'{self.get_time()} framework.isobot.currency Treasury: Added {amount} coins to treasury\n')
             f.close()
+        self.log(f"")
         return 0
     
     def treasury_remove(self, amount: int) -> int:
         with open(self.db_path, 'r') as f: currency = json.load(f)
         currency["treasury"] -= int(amount)
-        with open(self.db_path, 'w+') as f: json.dump(currency, f)
-        with open(self.log_path, 'a') as f:
-            f.write(f'{self.get_time()} framework.isobot.currency Treasury: Removed {amount} coins from treasury\n')
-            f.close()
+        self.save(currency)
+        self.log(f"Treasury: Removed {amount} coins from treasury")
         return 0
 
     def get_wallet(self, user: discord.User) -> int:
