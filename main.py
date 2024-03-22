@@ -58,6 +58,7 @@ def initial_setup():
 
 # Framework Module Loader
 colors = colors.Colors()
+s = logger.StartupLog("logs/startup-log.txt", clear_old_logs=True)
 currency = currency.CurrencyAPI("database/currency.json", "logs/currency.log")
 settings = settings.Configurator()
 levelling = levelling.Levelling()
@@ -85,18 +86,24 @@ else: color = discord.Color.random()
 @client.event
 async def on_ready():
     """This event is fired when the bot client is ready"""
-    print("""
-Isobot  Copyright (C) 2022  PyBotDevs/NKA
+    start_time = datetime.datetime.now()
+    s.log(f"[main/Client] {colors.green}Client ready!{colors.end}")
+    s.log("""
+Isobot  Copyright (C) 2022-2024  NKA
 This program comes with ABSOLUTELY NO WARRANTY.
 This is free software, and you are welcome to redistribute it
 under certain conditions.
 __________________________________________________""")
     time.sleep(1)
-    print(f'[main/Client] Logged in as {client.user.name}.\n[main/Client] Ready to accept commands.')
-    await client.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name="GitHub"), status=discord.Status.idle)
-    print(f'[main/Log] {colors.green}Status set to IDLE. Rich presence set.{colors.end}')
     print("[main/Flask] Starting pinger service...")
     ping.host()
+    if api.auth.get_runtime_options()["show_ping_on_startup"]:
+        s.log("Client Information:")
+        s.log(f"   Latency/Ping: {round((client.latency * 1000), 2)} ms")
+        s.log("--------------------")
+    s.log(f'[main/Client] Logged in as {client.user.name}. Start time: {start_time.strftime("%H:%M:%S")}\n[main/Client] Ready to accept commands. Click Ctrl+C to shut down the bot.')
+    await client.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name="Isobot is finally back! Improved uptime!"), status=discord.Status.idle)
+    s.log(f'[main/Log] {colors.green}Status set to IDLE. Rich presence set.{colors.end}')
     time.sleep(5)
 
 @client.event
@@ -366,21 +373,18 @@ active_cogs = [
 i = 1
 cog_errors = 0
 for x in active_cogs:
-    print(f"[main/Cogs] Loading isobot Cog ({i}/{len(active_cogs)})")
+    s.log(f"[main/Cogs] Loading isobot '{x}' Cog ({i}/{len(active_cogs)})")
     i += 1
     try: client.load_extension(f"cogs.{x}")
     except discord.errors.ExtensionFailed as e:
         cog_errors += 1
-        print(f"[main/Cogs] {colors.red}ERROR: Cog '{x}' failed to load: {e}{colors.end}")
-if cog_errors == 0: print(f"[main/Cogs] {colors.green}All cogs successfully loaded.{colors.end}")
-else: print(f"[main/Cogs] {colors.yellow}{cog_errors}/{len(active_cogs)} cogs failed to load.{colors.end}")
-print("--------------------")
-if api.auth.get_mode():
-    print(f"[main/Client] Starting client in {colors.cyan}Replit mode{colors.end}...")
-    client.run(os.getenv("TOKEN"))
-else:
-    print(f"[main/Client] Starting client in {colors.orange}local mode{colors.end}...")
-    client.run(api.auth.get_token())
+        logger.error(f"Cog '{x}' failed to load: {e}", module="main/Cogs")
+if cog_errors == 0: s.log(f"[main/Cogs] {colors.green}All cogs successfully loaded.{colors.end}")
+else: s.log(f"[main/Cogs] {colors.yellow}{cog_errors}/{len(active_cogs)} cogs failed to load.{colors.end}")
+s.log("--------------------")
+s.log(f"[main/Client] Starting client in {f'{colors.cyan}Replit mode{colors.end}' if api.auth.get_mode() else f'{colors.orange}local mode{colors.end}'}...")
+if api.auth.get_mode(): client.run(os.getenv("TOKEN"))
+else: client.run(api.auth.get_token())
 
 
 
