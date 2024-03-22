@@ -41,3 +41,10 @@ class UserData():
         userdat[str(user_id)][key] = value
         self.save(userdat)
         return 0
+
+    def delete_user(self, user_id: int) -> int:
+        """Deletes all user data for the respective user."""
+        userdat = self.load()
+        del userdat[str(user_id)]
+        self.save(userdat)
+        return 0
