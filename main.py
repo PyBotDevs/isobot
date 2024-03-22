@@ -111,29 +111,20 @@ __________________________________________________""")
 
 @client.event
 async def on_message(ctx):
-    """This event is fired whenever a message is sent (in a readable channel)"""
-    currency.new_wallet(ctx.author.id)
-    currency.new_bank(ctx.author.id)
-    create_isocoin_key(ctx.author.id)
-    userdata.generate(ctx.author.id)
-    settings.generate(ctx.author.id)
-    items.generate(ctx.author.id)
-    levelling.generate(ctx.author.id)
-    automod.generate(ctx.guild.id)
-    uList = list()
-    presence = _presence.get_raw()
-    if str(ctx.guild.id) in presence:
-        for userid in presence[str(ctx.guild.id)].keys(): uList.append(userid)
-    else: pass
-    for user in uList:
-        if user in ctx.content and not ctx.author.bot:
-            fetch_user = client.get_user(id(user))
-            await ctx.channel.send(f"{fetch_user.display_name} went AFK <t:{floor(presence[str(ctx.guild.id)][str(user)]['time'])}:R>: {presence[str(ctx.guild.id)][str(user)]['response']}")
-    if str(ctx.guild.id) in presence and str(ctx.author.id) in presence[str(ctx.guild.id)]:
-        _presence.remove_afk(ctx.guild.id, ctx.author.id)
-        m1 = await ctx.channel.send(f"Welcome back {ctx.author.mention}. Your AFK has been removed.")
-        await asyncio.sleep(5)
-        await m1.delete()
+    """This event is fired whenever a message is sent (in a readable channel)."""
+    runtimeconf = api.auth.get_runtime_options()
+    if runtimeconf["log_messages"]:
+        _user = str(ctx.author).split('#')[0]
+        _discrim = str(ctx.author).split('#')[-1]
+        try:
+            if str(ctx.guild.id) not in runtimeconf["guild_log_blacklist"]:
+                if _discrim == "0000": logger.info(f"[{ctx.guild.name} -> #{ctx.channel.name}] New message received from {_user}[webhook] ({ctx.author.display_name})", timestamp=True)
+                elif _discrim == "0": logger.info(f"[{ctx.guild.name} -> #{ctx.channel.name}] New message received from @{_user} ({ctx.author.display_name})", timestamp=True)
+                else: logger.info(f"[{ctx.guild.name} -> #{ctx.channel.name}] New message received from {ctx.author} ({ctx.author.display_name})", timestamp=True)
+        except AttributeError:
+            if _discrim == "0": logger.info(f"[DM] New message received from @{_user} ({ctx.author.display_name})", timestamp=True)
+            elif _discrim == "0000": logger.info(f"[DM] New message received from {_user}[webhook] ({ctx.author.display_name})", timestamp=True)
+            else: logger.info(f"[DM] New message received from {ctx.author} ({ctx.author.display_name})", timestamp=True)
     if not ctx.author.bot:
         levelling.add_xp(ctx.author.id, randint(1, 5))
         xpreq = 0
