@@ -55,9 +55,7 @@ automod = automod.Automod()
 _presence = _presence.Presence()
 
 # Theme Loader
-themes = False  # True: enables themes; False: disables themes;
-
-if themes:
+if api.auth.get_runtime_options()["themes"]:
     with open("themes/halloween.theme.json", 'r', encoding="utf-8") as f:
         theme = json.load(f)
         try:
