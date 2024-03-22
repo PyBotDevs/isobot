@@ -305,6 +305,19 @@ async def levelup_messages(ctx: ApplicationContext, enabled: bool):
     )
     await ctx.respond(embed=localembed)
 
+@client.slash_command(
+    name="credits",
+    description="See the credits for isobot's development."
+)
+async def credits(ctx: ApplicationContext):
+    """See the credits for isobot's development."""
+    localembed = discord.Embed(
+        title="Credits",
+        description="A very big thank you to everyone who has helped support the isobot project's development! :)\n\n**Head Devs:**\n- @notsniped (owner)\n- @dtxc (head-dev)\n- @XyrenChess (head-dev)\n\nisobot (C) 2020-2024\nNKA (C) 2022-2024",
+        color=color
+    )
+    await ctx.respond(embed=localembed)
+
 # Initialization
 initial_setup()  # Check for any missing sub-directories or databases in bot directory
 active_cogs = [
