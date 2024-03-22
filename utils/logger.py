@@ -37,11 +37,15 @@ def warn(text:str, *, nolog=False, module=None):
           if module is not None: f.write(f'[{current_time}] [{module}] WARN: {text}\n')
           else: f.write(f'[{current_time}] WARN: {text}\n')
           f.close()
-def error(text:str, *, nolog=False):
+
+def error(text:str, *, nolog=False, module=None):
+    """Logs an error to the console and the errors log file.\n`nolog=True` option skips logging to file."""
     current_time = datetime.datetime.now().strftime("%H:%M:%S")
-    print(f'{colours.error}[{current_time}/ERROR] {text}{colours.end}')
+    if module is not None: print(f'{colours.error}[{module}] ERROR: {text}{colours.end}')
+    else: print(f'{colours.error}ERROR: {text}{colours.end}')
     if nolog == True: pass
     else:
       with open(error_path, 'a') as f:
-          f.write(f'[{current_time}/ERROR] {text}\n')
+          if module is not None: f.write(f'[{current_time}] [{module}] ERROR: {text}\n')
+          else: f.write(f'[{current_time}] ERROR: {text}\n')
           f.close()
