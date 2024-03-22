@@ -1,4 +1,4 @@
-"""The isobot module for managing the currency db"""
+"""The isobot module for managing the currency database"""
 
 import json
 import discord
