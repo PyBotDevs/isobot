@@ -10,7 +10,7 @@ class Automod():
         print("[framework/db/Automod] Automod db library initialized.")
 
     def load(self) -> dict:
-        """Fetches and returns the latest data from the items database."""  
+        """Fetches and returns the latest data from the items database."""
         with open("database/automod.json", 'r', encoding="utf8") as f: db = json.load(f)
         return db
 

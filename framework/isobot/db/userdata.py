@@ -10,7 +10,7 @@ class UserData():
         print("[framework/db/UserData] UserData library initialized.")
 
     def load(self) -> dict:
-        """Fetches and returns the latest data from the levelling database."""  
+        """Fetches and returns the latest data from the levelling database."""
         with open("database/user_data.json", 'r', encoding="utf8") as f: db = json.load(f)
         return db
 
@@ -23,7 +23,7 @@ class UserData():
         """Generates a new data key for the specified user.\n
         Returns `0` if the request was successful, returns `1` if the data key already exists."""
         userdat = self.load()
-        if str(user_id) not in userdat.keys(): 
+        if str(user_id) not in userdat.keys():
             userdat[str(user_id)] = {"work_job": None}
             self.save(userdat)
             return 0

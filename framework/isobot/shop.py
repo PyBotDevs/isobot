@@ -7,7 +7,7 @@ import json
 class ShopData:
     """Initializes the isobot shop."""
     def __init__(self, db_path: str):
-        self.db_path = db_path 
+        self.db_path = db_path
         with open(db_path, 'r') as f: self.db = json.load(f)
 
     def get_item_ids(self) -> list:

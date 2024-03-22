@@ -13,7 +13,7 @@ class Colors:
 
 class CurrencyAPI(Colors):
     """The isobot API used for managing currency.
-    
+
     Valid commands:
     - add(user, amount)
     - remove(user, amount)

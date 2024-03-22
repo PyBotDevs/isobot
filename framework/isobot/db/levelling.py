@@ -9,7 +9,7 @@ class Levelling():
         print("[framework/db/Levelling] Levelling db library initialized.")
 
     def load(self) -> dict:
-        """Fetches and returns the latest data from the levelling database."""  
+        """Fetches and returns the latest data from the levelling database."""
         with open("database/levels.json", 'r', encoding="utf8") as f: db = json.load(f)
         return db
 

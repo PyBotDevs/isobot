@@ -11,7 +11,7 @@ class Presence():
         print("[framework/db/UserData] Presence database initialized.")
     
     def load(self) -> dict:
-        """Fetches and returns the latest data from the presence database."""  
+        """Fetches and returns the latest data from the presence database."""
         with open("database/presence.json", 'r', encoding="utf8") as f: db = json.load(f)
         return db
 
@@ -37,7 +37,7 @@ class Presence():
             self.save(presence)
             return 0
         except KeyError: return 1
-    
+
     def get_presence(self, guild_id: int, user_id: int) -> dict:
         """Returns a `dict` of the specified user's current AFK status in the guild. Returns `1` if the user is not in the presence database."""
         presence = self.load()

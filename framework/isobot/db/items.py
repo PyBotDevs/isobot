@@ -14,7 +14,7 @@ class Items():
         print("[framework/db/Levelling] Items db library initialized.")
 
     def load(self) -> dict:
-        """Fetches and returns the latest data from the items database."""  
+        """Fetches and returns the latest data from the items database."""
         with open("database/items.json", 'r', encoding="utf8") as f: db = json.load(f)
         return db
 
