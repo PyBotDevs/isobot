@@ -160,6 +160,73 @@ class Maths(commands.Cog):
         localembed.set_footer(text=f"Taking π as 22/7\nv = 1/3 x πr²h\n1/3 x π x {radius}² x {height} = {result} cu. units")
         await ctx.respond(embed=localembed)
 
+    # Surface Area Commands
+    @math.command(
+        name="surfacearea_cuboid",
+        description="Find the surface area of a cuboid"
+    )
+    @option(name="length", description="The length of the cuboid", type=float)
+    @option(name="breadth", description="The breadth of the cuboid", type=float, default=None)
+    @option(name="height", description="The height/depth of the cuboid", type=float, default=None)
+    async def surfacearea_cuboid(self, ctx: ApplicationContext, length: float, breadth: float = None, height: float = None):
+        if (breadth != None and height == None) or (height != None and breadth == None): return await ctx.respond("Both `breadth` and `height` arguments needs to be filled!")
+        if breadth == None and height == None:
+            breadth = length
+            height = length
+        result = 2 * ((length * breadth) + (breadth * height) + (height * length))
+        localembed = discord.Embed(title=f"Surface Area of cuboid (l: {length}, b: {breadth}, h: {height})", description=f"{result} sq. units", color=color)
+        localembed.set_footer(text=f"a = 2(lb x bh x hl)\n2(({length} x {breadth}) + ({breadth} x {height}) + ({height} x {length})) = {result} sq. units")
+        await ctx.respond(embed=localembed)
+
+    @math.command(
+        name="surfacearea_sphere",
+        description="Find the surface area of a sphere"
+    )
+    @option(name="radius", description="The radius of the sphere", type=float)
+    async def surfacearea_sphere(self, ctx: ApplicationContext, radius: float):
+        if radius < 0: return await ctx.respond("The `radius` argument cannot be negative!")
+        result = 4 * ((22/7) * (radius ** 2))
+        localembed = discord.Embed(title=f"Surface Area of sphere of radius {radius} units", description=f"{result} sq. units", color=color)
+        localembed.set_footer(text=f"Taking π as 22/7\na = 4 x πr²\n4 x π x {radius}² = {result} sq. units")
+        await ctx.respond(embed=localembed)
+    
+    @math.command(
+        name="surfacearea_hemisphere",
+        description="Find the surface area of a hemisphere"
+    )
+    @option(name="mode", description="Do you want to calculate for CSA or TSA?", type=str, choices=["CSA", "TSA"])
+    @option(name="radius", description="The radius of the hemisphere", type=float)
+    async def surfacearea_hemisphere(self, ctx: ApplicationContext, mode: str, radius: float):
+        if radius < 0: return await ctx.respond("The `radius` argument cannot be negative!")
+        if mode == "CSA":
+            result = 2 * ((22/7) * (radius ** 2))
+            localembed = discord.Embed(title=f"Curved Surface Area of hemisphere of radius {radius} units", description=f"{result} sq. units", color=color)
+            localembed.set_footer(text=f"Taking π as 22/7\na = 2 x πr²\n4 x π x {radius}² = {result} sq. units")
+        else:
+            result = 3 * ((22/7) * (radius ** 2))
+            localembed = discord.Embed(title=f"Total Surface Area of hemisphere of radius {radius} units", description=f"{result} sq. units", color=color)
+            localembed.set_footer(text=f"Taking π as 22/7\na = 3 x πr²\n4 x π x {radius}² = {result} sq. units")
+        await ctx.respond(embed=localembed)
+    
+    @math.command(
+        name="surfacearea_cylinder",
+        description="Find the surface area of a cylinder"
+    )
+    @option(name="mode", description="Do you want to calculate for CSA or TSA?", type=str, choices=["CSA", "TSA"])
+    @option(name="radius", description="The radius of the cylinder", type=float)
+    @option(name="height", description="The height of the cylinder", type=float)
+    async def surfacearea_cylinder(self, ctx: ApplicationContext, mode: str, radius: float, height: float):
+        if radius < 0 or height < 0: return await ctx.respond("The `radius` and `height` arguments cannot be negative!")
+        if mode == "CSA":
+            result = 2 * (22/7) * radius * height
+            localembed = discord.Embed(title=f"Curved Surface Area of cylinder of radius {radius} units", description=f"{result} sq. units", color=color)
+            localembed.set_footer(text=f"Taking π as 22/7\na = 2πrh\n2 x π x {radius} x {height} = {result} sq. units")
+        else:
+            result = 2 * (22/7) * radius * (radius + height)
+            localembed = discord.Embed(title=f"Total Surface Area of cylinder of radius {radius} units", description=f"{result} sq. units", color=color)
+            localembed.set_footer(text=f"Taking π as 22/7\na = 2πr x (r + h)\n2 x π x {radius} x ({radius} + {height}) = {result} sq. units")
+        await ctx.respond(embed=localembed)
+
 # Initialization
 def setup(bot):
     bot.add_cog(Maths(bot))
