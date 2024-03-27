@@ -219,12 +219,32 @@ class Maths(commands.Cog):
         if radius < 0 or height < 0: return await ctx.respond("The `radius` and `height` arguments cannot be negative!")
         if mode == "CSA":
             result = 2 * (22/7) * radius * height
-            localembed = discord.Embed(title=f"Curved Surface Area of cylinder of radius {radius} units", description=f"{result} sq. units", color=color)
+            localembed = discord.Embed(title=f"Curved Surface Area of cylinder (r: {radius}, h: {height})", description=f"{result} sq. units", color=color)
             localembed.set_footer(text=f"Taking π as 22/7\na = 2πrh\n2 x π x {radius} x {height} = {result} sq. units")
         else:
             result = 2 * (22/7) * radius * (radius + height)
-            localembed = discord.Embed(title=f"Total Surface Area of cylinder of radius {radius} units", description=f"{result} sq. units", color=color)
+            localembed = discord.Embed(title=f"Total Surface Area of cylinder (r: {radius}, h: {height})", description=f"{result} sq. units", color=color)
             localembed.set_footer(text=f"Taking π as 22/7\na = 2πr x (r + h)\n2 x π x {radius} x ({radius} + {height}) = {result} sq. units")
+        await ctx.respond(embed=localembed)
+
+    @math.command(
+        name="surfacearea_cone",
+        description="Find the surface area of a cone"
+    )
+    @option(name="mode", description="Do you want to calculate for CSA or TSA?", type=str, choices=["CSA", "TSA"])
+    @option(name="radius", description="The radius of the cone", type=float)
+    @option(name="height", description="The height of the cone", type=float)
+    async def surfacearea_cone(self, ctx: ApplicationContext, mode: str, radius: float, height: float):
+        if radius < 0 or height < 0: return await ctx.respond("The `radius` and `height` arguments cannot be negative!")
+        slant_height = round(sqrt(radius + height), 3)
+        if mode == "CSA":
+            result = (22/7) * radius * slant_height
+            localembed = discord.Embed(title=f"Curved Surface Area of cone (r: {radius}, h: {height})", description=f"{result} sq. units", color=color)
+            localembed.set_footer(text=f"Taking π as 22/7\nl = √(r + h)\na = πrl\nπ x {radius} x {slant_height} = {result} sq. units")
+        else:
+            result = (22/7) * radius * (slant_height + radius)
+            localembed = discord.Embed(title=f"Total Surface Area of cone (r: {radius}, h: {height})", description=f"{result} sq. units", color=color)
+            localembed.set_footer(text=f"Taking π as 22/7\nl = √(r + h)\na = πr x (l + r)\nπ x {radius} x ({slant_height} + {radius}) = {result} sq. units")
         await ctx.respond(embed=localembed)
 
 # Initialization
