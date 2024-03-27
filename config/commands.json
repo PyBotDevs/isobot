@@ -768,5 +768,55 @@
 	"usable_by": "everyone",
 	"disabled": false,
 	"bugged": false
+  },
+  "math surfacearea_cuboid": {
+	"name": "Cuboid Surface Area",
+	"description": "Find the surface area of a cuboid.",
+	"type": "maths",
+	"cooldown": null,
+	"args": ["length", "breadth (optional)", "height (optional)"],
+	"usable_by": "everyone",
+	"disabled": false,
+	"bugged": false
+  },
+  "math surfacearea_sphere": {
+	"name": "Sphere Surface Area",
+	"description": "Find the surface area of a sphere using radius.",
+	"type": "maths",
+	"cooldown": null,
+	"args": ["radius"],
+	"usable_by": "everyone",
+	"disabled": false,
+	"bugged": false
+  },
+  "math surfacearea_hemisphere": {
+	"name": "Hemisphere Surface Area",
+	"description": "Find the surface area of a hemisphere using radius.",
+	"type": "maths",
+	"cooldown": null,
+	"args": ["mode", "radius"],
+	"usable_by": "everyone",
+	"disabled": false,
+	"bugged": false
+  },
+  "math surfacearea_cylinder": {
+	"name": "Cylinder Surface Area",
+	"description": "Find the surface area of a cylinder using radius and height.",
+	"type": "maths",
+	"cooldown": null,
+	"args": ["mode", "radius", "height"],
+	"usable_by": "everyone",
+	"disabled": false,
+	"bugged": false
+  },
+  "math surfacearea_cone": {
+	"name": "Cone Surface Area",
+	"description": "Find the surface area of a cone using radius and height.",
+	"type": "maths",
+	"cooldown": null,
+	"args": ["mode", "radius", "height"],
+	"usable_by": "everyone",
+	"disabled": false,
+	"bugged": false
   }
 }
