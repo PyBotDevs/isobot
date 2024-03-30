@@ -16,7 +16,7 @@ def get_token():
         if config["alt_token_path"] != "":
             tkn = str()
             with open(config["alt_token_path"], 'r', encoding="utf-8") as f:
-                tkn = f
+                tkn = f.read()
                 f.close()
             return str(tkn)
         else:
