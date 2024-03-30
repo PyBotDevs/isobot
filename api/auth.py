@@ -11,16 +11,23 @@ with open(f'{wdir}/api/runtimeconfig.json', 'r') as f:
 
 # Commands
 def get_token():
-    """Returns the token in `runtimeconfig.json`, if it exists.\nIf there is no token provided in the config, it will manually ask the user for input and it will autosave it."""
+    """Returns the token in `runtimeconfig.json`, if it exists.\n\nIf there is no token provided in the config, it will try accessing the alternate token location.\n\nIf no alternate token exists, it will manually ask the user for input and it will autosave it to `runtimeconfig.json`."""
     if config["token"] == "":
-        print("[!] Looks like you didn't input a token. Would you like to import one?")
-        arg1 = input("[Yes/No/y/n] > ")
-        if arg1.lower() == "y":
-            arg2 = input("Enter your custom token: ")
-            config["token"] = str(arg2)
-            with open(f'{wdir}/api/runtimeconfig.json', 'w+') as f: json.dump(config, f, indent=4)
-            print("[✅] Setup successful!")
-        elif arg1.lower() == "n": return
+        if config["alt_token_path"] != "":
+            tkn = str()
+            with open(config["alt_token_path"], 'r', encoding="utf-8") as f:
+                tkn = f.read()
+                f.close()
+            return str(tkn)
+        else:
+            print("[!] Looks like you didn't input a token. Would you like to import one?")
+            arg1 = input("[Yes/No/y/n] > ")
+            if arg1.lower() == "y" or arg1.lower() == "yes":
+                arg2 = input("Enter your custom token: ")
+                config["token"] = str(arg2)
+                with open(f'{wdir}/api/runtimeconfig.json', 'w+') as f: json.dump(config, f, indent=4)
+                print("[✅] Setup successful!")
+            elif arg1.lower() == "n" or arg1.lower() == "no": return
     return str(config["token"])
 
 def get_secret():

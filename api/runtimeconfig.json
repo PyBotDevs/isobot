@@ -1,5 +1,6 @@
 {
     "token": "",
+    "alt_token_path": "",
     "secret": "",
     "public_key": "",
     "runtime_options": {
