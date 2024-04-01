@@ -44,18 +44,29 @@ def initial_setup():
     except IOError as e: logger.error(f"Failed to make database file: {e}", module="main/Setup")
     try:
         if not os.path.isfile("logs/info-log.txt"):
-            open('logs/info-log.txt', 'x', encoding="utf-8")
+            with open('logs/info-log.txt', 'x', encoding="utf-8") as this:
+                this.write("#All information and warnings will be logged here!\n")
+                this.close()
             logger.info("Created info log", module="main/Setup", nolog=True)
             time.sleep(0.5)
         if not os.path.isfile("logs/error-log.txt"):
-            open('logs/error-log.txt', 'x', encoding="utf-8")
+            with open('logs/error-log.txt', 'x', encoding="utf-8") as this:
+                this.write("#All exceptions will be logged here!\n")
+                this.close()
             logger.info("Created error log", module="main/Setup", nolog=True)
             time.sleep(0.5)
         if not os.path.isfile("logs/currency.log"):
-            open('logs/currency.log', 'x', encoding="utf-8")
+            with open('logs/currency.log', 'x', encoding="utf-8") as this:
+                this.close()
             logger.info("Created currency log", module="main/Setup", nolog=True)
             time.sleep(0.5)
+        if not os.path.isfile("logs/startup-log.txt"):
+            with open("logs/startup-log.txt", 'x', encoding="utf-8") as this:
+                this.close()
+            time.sleep(0.5)
     except IOError as e: logger.error(f"Failed to make log file: {e}", module="main/Setup", nolog=True)
+
+initial_setup()  # Check for any missing sub-directories or databases in bot directory
 
 # Framework Module Loader
 colors = colors.Colors()
@@ -379,7 +390,6 @@ async def credits(ctx: ApplicationContext):
     await ctx.respond(embed=localembed)
 
 # Initialization
-initial_setup()  # Check for any missing sub-directories or databases in bot directory
 active_cogs = [
     "economy",
     "maths",

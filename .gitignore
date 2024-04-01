@@ -10,6 +10,10 @@ database/automod.json
 database/isobank/*
 *.log
 *.pyc
+logs/currency.log
+logs/error-log.txt
+logs/info-log.txt
+logs/startup-log.txt
 __pycache__
 *.bak
 venv
