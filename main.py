@@ -55,6 +55,10 @@ def initial_setup():
             open('logs/currency.log', 'x', encoding="utf-8")
             logger.info("Created currency log", module="main/Setup", nolog=True)
             time.sleep(0.5)
+        if not os.path.isfile("logs/startup-log.txt"):
+            with open("logs/startup-log.txt", 'x', encoding="utf-8") as this:
+                this.close()
+            time.sleep(0.5)
     except IOError as e: logger.error(f"Failed to make log file: {e}", module="main/Setup", nolog=True)
 
 # Framework Module Loader
