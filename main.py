@@ -32,7 +32,7 @@ def initial_setup():
             if not os.path.isdir(p):
                 logger.warn(f"'{p}' directory appears to be missing. Created new directory for '{p}'.", module="main/Setup", nolog=True)
                 os.mkdir(p)
-    except: logger.error(f"Failed to make directory: {e}", module="main/Setup")
+    except OSError: logger.error(f"Failed to make directory: {e}", module="main/Setup")
     try:
         databases = ["automod", "currency", "isocard", "isotokens", "items", "levels", "presence", "user_data", "weather"]
         for f in databases:
