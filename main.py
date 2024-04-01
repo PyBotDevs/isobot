@@ -61,6 +61,8 @@ def initial_setup():
             time.sleep(0.5)
     except IOError as e: logger.error(f"Failed to make log file: {e}", module="main/Setup", nolog=True)
 
+initial_setup()  # Check for any missing sub-directories or databases in bot directory
+
 # Framework Module Loader
 colors = colors.Colors()
 s = logger.StartupLog("logs/startup-log.txt", clear_old_logs=True)
