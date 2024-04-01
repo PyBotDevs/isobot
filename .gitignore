@@ -10,6 +10,7 @@ database/automod.json
 database/isobank/*
 *.log
 *.pyc
+logs
 logs/currency.log
 logs/error-log.txt
 logs/info-log.txt
