@@ -649,19 +649,19 @@ class Economy(commands.Cog):
         undicted_leaderboard = sorted(nw_dict.items(), key=lambda x:x[1], reverse=True)
         dicted_leaderboard = dict(undicted_leaderboard)
         parsed_output = str()
-        y = 1
-        for i in dicted_leaderboard:
-            if y < 10:
+        user_count = 1
+        for uid in dicted_leaderboard:
+            if user_count < 10:
                 try:
-                    if nw_dict[i] != 0:
-                        user_context = await ctx.bot.fetch_user(i)
+                    if nw_dict[uid] != 0:
+                        user_context = await ctx.bot.fetch_user(uid)
                         if not user_context.bot:
-                            if y == 1: yf = ":first_place:"
-                            elif y == 2: yf = ":second_place:"
-                            elif y == 3: yf = ":third_place:"
-                            else: yf = f"#{y}"
-                            parsed_output += f"{yf} **{user_context.name}:** {nw_dict[i]} coins\n"
-                            y += 1
+                            if user_count == 1: yf = ":first_place:"
+                            elif user_count == 2: yf = ":second_place:"
+                            elif user_count == 3: yf = ":third_place:"
+                            else: yf = f"#{user_count}"
+                            parsed_output += f"{yf} **{user_context.name}:** {nw_dict[uid]} coins\n"
+                            user_count += 1
                 except discord.errors.NotFound: continue
         localembed = discord.Embed(title="Global net worth leaderboard", description=parsed_output, color=color)
         await ctx.respond(embed=localembed)
