@@ -172,7 +172,7 @@ async def on_message(ctx):
             levelling.add_levels(ctx.author.id, 1)
             if settings.fetch_setting(ctx.author.id, "levelup_messages") is True:
                 try:
-                    await ctx.author.send(f"{ctx.author.mention}, you just ranked up to **level {levelling.get_level(ctx.author.id)}**. Nice!")
+                    await ctx.author.send(f"{ctx.author.mention}, you just ranked up to **level {levelling.get_level(ctx.author.id)}**. Nice!\n\n{':bulb: Tip: This is your global message level and is the same across all servers. If you want to disable it, run </settings levelup_messages:1125839590947823748>' if levelling.get_level(ctx.author.id) == 1 else ''}")
                 except discord.errors.Forbidden:
                     logger.warn("Unable to send level up message to {ctx.author} ({ctx.author.id}), as they are not accepting DMs from isobot. This ID has been added to `levelup_messages` blacklist.", module="main/Levelling")
                     settings.edit_setting(ctx.author.id, "levelup_messages", False)
