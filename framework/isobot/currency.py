@@ -31,7 +31,8 @@ class CurrencyAPI(Colors):
     - get_user_count
     - new_wallet(user)
     - new_bank(user)
-    - delete_user(user)"""
+    - delete_user(user)
+    - fetch_all_cached_user_ids()"""
 
     def __init__(self, db_path: str, log_path: str):
         self.db_path = db_path
@@ -206,3 +207,11 @@ class CurrencyAPI(Colors):
             f.write(f'{self.get_time()} framework.isobot.currency User({user}): Successfully deleted all user data from currency database.\n')
             f.close()
         return 0
+    
+    def fetch_all_cached_user_ids(self) -> list:
+        """Fetches the ids of all cached users in the currency database, and returns it as a `list`.\n\n(uses database's `wallet` property to fetch ids)"""
+        currency = self.load()
+        all_user_ids = list()
+        for uid in currency["wallet"]:
+            all_user_ids.append(str(uid))
+        return all_user_ids

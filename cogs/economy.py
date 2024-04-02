@@ -642,31 +642,29 @@ class Economy(commands.Cog):
         description="View the global leaderboard for net worth."
     )
     async def leaderboard_nw(self, ctx: ApplicationContext):
-        await ctx.respond("This command is currently disabled due to an internal issue. I apologize for the inconvenience.", ephemeral=True)
-        #await ctx.defer()
-        #nw_dict = dict()
-        #for person in currency["wallet"]:
-        #    nw_dict[str(person)] = int(currency["wallet"][str(person)]) + int(currency["bank"][str(person)])
-        #undicted_leaderboard = sorted(nw_dict.items(), key=lambda x:x[1], reverse=True)
-        #dicted_leaderboard = dict(undicted_leaderboard)
-        #parsed_output = str()
-        #y = 1
-        #for i in dicted_leaderboard:
-        #    if y < 10:
-        #        try:
-        #            if nw_dict[i] != 0:
-        #                user_context = await discord.ext.commands.Bot.fetch_user(self, int(i))
-        #                if not user_context.bot:
-        #                    print(i, nw_dict[i])
-        #                    if y == 1: yf = ":first_place:"
-        #                    elif y == 2: yf = ":second_place:"
-        #                    elif y == 3: yf = ":third_place:"
-        #                    else: yf = f"#{y}"
-        #                    parsed_output += f"{yf} **{user_context.name}:** {nw_dict[i]} coins\n"
-        #                    y += 1
-        #        except discord.errors.NotFound: continue
-        #localembed = discord.Embed(title="Global net worth leaderboard", description=parsed_output, color=color)
-        #await ctx.respond(embed=localembed)
+        await ctx.defer()
+        nw_dict = dict()
+        for person in currency.fetch_all_cached_user_ids():
+            nw_dict[str(person)] = currency.get_wallet(person) + currency.get_bank(person)
+        undicted_leaderboard = sorted(nw_dict.items(), key=lambda x:x[1], reverse=True)
+        dicted_leaderboard = dict(undicted_leaderboard)
+        parsed_output = str()
+        user_count = 1
+        for uid in dicted_leaderboard:
+            if user_count < 10:
+                try:
+                    if nw_dict[uid] != 0:
+                        user_context = await ctx.bot.fetch_user(uid)
+                        if not user_context.bot:
+                            if user_count == 1: yf = ":first_place:"
+                            elif user_count == 2: yf = ":second_place:"
+                            elif user_count == 3: yf = ":third_place:"
+                            else: yf = f"#{user_count}"
+                            parsed_output += f"{yf} **{user_context.name}:** {nw_dict[uid]} coins\n"
+                            user_count += 1
+                except discord.errors.NotFound: continue
+        localembed = discord.Embed(title="Global net worth leaderboard", description=parsed_output, color=color)
+        await ctx.respond(embed=localembed)
 
     @commands.slash_command(
         name="hack",
