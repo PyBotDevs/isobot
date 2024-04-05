@@ -255,6 +255,16 @@ class Utils(commands.Cog):
     #    await ctx.respond(embed=localembed)
         localembed = discord.Embed(title="Discontinuation of isobot AI commands", description="Thank you for showing your interest in the isobot AI commands!\nUnfortunately, due to prolonged issues with OpenAI integration, we are temporarily discontinuing all AI-related commands.\nDon't worry, because sometime, in the (not so distant) future, isobot AI commands will be making a sure return for everyone to enjoy.\n\n- NKA Development Team")
         await ctx.respond(embed=localembed)
+    
+    @commands.slash_command(
+        name="vote",
+        description="Vote for isobot on Top.gg and DBL."
+    )
+    async def vote(self, ctx: ApplicationContext):
+        """Vote for isobot on Top.gg and DBL."""
+        localembed = discord.Embed(title="Vote for isobot!", description="**Top.gg:** https://top.gg/bot/896437848176230411 \n**DBL:** https://discordbotlist.com/bots/halloween-isobot", color=discord.Color.random())
+        localembed.set_footer(text="Thank you for your support!")
+        await ctx.respond(embed=localembed)
 
     commandmanager = SlashCommandGroup("commandmanager", "Manage isobot's command registry.")
 
