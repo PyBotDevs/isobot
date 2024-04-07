@@ -125,7 +125,7 @@ class Utils(commands.Cog):
         """Return a user's profile avatar."""
         if user is None:
             user = ctx.author
-        localembed = discord.Embed(title=f"{user.display_name}'s Profile Avatar", color=discord.Color.random())
+        localembed = discord.Embed(title=f"{user.display_name}'s Profile Avatar", description=f"[avatar link]({user.avatar})", color=discord.Color.random())
         localembed.set_image(url=user.avatar)
         await ctx.respond(embed=localembed)
 
