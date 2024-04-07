@@ -117,6 +117,19 @@ class Utils(commands.Cog):
         await ctx.respond(embed=localembed)
 
     @commands.slash_command(
+        name="avatar",
+        description="Return a user's profile avatar."
+    )
+    @option(name="user", description="Who's profile avatar do you want to see?", type=discord.User, default=None)
+    async def avatar(self, ctx: ApplicationContext, user: discord.User = None):
+        """Return a user's profile avatar."""
+        if user is None:
+            user = ctx.author
+        localembed = discord.Embed(title=f"{user.display_name}'s Profile Avatar", description=f"[avatar link]({user.avatar})", color=discord.Color.random())
+        localembed.set_image(url=user.avatar)
+        await ctx.respond(embed=localembed)
+
+    @commands.slash_command(
         name="profile",
         description="Shows basic stats about your isobot profile, or someone else's profile stats."
     )
