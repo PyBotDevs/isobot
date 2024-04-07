@@ -331,7 +331,7 @@ class Utils(commands.Cog):
         localembed.add_field(name="Command Type", value=command_type)
         localembed.add_field(name="Usable By", value=usable_by)
         localembed.add_field(name="Cooldown", value=cooldown)
-        await ctx.respond(embed=embed)
+        await ctx.respond(embed=localembed)
 
 # Cog Initialization
 def setup(bot):
