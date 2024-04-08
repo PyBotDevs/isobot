@@ -19,7 +19,9 @@ from discord.ext import commands
 from cogs.isocoin import create_isocoin_key
 
 # Variables
-client = discord.Bot()
+intents = discord.Intents.default()
+intents.message_content = True
+client = discord.Bot(intents=intents)
 color = discord.Color.random()
 start_time = ""
 
