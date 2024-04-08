@@ -156,7 +156,7 @@ async def on_message(ctx):
             else: pass
             for user in uList:
                 if str(user) in ctx.content and not ctx.author.bot:
-                    fetch_user = client.get_user(id(user))
+                    fetch_user = client.get_user(int(user))
                     await ctx.channel.send(f"{fetch_user.display_name} went AFK <t:{floor(presence[str(ctx.guild.id)][str(user)]['time'])}:R>: {presence[str(ctx.guild.id)][str(user)]['response']}")
             if str(ctx.guild.id) in presence and str(ctx.author.id) in presence[str(ctx.guild.id)]:
                 _presence.remove_afk(ctx.guild.id, ctx.author.id)
