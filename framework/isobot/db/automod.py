@@ -69,3 +69,10 @@ class Automod():
         data.pop(id-1)
         self.save(automod_config)
         return 0
+    
+    def linkblocker_enabled(self, server_id: int, value: bool) -> int:
+        """Sets a `bool` value to define whether the server's link blocker is enabled or not."""
+        automod_config = self.load()
+        automod_config[str(server_id)]["link_blocker"]["enabled"] = value
+        self.save(automod_config)
+        return 0
