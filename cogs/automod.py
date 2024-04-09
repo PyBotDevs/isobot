@@ -64,7 +64,7 @@ class Automod(commands.Cog):
             i = 0
             for x in loaded_config["swear_filter"]["keywords"]["custom"]:
                 i += 1
-                out += f"**{i})** {x}\n"
+                out += f"{i}. {x}\n"
         else: out = "*No custom keywords are set for your server.*"
         localembed = discord.Embed(title=f"Custom Swear-filter keywords for {ctx.guild.name}", description=out, color=color)
         localembed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested by {ctx.author}")
@@ -88,7 +88,7 @@ class Automod(commands.Cog):
         name="automod_remove_custom_keyword",
         description="Removes a custom keyword (matching its id) from your server's swear-filter"
     )
-    @option(name="id", description="What's the id of the keyword to remove (can be found in bold through /automod_view_custom_keywords", type=int)
+    @option(name="id", description="What's the id of the keyword to remove (can be found as serial number through /automod_view_custom_keywords", type=int)
     async def automod_remove_custom_keyword(self, ctx: ApplicationContext, id: int):
         if not ctx.author.guild_permissions.administrator: return await ctx.respond("You cannot use this command. If you think this is a mistake, please contact your server owner/administrator.", ephemeral=True)
         try:
