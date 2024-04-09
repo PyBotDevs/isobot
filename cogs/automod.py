@@ -33,7 +33,7 @@ class Automod(commands.Cog):
         description="Turn on or off automod's swear-filter in your server"
     )
     @option(name="toggle", description="Do you want to turn it on or off?", type=bool)
-    async def automod_swearfilter(self, ctx: ApplicationContext, toggle:bool):
+    async def automod_swearfilter(self, ctx: ApplicationContext, toggle: bool):
         if not ctx.author.guild_permissions.administrator: return await ctx.respond("You cannot use this command. If you think this is a mistake, please contact your server owner/administrator.", ephemeral=True)
         if automod.fetch_config(ctx.guild.id)["swear_filter"]["enabled"] == toggle: return await ctx.respond(f"That automod option is already set to `{toggle}`.", ephemeral=True)
         automod.swearfilter_enabled(ctx.guild.id, toggle)
@@ -57,7 +57,7 @@ class Automod(commands.Cog):
         description="Choose whether or not you want to use the default keywords for automod's swear-filter"
     )
     @option(name="toggle", description="Do you want to turn it on or off?", type=bool)
-    async def automod_use_default_keywords(self, ctx: ApplicationContext, toggle:bool):
+    async def automod_use_default_keywords(self, ctx: ApplicationContext, toggle: bool):
         if not ctx.author.guild_permissions.administrator: return await ctx.respond("You cannot use this command. If you think this is a mistake, please contact your server owner/administrator.", ephemeral=True)
         if automod.fetch_config(ctx.guild.id)["swear_filter"]["keywords"]["use_default"] == toggle: return await ctx.respond(f"That automod option is already set to `{toggle}`.", ephemeral=True)
         automod.swearfilter_usedefaultkeywords(ctx.guild.id, toggle)
