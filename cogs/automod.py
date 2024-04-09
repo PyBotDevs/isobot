@@ -145,5 +145,39 @@ class Automod(commands.Cog):
             automod.linkblocker_add_blacklisted(link)
             await ctx.respond(f"Link `{link}` has successfully been added to blacklist.", ephemeral=True)
         else: return await ctx.respond(":warning: The link you entered is not formatted correctly. All added links must contain `https://`.")
+    
+    @commands.slash_command(
+        name="automod_view_whitelisted_links",
+        description="Shows a list of the whitelisted links set for this server",
+    )
+    async def automod_view_custom_keywords(self, ctx: ApplicationContext):
+        loaded_config = automod.fetch_config(ctx.guild.id)
+        out = ""
+        if loaded_config["link_blocker"]["whitelisted"] != []:
+            i = 0
+            for x in loaded_config["link_blocker"]["whitelisted"]:
+                i += 1
+                out += f"{i}. {x}\n"
+        else: out = "*No whitelisted links are set for your server.*"
+        localembed = discord.Embed(title=f"Whitelisted links for {ctx.guild.name}", description=out, color=color)
+        localembed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested by {ctx.author}")
+        await ctx.respond(embed=localembed)
+    
+    @commands.slash_command(
+        name="automod_view_blacklisted_links",
+        description="Shows a list of the blacklisted links set for this server",
+    )
+    async def automod_view_custom_keywords(self, ctx: ApplicationContext):
+        loaded_config = automod.fetch_config(ctx.guild.id)
+        out = ""
+        if loaded_config["link_blocker"]["blacklisted"] != []:
+            i = 0
+            for x in loaded_config["link_blocker"]["blacklisted"]:
+                i += 1
+                out += f"{i}. {x}\n"
+        else: out = "*No blacklisted links are set for your server.*"
+        localembed = discord.Embed(title=f"Blacklisted links for {ctx.guild.name}", description=out, color=color)
+        localembed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested by {ctx.author}")
+        await ctx.respond(embed=localembed)
 
 def setup(bot): bot.add_cog(Automod(bot))
