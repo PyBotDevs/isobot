@@ -7,6 +7,7 @@ import math
 import utils.logger
 import asyncio
 import framework.isobot.currency
+import framework.isobot.algorithms
 from framework.isobot.shop import ShopData
 from framework.isobot.db import levelling, items, userdata
 from random import randint
