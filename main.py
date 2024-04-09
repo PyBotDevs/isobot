@@ -178,6 +178,7 @@ async def on_message(ctx):
                 except discord.errors.Forbidden:
                     logger.warn("Unable to send level up message to {ctx.author} ({ctx.author.id}), as they are not accepting DMs from isobot. This ID has been added to `levelup_messages` blacklist.", module="main/Levelling")
                     settings.edit_setting(ctx.author.id, "levelup_messages", False)
+        # Swear-filter
         try:
             automod_config = automod.fetch_config(ctx.guild.id)
             if automod_config["swear_filter"]["enabled"] is True:
@@ -185,6 +186,23 @@ async def on_message(ctx):
                     await ctx.delete()
                     await ctx.channel.send(f'{ctx.author.mention} watch your language.', delete_after=5)
         except AttributeError: pass
+
+        # Link Blocker
+        try:
+            if ("http://" in ctx.content.lower()) or ("https://" in ctx.content.lower()):
+                automod_config = automod.fetch_config(ctx.guild.id)
+                if automod_config["link_blocker"]["enabled"] is True:
+                    if automod_config["link_blocker"]["use_whitelist_only"]:
+                        if not any(x in ctx.content.lower() for x in automod_config["link_blocker"]["whitelisted"]["default"]):
+                            await ctx.delete()
+                            await ctx.channel.send(f'{ctx.author.mention} This link is not allowed in this server.', delete_after=5)
+                    else:
+                        if any(x in ctx.content.lower() for x in automod_config["link_blocker"]["blacklisted"]["default"]):
+                            await ctx.delete()
+                            await ctx.channel.send(f'{ctx.author.mention} This link is not allowed in this server.', delete_after=5)
+        except AttributeError: pass
+
+
 
 @client.event
 async def after_invoke(ctx):

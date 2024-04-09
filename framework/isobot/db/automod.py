@@ -32,6 +32,12 @@ class Automod():
                         "default": ["fuck", "shit", "pussy", "penis", "cock", "vagina", "sex", "moan", "bitch", "hoe", "nigga", "nigger", "xxx", "porn"],
                         "custom": []
                     }
+                },
+                "link_blocker": {
+                    "enabled": False,
+                    "use_whitelist_only": True,
+                    "whitelisted": [],
+                    "blacklisted": []
                 }
             }
         self.save(automod_config)
@@ -67,5 +73,49 @@ class Automod():
         automod_config = self.load()
         data = automod_config[str(server_id)]["swear_filter"]["keywords"]["custom"]
         data.pop(id-1)
+        self.save(automod_config)
+        return 0
+    
+    def linkblocker_enabled(self, server_id: int, value: bool) -> int:
+        """Sets a `bool` value to define whether the server's link blocker is enabled or not."""
+        automod_config = self.load()
+        automod_config[str(server_id)]["link_blocker"]["enabled"] = value
+        self.save(automod_config)
+        return 0
+    
+    def linkblocker_only_whitelisted_links(self, server_id: int, value: bool) -> int:
+        """Sets a `bool` value to define whether the server's link blocker only accepts whitelisted links."""
+        automod_config = self.load()
+        automod_config[str(server_id)]["link_blocker"]["use_whitelisted_only"] = value
+        self.save(automod_config)
+        return 0
+    
+    def linkblocker_add_whitelisted(self, server_id: int, link: str) -> int:
+        """Adds a specified link to the server links whitelist. (only works if `use_whitelisted_only = True`)"""
+        automod_config = self.load()
+        automod_config[str(server_id)]["link_blocker"]["whitelisted"].append(link)
+        self.save(automod_config)
+        return 0
+    
+    def linkblocker_add_blacklisted(self, server_id: int, link: str) -> int:
+        """Adds a specified link to the server links blacklist. (only works if `use_whitelisted_only = False`)"""
+        automod_config = self.load()
+        automod_config[str(server_id)]["link_blocker"]["blacklisted"].append(link)
+        self.save(automod_config)
+        return 0
+    
+    def linkblocker_remove_whitelisted(self, server_id: int, keyword_id: int) -> int:
+        """Removes a whitelisted link (using id) from the server's automod configuration."""
+        automod_config = self.load()
+        data: dict = automod_config[str(server_id)]["link_blocker"]["whitelisted"]
+        data.pop(keyword_id-1)
+        self.save(automod_config)
+        return 0
+    
+    def linkblocker_remove_blacklisted(self, server_id: int, keyword_id: int) -> int:
+        """Removes a blacklisted link (using id) from the server's automod configuration."""
+        automod_config = self.load()
+        data: dict = automod_config[str(server_id)]["link_blocker"]["blacklisted"]
+        data.pop(keyword_id-1)
         self.save(automod_config)
         return 0

@@ -529,6 +529,16 @@
 	"disabled": false,
 	"bugged": false
   },
+  "automod_linkblocker": {
+	"name": "Toggle Automod Link Blocker",
+	"description": "Lets you turn on or off the automod link-blocker for your server.",
+	"type": "automod",
+	"cooldown": null,
+	"args": ["toggle"],
+	"usable_by": "server admins",
+	"disabled": false,
+	"bugged": false
+  },
   "squareroot": {
 	"name": "Square Root",
 	"description": "Finds the square root of any positive number.",
