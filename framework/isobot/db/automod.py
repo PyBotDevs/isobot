@@ -82,3 +82,24 @@ class Automod():
         automod_config[str(server_id)]["link_blocker"]["enabled"] = value
         self.save(automod_config)
         return 0
+    
+    def linkblocker_only_whitelisted_links(self, server_id: int, value: bool) -> int:
+        """Sets a `bool` value to define whether the server's link blocker only accepts whitelisted links."""
+        automod_config = self.load()
+        automod_config[str(server_id)]["link_blocker"]["use_whitelisted_only"] = value
+        self.save(automod_config)
+        return 0
+    
+    def linkblocker_add_whitelisted(self, server_id: int, link: str) -> int:
+        """Adds a specified link to the server links whitelist. (only works if `use_whitelisted_only = True`)"""
+        automod_config = self.load()
+        automod_config[str(server_id)]["link_blocker"]["whitelisted"].append(link)
+        self.save(automod_config)
+        return 0
+    
+    def linkblocker_add_blacklisted(self, server_id: int, link: str) -> int:
+        """Adds a specified link to the server links blacklist. (only works if `use_whitelisted_only = False`)"""
+        automod_config = self.load()
+        automod_config[str(server_id)]["link_blocker"]["blacklisted"].append(link)
+        self.save(automod_config)
+        return 0

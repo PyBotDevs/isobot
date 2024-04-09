@@ -39,18 +39,6 @@ class Automod(commands.Cog):
         automod.swearfilter_enabled(ctx.guild.id, toggle)
         if toggle is True: await ctx.respond("Swear-filter successfully **enabled**.", ephemeral=True)
         elif toggle is False: await ctx.respond("Swear-filter successfully **disabled**.", ephemeral=True)
-    
-    @commands.slash_command(
-        name="automod_linkblocker",
-        description="Turn on or off automod's link blocker in your server"
-    )
-    @option(name="toggle", description="Do you want to turn it on or off?", type=bool)
-    async def automod_linkblocker(self, ctx: ApplicationContext, toggle: bool):
-        if not ctx.author.guild_permissions.administrator: return await ctx.respond("You cannot use this command. If you think this is a mistake, please contact your server owner/administrator.", ephemeral=True)
-        if automod.fetch_config(ctx.guild.id)["link_blocker"]["enabled"] == toggle: return await ctx.respond(f"That automod option is already set to `{toggle}`.", ephemeral=True)
-        automod.linkblocker_enabled(ctx.guild.id, toggle)
-        if toggle is True: await ctx.respond("Link blocker successfully **enabled**.", ephemeral=True)
-        elif toggle is False: await ctx.respond("Link blocker successfully **disabled**.", ephemeral=True)
 
     @commands.slash_command(
         name="automod_use_default_keywords",
@@ -105,5 +93,56 @@ class Automod(commands.Cog):
             automod.swearfilter_removekeyword(ctx.guild.id, id)
             return await ctx.respond(f"Keyword (id: `{id}`) successfully removed from swear-filter configuration.")
         except IndexError: await ctx.respond("That keyword id doesn't exist. Please specify a valid id and try again.", ephemeral=True)
+
+    # Link Blocker Commands
+    @commands.slash_command(
+        name="automod_linkblocker",
+        description="Turn on or off automod's link blocker in your server"
+    )
+    @option(name="toggle", description="Do you want to turn it on or off?", type=bool)
+    async def automod_linkblocker(self, ctx: ApplicationContext, toggle: bool):
+        if not ctx.author.guild_permissions.administrator: return await ctx.respond("You cannot use this command. If you think this is a mistake, please contact your server owner/administrator.", ephemeral=True)
+        if automod.fetch_config(ctx.guild.id)["link_blocker"]["enabled"] == toggle: return await ctx.respond(f"That automod option is already set to `{toggle}`.", ephemeral=True)
+        automod.linkblocker_enabled(ctx.guild.id, toggle)
+        if toggle is True: await ctx.respond("Link blocker successfully **enabled**.", ephemeral=True)
+        elif toggle is False: await ctx.respond("Link blocker successfully **disabled**.", ephemeral=True)
+    
+    @commands.slash_command(
+        name="automod_linkblocker_only_whitelisted_links",
+        description="Only allows whitelisted links in the server and blocks all other links"
+    )
+    @option(name="toggle", description="Do you want to turn it on or off?", type=bool)
+    async def automod_linkblocker_only_whitelisted_links(self, ctx: ApplicationContext, toggle: bool):
+        if not ctx.author.guild_permissions.administrator: return await ctx.respond("You cannot use this command. If you think this is a mistake, please contact your server owner/administrator.", ephemeral=True)
+        if automod.fetch_config(ctx.guild.id)["link_blocker"]["use_whitelist_only"] == toggle: return await ctx.respond(f"That automod option is already set to `{toggle}`.", ephemeral=True)
+        automod.linkblocker_enabled(ctx.guild.id, toggle)
+        if toggle is True: await ctx.respond("Link blocker successfully **enabled**.", ephemeral=True)
+        elif toggle is False: await ctx.respond("Link blocker successfully **disabled**.", ephemeral=True)
+    
+    @commands.slash_command(
+        name="automod_linkblocker_add_whitelist",
+        description="Adds a link to your server link blocker's whitelist."
+    )
+    @option(name="link", description="The link that you want to add (must be in form of https://{url})", type=str)
+    async def automod_linkblocker_add_whitelist(self, ctx: ApplicationContext, link: str):
+        if not ctx.author.guild_permissions.administrator: return await ctx.respond("You cannot use this command. If you think this is a mistake, please contact your server owner/administrator.", ephemeral=True)
+        if link in automod.fetch_config(ctx.guild.id)["link_blocker"]["whitelist"]: return await ctx.respond("This link is already in your server's link blocker whitelist.", ephemeral=True)
+        if "https://" in link or "http://" in link:
+            automod.linkblocker_add_whitelisted(link)
+            await ctx.respond(f"Link `{link}` has successfully been added to whitelist.", ephemeral=True)
+        else: return await ctx.respond(":warning: The link you entered is not formatted correctly. All added links must contain `https://`.")
+    
+    @commands.slash_command(
+        name="automod_linkblocker_add_blacklist",
+        description="Adds a link to your server link blocker's blacklist."
+    )
+    @option(name="link", description="The link that you want to add (must be in form of https://{url})", type=str)
+    async def automod_linkblocker_add_blacklist(self, ctx: ApplicationContext, link: str):
+        if not ctx.author.guild_permissions.administrator: return await ctx.respond("You cannot use this command. If you think this is a mistake, please contact your server owner/administrator.", ephemeral=True)
+        if link in automod.fetch_config(ctx.guild.id)["link_blocker"]["blacklist"]: return await ctx.respond("This link is already in your server's link blocker blacklist.", ephemeral=True)
+        if "https://" in link or "http://" in link:
+            automod.linkblocker_add_blacklisted(link)
+            await ctx.respond(f"Link `{link}` has successfully been added to blacklist.", ephemeral=True)
+        else: return await ctx.respond(":warning: The link you entered is not formatted correctly. All added links must contain `https://`.")
 
 def setup(bot): bot.add_cog(Automod(bot))
