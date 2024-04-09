@@ -642,7 +642,7 @@
   "leaderboard_nw": {
 	"name": "Net Worth Leaderboard",
 	"description": "See the global leaderboard for user net worth.",
-	"type": "economy",
+	"type": "economy system",
 	"cooldown": null,
 	"args": null,
 	"usable_by": "everyone",
