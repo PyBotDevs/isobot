@@ -90,6 +90,7 @@ class Automod(commands.Cog):
     )
     @option(name="id", description="What's the id of the keyword to remove (can be found in bold through /automod_view_custom_keywords", type=int)
     async def automod_remove_custom_keyword(self, ctx: ApplicationContext, id: int):
+        if not ctx.author.guild_permissions.administrator: return await ctx.respond("You cannot use this command. If you think this is a mistake, please contact your server owner/administrator.", ephemeral=True)
         try:
             automod.swearfilter_removekeyword(ctx.guild.id, id)
             return await ctx.respond(f"Keyword (id: `{id}`) successfully removed from swear-filter configuration.")
@@ -186,6 +187,7 @@ class Automod(commands.Cog):
     )
     @option(name="id", description="What's the id of the link to remove? (can be found as serial number through /automod_view_blacklisted_links", type=int)
     async def automod_linkblocker_remove_blacklist(self, ctx: ApplicationContext, id: int):
+        if not ctx.author.guild_permissions.administrator: return await ctx.respond("You cannot use this command. If you think this is a mistake, please contact your server owner/administrator.", ephemeral=True)
         try:
             automod.linkblocker_remove_blacklisted(ctx.guild.id, id)
             return await ctx.respond(f"Blacklisted link (id: `{id}`) successfully removed from link blocker.")
@@ -197,6 +199,7 @@ class Automod(commands.Cog):
     )
     @option(name="id", description="What's the id of the link to remove? (can be found as serial number through /automod_view_whitelisted_links", type=int)
     async def automod_linkblocker_remove_whitelist(self, ctx: ApplicationContext, id: int):
+        if not ctx.author.guild_permissions.administrator: return await ctx.respond("You cannot use this command. If you think this is a mistake, please contact your server owner/administrator.", ephemeral=True)
         try:
             automod.linkblocker_remove_whitelisted(ctx.guild.id, id)
             return await ctx.respond(f"Whitelisted link (id: `{id}`) successfully removed from link blocker.")
