@@ -32,6 +32,12 @@ class Automod():
                         "default": ["fuck", "shit", "pussy", "penis", "cock", "vagina", "sex", "moan", "bitch", "hoe", "nigga", "nigger", "xxx", "porn"],
                         "custom": []
                     }
+                },
+                "link_blocker": {
+                    "enabled": False,
+                    "use_whitelist_only": False,
+                    "whitelisted": [],
+                    "blacklisted": []
                 }
             }
         self.save(automod_config)
