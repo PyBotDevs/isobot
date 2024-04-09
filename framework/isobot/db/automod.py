@@ -35,7 +35,7 @@ class Automod():
                 },
                 "link_blocker": {
                     "enabled": False,
-                    "use_whitelist_only": False,
+                    "use_whitelist_only": True,
                     "whitelisted": [],
                     "blacklisted": []
                 }
