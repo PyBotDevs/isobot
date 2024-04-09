@@ -717,6 +717,27 @@ class Economy(commands.Cog):
             localembed = discord.Embed(title=f"Item Ids (search query: {search})", description=parsed_result)
         await ctx.respond(embed=localembed)
 
+    @commands.slash_command(
+        name="kill",
+        description="Kill someone for cash and rewards!"
+    )
+    @option(name="target", description="Who do you want to kill?", type=discord.User, default=None)
+    @commands.cooldown(1, 15, commands.BucketType.user)
+    async def kill(self, ctx: ApplicationContext, target: discord.User = None):
+        if target == None: return await ctx.respond("Okay, so you just died. Now find someone else to kill.")
+        if currency.get_wallet(target.id) < 2000: return await ctx.respond(f"Why would you want to kill {target.display_name} for less than 2000 coins? Do you really think its worth the risk? Find someone else blud.")
+        rw = random.randint(2000, currency.get_wallet(target.id))
+        if framework.isobot.algorithms.chance(20):
+            currency.add(target.id, rw)
+            currency.remove(target.id, rw)
+            localembed = discord.Embed(title="You FAILED!", description=f"LMFAO you pointed the gun the wrong way and accidentally shot yourself.\n{target.display_name} was so traumatized by this that they ended up suing you for **{rw} coins**. Bad luck bozo.", color=discord.Color.random())
+            await ctx.respond(embed=localembed)
+        else:
+            currency.add(target.id, rw)
+            currency.remove(target.id, rw)
+            localembed = discord.Embed(title="Success!", description=f"You shot {target.display_name}, and quickly swiped away their wallet! From this you find **{rw} coins**! Too bad they didnt put their savings in their bank.", color=discord.Color.random())
+            await ctx.respond(embed=localembed)
+
 # Initialization
 def setup(bot):
     bot.add_cog(Economy(bot))
