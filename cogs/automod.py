@@ -28,6 +28,7 @@ class Automod(commands.Cog):
         localembed.set_footer(text="More automod features will come soon!")
         await ctx.respond(embed=localembed)
 
+    # Swear-filter Commands
     @commands.slash_command(
         name="automod_swearfilter",
         description="Turn on or off automod's swear-filter in your server"
