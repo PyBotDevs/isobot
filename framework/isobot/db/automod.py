@@ -103,3 +103,19 @@ class Automod():
         automod_config[str(server_id)]["link_blocker"]["blacklisted"].append(link)
         self.save(automod_config)
         return 0
+    
+    def linkblocker_remove_whitelisted(self, server_id: int, keyword_id: int) -> int:
+        """Removes a whitelisted link (using id) from the server's automod configuration."""
+        automod_config = self.load()
+        data: dict = automod_config[str(server_id)]["link_blocker"]["whitelisted"]
+        data.pop(keyword_id-1)
+        self.save(automod_config)
+        return 0
+    
+    def linkblocker_remove_blacklisted(self, server_id: int, keyword_id: int) -> int:
+        """Removes a blacklisted link (using id) from the server's automod configuration."""
+        automod_config = self.load()
+        data: dict = automod_config[str(server_id)]["link_blocker"]["blacklisted"]
+        data.pop(keyword_id-1)
+        self.save(automod_config)
+        return 0

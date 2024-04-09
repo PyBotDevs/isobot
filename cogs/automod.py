@@ -179,5 +179,27 @@ class Automod(commands.Cog):
         localembed = discord.Embed(title=f"Blacklisted links for {ctx.guild.name}", description=out, color=color)
         localembed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested by {ctx.author}")
         await ctx.respond(embed=localembed)
+    
+    @commands.slash_command(
+        name="automod_linkblocker_remove_blacklist",
+        description="Removes a blacklisted link (matching its id) from this server's link blocker"
+    )
+    @option(name="id", description="What's the id of the link to remove? (can be found as serial number through /automod_view_blacklisted_links", type=int)
+    async def automod_linkblocker_remove_blacklist(self, ctx: ApplicationContext, id: int):
+        try:
+            automod.linkblocker_remove_blacklisted(ctx.guild.id, id)
+            return await ctx.respond(f"Blacklisted link (id: `{id}`) successfully removed from link blocker.")
+        except IndexError: await ctx.respond("That blacklisted link id doesn't exist. Please specify a valid id and try again.", ephemeral=True)
+    
+    @commands.slash_command(
+        name="automod_linkblocker_remove_whitelist",
+        description="Removes a whitelisted link (matching its id) from this server's link blocker"
+    )
+    @option(name="id", description="What's the id of the link to remove? (can be found as serial number through /automod_view_whitelisted_links", type=int)
+    async def automod_linkblocker_remove_whitelist(self, ctx: ApplicationContext, id: int):
+        try:
+            automod.linkblocker_remove_whitelisted(ctx.guild.id, id)
+            return await ctx.respond(f"Whitelisted link (id: `{id}`) successfully removed from link blocker.")
+        except IndexError: await ctx.respond("That whitelisted link id doesn't exist. Please specify a valid id and try again.", ephemeral=True)
 
 def setup(bot): bot.add_cog(Automod(bot))
