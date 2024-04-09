@@ -19,7 +19,7 @@ This open-source project was supposed to represent what the next-generation of H
 We think isobot can help a multi-purpose economy Discord bot for your server. Apart from the economy system, you also get features for
 * moderation
 * levelling
-* automod
+* automod (swear-filter, link blocker)
 * server verification (soon)
 * maths commands
 * fun commands
