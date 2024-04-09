@@ -279,7 +279,7 @@ async def load(ctx: ApplicationContext, cog: str):
         return await ctx.respond(
             embed=discord.Embed(
                 title=f"{cog} failed to load",
-                description="Cog does not exist.",
+                description="Cog is already loaded to the client.",
                 color=discord.Color.red()
             )
         )
