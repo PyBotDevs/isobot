@@ -621,9 +621,9 @@
   },
   "kill": {
 	"name": "Kill",
-	"description": "Lets you kill someone.",
-	"type": "fun",
-	"cooldown": null,
+	"description": "Kill someone for cash and rewards!",
+	"type": "economy system",
+	"cooldown": 15,
 	"args": ["target"],
 	"usable_by": "everyone",
 	"disabled": false,
