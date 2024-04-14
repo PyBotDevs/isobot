@@ -156,13 +156,12 @@ async def on_message(ctx):
         try: automod.generate(ctx.guild.id)
         except AttributeError: pass
         try:
+            # AFK System Checker
             uList = list()
             presence = _presence.get_raw()
             if str(ctx.guild.id) in presence:
                 for userid in presence[str(ctx.guild.id)].keys():
                     uList.append(userid)
-            else:
-                pass
             for user in uList:
                 if str(user) in ctx.content and not ctx.author.bot:
                     fetch_user = await client.fetch_user(int(user))
@@ -172,25 +171,7 @@ async def on_message(ctx):
                 m1 = await ctx.channel.send(f"Welcome back {ctx.author.mention}. Your AFK has been removed.")
                 await asyncio.sleep(5)
                 await m1.delete()
-        except AttributeError:
-            pass
-        levelling.add_xp(ctx.author.id, randint(1, 5))
-        xpreq = 0
-        for level in range(levelling.get_level(ctx.author.id)):
-            xpreq += 50
-            if xpreq >= 5000: break
-        if levelling.get_xp(ctx.author.id) >= xpreq:
-            levelling.set_xp(ctx.author.id, 0)
-            levelling.add_levels(ctx.author.id, 1)
-            if settings.fetch_setting(ctx.author.id, "levelup_messages") is True:
-                try:
-                    await ctx.author.send(f"{ctx.author.mention}, you just ranked up to **level {levelling.get_level(ctx.author.id)}**. Nice!\n\n{':bulb: Tip: This is your global message level and is the same across all servers. If you want to disable DMs for levelling up, run `/settings levelup_messages enabled: False`' if levelling.get_level(ctx.author.id) == 1 else ''}")
-                except discord.errors.Forbidden:
-                    # Error is raised when the user isnt accepting DMs (or has blocked isobot)
-                    # In that case isobot will automatically stop sending levelup messages to them
-                    logger.warn(f"Unable to send level up message to {ctx.author} ({ctx.author.id}), as they are not accepting DMs from isobot. This ID has been added to `levelup_messages` blacklist.", module="main/Levelling")
-                    settings.edit_setting(ctx.author.id, "levelup_messages", False)
-        try:
+
             # Swear-Filter
             automod_config = automod.fetch_config(ctx.guild.id)
             if automod_config["swear_filter"]["enabled"] is True:
@@ -210,7 +191,24 @@ async def on_message(ctx):
                         if any(x in ctx.content.lower() for x in automod_config["link_blocker"]["blacklisted"]["default"]):
                             await ctx.delete()
                             await ctx.channel.send(f'{ctx.author.mention} This link is not allowed in this server.', delete_after=5)
+
         except AttributeError: pass
+        levelling.add_xp(ctx.author.id, randint(1, 5))
+        xpreq = 0
+        for level in range(levelling.get_level(ctx.author.id)):
+            xpreq += 50
+            if xpreq >= 5000: break
+        if levelling.get_xp(ctx.author.id) >= xpreq:
+            levelling.set_xp(ctx.author.id, 0)
+            levelling.add_levels(ctx.author.id, 1)
+            if settings.fetch_setting(ctx.author.id, "levelup_messages") is True:
+                try:
+                    await ctx.author.send(f"{ctx.author.mention}, you just ranked up to **level {levelling.get_level(ctx.author.id)}**. Nice!\n\n{':bulb: Tip: This is your global message level and is the same across all servers. If you want to disable DMs for levelling up, run `/settings levelup_messages enabled: False`' if levelling.get_level(ctx.author.id) == 1 else ''}")
+                except discord.errors.Forbidden:
+                    # Error is raised when the user isnt accepting DMs (or has blocked isobot)
+                    # In that case isobot will automatically stop sending levelup messages to them
+                    logger.warn(f"Unable to send level up message to {ctx.author} ({ctx.author.id}), as they are not accepting DMs from isobot. This ID has been added to `levelup_messages` blacklist.", module="main/Levelling")
+                    settings.edit_setting(ctx.author.id, "levelup_messages", False)
 
 
 
