@@ -94,7 +94,8 @@ if api.auth.get_runtime_options()["themes"]:
         except KeyError:
             logger.warn("The theme file being loaded might be broken. Rolling back to default configuration...", module="main/Themes")
             color = discord.Color.random()
-else: color = discord.Color.random()
+else:
+    color = discord.Color.random()
 
 # Events
 @client.event
@@ -131,13 +132,19 @@ async def on_message(ctx):
         _discrim = str(ctx.author).split('#')[-1]
         try:
             if str(ctx.guild.id) not in runtimeconf["guild_log_blacklist"]:
-                if _discrim == "0000": logger.info(f"[{ctx.guild.name} -> #{ctx.channel.name}] New message received from {_user}[webhook] ({ctx.author.display_name})", timestamp=True)
-                elif _discrim == "0": logger.info(f"[{ctx.guild.name} -> #{ctx.channel.name}] New message received from @{_user} ({ctx.author.display_name})", timestamp=True)
-                else: logger.info(f"[{ctx.guild.name} -> #{ctx.channel.name}] New message received from {ctx.author} ({ctx.author.display_name})", timestamp=True)
+                if _discrim == "0000":
+                    logger.info(f"[{ctx.guild.name} -> #{ctx.channel.name}] New message received from {_user}[webhook] ({ctx.author.display_name})", timestamp=True)
+                elif _discrim == "0":
+                    logger.info(f"[{ctx.guild.name} -> #{ctx.channel.name}] New message received from @{_user} ({ctx.author.display_name})", timestamp=True)
+                else:
+                    logger.info(f"[{ctx.guild.name} -> #{ctx.channel.name}] New message received from {ctx.author} ({ctx.author.display_name})", timestamp=True)
         except AttributeError:
-            if _discrim == "0": logger.info(f"[DM] New message received from @{_user} ({ctx.author.display_name})", timestamp=True)
-            elif _discrim == "0000": logger.info(f"[DM] New message received from {_user}[webhook] ({ctx.author.display_name})", timestamp=True)
-            else: logger.info(f"[DM] New message received from {ctx.author} ({ctx.author.display_name})", timestamp=True)
+            if _discrim == "0":
+                logger.info(f"[DM] New message received from @{_user} ({ctx.author.display_name})", timestamp=True)
+            elif _discrim == "0000":
+                logger.info(f"[DM] New message received from {_user}[webhook] ({ctx.author.display_name})", timestamp=True)
+            else:
+                logger.info(f"[DM] New message received from {ctx.author} ({ctx.author.display_name})", timestamp=True)
     if not ctx.author.bot:
         currency.new_wallet(ctx.author.id)
         currency.new_bank(ctx.author.id)
@@ -152,8 +159,10 @@ async def on_message(ctx):
             uList = list()
             presence = _presence.get_raw()
             if str(ctx.guild.id) in presence:
-                for userid in presence[str(ctx.guild.id)].keys(): uList.append(userid)
-            else: pass
+                for userid in presence[str(ctx.guild.id)].keys():
+                    uList.append(userid)
+            else:
+                pass
             for user in uList:
                 if str(user) in ctx.content and not ctx.author.bot:
                     fetch_user = await client.fetch_user(int(user))
@@ -163,7 +172,8 @@ async def on_message(ctx):
                 m1 = await ctx.channel.send(f"Welcome back {ctx.author.mention}. Your AFK has been removed.")
                 await asyncio.sleep(5)
                 await m1.delete()
-        except AttributeError: pass
+        except AttributeError:
+            pass
         levelling.add_xp(ctx.author.id, randint(1, 5))
         xpreq = 0
         for level in range(levelling.get_level(ctx.author.id)):
@@ -185,7 +195,8 @@ async def on_message(ctx):
                 if (automod_config["swear_filter"]["keywords"]["use_default"] and any(x in ctx.content.lower() for x in automod_config["swear_filter"]["keywords"]["default"])) or (automod_config["swear_filter"]["keywords"]["custom"] != [] and any(x in ctx.content.lower() for x in automod_config["swear_filter"]["keywords"]["custom"])):
                     await ctx.delete()
                     await ctx.channel.send(f'{ctx.author.mention} watch your language.', delete_after=5)
-        except AttributeError: pass
+        except AttributeError:
+            pass
 
         # Link Blocker
         try:
