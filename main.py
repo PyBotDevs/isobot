@@ -197,11 +197,8 @@ async def on_message(ctx):
                 if (automod_config["swear_filter"]["keywords"]["use_default"] and any(x in ctx.content.lower() for x in automod_config["swear_filter"]["keywords"]["default"])) or (automod_config["swear_filter"]["keywords"]["custom"] != [] and any(x in ctx.content.lower() for x in automod_config["swear_filter"]["keywords"]["custom"])):
                     await ctx.delete()
                     await ctx.channel.send(f'{ctx.author.mention} watch your language.', delete_after=5)
-        except AttributeError:
-            pass
 
-        # Link Blocker
-        try:
+            # Link Blocker
             if ("http://" in ctx.content.lower()) or ("https://" in ctx.content.lower()):
                 automod_config = automod.fetch_config(ctx.guild.id)
                 if automod_config["link_blocker"]["enabled"] is True:
