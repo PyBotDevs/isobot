@@ -190,8 +190,8 @@ async def on_message(ctx):
                     # In that case isobot will automatically stop sending levelup messages to them
                     logger.warn(f"Unable to send level up message to {ctx.author} ({ctx.author.id}), as they are not accepting DMs from isobot. This ID has been added to `levelup_messages` blacklist.", module="main/Levelling")
                     settings.edit_setting(ctx.author.id, "levelup_messages", False)
-        # Swear-filter
         try:
+            # Swear-Filter
             automod_config = automod.fetch_config(ctx.guild.id)
             if automod_config["swear_filter"]["enabled"] is True:
                 if (automod_config["swear_filter"]["keywords"]["use_default"] and any(x in ctx.content.lower() for x in automod_config["swear_filter"]["keywords"]["default"])) or (automod_config["swear_filter"]["keywords"]["custom"] != [] and any(x in ctx.content.lower() for x in automod_config["swear_filter"]["keywords"]["custom"])):
