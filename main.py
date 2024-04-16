@@ -28,13 +28,17 @@ start_time = ""
 # Pre-Initialization Commands
 def initial_setup():
     """Runs the initial setup for isobot's directories.\nThis creates missing directories, new log files, as well as new databases for any missing `.json` database files."""
+    # Create required client directories
     try:
         paths = ["database", "config", "logs", "themes"]
         for p in paths:
             if not os.path.isdir(p):
                 logger.warn(f"'{p}' directory appears to be missing. Created new directory for '{p}'.", module="main/Setup", nolog=True)
                 os.mkdir(p)
-    except OSError: logger.error(f"Failed to make directory: {e}", module="main/Setup")
+    except OSError:
+        logger.error(f"Failed to make directory: {e}", module="main/Setup")
+
+    # Generating database files
     try:
         databases = ["automod", "currency", "isocard", "isotokens", "items", "levels", "presence", "user_data", "weather"]
         for f in databases:
@@ -43,7 +47,10 @@ def initial_setup():
                 if f == "currency": open(f"database/{f}.json", 'x', encoding="utf-8").write('{"treasury": 1000000, "wallet": {}, "bank": {}}')
                 else: open(f"database/{f}.json", 'x', encoding="utf-8").write("{}")
                 time.sleep(0.5)
-    except IOError as e: logger.error(f"Failed to make database file: {e}", module="main/Setup")
+    except IOError as e:
+        logger.error(f"Failed to make database file: {e}", module="main/Setup")
+    
+    # Generating client log files
     try:
         if not os.path.isfile("logs/info-log.txt"):
             with open('logs/info-log.txt', 'x', encoding="utf-8") as this:
@@ -66,7 +73,8 @@ def initial_setup():
             with open("logs/startup-log.txt", 'x', encoding="utf-8") as this:
                 this.close()
             time.sleep(0.5)
-    except IOError as e: logger.error(f"Failed to make log file: {e}", module="main/Setup", nolog=True)
+    except IOError as e:
+        logger.error(f"Failed to make log file: {e}", module="main/Setup", nolog=True)
 
 initial_setup()  # Check for any missing sub-directories or databases in bot directory
 
@@ -94,7 +102,8 @@ if api.auth.get_runtime_options()["themes"]:
         except KeyError:
             logger.warn("The theme file being loaded might be broken. Rolling back to default configuration...", module="main/Themes")
             color = discord.Color.random()
-else: color = discord.Color.random()
+else:
+    color = discord.Color.random()
 
 # Events
 @client.event
@@ -126,19 +135,29 @@ __________________________________________________""")
 async def on_message(ctx):
     """This event is fired whenever a message is sent (in a readable channel)."""
     runtimeconf = api.auth.get_runtime_options()
+
+    # Server Activity Logger
     if runtimeconf["log_messages"]:
         _user = str(ctx.author).split('#')[0]
         _discrim = str(ctx.author).split('#')[-1]
         try:
             if str(ctx.guild.id) not in runtimeconf["guild_log_blacklist"]:
-                if _discrim == "0000": logger.info(f"[{ctx.guild.name} -> #{ctx.channel.name}] New message received from {_user}[webhook] ({ctx.author.display_name})", timestamp=True)
-                elif _discrim == "0": logger.info(f"[{ctx.guild.name} -> #{ctx.channel.name}] New message received from @{_user} ({ctx.author.display_name})", timestamp=True)
-                else: logger.info(f"[{ctx.guild.name} -> #{ctx.channel.name}] New message received from {ctx.author} ({ctx.author.display_name})", timestamp=True)
+                if _discrim == "0000":
+                    logger.info(f"[{ctx.guild.name} -> #{ctx.channel.name}] New message received from {_user}[webhook] ({ctx.author.display_name})", timestamp=True)
+                elif _discrim == "0":
+                    logger.info(f"[{ctx.guild.name} -> #{ctx.channel.name}] New message received from @{_user} ({ctx.author.display_name})", timestamp=True)
+                else:
+                    logger.info(f"[{ctx.guild.name} -> #{ctx.channel.name}] New message received from {ctx.author} ({ctx.author.display_name})", timestamp=True)
         except AttributeError:
-            if _discrim == "0": logger.info(f"[DM] New message received from @{_user} ({ctx.author.display_name})", timestamp=True)
-            elif _discrim == "0000": logger.info(f"[DM] New message received from {_user}[webhook] ({ctx.author.display_name})", timestamp=True)
-            else: logger.info(f"[DM] New message received from {ctx.author} ({ctx.author.display_name})", timestamp=True)
+            if _discrim == "0":
+                logger.info(f"[DM] New message received from @{_user} ({ctx.author.display_name})", timestamp=True)
+            elif _discrim == "0000":
+                logger.info(f"[DM] New message received from {_user}[webhook] ({ctx.author.display_name})", timestamp=True)
+            else:
+                logger.info(f"[DM] New message received from {ctx.author} ({ctx.author.display_name})", timestamp=True)
+
     if not ctx.author.bot:
+        # Check and initialize databases with new data for user.
         currency.new_wallet(ctx.author.id)
         currency.new_bank(ctx.author.id)
         create_isocoin_key(ctx.author.id)
@@ -148,12 +167,14 @@ async def on_message(ctx):
         levelling.generate(ctx.author.id)
         try: automod.generate(ctx.guild.id)
         except AttributeError: pass
+
         try:
+            # AFK System Checker
             uList = list()
             presence = _presence.get_raw()
             if str(ctx.guild.id) in presence:
-                for userid in presence[str(ctx.guild.id)].keys(): uList.append(userid)
-            else: pass
+                for userid in presence[str(ctx.guild.id)].keys():
+                    uList.append(userid)
             for user in uList:
                 if str(user) in ctx.content and not ctx.author.bot:
                     fetch_user = await client.fetch_user(int(user))
@@ -163,32 +184,15 @@ async def on_message(ctx):
                 m1 = await ctx.channel.send(f"Welcome back {ctx.author.mention}. Your AFK has been removed.")
                 await asyncio.sleep(5)
                 await m1.delete()
-        except AttributeError: pass
-        levelling.add_xp(ctx.author.id, randint(1, 5))
-        xpreq = 0
-        for level in range(levelling.get_level(ctx.author.id)):
-            xpreq += 50
-            if xpreq >= 5000: break
-        if levelling.get_xp(ctx.author.id) >= xpreq:
-            levelling.set_xp(ctx.author.id, 0)
-            levelling.add_levels(ctx.author.id, 1)
-            if settings.fetch_setting(ctx.author.id, "levelup_messages") is True:
-                try:
-                    await ctx.author.send(f"{ctx.author.mention}, you just ranked up to **level {levelling.get_level(ctx.author.id)}**. Nice!\n\n{':bulb: Tip: This is your global message level and is the same across all servers. If you want to disable DMs for levelling up, run `/settings levelup_messages enabled: False`' if levelling.get_level(ctx.author.id) == 1 else ''}")
-                except discord.errors.Forbidden:
-                    logger.warn("Unable to send level up message to {ctx.author} ({ctx.author.id}), as they are not accepting DMs from isobot. This ID has been added to `levelup_messages` blacklist.", module="main/Levelling")
-                    settings.edit_setting(ctx.author.id, "levelup_messages", False)
-        # Swear-filter
-        try:
+
+            # Swear-Filter
             automod_config = automod.fetch_config(ctx.guild.id)
             if automod_config["swear_filter"]["enabled"] is True:
                 if (automod_config["swear_filter"]["keywords"]["use_default"] and any(x in ctx.content.lower() for x in automod_config["swear_filter"]["keywords"]["default"])) or (automod_config["swear_filter"]["keywords"]["custom"] != [] and any(x in ctx.content.lower() for x in automod_config["swear_filter"]["keywords"]["custom"])):
                     await ctx.delete()
                     await ctx.channel.send(f'{ctx.author.mention} watch your language.', delete_after=5)
-        except AttributeError: pass
 
-        # Link Blocker
-        try:
+            # Link Blocker
             if ("http://" in ctx.content.lower()) or ("https://" in ctx.content.lower()):
                 automod_config = automod.fetch_config(ctx.guild.id)
                 if automod_config["link_blocker"]["enabled"] is True:
@@ -201,6 +205,24 @@ async def on_message(ctx):
                             await ctx.delete()
                             await ctx.channel.send(f'{ctx.author.mention} This link is not allowed in this server.', delete_after=5)
         except AttributeError: pass
+
+        # Levelling System
+        levelling.add_xp(ctx.author.id, randint(1, 5))
+        xpreq = 0
+        for level in range(levelling.get_level(ctx.author.id)):
+            xpreq += 50
+            if xpreq >= 5000: break
+        if levelling.get_xp(ctx.author.id) >= xpreq:
+            levelling.set_xp(ctx.author.id, 0)
+            levelling.add_levels(ctx.author.id, 1)
+            if settings.fetch_setting(ctx.author.id, "levelup_messages") is True:
+                try:
+                    await ctx.author.send(f"{ctx.author.mention}, you just ranked up to **level {levelling.get_level(ctx.author.id)}**. Nice!\n\n{':bulb: Tip: This is your global message level and is the same across all servers. If you want to disable DMs for levelling up, run `/settings levelup_messages enabled: False`' if levelling.get_level(ctx.author.id) == 1 else ''}")
+                except discord.errors.Forbidden:
+                    # Error is raised when the user isnt accepting DMs (or has blocked isobot)
+                    # In that case isobot will automatically stop sending levelup messages to them
+                    logger.warn(f"Unable to send level up message to {ctx.author} ({ctx.author.id}), as they are not accepting DMs from isobot. This ID has been added to `levelup_messages` blacklist.", module="main/Levelling")
+                    settings.edit_setting(ctx.author.id, "levelup_messages", False)
 
 
 
