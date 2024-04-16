@@ -44,8 +44,12 @@ def initial_setup():
         for f in databases:
             if not os.path.isfile(f"database/{f}.json"):
                 logger.warn(f"[main/Setup] '{f}.json' was not found in database directory. Creating new database...", module="main/Setup", nolog=True)
-                if f == "currency": open(f"database/{f}.json", 'x', encoding="utf-8").write('{"treasury": 1000000, "wallet": {}, "bank": {}}')
-                else: open(f"database/{f}.json", 'x', encoding="utf-8").write("{}")
+                if f == "currency":
+                    with open(f"database/{f}.json", 'x', encoding="utf-8") as f:
+                        json.dump({"treasury": 1000000, "wallet": {}, "bank": {}}, f, encoding="utf-8")
+                else:
+                    with open(f"database/{f}.json", 'x', encoding="utf-8") as f:
+                        json.dump({}, f, encoding="utf-8")
                 time.sleep(0.5)
     except IOError as e:
         logger.error(f"Failed to make database file: {e}", module="main/Setup")
