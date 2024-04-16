@@ -42,6 +42,18 @@ class Utils(commands.Cog):
         await ctx.channel.send(text)
 
     @commands.slash_command(
+        name="ping",
+        description="Get the server latency."
+    )
+    async def ping(self, ctx: ApplicationContext):
+        localembed = discord.Embed(
+            title=":ping_pong: Pong!",
+            description=f"Current server latency is **{round(self.bot.latency * 1000, 2)} ms**.",
+            color=discord.Color.random()
+        )
+        await ctx.respond(embed=localembed)
+
+    @commands.slash_command(
         name="repo",
         description="Shows the open-source code links for isobot."
     )
