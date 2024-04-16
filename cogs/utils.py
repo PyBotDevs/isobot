@@ -112,7 +112,7 @@ class Utils(commands.Cog):
         if presence != 1:
             localembed_desc += f"\n`🌙 AFK` {presence['response']} - <t:{math.floor(presence['time'])}>"
         localembed = discord.Embed(
-            title=f'User Info on {username}',
+            title=f'User Info on {username} {'`BOT`' if user.bot else ''}',
             description=localembed_desc
         )
         localembed.set_thumbnail(url=pfp)
