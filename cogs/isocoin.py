@@ -3,11 +3,19 @@
 # Imports
 import random
 import json
+import os
 import discord
 from discord import ApplicationContext, SlashCommandGroup
 from discord.ext import commands
 
 # Variables
+if not os.path.isdir("database"):  # TEMPORARY: Allow cog to handle "database" directory generation (for now)
+    os.mkdir("database")
+if not os.path.isfile("database/isotokens.json"):  # Generate database file, if missing.
+    with open("database/isotokens.json", 'x', encoding="utf-8") as f:
+        json.dump({}, f)
+        f.close()
+
 with open("database/isotokens.json", 'r', encoding="utf-8") as f: isocoins = json.load(f)
 
 def save():
