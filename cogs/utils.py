@@ -33,7 +33,7 @@ class Utils(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
-        self.start_time = datetime.datetime.now()
+        self.start_time = time.time()
 
     @commands.slash_command(
         name='echo',
