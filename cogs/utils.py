@@ -6,6 +6,9 @@ import math
 import psutil
 import openai
 import discord
+import json
+import time
+import datetime
 from api import auth
 from framework.isobot import currency, embedengine, commands as cmds
 from framework.isobot.db import levelling
@@ -30,6 +33,7 @@ class Utils(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
+        self.start_time = datetime.datetime.now()
 
     @commands.slash_command(
         name='echo',
@@ -190,7 +194,8 @@ class Utils(commands.Cog):
         for guild in self.bot.guilds:
             total_users += guild.member_count
         localembed = discord.Embed(title="Client Info")
-        localembed.add_field(name="OS Name", value=os_name)
+        localembed.add_field(name="Uptime", value=str(datetime.timedelta(seconds=int(round(time.time()-self.start_time)))))
+        localembed.add_field(name="OS Name", value=os_name, inline=True)
         localembed.add_field(name="RAM Available", value=sys_ram)
         localembed.add_field(name="CPU Usage", value=sys_cpu)
         localembed.add_field(name="Registered Users", value=f"{bot_users} users", inline=True)
