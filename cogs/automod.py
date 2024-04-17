@@ -88,7 +88,7 @@ class Automod(commands.Cog):
         name="automod_remove_custom_keyword",
         description="Removes a custom keyword (matching its id) from your server's swear-filter"
     )
-    @option(name="id", description="What's the id of the keyword to remove (can be found as serial number through /automod_view_custom_keywords", type=int)
+    @option(name="id", description="What's the id of the keyword to remove (can be found through /automod_view_custom_keywords", type=int)
     async def automod_remove_custom_keyword(self, ctx: ApplicationContext, id: int):
         if not ctx.author.guild_permissions.administrator: return await ctx.respond("You cannot use this command. If you think this is a mistake, please contact your server owner/administrator.", ephemeral=True)
         try:
@@ -110,7 +110,7 @@ class Automod(commands.Cog):
         elif toggle is False: await ctx.respond("Link blocker successfully **disabled**.", ephemeral=True)
     
     @commands.slash_command(
-        name="automod_linkblocker_only_whitelisted_links",
+        name="automod_lb_only_whitelisted",
         description="Only allows whitelisted links in the server and blocks all other links"
     )
     @option(name="toggle", description="Do you want to turn it on or off?", type=bool)
@@ -122,7 +122,7 @@ class Automod(commands.Cog):
         elif toggle is False: await ctx.respond("Link blocker successfully **disabled**.", ephemeral=True)
     
     @commands.slash_command(
-        name="automod_linkblocker_add_whitelist",
+        name="automod_lb_add_whitelist",
         description="Adds a link to your server link blocker's whitelist."
     )
     @option(name="link", description="The link that you want to add (must be in form of https://{url})", type=str)
@@ -135,7 +135,7 @@ class Automod(commands.Cog):
         else: return await ctx.respond(":warning: The link you entered is not formatted correctly. All added links must contain `https://`.")
     
     @commands.slash_command(
-        name="automod_linkblocker_add_blacklist",
+        name="automod_lb_add_blacklist",
         description="Adds a link to your server link blocker's blacklist."
     )
     @option(name="link", description="The link that you want to add (must be in form of https://{url})", type=str)
@@ -148,7 +148,7 @@ class Automod(commands.Cog):
         else: return await ctx.respond(":warning: The link you entered is not formatted correctly. All added links must contain `https://`.")
     
     @commands.slash_command(
-        name="automod_view_whitelisted_links",
+        name="automod_view_whitelisted",
         description="Shows a list of the whitelisted links set for this server",
     )
     async def automod_view_custom_keywords(self, ctx: ApplicationContext):
@@ -165,7 +165,7 @@ class Automod(commands.Cog):
         await ctx.respond(embed=localembed)
     
     @commands.slash_command(
-        name="automod_view_blacklisted_links",
+        name="automod_view_blacklisted",
         description="Shows a list of the blacklisted links set for this server",
     )
     async def automod_view_custom_keywords(self, ctx: ApplicationContext):
@@ -182,10 +182,10 @@ class Automod(commands.Cog):
         await ctx.respond(embed=localembed)
     
     @commands.slash_command(
-        name="automod_linkblocker_remove_blacklist",
+        name="automod_lb_remove_blacklist",
         description="Removes a blacklisted link (matching its id) from this server's link blocker"
     )
-    @option(name="id", description="What's the id of the link to remove? (can be found as serial number through /automod_view_blacklisted_links", type=int)
+    @option(name="id", description="What's the id of the link to remove? (can be found through /automod_view_blacklisted_links", type=int)
     async def automod_linkblocker_remove_blacklist(self, ctx: ApplicationContext, id: int):
         if not ctx.author.guild_permissions.administrator: return await ctx.respond("You cannot use this command. If you think this is a mistake, please contact your server owner/administrator.", ephemeral=True)
         try:
@@ -194,10 +194,10 @@ class Automod(commands.Cog):
         except IndexError: await ctx.respond("That blacklisted link id doesn't exist. Please specify a valid id and try again.", ephemeral=True)
     
     @commands.slash_command(
-        name="automod_linkblocker_remove_whitelist",
+        name="automod_lb_remove_whitelist",
         description="Removes a whitelisted link (matching its id) from this server's link blocker"
     )
-    @option(name="id", description="What's the id of the link to remove? (can be found as serial number through /automod_view_whitelisted_links", type=int)
+    @option(name="id", description="What's the id of the link to remove? (can be found through /automod_view_whitelisted_links", type=int)
     async def automod_linkblocker_remove_whitelist(self, ctx: ApplicationContext, id: int):
         if not ctx.author.guild_permissions.administrator: return await ctx.respond("You cannot use this command. If you think this is a mistake, please contact your server owner/administrator.", ephemeral=True)
         try:
