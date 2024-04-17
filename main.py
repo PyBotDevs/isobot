@@ -46,7 +46,7 @@ def initial_setup():
                 logger.warn(f"[main/Setup] '{f}.json' was not found in database directory. Creating new database...", module="main/Setup", nolog=True)
                 if f == "currency":
                     with open(f"database/{f}.json", 'x', encoding="utf-8") as f:
-                        json.dump({"treasury": 1000000, "wallet": {}, "bank": {}}, f)
+                        json.dump({"treasury": 100000000, "wallet": {}, "bank": {}}, f)
                         f.close()
                 else:
                     with open(f"database/{f}.json", 'x', encoding="utf-8") as f:
