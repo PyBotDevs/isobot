@@ -186,12 +186,16 @@ class Utils(commands.Cog):
         sys_ram = str(f"{psutil.virtual_memory()[2]}GiB")
         sys_cpu = str(f"{psutil.cpu_percent(1)}%")
         bot_users = currency.get_user_count()
+        total_users = int()
+        for guild in self.bot.guilds:
+            total_users += guild.member_count
         localembed = discord.Embed(title="Client Info")
         localembed.add_field(name="OS Name", value=os_name)
         localembed.add_field(name="RAM Available", value=sys_ram)
         localembed.add_field(name="CPU Usage", value=sys_cpu)
         localembed.add_field(name="Registered Users", value=f"{bot_users} users", inline=True)
-        localembed.add_field(name="Uptime History", value="[here](https://stats.uptimerobot.com/PlKOmI0Aw8)")
+        localembed.add_field(name="Total Users", value=f"{total_users} users")
+        localembed.add_field(name="Uptime History", value="[here](https://stats.uptimerobot.com/PlKOmI0Aw8)", inline=True)
         localembed.add_field(name="Release Notes", value="[latest](https://github.com/PyBotDevs/isobot/releases/latest)")
         localembed.set_footer(text=f"Requested by {ctx.author.name}", icon_url=ctx.author.avatar)
         await ctx.respond(embed=localembed)
