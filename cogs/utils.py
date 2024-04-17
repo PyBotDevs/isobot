@@ -4,7 +4,7 @@
 import os
 import math
 import psutil
-import openai
+# import openai  # Removed because OpenAI commands were disabled, and OpenAI fails to load due to missing "PyDantic" dependency
 import discord
 import json
 import time
@@ -23,7 +23,7 @@ currency = currency.CurrencyAPI("database/currency.json", "logs/currency.log")
 levelling = levelling.Levelling()
 _commands = cmds.Commands()
 # openai.api_key = os.getenv("chatgpt_API_KEY")
-openai.api_key = auth.ext_token('chatgpt')
+# openai.api_key = auth.ext_token('chatgpt')
 chatgpt_conversation = dict()
 _presence = Presence()
 
