@@ -195,7 +195,7 @@ async def on_message(ctx):
 
             # Swear-Filter
             automod_config = automod.fetch_config(ctx.guild.id)
-            if automod_config["swear_filter"]["enabled"] is True:
+            if (automod_config["swear_filter"]["enabled"] is True) and (not ctx.channel.is_nsfw()):
                 if (automod_config["swear_filter"]["keywords"]["use_default"] and any(x in ctx.content.lower() for x in automod_config["swear_filter"]["keywords"]["default"])) or (automod_config["swear_filter"]["keywords"]["custom"] != [] and any(x in ctx.content.lower() for x in automod_config["swear_filter"]["keywords"]["custom"])):
                     await ctx.delete()
                     await ctx.channel.send(f'{ctx.author.mention} watch your language.', delete_after=5)
