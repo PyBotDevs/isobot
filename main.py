@@ -129,6 +129,8 @@ __________________________________________________""")
     s.log(f'[main/Client] Logged in as {client.user.name}. Start time: {start_time.strftime("%H:%M:%S")}\n[main/Client] Ready to accept commands. Click Ctrl+C to shut down the bot.')
     await client.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name="Isobot is finally back! Improved uptime!"), status=discord.Status.idle)
     s.log(f'[main/Log] {colors.green}Status set to IDLE. Rich presence set.{colors.end}')
+
+    # Start and Deploy Ping Server
     if api.auth.get_mode() or api.auth.get_runtime_options()["ping_server_override"]:
         # If ping_server_override is set to true, it will start the pinging server no matter what. If it's set to false, it will only start if client mode is set to replit.
         s.log(f"[main/Flask] {f'{colors.yellow}Ping server override.{colors.end} ' if api.auth.get_runtime_options()['ping_server_override'] else ''}Starting pinger service...")
