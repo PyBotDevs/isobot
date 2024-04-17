@@ -195,7 +195,7 @@ async def on_message(ctx):
 
             # Swear-Filter
             automod_config = automod.fetch_config(ctx.guild.id)
-            if (automod_config["swear_filter"]["enabled"] is True) and (not ctx.channel.is_nsfw()):
+            if (automod_config["swear_filter"]["enabled"]) and (not ctx.channel.is_nsfw()):
                 if (automod_config["swear_filter"]["keywords"]["use_default"] and any(x in ctx.content.lower() for x in automod_config["swear_filter"]["keywords"]["default"])) or (automod_config["swear_filter"]["keywords"]["custom"] != [] and any(x in ctx.content.lower() for x in automod_config["swear_filter"]["keywords"]["custom"])):
                     await ctx.delete()
                     await ctx.channel.send(f'{ctx.author.mention} watch your language.', delete_after=5)
@@ -203,7 +203,7 @@ async def on_message(ctx):
             # Link Blocker
             if ("http://" in ctx.content.lower()) or ("https://" in ctx.content.lower()):
                 automod_config = automod.fetch_config(ctx.guild.id)
-                if automod_config["link_blocker"]["enabled"] is True:
+                if automod_config["link_blocker"]["enabled"]:
                     if automod_config["link_blocker"]["use_whitelist_only"]:
                         if not any(x in ctx.content.lower() for x in automod_config["link_blocker"]["whitelisted"]["default"]):
                             await ctx.delete()
