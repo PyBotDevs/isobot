@@ -30,7 +30,7 @@ def initial_setup():
     """Runs the initial setup for isobot's directories.\nThis creates missing directories, new log files, as well as new databases for any missing `.json` database files."""
     # Create required client directories
     try:
-        paths = ["database", "config", "logs", "themes"]
+        paths = ["database", "database/isobank", "config", "logs", "themes"]
         for p in paths:
             if not os.path.isdir(p):
                 logger.warn(f"'{p}' directory appears to be missing. Created new directory for '{p}'.", module="main/Setup", nolog=True)
@@ -40,7 +40,7 @@ def initial_setup():
 
     # Generating database files
     try:
-        databases = ["automod", "currency", "isocard", "items", "levels", "presence", "user_data", "weather"]
+        databases = ["automod", "currency", "isocard", "items", "levels", "presence", "user_data", "weather", "isobank/accounts", "isobank/auth"]
         for f in databases:
             if not os.path.isfile(f"database/{f}.json"):
                 logger.warn(f"[main/Setup] '{f}.json' was not found in database directory. Creating new database...", module="main/Setup", nolog=True)
