@@ -189,9 +189,9 @@ async def on_message(ctx):
                     await ctx.channel.send(f"{fetch_user.display_name} went AFK <t:{floor(presence[str(ctx.guild.id)][str(user)]['time'])}:R>: {presence[str(ctx.guild.id)][str(user)]['response']}")
             if str(ctx.guild.id) in presence and str(ctx.author.id) in presence[str(ctx.guild.id)]:
                 _presence.remove_afk(ctx.guild.id, ctx.author.id)
-                m1 = await ctx.channel.send(f"Welcome back {ctx.author.mention}. Your AFK has been removed.")
+                afk_cleared_message = await ctx.channel.send(f"Welcome back {ctx.author.mention}. Your AFK has been removed.")
                 await asyncio.sleep(5)
-                await m1.delete()
+                await afk_cleared_message.delete()
 
             # Swear-Filter
             automod_config = automod.fetch_config(ctx.guild.id)
