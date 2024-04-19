@@ -21,7 +21,7 @@ class Levelling(commands.Cog):
         description="Shows your rank or another user's rank"
     )
     @option(name="user", description="Who's rank do you want to view?", type=discord.User, default=None)
-    async def rank(self, ctx: ApplicationContext, user:discord.User=None):
+    async def rank(self, ctx: ApplicationContext, user: discord.User=None):
         if user is None: user = ctx.author
         try:
             localembed = discord.Embed(title=f"{user.display_name}'s rank", color=color)
@@ -37,7 +37,7 @@ class Levelling(commands.Cog):
     )
     @option(name="user", description="Who's rank do you want to edit?", type=discord.User)
     @option(name="new_rank", description="The new rank you want to set for the user", type=int)
-    async def edit_rank(self, ctx: ApplicationContext, user:discord.User, new_rank:int):
+    async def edit_rank(self, ctx: ApplicationContext, user: discord.User, new_rank: int):
         if ctx.author.id != 738290097170153472: return await ctx.respond("This command isn't for you.", ephemeral=True)
         try:
             levelling.set_level(user.id, new_rank)
@@ -50,7 +50,7 @@ class Levelling(commands.Cog):
     )
     @option(name="user", description="Who's rank do you want to edit?", type=discord.User)
     @option(name="new_xp", description="The new xp count you want to set for the user", type=int)
-    async def edit_xp(self, ctx: ApplicationContext, user:discord.User, new_xp:int):
+    async def edit_xp(self, ctx: ApplicationContext, user: discord.User, new_xp: int):
         if ctx.author.id != 738290097170153472: return await ctx.respond("This command isn't for you.", ephemeral=True)
         try:
             levelling.set_xp(user.id, new_xp)
