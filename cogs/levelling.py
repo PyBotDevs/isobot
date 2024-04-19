@@ -24,9 +24,13 @@ class Levelling(commands.Cog):
     async def rank(self, ctx: ApplicationContext, user: discord.User=None):
         if user is None: user = ctx.author
         try:
+            xpreq = int()
+            for level in range(levelling.get_level(ctx.author.id)):
+                xpreq += 50
+                if xpreq >= 5000: break
             localembed = discord.Embed(title=f"{user.display_name}'s rank", color=color)
             localembed.add_field(name="Level", value=levelling.get_level(user.id))
-            localembed.add_field(name="XP", value=levelling.get_xp(user.id))
+            localembed.add_field(name="XP", value=f"{levelling.get_xp(user.id)}/{xpreq} gained")
             localembed.set_footer(text="Keep chatting to earn levels!")
             await ctx.respond(embed = localembed)
         except KeyError: return await ctx.respond("Looks like that user isn't indexed yet. Try again later.", ephemeral=True)
