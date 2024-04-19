@@ -212,7 +212,7 @@ async def on_message(ctx):
                         if any(x in ctx.content.lower() for x in automod_config["link_blocker"]["blacklisted"]["default"]):
                             await ctx.delete()
                             await ctx.channel.send(f'{ctx.author.mention} This link is not allowed in this server.', delete_after=5)
-        except AttributeError: pass
+        except AttributeError: pass  # Raised if the message isn't from a guild.
 
         # Levelling System
         levelling.add_xp(ctx.author.id, randint(1, 5))
