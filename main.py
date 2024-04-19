@@ -178,12 +178,12 @@ async def on_message(ctx):
 
         try:
             # AFK System Checker
-            uList = list()
+            presence_user_list = list()
             presence = _presence.get_raw()
             if str(ctx.guild.id) in presence:
                 for userid in presence[str(ctx.guild.id)].keys():
-                    uList.append(userid)
-            for user in uList:
+                    presence_user_list.append(userid)
+            for user in presence_user_list:
                 if str(user) in ctx.content and not ctx.author.bot:
                     fetch_user = await client.fetch_user(int(user))
                     await ctx.channel.send(f"{fetch_user.display_name} went AFK <t:{floor(presence[str(ctx.guild.id)][str(user)]['time'])}:R>: {presence[str(ctx.guild.id)][str(user)]['response']}")
