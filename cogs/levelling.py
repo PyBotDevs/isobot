@@ -21,14 +21,18 @@ class Levelling(commands.Cog):
         description="Shows your rank or another user's rank"
     )
     @option(name="user", description="Who's rank do you want to view?", type=discord.User, default=None)
-    async def rank(self, ctx: ApplicationContext, user:discord.User=None):
+    async def rank(self, ctx: ApplicationContext, user: discord.User=None):
         if user is None: user = ctx.author
         try:
+            xpreq = int()
+            for level in range(levelling.get_level(ctx.author.id)):
+                xpreq += 50
+                if xpreq >= 5000: break
             localembed = discord.Embed(title=f"{user.display_name}'s rank", color=color)
             localembed.add_field(name="Level", value=levelling.get_level(user.id))
-            localembed.add_field(name="XP", value=levelling.get_xp(user.id))
-            localembed.set_footer(text="Keep chatting to earn levels!")
-            await ctx.respond(embed = localembed)
+            localembed.add_field(name="XP", value=f"{levelling.get_xp(user.id)}/{xpreq} gained")
+            localembed.set_footer(text="Keep chatting in servers to earn levels!\nYour rank is global across all servers.")
+            await ctx.respond(embed=localembed)
         except KeyError: return await ctx.respond("Looks like that user isn't indexed yet. Try again later.", ephemeral=True)
 
     @commands.slash_command(
@@ -37,7 +41,7 @@ class Levelling(commands.Cog):
     )
     @option(name="user", description="Who's rank do you want to edit?", type=discord.User)
     @option(name="new_rank", description="The new rank you want to set for the user", type=int)
-    async def edit_rank(self, ctx: ApplicationContext, user:discord.User, new_rank:int):
+    async def edit_rank(self, ctx: ApplicationContext, user: discord.User, new_rank: int):
         if ctx.author.id != 738290097170153472: return await ctx.respond("This command isn't for you.", ephemeral=True)
         try:
             levelling.set_level(user.id, new_rank)
@@ -50,7 +54,7 @@ class Levelling(commands.Cog):
     )
     @option(name="user", description="Who's rank do you want to edit?", type=discord.User)
     @option(name="new_xp", description="The new xp count you want to set for the user", type=int)
-    async def edit_xp(self, ctx: ApplicationContext, user:discord.User, new_xp:int):
+    async def edit_xp(self, ctx: ApplicationContext, user: discord.User, new_xp: int):
         if ctx.author.id != 738290097170153472: return await ctx.respond("This command isn't for you.", ephemeral=True)
         try:
             levelling.set_xp(user.id, new_xp)
