@@ -236,7 +236,6 @@ async def on_message(ctx):
 @client.event
 async def on_application_command_error(ctx: ApplicationContext, error: discord.DiscordException):
     """An event handler to handle command exceptions when things go wrong.\n\nSome exceptions may be pre-handled, but any unhandable exceptions will be logged as an error."""
-    current_time = datetime.time().strftime("%H:%M:%S")
     if not api.auth.get_runtime_options()["debug_mode"]:
         if isinstance(error, commands.CommandOnCooldown): await ctx.respond(f":stopwatch: Not now! Please try after **{str(datetime.timedelta(seconds=int(round(error.retry_after))))}**")
         elif isinstance(error, commands.MissingPermissions): await ctx.respond(":warning: You don't have the required server permissions to run this command!", ephemeral=True)
