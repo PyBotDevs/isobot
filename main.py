@@ -129,7 +129,7 @@ __________________________________________________""")
         s.log(f"   Latency/Ping: {round((client.latency * 1000), 2)} ms")
         s.log("--------------------")
     s.log(f'[main/Client] Logged in as {client.user.name}. Start time: {start_time.strftime("%H:%M:%S")}\n[main/Client] Ready to accept commands. Click Ctrl+C to shut down the bot.')
-    await client.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name="Isobot is finally back! Improved uptime!"), status=discord.Status.idle)
+    await client.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name="I-I-I be poppin bottles 🗣🗣🔥"), status=discord.Status.idle)
     s.log(f'[main/Log] {colors.green}Status set to IDLE. Rich presence set.{colors.end}')
 
     # Start and Deploy Ping Server
