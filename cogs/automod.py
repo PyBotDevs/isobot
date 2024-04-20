@@ -208,4 +208,5 @@ class Automod(commands.Cog):
             return await ctx.respond(f"Whitelisted link (id: `{id}`) successfully removed from link blocker.")
         except IndexError: await ctx.respond("That whitelisted link id doesn't exist. Please specify a valid id and try again.", ephemeral=True)
 
-def setup(bot): bot.add_cog(Automod(bot))
+def setup(bot):
+    bot.add_cog(Automod(bot))
