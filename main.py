@@ -232,17 +232,10 @@ async def on_message(ctx):
                     logger.warn(f"Unable to send level up message to {ctx.author} ({ctx.author.id}), as they are not accepting DMs from isobot. This ID has been added to `levelup_messages` blacklist.", module="main/Levelling")
                     settings.edit_setting(ctx.author.id, "levelup_messages", False)
 
-
-
-@client.event
-async def after_invoke(ctx):
-    logger.info(f"A command has been successfully run by {ctx.author.display_name}", module="main/Client", timestamp=True)
-
 # Error handler
 @client.event
 async def on_application_command_error(ctx: ApplicationContext, error: discord.DiscordException):
     """An event handler to handle command exceptions when things go wrong.\n\nSome exceptions may be pre-handled, but any unhandable exceptions will be logged as an error."""
-    current_time = datetime.time().strftime("%H:%M:%S")
     if not api.auth.get_runtime_options()["debug_mode"]:
         if isinstance(error, commands.CommandOnCooldown): await ctx.respond(f":stopwatch: Not now! Please try after **{str(datetime.timedelta(seconds=int(round(error.retry_after))))}**")
         elif isinstance(error, commands.MissingPermissions): await ctx.respond(":warning: You don't have the required server permissions to run this command!", ephemeral=True)
@@ -253,47 +246,65 @@ async def on_application_command_error(ctx: ApplicationContext, error: discord.D
             logger.error(f"Command failure: An uncaught error occured while running the command.\n   >>> {error}", module="main/Client")
             await ctx.respond(f"An uncaught error occured while running the command. (don't worry, developers will fix this soon)\n```\n{error}\n```")
 
-# Commands
-@client.slash_command(
-    name="help",
-    description="Gives you help with a specific command, or shows a list of all commands"
+# Help Commands
+help_cmds = discord.commands.SlashCommandGroup("help", "Commands used for getting command help in the bot.")
+
+@help_cmds.command(
+    name="list",
+    description="Get a list of all bot commands, or search for specific commands."
 )
-@option(name="command", description="Which command do you need help with?", type=str, default=None)
-async def help(ctx: ApplicationContext, command: str = None):
-    """Gives you help with a specific command, or shows a list of all commands"""
+@option(name="search", description="Search query for looking-up commands", type=str, default=None)
+async def help_list(ctx: ApplicationContext, search: str = None):
+    """Get a list of all bot commands, or search for specific commands."""
     commandsdb = _commands.fetch_raw()
-    if command is not None:
-        try:
-            localembed = discord.Embed(
-                title=f"{commandsdb[command]['name']} Command (/{command})",
-                description=commandsdb[command]['description'],
-                color=color
-            )
-            localembed.add_field(name="Command Type", value=commandsdb[command]['type'], inline=False)
-            if commandsdb[command]['cooldown'] is not None:
-                localembed.add_field(name="Cooldown", value=f"{str(datetime.timedelta(seconds=commandsdb[command]['cooldown']))}", inline=False)
-            localembed.add_field(name="Usable By", value=commandsdb[command]['usable_by'], inline=False)
-            if commandsdb[command]['args'] is not None:
-                args = ""
-                for arg in commandsdb[command]['args']: args += f"`{arg}` "
-                localembed.add_field(name="Arguments", value=args, inline=False)
-            if commandsdb[command]['bugged'] is True:
-                localembed.set_footer(text="⚠ This command might be bugged (experiencing issues), but will be fixed later.")
-            if commandsdb[command]['disabled'] is True:
-                localembed.set_footer(text="⚠ This command is currently disabled")
-            await ctx.respond(embed=localembed)
-        except KeyError:
-            return await ctx.respond(
-                embed=discord.Embed(description=f"No results found for {command}."),
-                ephemeral=True
-            )
-    else:
-        commands_list = ""
+    commands_list = str()
+    if search is not None:
         for _command in commandsdb:
-            if commandsdb[_command]["type"] != "DevTools": commands_list += f"`/{_command}`\n"
+            if (search in _command) and (commandsdb[_command]["type"] != "DevTools"):
+                commands_list += f"`/{_command}`\n"
+            if commands_list == "":
+                commands_list = "*No commands were found*"
+            localembed = discord.Embed(title="Isobot Command Help", description=f"**Bot Commands:**\n{commands_list}", color=color)
+            await ctx.respond(embed=localembed)
+    
+    for _command in commandsdb:
+        if commandsdb[_command]["type"] != "DevTools":
+            commands_list += f"`/{_command}`\n"
         localembed = discord.Embed(title="Isobot Command Help", description=f"**Bot Commands:**\n{commands_list}", color=color)
-        await ctx.author.send(embed=localembed)
-        await ctx.respond("Check your direct messages.", ephemeral=True)
+        await ctx.respond(embed=localembed)
+
+@help_cmds.command(
+    name="info",
+    description="Get detailed information on a specific isobot command."
+)
+@option(name="command", description="The name of the command you want help on.", type=str)
+async def help_info(ctx: ApplicationContext, command: str):
+    """Get detailed information on a specific isobot command."""
+    commandsdb = _commands.fetch_raw()
+    try:
+        localembed = discord.Embed(
+            title=f"{commandsdb[command]['name']} Command (/{command})",
+            description=commandsdb[command]['description'],
+            color=color
+        )
+        localembed.add_field(name="Command Type", value=commandsdb[command]['type'], inline=False)
+        if commandsdb[command]['cooldown'] is not None:
+            localembed.add_field(name="Cooldown", value=f"{str(datetime.timedelta(seconds=commandsdb[command]['cooldown']))}", inline=False)
+        localembed.add_field(name="Usable By", value=commandsdb[command]['usable_by'], inline=False)
+        if commandsdb[command]['args'] is not None:
+            args = ""
+            for arg in commandsdb[command]['args']: args += f"`{arg}` "
+            localembed.add_field(name="Arguments", value=args, inline=False)
+        if commandsdb[command]['bugged'] is True:
+            localembed.set_footer(text="⚠ This command might be bugged (experiencing issues), but will be fixed later.")
+        if commandsdb[command]['disabled'] is True:
+            localembed.set_footer(text="⚠ This command is currently disabled")
+        await ctx.respond(embed=localembed)
+    except KeyError:
+        return await ctx.respond(
+            embed=discord.Embed(description=f"No results found for {command}."),
+            ephemeral=True
+        )
 
 # Cog Commands (these cannot be moved into a cog)
 cogs = client.create_group("cog", "Commands for working with isobot cogs.")
