@@ -232,12 +232,6 @@ async def on_message(ctx):
                     logger.warn(f"Unable to send level up message to {ctx.author} ({ctx.author.id}), as they are not accepting DMs from isobot. This ID has been added to `levelup_messages` blacklist.", module="main/Levelling")
                     settings.edit_setting(ctx.author.id, "levelup_messages", False)
 
-
-
-@client.event
-async def after_invoke(ctx):
-    logger.info(f"A command has been successfully run by {ctx.author.display_name}", module="main/Client", timestamp=True)
-
 # Error handler
 @client.event
 async def on_application_command_error(ctx: ApplicationContext, error: discord.DiscordException):
