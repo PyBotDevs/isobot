@@ -2,17 +2,13 @@
 
 # Imports
 import discord
-import json
 import random
-import time
+from framework.isobot.db.isocard import IsoCard
 from discord import option, ApplicationContext, SlashCommandGroup
 from discord.ext import commands
 
-# Variables
-with open("database/isocard.json", 'r', encoding="utf-8") as f: isocard_db = json.load(f)
-
-def save():
-    with open("database/isocard.json", 'w+', encoding="utf-8") as f: json.dump(isocard_db, f, indent=4)
+# Variables and Functions
+isocard_db = IsoCard()
 
 def generate_card_id() -> int:
     # Generate 16 random digits and append to a str variable
@@ -38,24 +34,12 @@ class IsoCard(commands.Cog):
     @option(name="ssc", description="The Special Security Code for your new card. (aka. CVV)", type=int)
     async def register(self, ctx: ApplicationContext, ssc: int):
         new_card_id = generate_card_id()
-        isocard_db[str(new_card_id)] = {
-            "cardholder_user_id": ctx.author.id,
-            "cardholder_name": ctx.author.name,
-            "ssc": ssc, # Special Security Code
-            "card_registration_timestamp": round(time.time()),
-            "type": "standard",  # Card type
-            "config" : {
-                "spend_limit": 100000,  # Daily spending limit for IsoCard
-                "shared_cardholder_ids": [],  # Other users who can use this card
-                "card_label": None
-            }
-        }
-        save()
+        new_card_data = isocard_db.generate(new_card_id, ctx.author.id, ctx.author.name, ssc)
         localembed = discord.Embed(title=":tada: Congratulations!", description="Your new IsoCard has successfully been registered!", color=discord.Color.green())
         localembed.add_field(name="Cardholder name", value=ctx.author.name, inline=False)
         localembed.add_field(name="Card number", value=new_card_id, inline=False)
         localembed.add_field(name="SSC", value=f"`{ssc}`", inline=True)
-        localembed.add_field(name="Card registration date", value=f"<t:{isocard_db[str(new_card_id)]['card_registration_timestamp']}:d>", inline=False)
+        localembed.add_field(name="Card registration date", value=f"<t:{new_card_data['card_registration_timestamp']}:d>", inline=False)
         localembed.set_footer(text="Always remember, NEVER share your card info to anyone!")
         await ctx.respond(embed=localembed, ephemeral=True)
 
@@ -66,7 +50,7 @@ class IsoCard(commands.Cog):
     @option(name="card_number", description="Enter your card number of the card you want to view.", type=int)
     async def info(self, ctx: ApplicationContext, card_number: int):
         try:
-            try: card_data = isocard_db[str(card_number)]
+            try: card_data = isocard_db.fetch_card_data(card_number)
             except KeyError: return await ctx.respond("There was a problem with your card number. Please check it and try again.", ephemeral=True)
             if card_data["cardholder_user_id"] != ctx.author.id: return await ctx.respond("You do not have permission to access this IsoCard.\n If you think this is an error, please contact the devs.", ephemeral=True)
             localembed = discord.Embed(
@@ -117,11 +101,10 @@ class IsoCard(commands.Cog):
     @option(name="card_number", description="Enter your card number that you want to work with.", type=int)
     @option(name="new_label", description="What do you want your new card label to be?", type=str, default=None)
     async def options_label(self, ctx: ApplicationContext, card_number: int, new_label: str):
-        try: card_data = isocard_db[str(card_number)]
+        try: card_data = isocard_db.fetch_card_data(card_number)
         except KeyError: return await ctx.respond("There was a problem with your card number. Please check it and try again.", ephemeral=True)
         if card_data["cardholder_user_id"] != ctx.author.id: return await ctx.respond("You do not have permission to access this IsoCard.\n If you think this is an error, please contact the devs.", ephemeral=True)
-        isocard_db[str(card_number)]["config"]["card_label"] = new_label
-        save()
+        isocard_db.set_card_label(card_number, new_label)
         if new_label == None: return await ctx.respond(embed=discord.Embed(description=":white_check_mark: Your card label has been reset.", color=discord.Color.green()), ephemeral=True)
         else: return await ctx.respond(embed=discord.Embed(description=":white_check_mark: Your card label has been edited.", color=discord.Color.green()), ephemeral=True)
 
