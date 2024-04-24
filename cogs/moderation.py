@@ -70,5 +70,24 @@ class Moderation(commands.Cog):
         )
         await ctx.respond(embed=localembed)
 
+    @commands.slash_command(
+        name="clear_all_warnings",
+        description="Clears all the warnings from the specified user."
+    )
+    @option(name="user", description="The user whose warnings you want to clear.", type=discord.Member)
+    async def clear_all_warning(self, ctx: ApplicationContext, user: discord.Member):
+        """Clears all the warnings from the specified user."""
+        if not ctx.author.guild_permissions.manage_messages:
+            return await ctx.respond(
+                """You can't use this command! You need the `Manage Messages` permission to run this.
+                If you think this is a mistake, contact your server administrator.""",
+                ephemeral=True
+            )
+        warningsdb.clear_all_warnings(ctx.guild.id, user.id)
+        localembed = discord.Embed(
+            description=f":white_check_mark: Successfully cleared all server warnings for **{user.display_name}**.",
+            color=discord.Color.green()
+        )
+        await ctx.respond(embed=localembed)
 # Initialization
 def setup(bot): bot.add_cog(Moderation(bot))
