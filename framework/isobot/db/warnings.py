@@ -33,7 +33,6 @@ class Warnings:
     def add_warning(self, guild_id: int, user_id: int, moderator_id: int, warning_ts: int, reason: str) -> dict:
         """Adds a new warning entry to the user of the specified guild, in the database.\n\nReturns the warning data as a `dict`."""
         data = self.load()
-        # TODO: Add warning ids later. For now, just keep warnings in a list variable.
         warning_data = {
             "moderator_id": moderator_id,
             "warning_ts": warning_ts,
