@@ -3,7 +3,7 @@
 # Imports
 import json
 import time
-from colors import Colors as colors
+from framework.isobot.colors import Colors as colors
 
 # Functions
 class IsoCard:
