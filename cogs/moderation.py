@@ -1,7 +1,12 @@
 # Imports
 import discord
+import time
+from framework.isobot.db.warnings import Warnings
 from discord import option, ApplicationContext
 from discord.ext import commands
+
+# Variables
+warningsdb = Warnings()
 
 # Commands
 class Moderation(commands.Cog):
@@ -37,6 +42,33 @@ class Moderation(commands.Cog):
                 else: await user.ban(reason=reason)
                 await ctx.respond(embed=discord.Embed(title=f'{user} has been banned.', description=f'Reason: {str(reason)}'))
             except Exception: await ctx.respond(embed=discord.Embed(title='Well, something happened...', description='Either I don\'t have permission to do this, or my role isn\'t high enough.', color=discord.Colour.red()))
+
+    @commands.slash_command(
+        name="warn",
+        description="Warns the specified user, with a specific reason."
+    )
+    @option(name="user", description="Who do you want to warn?", type=discord.Member)
+    @option(name="reason", description="The reason why you are warning the user", type=str)
+    async def warn(self, ctx: ApplicationContext, user: discord.Member, reason: str):
+        """Warns the specified user, with a specific reason."""
+        if not ctx.author.guild_permissions.manage_messages:
+            return await ctx.respond(
+                """You can't use this command! You need the `Manage Messages` permission to run this.
+                If you think this is a mistake, contact your server administrator.""",
+                ephemeral=True
+            )
+        warningsdb.add_warning(ctx.guild.id, user.id, ctx.author.id, round(time.time()), reason)
+        warnembed = discord.Embed(
+            title=f":warning: You have been warned in **{ctx.guild.name}**",
+            description=f"Reason: {reason}",
+            color=discord.Color.red()
+        )
+        await user.send(embed=warnembed)
+        localembed = discord.Embed(
+            description=f":white_check_mark: **{user.display_name}** has been successfully warned.",
+            color=discord.Color.green()
+        )
+        await ctx.respond(embed=localembed)
 
 # Initialization
 def setup(bot): bot.add_cog(Moderation(bot))
