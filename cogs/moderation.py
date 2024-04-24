@@ -89,5 +89,30 @@ class Moderation(commands.Cog):
             color=discord.Color.green()
         )
         await ctx.respond(embed=localembed)
+    
+    @commands.slash_command(
+        name="show_warnings",
+        description="See all the server warnings for a specific user."
+    )
+    @option(name="user", description="The user whose warnings you want to view.", type=discord.Member, default=None)
+    async def show_warnings(self, ctx: ApplicationContext, user: discord.Member = None):
+        """See all the server warnings for a specific user."""
+        await ctx.defer()
+        if user == None: user = ctx.author
+        all_user_warnings = warningsdb.fetch_all_warnings(ctx.guild.id, user.id)
+        parsed_output = str()
+        count = int()
+        for warning in all_user_warnings:
+            count += 1
+            mod_ctx = await ctx.bot.fetch_user(warning["moderator_id"])
+            parsed_output += f"{count}. **Warned by {mod_ctx.display_name}**\n> Reason: {warning['reason']}\n> Time Since Warn: <t:{warning['warning_ts']}:R>\n"
+        if parsed_output == "":
+            parsed_output = "*Nothing to see here...*"
+        localembed = discord.Embed(
+            title=f"All warnings for **{user.display_name}** in **{ctx.guild.name}**",
+            description=parsed_output,
+            color=discord.Color.random()
+        )
+        await ctx.respond(embed=localembed)
 # Initialization
 def setup(bot): bot.add_cog(Moderation(bot))
