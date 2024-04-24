@@ -40,7 +40,19 @@ def initial_setup():
 
     # Generating database files
     try:
-        databases = ["automod", "currency", "isocard", "items", "levels", "presence", "user_data", "weather", "isobank/accounts", "isobank/auth"]
+        databases = [
+            "automod",
+            "currency",
+            "isocard",
+            "items",
+            "levels",
+            "warnings",
+            "presence",
+            "user_data",
+            "weather",
+            "isobank/accounts",
+            "isobank/auth"
+        ]
         for f in databases:
             if not os.path.isfile(f"database/{f}.json"):
                 logger.warn(f"[main/Setup] '{f}.json' was not found in database directory. Creating new database...", module="main/Setup", nolog=True)
