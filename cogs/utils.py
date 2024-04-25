@@ -384,6 +384,15 @@ class Utils(commands.Cog):
         localembed.add_field(name="Usable By", value=usable_by)
         localembed.add_field(name="Cooldown", value=cooldown)
         await ctx.respond(embed=localembed)
+    
+    # User Commands
+    @commands.user_command(name="Show User Information")
+    async def _whoami(self, ctx: ApplicationContext, user: discord.User):
+        await self.whoami(ctx, user)
+
+    @commands.user_command(name="View isobot Profile")
+    async def _profile(self, ctx: ApplicationContext, user: discord.User):
+        await self.profile(ctx, user)
 
 # Cog Initialization
 def setup(bot):

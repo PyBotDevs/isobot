@@ -737,6 +737,11 @@ class Economy(commands.Cog):
             currency.remove(target.id, rw)
             localembed = discord.Embed(title="Success!", description=f"You shot {target.display_name}, and quickly swiped away their wallet! From this you find **{rw} coins**! Too bad they didnt put their savings in their bank.", color=discord.Color.random())
             await ctx.respond(embed=localembed)
+    
+    # User Commands
+    @commands.user_command(name="Show Balance")
+    async def _balance(self, ctx: ApplicationContext, user: discord.User):
+        await self.balance(ctx, user)
 
 # Initialization
 def setup(bot):
