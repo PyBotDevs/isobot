@@ -68,6 +68,16 @@ def initial_setup():
     except IOError as e:
         logger.error(f"Failed to make database file: {e}", module="main/Setup")
     
+    # Generating other files
+    try:
+        if not os.path.isfile(f"config/settings.json"):
+            logger.warn(f"[main/Setup] Settings database file was not found in config directory. Creating new database...", module="main/Setup", nolog=True)
+            with open(f"config/settings.json", 'x', encoding="utf-8") as f:
+                json.dump({}, f)
+                f.close()
+    except IOError as e:
+        logger.error(f"Failed to make settings database file: {e}", module="main/Setup")
+
     # Generating client log files
     try:
         if not os.path.isfile("logs/info-log.txt"):

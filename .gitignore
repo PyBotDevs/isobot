@@ -15,6 +15,7 @@ logs/currency.log
 logs/error-log.txt
 logs/info-log.txt
 logs/startup-log.txt
+config/settings.json
 __pycache__
 *.bak
 venv
