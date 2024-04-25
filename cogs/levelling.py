@@ -22,6 +22,7 @@ class Levelling(commands.Cog):
     )
     @option(name="user", description="Who's rank do you want to view?", type=discord.User, default=None)
     async def rank(self, ctx: ApplicationContext, user: discord.User=None):
+        """Shows your rank or another user's rank."""
         if user is None: user = ctx.author
         try:
             xpreq = int()
@@ -90,6 +91,11 @@ class Levelling(commands.Cog):
                 except discord.errors.NotFound: continue
         localembed = discord.Embed(title="Global levelling leaderboard", description=parsed_output, color=color)
         await ctx.respond(embed=localembed)
+
+    # User Commands
+    @commands.user_command(name="View Rank")
+    async def _view_rank(self, ctx: ApplicationContext, user: discord.User):
+        await self.rank(ctx, user)
 
 def setup(bot):
     bot.add_cog(Levelling(bot))
