@@ -297,6 +297,27 @@ class Utils(commands.Cog):
         localembed.set_footer(text="Thank you for your support!")
         await ctx.respond(embed=localembed)
 
+    @commands.slash_command(
+        name="nuke",
+        description="Completely wipes a text channel in the server."
+    )
+    @option(name="channel", description="The channel you want to nuke.", type=discord.TextChannel)
+    async def nuke(self, ctx: ApplicationContext, channel: discord.TextChannel):
+        """Completely wipes a text channel in the server."""
+        if not ctx.author.guild_permissions.administrator:
+            return await ctx.respond(
+                "You can't use this command! You need the `Administrator` permission in this server to run this command.",
+                ephemeral=True
+            )
+        localembed = discord.Embed(
+            description=f":white_check_mark: Channel `#{channel.name}` successfully nuked.",
+            color=discord.Color.green()
+        )
+        new_channel = await channel.clone(reason=f"Channel has been nuked by {ctx.author.name}")
+        await channel.delete(reason=f"Channel has been nuked by {ctx.author.name}")
+        await new_channel.send(f"Channel nuked by **{ctx.author.name}**!")
+        await ctx.respond(embed=localembed, ephemeral=True)
+
     commandmanager = SlashCommandGroup("commandmanager", "Manage isobot's command registry.")
 
     @commandmanager.command(
