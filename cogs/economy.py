@@ -739,14 +739,6 @@ class Economy(commands.Cog):
             await ctx.respond(embed=localembed)
     
     # User Commands
-    @commands.user_command(name="Show Net Worth")
-    async def _networth(self, ctx: ApplicationContext, user: discord.User):
-        await self.networth(ctx, user)
-    
-    @commands.user_command(name="Show Inventory")
-    async def _inventory(self, ctx: ApplicationContext, user: discord.User):
-        await self.inventory(ctx, user)
-    
     @commands.user_command(name="Show Balance")
     async def _balance(self, ctx: ApplicationContext, user: discord.User):
         await self.balance(ctx, user)

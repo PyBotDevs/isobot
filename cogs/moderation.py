@@ -115,16 +115,8 @@ class Moderation(commands.Cog):
         )
         await ctx.respond(embed=localembed)
 
-    # User App Commands
-    @commands.user_command(
-        name="Clear All Warnings"
-    )
-    async def _clear_all_warnings(self, ctx: ApplicationContext, user: discord.Member):
-        await self.clear_all_warning(ctx, user)
-    
-    @commands.user_command(
-        name="Show Warnings"
-    )
+    # User App Commands    
+    @commands.user_command(name="Show Warnings")
     async def _show_warnings(self, ctx: ApplicationContext, user: discord.Member):
         await self.show_warnings(ctx, user)
 

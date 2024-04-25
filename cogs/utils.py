@@ -390,10 +390,6 @@ class Utils(commands.Cog):
     async def _whoami(self, ctx: ApplicationContext, user: discord.User):
         await self.whoami(ctx, user)
 
-    @commands.user_command(name="View Avatar")
-    async def _avatar(self, ctx: ApplicationContext, user: discord.User):
-        await self.avatar(ctx, user)
-
     @commands.user_command(name="View isobot Profile")
     async def _profile(self, ctx: ApplicationContext, user: discord.User):
         await self.profile(ctx, user)
