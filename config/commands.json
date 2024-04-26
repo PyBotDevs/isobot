@@ -412,7 +412,7 @@
   "rank": {
       "name": "Rank",
       "description": "Show your bot level/rank, or someone else's level/rank.",
-      "type": "leveling system",
+      "type": "levelling",
       "cooldown": null,
       "args": ["user (optional)"],
       "usable_by": "everyone",
@@ -422,7 +422,7 @@
   "edit_rank": {
       "name": "Edit Member Rank",
       "description": "Sets a new level/rank for a specified user.",
-      "type": "leveling system/DevTools",
+      "type": "DevTools",
       "cooldown": null,
       "args": ["user", "new_rank"],
       "usable_by": "the developer",
@@ -432,7 +432,7 @@
   "edit_xp": {
       "name": "Edit Member XP",
       "description": "Sets a new XP amount for a specified user.",
-      "type": "leveling system/DevTools",
+      "type": "DevTools",
       "cooldown": null,
       "args": ["user", "new_xp"],
       "usable_by": "the developer",
