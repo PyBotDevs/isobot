@@ -287,12 +287,13 @@ async def help_list(ctx: ApplicationContext, search: str = None):
         for _command in commandsdb:
             if (search in _command) and (commandsdb[_command]["type"] != "DevTools"):
                 commands_list += f"`/{_command}`\n"
-            if commands_list == "":
-                commands_list = "*No commands were found*"
+        if commands_list == "":
+            commands_list = "*No commands were found*"
     
-    for _command in commandsdb:
-        if commandsdb[_command]["type"] != "DevTools":
-            commands_list += f"`/{_command}`\n"
+    else:
+        for _command in commandsdb:
+            if commandsdb[_command]["type"] != "DevTools":
+                commands_list += f"`/{_command}`\n"
     localembed = discord.Embed(title="Isobot Command Help", description=f"**Bot Commands:**\n{commands_list}", color=color)
     await ctx.respond(embed=localembed)
 
