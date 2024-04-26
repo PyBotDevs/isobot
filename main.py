@@ -283,20 +283,43 @@ async def help_list(ctx: ApplicationContext, search: str = None):
     """Get a list of all bot commands, or search for specific commands."""
     commandsdb = _commands.fetch_raw()
     commands_list = str()
+    localembed = None
+
     if search is not None:
         for _command in commandsdb:
             if (search in _command) and (commandsdb[_command]["type"] != "DevTools"):
-                commands_list += f"`/{_command}`\n"
+                commands_list += f"`/{_command}` "
         if commands_list == "":
             commands_list = "*No commands were found*"
+        localembed = discord.Embed(title="Isobot Command Help", description=f"**Bot Commands:**\n{commands_list}", color=color)
+        localembed.set_footer(text=f"Search results for \"{search}\"")
     
     else:
+        economy_commands = str()
+        levelling_commands = str()
+        utility_commands = str()
+        fun_commands = str()
+        reddit_commands = str()
+        afk_commands = str()
+        automod_moderation_commands = str()
+        maths_commands = str()
+        other_commands = str()
         for _command in commandsdb:
+            command_type = commandsdb[_command]["type"]
             if commandsdb[_command]["type"] != "DevTools":
-                commands_list += f"`/{_command}`\n"
-    localembed = discord.Embed(title="Isobot Command Help", description=f"**Bot Commands:**\n{commands_list}", color=color)
-    if search is not None:
-        localembed.set_footer(text=f"Search results for \"{search}\"")
+                if command_type == "economy system" or command_type == "minigames": economy_commands += f"`/{_command}` "
+                elif command_type == "levelling": levelling_commands += f"`/{_command}` "
+                elif command_type == "general utilities": utility_commands += f"`/{_command}` "
+                elif command_type == "fun": fun_commands += f"`/{_command}` "
+                elif command_type == "reddit media": reddit_commands += f"`/{_command}` "
+                elif command_type == "AFK system": afk_commands += f"`/{_command}` "
+                elif command_type == "automod" or command_type == "moderation": automod_moderation_commands += f"`/{_command}` "
+                elif command_type == "maths": maths_commands += f"`/{_command}` "
+                else: other_commands += f"`/{_command}` "
+                
+        commands_list = f"**:money_with_wings: Economy System:**\n{economy_commands}\n\n**:arrow_up: Levelling System:**\n{levelling_commands}\n\n**:toolbox: Utilities:**\n{utility_commands}\n\n**:joy: Fun Commands:**\n{fun_commands}\n\n**:crescent_moon: AFK System**\n{afk_commands}\n\n**:tools: Moderation and Automod:**\n{automod_moderation_commands}\n\n**:1234: Maths Commands:**\n{maths_commands}\n\n**:frame_photo: Reddit Media Commands:**\n{reddit_commands}\n\n**:sparkles: Miscellaneous:**\n{other_commands}"
+        localembed = discord.Embed(title="Isobot Command Help", description=commands_list, color=color)
+        localembed.set_footer(text="Run \"/help info\" to get more information on a command.")
     await ctx.respond(embed=localembed)
 
 @help_cmds.command(
