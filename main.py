@@ -272,7 +272,7 @@ async def on_application_command_error(ctx: ApplicationContext, error: discord.D
             await ctx.respond(f"An uncaught error occured while running the command. (don't worry, developers will fix this soon)\n```\n{error}\n```")
 
 # Help Commands
-help_cmds = discord.commands.SlashCommandGroup("help", "Commands used for getting command help in the bot.")
+help_cmds = client.create_group("help", "Commands used for getting command help in the bot.")
 
 @help_cmds.command(
     name="list",
