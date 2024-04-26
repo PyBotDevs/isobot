@@ -295,6 +295,8 @@ async def help_list(ctx: ApplicationContext, search: str = None):
             if commandsdb[_command]["type"] != "DevTools":
                 commands_list += f"`/{_command}`\n"
     localembed = discord.Embed(title="Isobot Command Help", description=f"**Bot Commands:**\n{commands_list}", color=color)
+    if search is not None:
+        localembed.set_footer(text=f"Search results for \"{search}\"")
     await ctx.respond(embed=localembed)
 
 @help_cmds.command(
