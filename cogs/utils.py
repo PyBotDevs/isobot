@@ -345,7 +345,16 @@ class Utils(commands.Cog):
             inline=True
         )
         localembed.add_field(name="Total Number of Roles", value=f"{len(ctx.guild.roles)-1} roles")
-        localembed.add_field(name="Currently Active Threads", value=f"{len(await ctx.guild.active_threads())} threads")
+        threads = await ctx.guild.active_threads()
+        threads_display_list = str()
+        if len(threads) <= 4:  # Display threads if total threads count is under 5
+            for thread in threads:
+                threads_display_list += f"<#{thread.id}>, "
+            threads_display_list = threads_display_list.rstrip(", ")  # Removing the final "," from the string
+        localembed.add_field(
+            name="Currently Active Threads",
+            value=f"{len(await ctx.guild.active_threads())} threads {f'({threads_display_list})' if threads_display_list != '' else ''}"
+        )
         localembed.add_field(
             name="Active Invite Links",
             value=f"{len(await ctx.guild.invites())} links {'(invites disabled)' if ctx.guild.invites_disabled else ''}"
