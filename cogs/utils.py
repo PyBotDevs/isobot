@@ -318,6 +318,46 @@ class Utils(commands.Cog):
         await new_channel.send(f"Channel nuked by **{ctx.author.name}**!")
         await ctx.respond(embed=localembed, ephemeral=True)
 
+    @commands.slash_command(
+        name="serverinfo",
+        description="Get detailed information about the server."
+    )
+    @commands.guild_only()
+    async def serverinfo(self, ctx: ApplicationContext):
+        """Get detailed information about the server."""
+        localembed = discord.Embed(
+            title=f"Server info on **{ctx.guild.name}**",
+            description=f"*{ctx.guild.description}*" if ctx.guild.description is not None else '',
+            color=discord.Color.random()
+        )
+        localembed.set_thumbnail(url=ctx.guild.icon)
+        localembed.set_footer(text=f"Server ID: {ctx.guild.id}")
+        if ctx.guild.banner is not None:
+            localembed.set_image(url=ctx.guild.banner)
+        
+        # Server Info Fields
+        localembed.add_field(name="Server Created On", value=ctx.guild.created_at.strftime("%b %d, %Y, %T"))
+        localembed.add_field(name="Member Count", value=f"{ctx.guild.member_count} members")
+        localembed.add_field(name="Server Owner", value=f"<@!{ctx.guild.owner_id}>")
+        localembed.add_field(
+            name="Total Number of Channels",
+            value=f"{len(ctx.guild.channels)-len(ctx.guild.categories)} channels\n({len(ctx.guild.text_channels)} Text | {len(ctx.guild.voice_channels)} Voice | {len(ctx.guild.forum_channels)} Forums)",
+            inline=True
+        )
+        localembed.add_field(name="Total Number of Roles", value=f"{len(ctx.guild.roles)-1} roles")
+        localembed.add_field(name="Currently Active Threads", value=f"{len(await ctx.guild.active_threads())} threads")
+        localembed.add_field(
+            name="Active Invite Links",
+            value=f"{len(await ctx.guild.invites())} links {'(invites disabled)' if ctx.guild.invites_disabled else ''}"
+        )
+        localembed.add_field(name="Server Verification Level", value=ctx.guild.verification_level, inline=True)
+        localembed.add_field(
+            name="Custom Expressions (emojis/stickers)",
+            value=f"{len(await ctx.guild.fetch_emojis())} emojis | {len(await ctx.guild.fetch_stickers())} stickers"
+        )
+        
+        await ctx.respond(embed=localembed)
+
     commandmanager = SlashCommandGroup("commandmanager", "Manage isobot's command registry.")
 
     @commandmanager.command(
