@@ -838,5 +838,15 @@
     "usable_by": "server admins",
     "disabled": false,
     "bugged": false
-    }
+  },
+  "serverinfo": {
+    "name": "Server Info",
+    "description": "Get detailed information about the server.",
+    "type": "general utilities",
+    "cooldown": null,
+    "args": null,
+    "usable_by": "everyone",
+    "disabled": false,
+    "bugged": false
+  }
 }
