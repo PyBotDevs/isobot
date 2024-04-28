@@ -364,7 +364,6 @@ class Utils(commands.Cog):
             name="Custom Expressions (emojis/stickers)",
             value=f"{len(await ctx.guild.fetch_emojis())} emojis | {len(await ctx.guild.fetch_stickers())} stickers"
         )
-        
         await ctx.respond(embed=localembed)
 
     commandmanager = SlashCommandGroup("commandmanager", "Manage isobot's command registry.")
