@@ -263,7 +263,11 @@ async def on_message(ctx):
             levelling.add_levels(ctx.author.id, 1)
             if settings.fetch_setting(ctx.author.id, "levelup_messages") is True:
                 try:
-                    await ctx.author.send(f"{ctx.author.mention}, you just ranked up to **level {levelling.get_level(ctx.author.id)}**. Nice!\n\n{':bulb: Tip: This is your global message level and is the same across all servers. If you want to disable DMs for levelling up, run `/settings levelup_messages enabled: False`' if levelling.get_level(ctx.author.id) == 1 else ''}")
+                    if serverconfig.fetch_levelup_override_channel(ctx.guild.id) is None:
+                        await ctx.author.send(f"{ctx.author.mention}, you just ranked up to **level {levelling.get_level(ctx.author.id)}**. Nice!\n\n{':bulb: Tip: This is your global message level and is the same across all servers. If you want to disable DMs for levelling up, run `/settings levelup_messages enabled: False`' if levelling.get_level(ctx.author.id) == 1 else ''}")
+                    else:
+                        channel = await client.get_channel(int(serverconfig.fetch_levelup_override_channel(ctx.guild.id)))
+                        await channel.send(f"{ctx.author.mention}, you just ranked up to **level {levelling.get_level(ctx.author.id)}**. Nice!\n\n{':bulb: Tip: This is your global message level and is the same across all servers. If you want to disable messages for levelling up, run `/settings levelup_messages enabled: False`' if levelling.get_level(ctx.author.id) == 1 else ''}")
                 except discord.errors.Forbidden:
                     # Error is raised when the user isnt accepting DMs (or has blocked isobot)
                     # In that case isobot will automatically stop sending levelup messages to them

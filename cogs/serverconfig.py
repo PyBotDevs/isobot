@@ -39,6 +39,31 @@ class ServerConfig(commands.Cog):
                 color=discord.Color.green()
             )
         await ctx.respond(embed=localembed)
+    
+    @serverconfig_cmds.command(
+        name="levelup_override_channel",
+        description="Set a server channel to send level-up messages to, instead of DMs."
+    )
+    @option(name="channel", description="The channel in which you want level-up messages to be sent.", type=discord.TextChannel, default=None)
+    async def autorole(self, ctx: ApplicationContext, channel: discord.TextChannel = None):
+        """Set a role to provide to all newly-joined members of the server."""
+        if not ctx.author.guild_permissions.manage_guild:
+            return await ctx.respond("You can't use this command! You need the `Manage Server` permission to run this.", ephemeral=True)
+        if channel != None:
+            serverconf.set_levelup_override_channel(ctx.guild.id, channel.id)
+            localembed = discord.Embed(
+                title=f":white_check_mark: Level-up Override Channel successfully set for **{ctx.guild.name}**!",
+                description=f"From now onwards, all new level-up messages for members in this server will be sent to {channel.mention}, instead of user DMs.",
+                color=discord.Color.green()
+            )
+        else:
+            serverconf.set_levelup_override_channel(ctx.guild.id, None)
+            localembed = discord.Embed(
+                title=f":white_check_mark: Level-up Override Channel successfully disabled for **{ctx.guild.name}**",
+                description="All new level-up messages will be sent to user DMs.",
+                color=discord.Color.green()
+            )
+        await ctx.respond(embed=localembed)
 
 def setup(bot):
     bot.add_cog(ServerConfig(bot))
