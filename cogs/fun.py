@@ -71,6 +71,18 @@ class Fun(commands.Cog):
         text = text.replace("u", "x")
         text = text.replace("t", "7")
         await ctx.respond(text)
+    
+    @commands.slash_command(
+        name="randomnumber",
+        description="Choose a random number from x to y."
+    )
+    @option(name="x", description="The minimum limit of the random number.", type=int)
+    @option(name="y", description="The maximum limit of the random number.", type=int)
+    async def randomnumber(self, ctx: ApplicationContext, x: int, y: int):
+        """Choose a random number from x to y."""
+        if x > y:
+            return await ctx.respond(":x: Your minimum limit needs to be lower than the maximum limit!", ephemeral=True)
+        await ctx.respond(f"Your random number is `{random.randint(x, y)}`\n\nMinimum limit: `{x}`\nMaximum limit: `{y}`")
 
 # Initialization
 def setup(bot): bot.add_cog(Fun(bot))
