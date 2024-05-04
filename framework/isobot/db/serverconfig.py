@@ -32,7 +32,8 @@ class ServerConfig:
                 "goodbye_message": {
                     "channel": None,
                     "message": None
-                }
+                },
+                "level_up_override_channel": None
             }
             self.save(serverconf)
         return 0
@@ -43,7 +44,7 @@ class ServerConfig:
         return serverconf[str(server_id)]
     
     def fetch_autorole(self, server_id: int) -> str:
-        """Fetch the specified autorole for the server. Returns `None` if not set."""
+        """Fetches the specified autorole for the server. Returns `None` if not set."""
         return self.fetch_raw(server_id)["autorole"]
     
     def fetch_welcome_message(self, server_id: int) -> dict:
@@ -53,6 +54,10 @@ class ServerConfig:
     def fetch_goodbye_message(self, server_id: int) -> dict:
         """Fetches the goodbye message and set channel for the server as `dict`.\n\nReturns `None` for `channel` and `message` values if not set."""
         return self.fetch_raw(server_id)["goodbye_message"]
+    
+    def fetch_levelup_override_channel(self, server_id: int) -> str:
+        """Fetches the level-up override channel for the specified guild. Returns `None` if not set."""
+        return self.fetch_raw(server_id)["level_up_override_channel"]
 
     def set_autorole(self, server_id: int, role_id: int) -> int:
         """Sets a role id to use as autorole for the specified guild. Returns `0` if successful."""
@@ -72,4 +77,10 @@ class ServerConfig:
         serverconf = self.load()
         serverconf[str(server_id)]["goodbye_message"]["channel"] = channel_id
         serverconf[str(server_id)]["goodbye_message"]["message"] = message
+        self.save(serverconf)
+    
+    def set_levelup_override_channel(self, server_id: int, channel_id: int) -> int:
+        """Sets a level-up override channel id for the specified guild. Returns `0` if successful."""
+        serverconf = self.load()
+        serverconf[str(server_id)]["level_up_override_channel"] = channel_id
         self.save(serverconf)
