@@ -13,7 +13,7 @@ from math import floor
 from random import randint
 from framework.isobot import currency, colors, settings, commands as _commands
 from framework.isobot.shop import ShopData
-from framework.isobot.db import levelling, items, userdata, automod, weather, warnings, presence as _presence
+from framework.isobot.db import levelling, items, userdata, automod, weather, warnings, presence as _presence, serverconfig
 from discord import ApplicationContext, option
 from discord.ext import commands
 from cogs.isocoin import create_isocoin_key
@@ -21,6 +21,7 @@ from cogs.isocoin import create_isocoin_key
 # Variables
 intents = discord.Intents.default()
 intents.message_content = True
+intents.members = True
 client = discord.Bot(intents=intents)
 color = discord.Color.random()
 start_time = ""
@@ -46,6 +47,7 @@ def initial_setup():
             "isocard",
             "items",
             "levels",
+            "serverconfig",
             "warnings",
             "presence",
             "user_data",
@@ -113,6 +115,7 @@ currency = currency.CurrencyAPI("database/currency.json", "logs/currency.log")
 settings = settings.Configurator()
 levelling = levelling.Levelling()
 items = items.Items()
+serverconfig = serverconfig.ServerConfig()
 warningsdb = warnings.Warnings()
 userdata = userdata.UserData()
 automod = automod.Automod()
@@ -163,6 +166,15 @@ __________________________________________________""")
     time.sleep(5)
 
 @client.event
+async def on_member_join(ctx):
+    """This event is fired whenever a new member joins a server."""
+    # Automatically assigning roles to new members (autorole)
+    autorole = serverconfig.fetch_autorole(ctx.guild.id)
+    if autorole is not None:
+        role = discord.Guild.get_role(ctx.guild, int(autorole))
+        await ctx.add_roles(role, reason="Role assigned due to autoroles.")
+
+@client.event
 async def on_message(ctx):
     """This event is fired whenever a message is sent (in a readable channel)."""
     runtimeconf = api.auth.get_runtime_options()
@@ -198,6 +210,7 @@ async def on_message(ctx):
         levelling.generate(ctx.author.id)
         try:
             automod.generate(ctx.guild.id)
+            serverconfig.generate(ctx.guild.id)
             warningsdb.generate(ctx.guild.id, ctx.author.id)
         except AttributeError: pass
 
@@ -508,6 +521,7 @@ active_cogs = [
     "moderation",
     "minigames",
     "automod",
+    "serverconfig",
     "isobank",
     "levelling",
     "fun",
