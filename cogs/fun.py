@@ -84,5 +84,35 @@ class Fun(commands.Cog):
             return await ctx.respond(":x: Your minimum limit needs to be lower than the maximum limit!", ephemeral=True)
         await ctx.respond(f"Your random number is `{random.randint(x, y)}`\n\nMinimum limit: `{x}`\nMaximum limit: `{y}`")
 
+    @commands.slash_command(
+        name="howgay",
+        description="See the gay percentage of a person!"
+    )
+    @option(name="user", description="The person who you want to gayrate", type=discord.User, default=None)
+    async def howgay(self, ctx: ApplicationContext, user: discord.User = None):
+        """See the gay percentage of a person!"""
+        if user == None:
+            user = ctx.author
+        rating = random.randint(0, 100)
+        response = str()
+        if rating == 0:
+            response = "You are straighter than your bedroom walls!"
+        elif rating <= 30:
+            response = "You are the average person in society"
+        elif rating <= 60:
+            response = "You're pretty gay tbh"
+        elif rating <= 90:
+            response = "You're really gay!"
+        elif rating <= 99:
+            response = "You are **extremely gay**!! No cap"
+        elif rating == 100:
+            response = "You are ***SUPER*** gay!!! You're so gay you make gay people look straight"
+        localembed = discord.Embed(
+            title=f":rainbow_flag: {user.display_name}'s gay rating",
+            description=f"{user.display_name} is **{rating}%** gay! {response}",
+            color=discord.Color.random()
+        )
+        await ctx.respond(embed=localembed)
+
 # Initialization
 def setup(bot): bot.add_cog(Fun(bot))
