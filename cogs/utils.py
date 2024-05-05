@@ -100,6 +100,7 @@ class Utils(commands.Cog):
         name='whoami',
         description='Shows information on a user.'
     )
+    @commands.guild_only()
     @option(name="user", description="Who do you want to know about?", type=discord.User, default=None)
     async def whoami(self, ctx: ApplicationContext, user: discord.User=None):
         """Shows information on a user."""
@@ -301,6 +302,7 @@ class Utils(commands.Cog):
         name="nuke",
         description="Completely wipes a text channel in the server."
     )
+    @commands.guild_only()
     @option(name="channel", description="The channel you want to nuke.", type=discord.TextChannel)
     async def nuke(self, ctx: ApplicationContext, channel: discord.TextChannel):
         """Completely wipes a text channel in the server."""
