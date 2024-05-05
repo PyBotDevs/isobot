@@ -848,5 +848,75 @@
     "usable_by": "everyone",
     "disabled": false,
     "bugged": false
+  },
+  "howgay": {
+    "name": "Gay Rating",
+    "description": "See the gay percentage of a person!",
+    "type": "fun",
+    "cooldown": null,
+    "args": null,
+    "usable_by": "everyone",
+    "disabled": false,
+    "bugged": false
+  },
+  "serverconfig autorole": {
+    "name": "ServerConfig Autorole",
+    "description": "Set a role to provide to all newly-joined members of the server.",
+    "type": "serverconfig",
+    "cooldown": null,
+    "args": ["role (leave blank to disable)"],
+    "usable_by": "moderators with `manage guild` permissions",
+    "disabled": false,
+    "bugged": false
+  },
+  "serverconfig levelup_override_channel": {
+    "name": "ServerConfig Level-up Override Channel",
+    "description": "Set a server channel to send level-up messages to, instead of DMs.",
+    "type": "serverconfig",
+    "cooldown": null,
+    "args": ["channel (leave blank to disable)"],
+    "usable_by": "moderators with `manage guild` permissions",
+    "disabled": false,
+    "bugged": false
+  },
+  "serverconfig enable_verification": {
+    "name": "ServerConfig Enable Verification",
+    "description": "Enable new member verification for this server.",
+    "type": "serverconfig",
+    "cooldown": null,
+    "args": ["verified_role"],
+    "usable_by": "server admins",
+    "disabled": false,
+    "bugged": false
+  },
+  "serverconfig disable_verification": {
+    "name": "ServerConfig Disable Verification",
+    "description": "Disable new member verification for this server.",
+    "type": "serverconfig",
+    "cooldown": null,
+    "args": null,
+    "usable_by": "server admins",
+    "disabled": false,
+    "bugged": false
+  },
+  "start_verification": {
+    "name": "Start Verification",
+    "description": "Start your verification process in the server. (SERVER-ONLY)",
+    "type": "general utilities",
+    "cooldown": null,
+    "args": null,
+    "usable_by": "everyone",
+    "disabled": false,
+    "bugged": false
+  },
+  "verify": {
+    "name": "Verify",
+    "description": "Enter your one-time verification code to verify membership in a server. (DM-ONLY)",
+    "type": "general utilities",
+    "cooldown": null,
+    "args": null,
+    "usable_by": "everyone (in DMs)",
+    "disabled": false,
+    "bugged": false
   }
 }
