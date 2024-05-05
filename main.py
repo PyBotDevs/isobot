@@ -48,6 +48,7 @@ def initial_setup():
             "items",
             "levels",
             "serverconfig",
+            "serververification",
             "warnings",
             "presence",
             "user_data",
@@ -285,6 +286,7 @@ async def on_application_command_error(ctx: ApplicationContext, error: discord.D
         elif isinstance(error, commands.BotMissingPermissions): await ctx.respond(":x: I don\'t have the required permissions to use this.\nIf you think this is a mistake, please go to server settings and fix isobot's role permissions.")
         elif isinstance(error, commands.BadBoolArgument): await ctx.respond(":x: Invalid true/false argument.", ephemeral=True)
         elif isinstance(error, commands.NoPrivateMessage): await ctx.respond(":x: You can only use this command in a server!", ephemeral=True)
+        elif isinstance(error, commands.PrivateMessageOnly): await ctx.respond(":x: You can only use this command in isobot's DMs!", ephemeral=True)
         else:
             logger.error(f"Command failure: An uncaught error occured while running the command.\n   >>> {error}", module="main/Client")
             await ctx.respond(f"An uncaught error occured while running the command. (don't worry, developers will fix this soon)\n```\n{error}\n```")
