@@ -25,6 +25,7 @@ class ServerConfig(commands.Cog):
         name="autorole",
         description="Set a role to provide to all newly-joined members of the server."
     )
+    @commands.guild_only()
     @option(name="role", description="The role that you want to automatically give to all new members.", type=discord.Role, default=None)
     async def autorole(self, ctx: ApplicationContext, role: discord.Role = None):
         """Set a role to provide to all newly-joined members of the server."""
@@ -50,6 +51,7 @@ class ServerConfig(commands.Cog):
         name="levelup_override_channel",
         description="Set a server channel to send level-up messages to, instead of DMs."
     )
+    @commands.guild_only()
     @option(name="channel", description="The channel in which you want level-up messages to be sent.", type=discord.TextChannel, default=None)
     async def autorole(self, ctx: ApplicationContext, channel: discord.TextChannel = None):
         """Set a role to provide to all newly-joined members of the server."""
@@ -76,6 +78,7 @@ class ServerConfig(commands.Cog):
         name="enable_verification",
         description="Enable new member verification for this server."
     )
+    @commands.guild_only()
     @option(name="verified_role", description="The role to provide to all verified members.", type=discord.Role)
     async def enable_verification(self, ctx: ApplicationContext, verified_role: discord.Role):
         """Enable new user verification for this server."""
@@ -93,6 +96,7 @@ class ServerConfig(commands.Cog):
         name="disable_verification",
         description="Disable new member verification for this server."
     )
+    @commands.guild_only()
     async def disable_verification(self, ctx: ApplicationContext):
         """Disable new member verification for this server."""
         if not ctx.author.guild_permissions.administrator:

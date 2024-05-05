@@ -17,6 +17,7 @@ class Moderation(commands.Cog):
         name='kick', 
         description='Kicks a member from this server.'
     )
+    @commands.guild_only()
     @option(name="user", description="Who do you want to kick?", type=discord.User)
     @option(name="reason", description="Why do you want to kick the user?", type=str, default=None)
     @commands.cooldown(1, 3, commands.BucketType.user)
@@ -31,6 +32,7 @@ class Moderation(commands.Cog):
         name='ban', 
         description='Bans a member from this server.'
     )
+    @commands.guild_only()
     @option(name="user", description="Who do you want to ban?", type=discord.User)
     @option(name="reason", description="Why you want to ban the user?", type=str, default=None)
     @commands.cooldown(1, 3, commands.BucketType.user)
@@ -47,6 +49,7 @@ class Moderation(commands.Cog):
         name="warn",
         description="Warns the specified user, with a specific reason."
     )
+    @commands.guild_only()
     @option(name="user", description="Who do you want to warn?", type=discord.Member)
     @option(name="reason", description="The reason why you are warning the user", type=str)
     async def warn(self, ctx: ApplicationContext, user: discord.Member, reason: str):
@@ -74,6 +77,7 @@ class Moderation(commands.Cog):
         name="clear_all_warnings",
         description="Clears all the warnings from the specified user."
     )
+    @commands.guild_only()
     @option(name="user", description="The user whose warnings you want to clear.", type=discord.Member)
     async def clear_all_warning(self, ctx: ApplicationContext, user: discord.Member):
         """Clears all the warnings from the specified user."""
@@ -94,6 +98,7 @@ class Moderation(commands.Cog):
         name="show_warnings",
         description="See all the server warnings for a specific user."
     )
+    @commands.guild_only()
     @option(name="user", description="The user whose warnings you want to view.", type=discord.Member, default=None)
     async def show_warnings(self, ctx: ApplicationContext, user: discord.Member = None):
         """See all the server warnings for a specific user."""
