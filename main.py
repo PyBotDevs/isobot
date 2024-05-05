@@ -48,6 +48,7 @@ def initial_setup():
             "items",
             "levels",
             "serverconfig",
+            "serververification",
             "warnings",
             "presence",
             "user_data",
@@ -285,6 +286,7 @@ async def on_application_command_error(ctx: ApplicationContext, error: discord.D
         elif isinstance(error, commands.BotMissingPermissions): await ctx.respond(":x: I don\'t have the required permissions to use this.\nIf you think this is a mistake, please go to server settings and fix isobot's role permissions.")
         elif isinstance(error, commands.BadBoolArgument): await ctx.respond(":x: Invalid true/false argument.", ephemeral=True)
         elif isinstance(error, commands.NoPrivateMessage): await ctx.respond(":x: You can only use this command in a server!", ephemeral=True)
+        elif isinstance(error, commands.PrivateMessageOnly): await ctx.respond(":x: You can only use this command in isobot's DMs!", ephemeral=True)
         else:
             logger.error(f"Command failure: An uncaught error occured while running the command.\n   >>> {error}", module="main/Client")
             await ctx.respond(f"An uncaught error occured while running the command. (don't worry, developers will fix this soon)\n```\n{error}\n```")
@@ -320,6 +322,7 @@ async def help_list(ctx: ApplicationContext, search: str = None):
         reddit_commands = str()
         afk_commands = str()
         automod_moderation_commands = str()
+        serverconfig_commands = str()
         maths_commands = str()
         other_commands = str()
         for _command in commandsdb:
@@ -332,10 +335,11 @@ async def help_list(ctx: ApplicationContext, search: str = None):
                 elif command_type == "reddit media": reddit_commands += f"`/{_command}` "
                 elif command_type == "AFK system": afk_commands += f"`/{_command}` "
                 elif command_type == "automod" or command_type == "moderation": automod_moderation_commands += f"`/{_command}` "
+                elif command_type == "serverconfig": serverconfig_commands += f"`/{_command}` "
                 elif command_type == "maths": maths_commands += f"`/{_command}` "
                 else: other_commands += f"`/{_command}` "
                 
-        commands_list = f"**:money_with_wings: Economy System:**\n{economy_commands}\n\n**:arrow_up: Levelling System:**\n{levelling_commands}\n\n**:toolbox: Utilities:**\n{utility_commands}\n\n**:joy: Fun Commands:**\n{fun_commands}\n\n**:crescent_moon: AFK System**\n{afk_commands}\n\n**:tools: Moderation and Automod:**\n{automod_moderation_commands}\n\n**:1234: Maths Commands:**\n{maths_commands}\n\n**:frame_photo: Reddit Media Commands:**\n{reddit_commands}\n\n**:sparkles: Miscellaneous:**\n{other_commands}"
+        commands_list = f"**:money_with_wings: Economy System:**\n{economy_commands}\n\n**:arrow_up: Levelling System:**\n{levelling_commands}\n\n**:toolbox: Utilities:**\n{utility_commands}\n\n**:joy: Fun Commands:**\n{fun_commands}\n\n**:crescent_moon: AFK System**\n{afk_commands}\n\n**:tools: Moderation and Automod:**\n{automod_moderation_commands}\n\n**:gear: Server Configuration:**\n{serverconfig_commands}\n\n**:1234: Maths Commands:**\n{maths_commands}\n\n**:frame_photo: Reddit Media Commands:**\n{reddit_commands}\n\n**:sparkles: Miscellaneous:**\n{other_commands}"
         localembed = discord.Embed(title="Isobot Command Help", description=commands_list, color=color)
         localembed.set_footer(text="Run \"/help info\" to get more information on a command.")
     await ctx.respond(embed=localembed)

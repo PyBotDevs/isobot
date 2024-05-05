@@ -33,7 +33,8 @@ class ServerConfig:
                     "channel": None,
                     "message": None
                 },
-                "level_up_override_channel": None
+                "level_up_override_channel": None,
+                "verification_role": None
             }
             self.save(serverconf)
         return 0
@@ -58,6 +59,10 @@ class ServerConfig:
     def fetch_levelup_override_channel(self, server_id: int) -> str:
         """Fetches the level-up override channel for the specified guild. Returns `None` if not set."""
         return self.fetch_raw(server_id)["level_up_override_channel"]
+    
+    def fetch_verification_role(self, server_id: int) -> str:
+        """Fetches the verified member role for the specified guild. Returns `None` if server verification system is disabled."""
+        return self.fetch_raw(server_id)["verification_role"]
 
     def set_autorole(self, server_id: int, role_id: int) -> int:
         """Sets a role id to use as autorole for the specified guild. Returns `0` if successful."""
@@ -83,4 +88,10 @@ class ServerConfig:
         """Sets a level-up override channel id for the specified guild. Returns `0` if successful."""
         serverconf = self.load()
         serverconf[str(server_id)]["level_up_override_channel"] = channel_id
+        self.save(serverconf)
+    
+    def set_verification_role(self, server_id: int, role_id: int) -> int:
+        """Sets a verified member role id for the specified guild for the specified guild, and enables server member verification. Returns `0` if successful."""
+        serverconf = self.load()
+        serverconf[str(server_id)]["verification_role"] = role_id
         self.save(serverconf)
