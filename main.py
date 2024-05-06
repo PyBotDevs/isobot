@@ -175,6 +175,39 @@ async def on_member_join(ctx):
         role = discord.Guild.get_role(ctx.guild, int(autorole))
         await ctx.add_roles(role, reason="Role assigned due to autoroles.")
 
+    # Welcome Message Autoresponder
+    welcome_message = serverconfig.fetch_welcome_message(ctx.guild.id)
+    if welcome_message["message"] is not None:
+        welcome_message_autoresponder_channel = client.get_channel(welcome_message["channel"])
+
+        # Perform attribute formatting for welcome message
+        welcome_message_formatted = welcome_message["message"]
+        welcome_message_formatted = welcome_message_formatted.replace("[user.nickname]", str(ctx.author.display_name))
+        welcome_message_formatted = welcome_message_formatted.replace("[user.username]", str(ctx.author.name))
+        welcome_message_formatted = welcome_message_formatted.replace("[user.mention]", str(ctx.author.mention))
+        welcome_message_formatted = welcome_message_formatted.replace("[server.name]", str(ctx.guild.name))
+        welcome_message_formatted = welcome_message_formatted.replace("[server.membercount]", str(ctx.guild.member_count))
+
+        await welcome_message_autoresponder_channel.send(welcome_message_formatted)
+
+@client.event
+async def on_member_leave(ctx):
+    """This event is fired whenever a member leaves a server."""
+    # Goodbye Message Autoresponder
+    goodbye_message = serverconfig.fetch_goodbye_message(ctx.guild.id)
+    if goodbye_message["message"] is not None:
+        goodbye_message_autoresponder_channel = client.get_channel(goodbye_message["channel"])
+
+        # Perform attribute formatting for goodbye message
+        goodbye_message_formatted = goodbye_message["message"]
+        goodbye_message_formatted = goodbye_message_formatted.replace("[user.nickname]", str(ctx.author.display_name))
+        goodbye_message_formatted = goodbye_message_formatted.replace("[user.username]", str(ctx.author.name))
+        goodbye_message_formatted = goodbye_message_formatted.replace("[user.mention]", str(ctx.author.mention))
+        goodbye_message_formatted = goodbye_message_formatted.replace("[server.name]", str(ctx.guild.name))
+        goodbye_message_formatted = goodbye_message_formatted.replace("[server.membercount]", str(ctx.guild.member_count))
+
+        await goodbye_message_autoresponder_channel.send(goodbye_message_formatted)
+
 @client.event
 async def on_message(ctx):
     """This event is fired whenever a message is sent (in a readable channel)."""

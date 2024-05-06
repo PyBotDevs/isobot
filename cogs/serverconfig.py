@@ -73,6 +73,104 @@ class ServerConfig(commands.Cog):
             )
         await ctx.respond(embed=localembed)
 
+    @serverconfig_cmds.command(
+        name="enable_welcome_message",
+        description="Automatically send a welcome message to a specified channel in the server, when a member joins."
+    )
+    @option(name="channel", description="The channel in which you want to send the welcome message.", type=discord.TextChannel)
+    @option(name="message", description="Formatting: [user.nickname], [user.username], [user.mention], [server.name], [server.membercount]", type=str)
+    async def enable_welcome_message(self, ctx: ApplicationContext, channel: discord.TextChannel, message: str):
+        """Automatically send a welcome message to a specified channel in the server, when a member joins."""
+        if not ctx.author.guild_permissions.manage_guild:
+            return await ctx.respond("You can't use this command! You need the `Manage Server` permission to run this.", ephemeral=True)
+        serverconf.set_welcome_message(ctx.guild.id, channel.id, message)
+
+        # Test Welcome Message
+        welcome_message = serverconf.fetch_welcome_message(ctx.guild.id)
+        if welcome_message["message"] is not None:
+            welcome_message_autoresponder_channel = discord.Guild.get_channel(ctx.guild, welcome_message["channel"])
+
+            # Perform attribute formatting for welcome message
+            welcome_message_formatted = welcome_message["message"]
+            welcome_message_formatted = welcome_message_formatted.replace("[user.nickname]", str(ctx.author.display_name))
+            welcome_message_formatted = welcome_message_formatted.replace("[user.username]", str(ctx.author.name))
+            welcome_message_formatted = welcome_message_formatted.replace("[user.mention]", str(ctx.author.mention))
+            welcome_message_formatted = welcome_message_formatted.replace("[server.name]", str(ctx.guild.name))
+            welcome_message_formatted = welcome_message_formatted.replace("[server.membercount]", str(ctx.guild.member_count))
+            await welcome_message_autoresponder_channel.send(welcome_message_formatted)
+        
+        localembed = discord.Embed(
+            title=f":white_check_mark: Server Welcome Message Autoresponder has been successfully set for **{ctx.guild.name}**!",
+            description=f"From now onwards, all new members who join this server will be sent a welcome message in {channel.mention}\n\nA test message has been sent to the channel for reference.",
+            color=discord.Color.green()
+        )
+        await ctx.respond(embed=localembed)
+    
+    @serverconfig_cmds.command(
+        name="disable_welcome_message",
+        description="Disables welcome message autoresponder for this server."
+    )
+    async def disable_welcome_message(self, ctx: ApplicationContext):
+        """Disables welcome message autoresponder for this server."""
+        if not ctx.author.guild_permissions.manage_guild:
+            return await ctx.respond("You can't use this command! You need the `Manage Server` permission to run this.", ephemeral=True)
+        serverconf.set_welcome_message(ctx.guild.id, None, None)
+        localembed = discord.Embed(
+            title=f":white_check_mark: Server Welcome Message Autoresponder successfully disabled for **{ctx.guild.name}**.",
+            description="From now onwards, no new welcome messages will be sent in the server for newly-joined members.",
+            color=discord.Color.green()
+        )
+        await ctx.respond(embed=localembed)
+
+    @serverconfig_cmds.command(
+        name="enable_goodbye_message",
+        description="Automatically send a goodbye message to a specified channel in the server, when a member leaves."
+    )
+    @option(name="channel", description="The channel in which you want to send the goodbye message.", type=discord.TextChannel)
+    @option(name="message", description="Formatting: [user.nickname], [user.username], [user.mention], [server.name], [server.membercount]", type=str)
+    async def enable_goodbye_message(self, ctx: ApplicationContext, channel: discord.TextChannel, message: str):
+        """Automatically send a goodbye message to a specified channel in the server, when a member leaves."""
+        if not ctx.author.guild_permissions.manage_guild:
+            return await ctx.respond("You can't use this command! You need the `Manage Server` permission to run this.", ephemeral=True)
+        serverconf.set_goodbye_message(ctx.guild.id, channel.id, message)
+
+        # Test Goodbye Message
+        goodbye_message = serverconf.fetch_goodbye_message(ctx.guild.id)
+        if goodbye_message["message"] is not None:
+            goodbye_message_autoresponder_channel = discord.Guild.get_channel(ctx.guild, goodbye_message["channel"])
+
+            # Perform attribute formatting for goodbye message
+            goodbye_message_formatted = goodbye_message["message"]
+            goodbye_message_formatted = goodbye_message_formatted.replace("[user.nickname]", str(ctx.author.display_name))
+            goodbye_message_formatted = goodbye_message_formatted.replace("[user.username]", str(ctx.author.name))
+            goodbye_message_formatted = goodbye_message_formatted.replace("[user.mention]", str(ctx.author.mention))
+            goodbye_message_formatted = goodbye_message_formatted.replace("[server.name]", str(ctx.guild.name))
+            goodbye_message_formatted = goodbye_message_formatted.replace("[server.membercount]", str(ctx.guild.member_count))
+            await goodbye_message_autoresponder_channel.send(goodbye_message_formatted)
+        
+        localembed = discord.Embed(
+            title=f":white_check_mark: Server Goodbye Message Autoresponder has been successfully set for **{ctx.guild.name}**!",
+            description=f"From now onwards, a goodbye message will be sent in {channel.mention} for all members who leave this server.\n\nA test message has been sent to the channel for reference.",
+            color=discord.Color.green()
+        )
+        await ctx.respond(embed=localembed)
+    
+    @serverconfig_cmds.command(
+        name="disable_goodbye_message",
+        description="Disables goodbye message autoresponder for this server."
+    )
+    async def disable_goodbye_message(self, ctx: ApplicationContext):
+        """Disables goodbye message autoresponder for this server."""
+        if not ctx.author.guild_permissions.manage_guild:
+            return await ctx.respond("You can't use this command! You need the `Manage Server` permission to run this.", ephemeral=True)
+        serverconf.set_goodbye_message(ctx.guild.id, None, None)
+        localembed = discord.Embed(
+            title=f":white_check_mark: Server Goodbye Message Autoresponder successfully disabled for **{ctx.guild.name}**.",
+            description="From now onwards, no new goodbye messages will be sent in the server for members who leave.",
+            color=discord.Color.green()
+        )
+        await ctx.respond(embed=localembed)
+
     # Server Member Verification System
     @serverconfig_cmds.command(
         name="enable_verification",
