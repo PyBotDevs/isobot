@@ -82,7 +82,6 @@ class Levelling(commands.Cog):
                     if levels_dict[i] != 0:
                         user_context = await ctx.bot.fetch_user(i)
                         if not user_context.bot and levels_dict[i] != 0:
-                            print(i, levels_dict[i])
                             if y == 1: yf = ":first_place:"
                             elif y == 2: yf = ":second_place:"
                             elif y == 3: yf = ":third_place:"
