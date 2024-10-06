@@ -36,7 +36,7 @@ class ServerConfig:
                 "level_up_override_channel": None,
                 "verification_role": None,
                 "autoresponder": [
-                    
+
                 ]
             }
             self.save(serverconf)
@@ -47,6 +47,7 @@ class ServerConfig:
         serverconf = self.load()
         return serverconf[str(server_id)]
     
+    # Fetch Functions
     def fetch_autorole(self, server_id: int) -> str:
         """Fetches the specified autorole for the server. Returns `None` if not set."""
         return self.fetch_raw(server_id)["autorole"]
@@ -67,6 +68,7 @@ class ServerConfig:
         """Fetches the verified member role for the specified guild. Returns `None` if server verification system is disabled."""
         return self.fetch_raw(server_id)["verification_role"]
 
+    # Set Functions
     def set_autorole(self, server_id: int, role_id: int) -> int:
         """Sets a role id to use as autorole for the specified guild. Returns `0` if successful."""
         serverconf = self.load()
