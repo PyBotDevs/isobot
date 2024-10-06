@@ -34,7 +34,10 @@ class ServerConfig:
                     "message": None
                 },
                 "level_up_override_channel": None,
-                "verification_role": None
+                "verification_role": None,
+                "autoresponder": [
+                    
+                ]
             }
             self.save(serverconf)
         return 0
