@@ -332,6 +332,56 @@ class ServerConfig(commands.Cog):
             color=discord.Color.green()
         )
         await ctx.respond(embed=localembed)
+    
+    @commands.slash_command(
+        name="autoresponder_list",
+        description="View a list of all the autoresponders in the server, or info on a specific autoresponder."
+    )
+    @option(name="autoresponder_name", description="Which autoresponder do you want to view information about?", type=str, default=None)
+    async def autoresponder_list(self, ctx: ApplicationContext, autoresponder_name: str = None):
+        """View a list of all the autoresponders in the server, or view specific information on an autoresponder."""
+        if not ctx.author.guild_permissions.manage_messages:
+            return await ctx.respond("You can't use this command! You need the `Manage Messages` permission to run this.", ephemeral=True)
+
+        # For List of All Autoresponders
+        if autoresponder_name == None:
+            autoresponders_list = serverconf.fetch_autoresponder_configuration(ctx.guild.id).keys()
+            if autoresponders_list == []:
+                localembed = discord.Embed(
+                    title=":grey_question: No Autoresponders Set",
+                    description=f"There are no autoresponders to show here...",
+                    color=discord.Color.orange()
+                )
+                return await ctx.respond(embed=localembed)
+            parsed_output = str()
+            sr = 0
+            for key in autoresponders_list:
+                sr += 1
+                parsed_output += f"{sr}. `{key}`"
+            localembed = discord.Embed(title=f"Autoresponders List for **{ctx.guild}**", description=parsed_output, color=discord.Color.random())
+            localembed.set_footer(text="Run /autoresponder_list <autoresponder_name> to get more information on a specific autoresponder.")
+            await ctx.respond(embed=localembed)
+
+        # For Specific Autoresponder Configuration
+        else:
+            if autoresponder_name in serverconf.fetch_autoresponder_configuration(ctx.guild.id).keys():
+                autoresponder_data: dict = serverconf.fetch_autoresponder_configuration(ctx.guild.id, autoresponder_name=autoresponder_name)
+                localembed = discord.Embed(title=f"Information on Autoresponder `{autoresponder_name}`")
+                localembed.add_field(name="Text Trigger", value=autoresponder_data["autoresponder_trigger"])
+                localembed.add_field(name="Bot Response", value=autoresponder_data["autoresponder_text"])
+                localembed.add_field(name="Autoresponder Trigger Condition", value=autoresponder_data["autoresponder_trigger_condition"])
+                if autoresponder_data["active_channel"] == None:
+                    localembed.add_field(name="Active Channel", value="all channels")
+                else:
+                    localembed.add_field(name="Active Channel", value=f"<#{autoresponder_data['active_channel']}>")
+                localembed.add_field(name="Match Case?", value=autoresponder_data["match_case"])
+                await ctx.respond(embed=localembed)
+            else:
+                localembed = discord.Embed(title=":x: No Autoresponder Found", description=f"You don't have an autoresponder set with the name `{autoresponder_name}`.", color=discord.Color.red())
+                return await ctx.respond(embed=localembed)
+
+                
+
 
 def setup(bot):
     bot.add_cog(ServerConfig(bot))
