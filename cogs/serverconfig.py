@@ -264,6 +264,47 @@ class ServerConfig(commands.Cog):
             json.dump(self.verification_db, f, indent=4)
 
         return await ctx.respond(f"You have been successfully verified in **{vcode_guild.name}**!")
+    
+    # Autoresponder Configuration Commands
+    #autoresponder_commands = SlashCommandGroup(name="autoresponder", description="Commands related to the management of server text-based autoresponders.")
+
+    commands.slash_command(
+        name="autoresponder_add",
+        description="Add a new text-based autoresponder to your server."
+    )
+    @option(name="autoresponder_name", description="The name (id) of the autoresponder.", type=str)
+    @option(name="text_trigger", description="The text on which the autoresponder is triggered.", type=str)
+    @option(name="text_response", description="The response you want the bot to send, when triggered.", type=str)
+    @option(name="trigger_condition", description="MATCH_MESSAGE: The message content must be the same as the trigger; WITHIN_MESSAGE: When trigger is found anywhere within the message", type=str, choices=["MATCH_MESSAGE", "WITHIN_MESSAGE"])
+    @option(name="active_channel", description="In which channel do you want the autoresponder to be active?", type=discord.TextChannel, default=None)
+    @option(name="match_case", description="Do you want the trigger to be case-sensitive?", type=bool, default=False)
+    async def autoresponder_add(self, ctx: ApplicationContext, autoresponder_name: str, text_trigger: str, text_response: str, trigger_condition: str, active_channel: discord.TextChannel, match_case: bool):
+        """Add a new text-based autoresponder to your server."""
+        if not ctx.author.guild_permissions.manage_messages:
+            return await ctx.respond("You can't use this command! You need the `Manage Messages` permission to run this.", ephemeral=True)
+        serverconf.add_autoresponder(
+            ctx.guild.id,
+            autoresponder_name=autoresponder_name,
+            autoresponder_trigger=text_trigger,
+            autoresponder_text=text_response,
+            autoresponder_trigger_condition=trigger_condition,
+            channels=active_channel,
+            match_case=match_case
+        )
+        localembed = discord.Embed(
+            title=":white_check_mark: Autoresponder Successfully Created",
+            description=f"Autoresponder Name: `{autoresponder_name}`\n\nYou may use the autoresponder name to reference this autoresponder, for editing or deleting.",
+            color=discord.Color.green()
+        )
+        localembed.add_field(name="Text Trigger", value=text_trigger)
+        localembed.add_field(name="Bot Response", value=text_response)
+        localembed.add_field(name="Autoresponder Trigger Condition", value=trigger_condition)
+        if active_channel == None:
+            localembed.add_field(name="Active Channel", value="all channels")
+        else:
+            localembed.add_field(name="Active Channel", value=f"<#{active_channel.id}>")
+        localembed.add_field(name="Match Case?", value=match_case)
+        await ctx.respond(embed=localembed)
 
 def setup(bot):
     bot.add_cog(ServerConfig(bot))
