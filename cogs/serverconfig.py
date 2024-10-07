@@ -305,6 +305,34 @@ class ServerConfig(commands.Cog):
             localembed.add_field(name="Active Channel", value=f"<#{active_channel.id}>")
         localembed.add_field(name="Match Case?", value=match_case)
         await ctx.respond(embed=localembed)
+    
+    commands.slash_command(
+        name="autoresponder_remove",
+        description="Remove an existing autoresponder from your server."
+    )
+    @option(name="autoresponder_name", description="The name of the autoresponder you want to remove.", type=str)
+    async def autoresponder_remove(self, ctx: ApplicationContext, autoresponder_name: str):
+        """Remove an existing autoresponder from your server."""
+        if not ctx.author.guild_permissions.manage_messages:
+            return await ctx.respond("You can't use this command! You need the `Manage Messages` permission to run this.", ephemeral=True)
+        result_code = serverconf.remove_autoresponder(ctx.guild.id, autoresponder_name)
+        if result_code == 0:
+            localembed = discord.Embed(
+                title=f":white_check_mark: Autoresponder `{autoresponder_name}` Successfully Removed",
+                description="The bot will now not respond to this autoresponder's trigger.",
+                color=discord.Color.green()
+            )
+            await ctx.respond(embed=localembed)
+        elif result_code == 1:
+            localembed = discord.Embed(title="Failed to Remove Autoresponder", description=f"You don't have an autoresponder set with the name `{autoresponder_name}`.", color=discord.Color.red())
+            await ctx.respond(embed=localembed)
+        elif result_code == 2:
+            localembed = discord.Embed(
+                title="No Autoresponders Set",
+                description=f"You don't have any autoresponders you can remove, let alone something with the name `{autoresponder_name}`.",
+                color=discord.Color.orange()
+            )
+            await ctx.respond(embed=localembed)
 
 def setup(bot):
     bot.add_cog(ServerConfig(bot))
