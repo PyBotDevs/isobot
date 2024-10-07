@@ -280,7 +280,6 @@ class ServerConfig(commands.Cog):
     @option(name="match_case", description="Do you want the trigger to be case-sensitive?", type=bool, default=False)
     async def autoresponder_add(self, ctx: ApplicationContext, autoresponder_name: str, text_trigger: str, text_response: str, trigger_condition: str, active_channel: discord.TextChannel = None, match_case: bool = False):
         """Add a new text-based autoresponder to your server."""
-        # TODO: fix stuff happening when active channel is none
         if not ctx.author.guild_permissions.manage_messages:
             return await ctx.respond("You can't use this command! You need the `Manage Messages` permission to run this.", ephemeral=True)
         result_code = serverconf.add_autoresponder(
