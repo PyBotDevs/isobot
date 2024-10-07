@@ -325,7 +325,13 @@ class ServerConfig(commands.Cog):
                 description=f"You don't have any autoresponders you can remove, let alone something with the name `{autoresponder_name}`.",
                 color=discord.Color.orange()
             )
-            await ctx.respond(embed=localembed)
+            return await ctx.respond(embed=localembed)
+        localembed = discord.Embed(
+            title=f":white_check_mark: Autoresponder `{autoresponder_name}` Successfully Removed",
+            description="The bot will now not respond to this autoresponder's trigger.",
+            color=discord.Color.green()
+        )
+        await ctx.respond(embed=localembed)
 
 def setup(bot):
     bot.add_cog(ServerConfig(bot))
