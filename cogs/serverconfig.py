@@ -283,13 +283,13 @@ class ServerConfig(commands.Cog):
         # TODO: fix stuff happening when active channel is none
         if not ctx.author.guild_permissions.manage_messages:
             return await ctx.respond("You can't use this command! You need the `Manage Messages` permission to run this.", ephemeral=True)
-        serverconf.add_autoresponder(
+        result_code = serverconf.add_autoresponder(
             ctx.guild.id,
             autoresponder_name=autoresponder_name,
             autoresponder_trigger=text_trigger,
             autoresponder_text=text_response,
             autoresponder_trigger_condition=trigger_condition,
-            channel=active_channel.id,
+            channel=active_channel.id if active_channel is not None else None,
             match_case=match_case
         )
         if result_code == 1:
