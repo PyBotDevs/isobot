@@ -316,16 +316,9 @@ class ServerConfig(commands.Cog):
         if not ctx.author.guild_permissions.manage_messages:
             return await ctx.respond("You can't use this command! You need the `Manage Messages` permission to run this.", ephemeral=True)
         result_code = serverconf.remove_autoresponder(ctx.guild.id, autoresponder_name)
-        if result_code == 0:
-            localembed = discord.Embed(
-                title=f":white_check_mark: Autoresponder `{autoresponder_name}` Successfully Removed",
-                description="The bot will now not respond to this autoresponder's trigger.",
-                color=discord.Color.green()
-            )
-            await ctx.respond(embed=localembed)
-        elif result_code == 1:
+        if result_code == 1:
             localembed = discord.Embed(title=":x: Failed to Remove Autoresponder", description=f"You don't have an autoresponder set with the name `{autoresponder_name}`.", color=discord.Color.red())
-            await ctx.respond(embed=localembed)
+            return await ctx.respond(embed=localembed)
         elif result_code == 2:
             localembed = discord.Embed(
                 title=":grey_question: No Autoresponders Set",
