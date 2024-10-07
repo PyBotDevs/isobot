@@ -275,7 +275,7 @@ class ServerConfig(commands.Cog):
     @option(name="autoresponder_name", description="The name (id) of the autoresponder.", type=str)
     @option(name="text_trigger", description="The text on which the autoresponder is triggered.", type=str)
     @option(name="text_response", description="The response you want the bot to send, when triggered.", type=str)
-    @option(name="trigger_condition", description="MATCH_MESSAGE: The message content must be the same as the trigger; WITHIN_MESSAGE: When trigger is found anywhere within the message", type=str, choices=["MATCH_MESSAGE", "WITHIN_MESSAGE"])
+    @option(name="trigger_condition", description="How do you want the autoresponder to be triggered?", type=str, choices=["MATCH_MESSAGE", "WITHIN_MESSAGE"])
     @option(name="active_channel", description="In which channel do you want the autoresponder to be active?", type=discord.TextChannel, default=None)
     @option(name="match_case", description="Do you want the trigger to be case-sensitive?", type=bool, default=False)
     async def autoresponder_add(self, ctx: ApplicationContext, autoresponder_name: str, text_trigger: str, text_response: str, trigger_condition: str, active_channel: discord.TextChannel, match_case: bool):
