@@ -278,7 +278,7 @@ class ServerConfig(commands.Cog):
     @option(name="trigger_condition", description="How do you want the autoresponder to be triggered?", type=str, choices=["MATCH_MESSAGE", "WITHIN_MESSAGE"])
     @option(name="active_channel", description="In which channel do you want the autoresponder to be active?", type=discord.TextChannel, default=None)
     @option(name="match_case", description="Do you want the trigger to be case-sensitive?", type=bool, default=False)
-    async def autoresponder_add(self, ctx: ApplicationContext, autoresponder_name: str, text_trigger: str, text_response: str, trigger_condition: str, active_channel: discord.TextChannel, match_case: bool):
+    async def autoresponder_add(self, ctx: ApplicationContext, autoresponder_name: str, text_trigger: str, text_response: str, trigger_condition: str, active_channel: discord.TextChannel = None, match_case: bool = False):
         """Add a new text-based autoresponder to your server."""
         if not ctx.author.guild_permissions.manage_messages:
             return await ctx.respond("You can't use this command! You need the `Manage Messages` permission to run this.", ephemeral=True)
