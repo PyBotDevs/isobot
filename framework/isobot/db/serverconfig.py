@@ -121,16 +121,19 @@ class ServerConfig:
         channel: list = None,
         match_case: bool = False
     ):
-        """Adds a new autoresponder configuration for the specified guild, with the provided configuration data. Returns `0` if successful.\n\nNotes: \n- `autoreponder_name` can be considered as autoresponder id."""
+        """Adds a new autoresponder configuration for the specified guild, with the provided configuration data. Returns `0` if successful, returns `1` if configuration with same name already exists.\n\nNotes: \n- `autoreponder_name` can be considered as autoresponder id."""
         serverconf = self.load()
-        serverconf[str(server_id)]["autoresponder"][autoresponder_name] = {
-            "autoresponder_trigger": autoresponder_trigger,
-            "autoresponder_text": autoresponder_text,
-            "autoresponder_trigger_condition": autoresponder_trigger_condition,
-            "active_channel": channel,
-            "match_case": match_case
-        }
-        self.save(serverconf)
+        if autoresponder_name not in serverconf[str(server_id)]["autoresponder"].keys():
+            serverconf[str(server_id)]["autoresponder"][autoresponder_name] = {
+                "autoresponder_trigger": autoresponder_trigger,
+                "autoresponder_text": autoresponder_text,
+                "autoresponder_trigger_condition": autoresponder_trigger_condition,
+                "active_channel": channel,
+                "match_case": match_case
+            }
+            self.save(serverconf)
+            return 0
+        else: return 1
     
     def remove_autoresponder(self, server_id: Union[int, str], autoresponder_name: str):
         """Removes an existing autoresponder from the specified guild's serverconfig data. Returns `0` if successful, returns `1` if autoresponder does not exist, returns `2` if no autoresponders set up."""

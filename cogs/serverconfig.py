@@ -292,6 +292,13 @@ class ServerConfig(commands.Cog):
             channel=active_channel.id,
             match_case=match_case
         )
+        if result_code == 1:
+            localembed = discord.Embed(
+                title=":warning: An Autoresponder Already Exists With This Name",
+                description="Try again using a different name, or remove the existing autoresponder and run this command again.",
+                color=discord.Color.orange()
+            )
+            return await ctx.respond(embed=localembed)
         localembed = discord.Embed(
             title=":white_check_mark: Autoresponder Successfully Created",
             description=f"Autoresponder Name: `{autoresponder_name}`\n\nYou may use the autoresponder name to reference this autoresponder, for editing or deleting.",
