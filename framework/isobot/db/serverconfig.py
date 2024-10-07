@@ -118,7 +118,7 @@ class ServerConfig:
         autoresponder_text: str,
         autoresponder_trigger_condition: str = Literal["MATCH_MESSAGE", "WITHIN_MESSAGE"],
         *,
-        channels: list = None,
+        channel: list = None,
         match_case: bool = False
     ):
         """Adds a new autoresponder configuration for the specified guild, with the provided configuration data. Returns `0` if successful.\n\nNotes: \n- `autoreponder_name` can be considered as autoresponder id."""
@@ -127,7 +127,7 @@ class ServerConfig:
             "autoresponder_trigger": autoresponder_trigger,
             "autoresponder_text": autoresponder_text,
             "autoresponder_trigger_condition": autoresponder_trigger_condition,
-            "active_channels": channels,
+            "active_channel": channel,
             "match_case": match_case
         }
         self.save(serverconf)

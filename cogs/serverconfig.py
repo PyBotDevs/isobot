@@ -288,7 +288,7 @@ class ServerConfig(commands.Cog):
             autoresponder_trigger=text_trigger,
             autoresponder_text=text_response,
             autoresponder_trigger_condition=trigger_condition,
-            channels=active_channel,
+            channel=active_channel,
             match_case=match_case
         )
         localembed = discord.Embed(
