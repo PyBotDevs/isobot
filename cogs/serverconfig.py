@@ -268,7 +268,7 @@ class ServerConfig(commands.Cog):
     # Autoresponder Configuration Commands
     #autoresponder_commands = SlashCommandGroup(name="autoresponder", description="Commands related to the management of server text-based autoresponders.")
 
-    commands.slash_command(
+    @commands.slash_command(
         name="autoresponder_add",
         description="Add a new text-based autoresponder to your server."
     )
@@ -306,7 +306,7 @@ class ServerConfig(commands.Cog):
         localembed.add_field(name="Match Case?", value=match_case)
         await ctx.respond(embed=localembed)
     
-    commands.slash_command(
+    @commands.slash_command(
         name="autoresponder_remove",
         description="Remove an existing autoresponder from your server."
     )
