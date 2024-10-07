@@ -324,11 +324,11 @@ class ServerConfig(commands.Cog):
             )
             await ctx.respond(embed=localembed)
         elif result_code == 1:
-            localembed = discord.Embed(title="Failed to Remove Autoresponder", description=f"You don't have an autoresponder set with the name `{autoresponder_name}`.", color=discord.Color.red())
+            localembed = discord.Embed(title=":x: Failed to Remove Autoresponder", description=f"You don't have an autoresponder set with the name `{autoresponder_name}`.", color=discord.Color.red())
             await ctx.respond(embed=localembed)
         elif result_code == 2:
             localembed = discord.Embed(
-                title="No Autoresponders Set",
+                title=":grey_question: No Autoresponders Set",
                 description=f"You don't have any autoresponders you can remove, let alone something with the name `{autoresponder_name}`.",
                 color=discord.Color.orange()
             )
