@@ -266,9 +266,9 @@ class ServerConfig(commands.Cog):
         return await ctx.respond(f"You have been successfully verified in **{vcode_guild.name}**!")
     
     # Autoresponder Configuration Commands
-    #autoresponder_commands = SlashCommandGroup(name="autoresponder", description="Commands related to the management of server text-based autoresponders.")
+    autoresponder_commands = SlashCommandGroup(name="autoresponder", description="Commands related to the management of server text-based autoresponders.")
 
-    @commands.slash_command(
+    @autoresponder_commands.command(
         name="autoresponder_add",
         description="Add a new text-based autoresponder to your server."
     )
@@ -313,7 +313,7 @@ class ServerConfig(commands.Cog):
         localembed.add_field(name="Match Case?", value=match_case)
         await ctx.respond(embed=localembed)
     
-    @commands.slash_command(
+    @autoresponder_commands.command(
         name="autoresponder_remove",
         description="Remove an existing autoresponder from your server."
     )
@@ -340,7 +340,7 @@ class ServerConfig(commands.Cog):
         )
         await ctx.respond(embed=localembed)
     
-    @commands.slash_command(
+    @autoresponder_commands.command(
         name="autoresponder_list",
         description="View a list of all the autoresponders in the server, or info on a specific autoresponder."
     )
