@@ -307,6 +307,26 @@ async def on_message(ctx):
                     # In that case isobot will automatically stop sending levelup messages to them
                     logger.warn(f"Unable to send level up message to {ctx.author} ({ctx.author.id}), as they are not accepting DMs from isobot. This ID has been added to `levelup_messages` blacklist.", module="main/Levelling")
                     settings.edit_setting(ctx.author.id, "levelup_messages", False)
+        
+        # Autoresponder System
+        server_autoresponder_config: dict = serverconfig.fetch_autoresponder_configuration(ctx.guild.id)
+
+        for config in server_autoresponder_config.keys():
+            if server_autoresponder_config[config]["active_channel"] == None or server_autoresponder_config[config]["active_channel"] == ctx.channel.id:
+                if server_autoresponder_config[config]["match_case"]:
+                    if server_autoresponder_config[config]["autoresponder_trigger_condition"] == "MATCH_MESSAGE":
+                        if ctx.content == server_autoresponder_config[config]["autoresponder_trigger"]:
+                            await ctx.channel.send(server_autoresponder_config[config]["autoresponder_text"])
+                    elif server_autoresponder_config[config]["autoresponder_trigger_condition"] == "WITHIN_MESSAGE":
+                        if server_autoresponder_config[config]["autoresponder_trigger"] in ctx.content:
+                            await ctx.channel.send(server_autoresponder_config[config]["autoresponder_text"])
+                else:
+                    if server_autoresponder_config[config]["autoresponder_trigger_condition"] == "MATCH_MESSAGE":
+                        if ctx.content.lower() == server_autoresponder_config[config]["autoresponder_trigger"]:
+                            await ctx.channel.send(server_autoresponder_config[config]["autoresponder_text"])
+                    elif server_autoresponder_config[config]["autoresponder_trigger_condition"] == "WITHIN_MESSAGE":
+                        if server_autoresponder_config[config]["autoresponder_trigger"] in ctx.content.lower():
+                            await ctx.channel.send(server_autoresponder_config[config]["autoresponder_text"])
 
 # Error handler
 @client.event
