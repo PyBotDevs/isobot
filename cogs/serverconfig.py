@@ -387,9 +387,6 @@ class ServerConfig(commands.Cog):
                 localembed = discord.Embed(title=":x: No Autoresponder Found", description=f"You don't have an autoresponder set with the name `{autoresponder_name}`.", color=discord.Color.red())
                 return await ctx.respond(embed=localembed)
 
-                
-
-
 def setup(bot):
     bot.add_cog(ServerConfig(bot))
     
