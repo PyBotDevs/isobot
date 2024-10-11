@@ -269,7 +269,7 @@ class ServerConfig(commands.Cog):
     autoresponder_commands = SlashCommandGroup(name="autoresponder", description="Commands related to the management of server text-based autoresponders.")
 
     @autoresponder_commands.command(
-        name="autoresponder_add",
+        name="add",
         description="Add a new text-based autoresponder to your server."
     )
     @option(name="autoresponder_name", description="The name (id) of the autoresponder.", type=str)
@@ -314,7 +314,7 @@ class ServerConfig(commands.Cog):
         await ctx.respond(embed=localembed)
     
     @autoresponder_commands.command(
-        name="autoresponder_remove",
+        name="remove",
         description="Remove an existing autoresponder from your server."
     )
     @option(name="autoresponder_name", description="The name of the autoresponder you want to remove.", type=str)
@@ -341,7 +341,7 @@ class ServerConfig(commands.Cog):
         await ctx.respond(embed=localembed)
     
     @autoresponder_commands.command(
-        name="autoresponder_list",
+        name="list",
         description="View a list of all the autoresponders in the server, or info on a specific autoresponder."
     )
     @option(name="autoresponder_name", description="Which autoresponder do you want to view information about?", type=str, default=None)
