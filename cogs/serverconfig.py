@@ -272,6 +272,7 @@ class ServerConfig(commands.Cog):
         name="add",
         description="Add a new text-based autoresponder to your server."
     )
+    @commands.guild_only()
     @option(name="autoresponder_name", description="The name (id) of the autoresponder.", type=str)
     @option(name="text_trigger", description="The text on which the autoresponder is triggered.", type=str)
     @option(name="text_response", description="The response you want the bot to send, when triggered.", type=str)
@@ -317,6 +318,7 @@ class ServerConfig(commands.Cog):
         name="remove",
         description="Remove an existing autoresponder from your server."
     )
+    @commands.guild_only()
     @option(name="autoresponder_name", description="The name of the autoresponder you want to remove.", type=str)
     async def autoresponder_remove(self, ctx: ApplicationContext, autoresponder_name: str):
         """Remove an existing autoresponder from your server."""
@@ -344,6 +346,7 @@ class ServerConfig(commands.Cog):
         name="list",
         description="View a list of all the autoresponders in the server, or info on a specific autoresponder."
     )
+    @commands.guild_only()
     @option(name="autoresponder_name", description="Which autoresponder do you want to view information about?", type=str, default=None)
     async def autoresponder_list(self, ctx: ApplicationContext, autoresponder_name: str = None):
         """View a list of all the autoresponders in the server, or view specific information on an autoresponder."""
