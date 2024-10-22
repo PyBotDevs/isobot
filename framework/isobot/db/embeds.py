@@ -24,3 +24,37 @@ class Embeds():
         """Fetches a `dict` of all the added embeds in the specified server.\n\nReturns an empty `dict` if none are set up."""
         embeds = self.load()
         return embeds[str(server_id)]
+
+    def generate_embed(
+            self,
+            server_id: Union[str, int],
+            embed_name: str,
+            *,
+            title: str = None,
+            description: str = None,
+            color: int = None,
+            timestamp_enabled: bool = False,
+            title_url: str = None,
+            image_url: str = None,
+            thumbnail: str = None
+
+        ) -> int:
+        """Generates an embed for the specified server using the given embed data.\n\nReturns `0` if successful, returns `1` if an embed with the same embed name already exists."""
+        embeds = self.load()
+
+        if embed_name not in embeds[str(server_id)].keys():
+            embeds[str(server_id)][embed_name] = {
+                "title": title,
+                "description": description,
+                # "color":    # TODO: Fina a way to implement colors into the embeds
+                "timestamp_enabled": timestamp_enabled,
+                "title_url": title_url,
+                "image_url": image_url,
+                "thumbnail": thumbnail,
+                "fields": [],
+                "author": {},
+                "footer": {}
+            }
+            self.save(embeds)
+            return 0
+        else: return 1
