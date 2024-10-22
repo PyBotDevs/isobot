@@ -4,7 +4,7 @@ from framework.isobot.colors import Colors as colors
 
 # Functions
 class Automod():
-    """Initializes the EmbedEngine database system."""
+    """Initializes the Embed database system."""
     def __init__(self):
         print(f"[framework/db/Automod] {colors.green}Embeds db library initialized.{colors.end}")
 
