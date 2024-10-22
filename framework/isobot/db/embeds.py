@@ -127,3 +127,16 @@ class Embeds():
             self.save(embeds)
             return 0
         else: return 1
+
+
+# TODO: Add the following functions for the embeds:
+#        - title (done)
+#        - description (done)
+#        - url (done)
+#        - colour
+#        - timestamp (done)
+#        - footer (done)
+#        - image (done)
+#        - thumbnail (done)
+#        - author (done)
+#        - fields (done)
