@@ -53,6 +53,7 @@ def initial_setup():
             "presence",
             "user_data",
             "weather",
+            "embeds",
             "isobank/accounts",
             "isobank/auth"
         ]
