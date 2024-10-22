@@ -10,7 +10,7 @@ import json
 import time
 import datetime
 from api import auth
-from framework.isobot import currency, embedengine, commands as cmds
+from framework.isobot import currency, commands as cmds
 from framework.isobot.db import levelling
 from discord import option, ApplicationContext
 from discord.commands import SlashCommandGroup
@@ -69,32 +69,6 @@ class Utils(commands.Cog):
             color=color
         )
         await ctx.respond(embed=localembed)
-
-    @commands.slash_command(
-        name="embedbuilder",
-        description="Builds a custom embed however you want."
-    )
-    @option(name="title", description="The title of the embed", type=str)
-    @option(name="description", description="The body of the embed", type=str)
-    @option(name="image_url", description="The main image you want to show for the embed (URL ONLY)", type=str, default=None)
-    @option(name="thumbnail_url", description="The thumbnail image you want to show for the embed (URL ONLY)", type=str, default=None)
-    @option(name="color", description="The embed's accent color (Use -1 for random color)", type=int, default=None)
-    @option(name="footer_text", description="The text at the footer of the embed", type=str, default=None)
-    @option(name="footer_icon_url", description="The icon you want to show in the embed's footer (URL ONLY)", type=str, default=None)
-    async def embedbuilder(self, ctx: ApplicationContext, title: str, description: str, image_url: str = None, thumbnail_url: str = None, color: int = None, footer_text: str = None, footer_icon_url: str = None):
-        """Builds a custom embed however you want."""
-        await ctx.respond("Embed Built!", ephemeral=True)
-        await ctx.channel.send(
-            embed=embedengine.embed(
-                title,
-                description,
-                image=image_url,
-                thumbnail=thumbnail_url,
-                color=color,
-                footer_text=footer_text,
-                footer_img=footer_icon_url
-            )
-        )
 
     @commands.slash_command(
         name='whoami',
