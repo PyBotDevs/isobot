@@ -11,7 +11,7 @@ import time
 import datetime
 from api import auth
 from framework.isobot import currency, commands as cmds
-from framework.isobot.db import levelling
+from framework.isobot.db import levelling, embeds
 from discord import option, ApplicationContext
 from discord.commands import SlashCommandGroup
 from discord.ext import commands
