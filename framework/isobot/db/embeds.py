@@ -1,5 +1,6 @@
 # Imports
 import json
+from typing_extensions import Union
 from framework.isobot.colors import Colors as colors
 
 # Functions
@@ -17,3 +18,8 @@ class Embeds():
         """Dumps all cached data to your local machine."""
         with open("database/embeds.json", 'w+', encoding="utf8") as f: json.dump(data, f)
         return 0
+    
+    def get_embeds_list(self, server_id: Union[str, int]) -> dict:
+        """Fetches a `dict` of all the added embeds in the specified server.\n\nReturns an empty `dict` if none are set up."""
+        embeds = self.load()
+        return embeds[str(server_id)]
