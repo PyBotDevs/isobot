@@ -67,3 +67,63 @@ class Embeds():
             self.save(embeds)
             return 0
         else: return 1
+    
+    def add_embed_field(
+        self,
+        server_id: Union[str, int],
+        embed_name: str,
+        name: str,
+        value: str,
+        inline: bool = False
+        ) -> int:
+        """Adds a new field to an already existing embed.\n\nReturns `0` if successful, returns `1` if the embed does not exist."""
+        embeds = self.load()
+        if embed_name in embeds[str(server_id)].keys():
+            list(embeds[str(server_id)][embed_name]["fields"]).append(
+                {
+                    "name": name,
+                    "value": value,
+                    "inline": inline
+                }
+            )
+            self.save(embeds)
+            return 0
+        else: return 1
+    
+    def add_embed_footer(
+        self,
+        server_id: Union[str, int],
+        embed_name: str,
+        text: str,
+        icon_url: str = None
+        ) -> int:
+        """Adds a footer to an already existing embed.\n\nReturns `0` if successful, returns `1` if the embed does not exist."""
+        embeds = self.load()
+        if embed_name in embeds[str(server_id)].keys():
+            embeds[str(server_id)][embed_name]["footer"] = {
+                "text": text,
+                "icon_url": icon_url
+            }
+            self.save(embeds)
+            return 0
+        else: return 1
+
+    def add_embed_author(
+        self,
+        server_id: Union[str, int],
+        embed_name: str,
+        name: str,
+        url: str = None,
+        icon_url: str = None
+        ):
+        """Adds the author field to an already existing embed.\n\nReturns `0` if successful, returns `1` if the embed does not exist."""
+        embeds = self.load()
+        if embed_name in embeds[str(server_id)].keys():
+            embeds[str(server_id)][embed_name]["author"] = {
+                "name": name,
+                "url": url,
+                "icon_url": icon_url
+            }
+            self.save(embeds)
+            return 0
+        else: return 1
