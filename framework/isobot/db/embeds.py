@@ -1,5 +1,6 @@
 # Imports
 import json
+import discord
 from typing_extensions import Union
 from framework.isobot.colors import Colors as colors
 
