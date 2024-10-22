@@ -58,3 +58,12 @@ class Embeds():
             self.save(embeds)
             return 0
         else: return 1
+
+    def delete_embed(self, server_id: Union[str, int], embed_name: str) -> int:
+        """Deletes an existing embed from the specified server's embeds list.\n\nReturns `0` if successful, returns `1` if the embed does not exist."""
+        embeds = self.load()
+        if embed_name in embeds[str(server_id)].keys():
+            del embeds[str(server_id)][embed_name]
+            self.save(embeds)
+            return 0
+        else: return 1
