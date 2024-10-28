@@ -1,6 +1,7 @@
 # Imports
 import json
 import discord
+import framework.types
 from typing_extensions import Union
 from framework.isobot.colors import Colors as colors
 
@@ -39,14 +40,18 @@ class Embeds():
             thumbnail: str = None
 
         ) -> int:
-        """Generates an embed for the specified server using the given embed data.\n\nReturns `0` if successful, returns `1` if an embed with the same embed name already exists."""
+        """Generates an embed for the specified server using the given embed data.\n\nReturns `0` if successful, returns `1` if an embed with the same embed name already exists, returns `2` if the specified embed color is not a valid hex code."""
         embeds = self.load()
 
         if embed_name not in embeds[str(server_id)].keys():
+            # Check whether color code is a valid value or not
+            if color not in [-1, 0] or not framework.types.is_hex_color_code(color):
+                return 2
+            
             embeds[str(server_id)][embed_name] = {
                 "title": title,
                 "description": description,
-                # "color":    # TODO: Fina a way to implement colors into the embeds
+                "color": color,    # -1 = random color, None = no color, hex code = custom color
                 "timestamp_enabled": timestamp_enabled,
                 "title_url": title_url,
                 "image_url": image_url,
