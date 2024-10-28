@@ -1,6 +1,7 @@
 # Imports
 import json
 import discord
+import datetime
 import framework.types
 from typing_extensions import Union
 from framework.isobot.colors import Colors as colors
@@ -62,6 +63,48 @@ class Embeds():
             }
             self.save(embeds)
             return 0
+        else: return 1
+
+    def build_embed(self, server_id: Union[str, int], embed_name: str) -> discord.Embed:
+        """Builds a Discord embed from the specified server's embed data, and returns it as `discord.Embed`.\n\nReturns `1` if the embeds does not exist."""
+        embeds = self.load()
+        if embed_name in embeds[str(server_id)].keys():
+            embed_data = embeds[str(server_id)][embed_name]
+            
+            if embed_data["title"] == None: title = discord.Embed.Empty
+            if embed_data["description"] == None: description = discord.Embed.Empty
+            if embed_data["color"] == None: color = discord.Embed.Empty
+            if embed_data["title_url"] == None: title_url = discord.Embed.Empty
+            if embed_data["image_url"] == None: image_url = discord.Embed.Empty
+            if embed_data["thumbnail"] == None: thumbnail = discord.Embed.Empty
+
+            embed = discord.Embed(
+                title=title,
+                description=description,
+                color = discord.Color.random() if embed_data["color"] == -1 else embed_data["color"],
+                url=title_url,
+                timestamp = datetime.datetime.utcnow() if embed_data["timestamp_enabled"] else discord.Embed.Empty
+            )
+            embed.set_image(url=image_url)
+            embed.set_thumbnail(url=thumbnail)
+
+            for field in embed_data["fields"]:
+                embed.add_field(
+                    name=embed_data["fields"][field]["name"],
+                    value=embed_data["fields"][field]["value"],
+                    inline=embed_data["fields"][field]["inline"]
+                )
+
+            if embed_data["author"] != {}:
+                if embed_data["author"]["url"] == None: author_url = discord.Embed.Empty
+                if embed_data["author"]["icon_url"] == None: author_icon_url = discord.Embed.Empty
+                embed.set_author(name=embed_data["author"]["name"], url=author_url, icon_url=author_icon_url)
+
+            if embed_data["footer"] != {}:
+                if embed_data["footer"]["icon_url"] == None: footer_icon_url = discord.Embed.Empty
+                embed.set_footer(text=embed_data["footer"]["text"], icon_url=footer_icon_url)
+
+            return embed  # Returning the embed data as output
         else: return 1
 
     def delete_embed(self, server_id: Union[str, int], embed_name: str) -> int:
@@ -138,10 +181,14 @@ class Embeds():
 #        - title (done)
 #        - description (done)
 #        - url (done)
-#        - colour
+#        - colour (done)
 #        - timestamp (done)
 #        - footer (done)
 #        - image (done)
 #        - thumbnail (done)
 #        - author (done)
 #        - fields (done)
+
+# TODO: Add following features:
+#        - Add embed build function (done)
+#        - Add colours support for embeds (done)
