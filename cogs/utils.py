@@ -522,14 +522,6 @@ class Utils(commands.Cog):
             localembed = _embeds.build_embed(ctx.guild.id, embed_name=embed_name)
             await ctx.respond(f"## :white_check_mark: Footer section successfully added to server embed `{embed_name}\nHere's a preview of your modified embed:`", embed=localembed)
 
-    # TODO: Make the following bot commands:
-    #   - create new embed (done)
-    #   - delete embed (done)
-    #   - show embeds list (done)
-    #   - add embed field (done)
-    #   - add embed author (done)
-    #   - add embed footer (done)
-
     # Isobot Command Registry Management System
     commandmanager = SlashCommandGroup("commandmanager", "Manage isobot's command registry.")
 
