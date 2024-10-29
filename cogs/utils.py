@@ -346,8 +346,6 @@ class Utils(commands.Cog):
     # Server Embed System Manager Commands
     embed_system = SlashCommandGroup("embeds", "Commands used to add, edit and remove custom bot embeds for server-wide use.")
 
-    # TODO: Add commands for managing server embeds
-
     @embed_system.command(
         name="create",
         description="Create a new custom embed for the server."
