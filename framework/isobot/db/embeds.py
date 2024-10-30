@@ -27,7 +27,7 @@ class Embeds():
         embeds = self.load()
         if str(server_id) not in embeds.keys():
             embeds[str(server_id)] = {}
-            self.save()
+            self.save(embeds)
             return 0
         return 1
     
