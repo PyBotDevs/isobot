@@ -10,8 +10,8 @@ import json
 import time
 import datetime
 from api import auth
-from framework.isobot import currency, embedengine, commands as cmds
-from framework.isobot.db import levelling
+from framework.isobot import currency, commands as cmds
+from framework.isobot.db import levelling, embeds as _embeds
 from discord import option, ApplicationContext
 from discord.commands import SlashCommandGroup
 from discord.ext import commands
@@ -22,7 +22,7 @@ color = discord.Color.random()
 currency = currency.CurrencyAPI("database/currency.json", "logs/currency.log")
 levelling = levelling.Levelling()
 _commands = cmds.Commands()
-# openai.api_key = os.getenv("chatgpt_API_KEY")
+_embeds = _embeds.Embeds()
 openai.api_key = auth.ext_token('chatgpt')
 chatgpt_conversation = dict()
 _presence = Presence()
@@ -69,32 +69,6 @@ class Utils(commands.Cog):
             color=color
         )
         await ctx.respond(embed=localembed)
-
-    @commands.slash_command(
-        name="embedbuilder",
-        description="Builds a custom embed however you want."
-    )
-    @option(name="title", description="The title of the embed", type=str)
-    @option(name="description", description="The body of the embed", type=str)
-    @option(name="image_url", description="The main image you want to show for the embed (URL ONLY)", type=str, default=None)
-    @option(name="thumbnail_url", description="The thumbnail image you want to show for the embed (URL ONLY)", type=str, default=None)
-    @option(name="color", description="The embed's accent color (Use -1 for random color)", type=int, default=None)
-    @option(name="footer_text", description="The text at the footer of the embed", type=str, default=None)
-    @option(name="footer_icon_url", description="The icon you want to show in the embed's footer (URL ONLY)", type=str, default=None)
-    async def embedbuilder(self, ctx: ApplicationContext, title: str, description: str, image_url: str = None, thumbnail_url: str = None, color: int = None, footer_text: str = None, footer_icon_url: str = None):
-        """Builds a custom embed however you want."""
-        await ctx.respond("Embed Built!", ephemeral=True)
-        await ctx.channel.send(
-            embed=embedengine.embed(
-                title,
-                description,
-                image=image_url,
-                thumbnail=thumbnail_url,
-                color=color,
-                footer_text=footer_text,
-                footer_img=footer_icon_url
-            )
-        )
 
     @commands.slash_command(
         name='whoami',
@@ -368,6 +342,205 @@ class Utils(commands.Cog):
         )
         await ctx.respond(embed=localembed)
 
+    # Server Embed System Manager Commands
+    embed_system = SlashCommandGroup("embeds", "Commands used to add, edit and remove custom bot embeds for server-wide use.")
+
+    @embed_system.command(
+        name="create",
+        description="Create a new custom embed for the server."
+    )
+    @commands.guild_only()
+    @option(name="embed_name", description="What do you want your embed's name to be?")
+    @option(name="title", description="Set a title for your embed", type=str, default=None)
+    @option(name="description", description="Set a description for your embed", type=str, default=None)
+    @option(name="color", description="Format: 0x{replace with hex code} (-1 = random color)", type=int, default=None)
+    @option(name="timestamp_enabled", description="Choose whether to display timestamps on the embed or not", type=bool, default=False)
+    @option(name="title_url", description="Attach a url to your embed title (https:// only)", type=str, default=None)
+    @option(name="image_url", description="Add an image to your embed (https:// only)", type=str, default=None)
+    @option(name="thumbnail", description="Add a thumbnail image to your embed (https:// only)", type=str, default=None)
+    async def embeds_create(self, ctx: ApplicationContext, embed_name: str, title: str = None, description: str = None, color: int = None, timestamp_enabled: bool = False, title_url: str = None, image_url: str = None, thumbnail: str = None):
+        """Create a new custom embed for the server."""
+        if not ctx.author.guild_permissions.manage_messages:
+            return await ctx.respond(
+                "You can't use this command! You need the `Manage Messages` permission in this server to run this command.",
+                ephemeral=True
+            )
+        _embeds.generate_embed(
+            server_id=ctx.guild.id,
+            embed_name=embed_name,
+            title=title,
+            description=description,
+            color=color,
+            timestamp_enabled=timestamp_enabled,
+            title_url=title_url,
+            image_url=image_url,
+            thumbnail=thumbnail
+        )
+        new_embed = _embeds.build_embed(ctx.guild.id, embed_name)
+        await ctx.respond(
+            f"## :white_check_mark: Embed Successfully Created.\nThe name of this custom embed is `{embed_name}`. You can use this embed name to reference this custom embed in other commands.\n\nHere's a preview of your new embed:",
+            embed=new_embed
+        )
+    
+    @embed_system.command(
+        name="delete",
+        description="Delete a custom embed from the server."
+    )
+    @commands.guild_only()
+    @option(name="embed_name", description="The specific embed you want to delete.", type=str)
+    async def embeds_delete(self, ctx: ApplicationContext, embed_name: str):
+        """Delete a custom embed from the server."""
+        if not ctx.author.guild_permissions.manage_messages:
+            return await ctx.respond(
+                "You can't use this command! You need the `Manage Messages` permission in this server to run this command.",
+                ephemeral=True
+            )
+        result_code = _embeds.delete_embed(ctx.guild.id, embed_name=embed_name)
+        if result_code == 1:
+            localembed = discord.Embed(
+                title=":x: Failed to delete embed",
+                description=f"This server does not have an embed with the name `{embed_name}`.",
+                color=discord.Color.red()
+            )
+            return await ctx.respond(embed=localembed, ephemeral=True)
+        else:
+            localembed = discord.Embed(
+                title=":white_check_mark: Custom embed successfully deleted",
+                description=f"The custom server embed `{embed_name}` has been deleted.\n\nMake sure to remove any references of this embed from any other serverconfig features in the bot.",
+                color=discord.Color.green()
+            )
+            return await ctx.respond(embed=localembed)
+    
+    @embed_system.command(
+        name="list",
+        description="View a list of all the custom embeds in this server."
+    )
+    @commands.guild_only()
+    async def embeds_list(self, ctx: ApplicationContext):
+        """View a list of all the custom embeds in this server."""
+        if not ctx.author.guild_permissions.manage_messages:
+            return await ctx.respond(
+                "You can't use this command! You need the `Manage Messages` permission in this server to run this command.",
+                ephemeral=True
+            )
+        embeds_list = _embeds.get_embeds_list(ctx.guild.id)
+        num = 0
+        parsed_output = str()
+        for embed in embeds_list.keys():
+            num += 1
+            parsed_output += f"{num}. `{embed}`\n"
+        if parsed_output == "":
+            parsed_output = "*Nothing to see here...*"
+        localembed = discord.Embed(
+            title=f"Custom Server Embeds for **{ctx.guild.name}**",
+            description=parsed_output
+        )
+        localembed.set_footer(text="Run \"/embeds view <embed name>\" to get a preview of an embed.")
+        await ctx.respond(embed=localembed)
+    
+    @embed_system.command(
+        name="view",
+        description="See a preview of an existing custom embed in the server."
+    )
+    @commands.guild_only()
+    @option(name="embed_name", description="The server embed that you want to view.", type=str)
+    async def embeds_view(self, ctx: ApplicationContext, embed_name: str):
+        """See a preview of an existing custom embed in the server."""
+        if not ctx.author.guild_permissions.manage_messages:
+            return await ctx.respond(
+                "You can't use this command! You need the `Manage Messages` permission in this server to run this command.",
+                ephemeral=True
+            )
+        embed_preview = _embeds.build_embed(ctx.guild.id, embed_name=embed_name)
+        await ctx.respond(
+            f"Here's a preview of the server embed `{embed_name}`:",
+            embed=embed_preview
+        )
+    
+    @embed_system.command(
+        name="add_embed_field",
+        description="Appends a new field to an existing server embed."
+    )
+    @commands.guild_only()
+    @option(name="embed_name", description="The server embed to which you want to add the field.", type=str)
+    @option(name="name", description="The name of the field.", type=str)
+    @option(name="value", description="The value of the field.", type=str)
+    @option(name="inline", description="Whether you want the field to be in-line or not.", type=bool, default=False)
+    async def embeds_add_embed_field(self, ctx: ApplicationContext, embed_name: str, name: str, value: str, inline: bool = False):
+        """Appends a new field to an existing server embed."""
+        if not ctx.author.guild_permissions.manage_messages:
+            return await ctx.respond(
+                "You can't use this command! You need the `Manage Messages` permission in this server to run this command.",
+                ephemeral=True
+            )
+        result_code = _embeds.add_embed_field(ctx.guild.id, embed_name=embed_name, name=name, value=value, inline=inline)
+        if result_code == 1:
+            localembed = discord.Embed(
+                title=":x: Failed to add new field to embed",
+                description=f"This server does not have an embed with the name `{embed_name}`.",
+                color=discord.Color.red()
+            )
+            return await ctx.respond(embed=localembed, ephemeral=True)
+        else:
+            localembed = _embeds.build_embed(ctx.guild.id, embed_name=embed_name)
+            await ctx.respond(f"## :white_check_mark: New field successfully added to server embed `{embed_name}`\nHere's a preview of your modified embed:", embed=localembed)
+
+    @embed_system.command(
+        name="add_embed_author",
+        description="Add or replace the author section of an existing server embed."
+    )
+    @commands.guild_only()
+    @option(name="embed_name", description="The server embed to which you want to add the author", type=str)
+    @option(name="author_name", description="The name of the author.", type=str)
+    @option(name="url", description="Attach a url to the author name. (https:// only)", type=str, default=None)
+    @option(name="icon_url", description="Add an icon next to the author (https:// only)", type=str, default=None)
+    async def embeds_add_embed_author(self, ctx: ApplicationContext, embed_name: str, author_name: str, url: str = None, icon_url: str = None):
+        """Add or replace the author section of an existing server embed."""
+        if not ctx.author.guild_permissions.manage_messages:
+            return await ctx.respond(
+                "You can't use this command! You need the `Manage Messages` permission in this server to run this command.",
+                ephemeral=True
+            )
+        result_code = _embeds.add_embed_author(ctx.guild.id, embed_name=embed_name, name=author_name, url=url, icon_url=icon_url)
+        if result_code == 1:
+            localembed = discord.Embed(
+                title=":x: Failed to add author to embed",
+                description=f"This server does not have an embed with the name `{embed_name}`.",
+                color=discord.Color.red()
+            )
+            return await ctx.respond(embed=localembed, ephemeral=True)
+        else:
+            localembed = _embeds.build_embed(ctx.guild.id, embed_name=embed_name)
+            await ctx.respond(f"## :white_check_mark: Author section successfully added to server embed `{embed_name}\nHere's a preview of your modified embed:`", embed=localembed)
+
+    @embed_system.command(
+        name="add_embed_footer",
+        description="Add or replace the footer of an existing server embed."
+    )
+    @commands.guild_only()
+    @option(name="embed_name", description="The server embed to which you want to add the author", type=str)
+    @option(name="text", description="The text you want to display in the footer.", type=str)
+    @option(name="icon_url", description="Add an icon in the footer of the embed. (https:// only)", type=str, default=None)
+    async def embeds_add_embed_author(self, ctx: ApplicationContext, embed_name: str, text: str, icon_url: str = None):
+        """Add or replace the footer of an existing server embed."""
+        if not ctx.author.guild_permissions.manage_messages:
+            return await ctx.respond(
+                "You can't use this command! You need the `Manage Messages` permission in this server to run this command.",
+                ephemeral=True
+            )
+        result_code = _embeds.add_embed_footer(ctx.guild.id, embed_name=embed_name, text=text, icon_url=icon_url)
+        if result_code == 1:
+            localembed = discord.Embed(
+                title=":x: Failed to add footer to embed",
+                description=f"This server does not have an embed with the name `{embed_name}`.",
+                color=discord.Color.red()
+            )
+            return await ctx.respond(embed=localembed, ephemeral=True)
+        else:
+            localembed = _embeds.build_embed(ctx.guild.id, embed_name=embed_name)
+            await ctx.respond(f"## :white_check_mark: Footer section successfully added to server embed `{embed_name}\nHere's a preview of your modified embed:`", embed=localembed)
+
+    # Isobot Command Registry Management System
     commandmanager = SlashCommandGroup("commandmanager", "Manage isobot's command registry.")
 
     @commandmanager.command(

@@ -13,7 +13,7 @@ from math import floor
 from random import randint
 from framework.isobot import currency, colors, settings, commands as _commands
 from framework.isobot.shop import ShopData
-from framework.isobot.db import levelling, items, userdata, automod, weather, warnings, presence as _presence, serverconfig
+from framework.isobot.db import levelling, items, userdata, automod, weather, warnings, presence as _presence, serverconfig, embeds
 from discord import ApplicationContext, option
 from discord.ext import commands
 from cogs.isocoin import create_isocoin_key
@@ -53,6 +53,7 @@ def initial_setup():
             "presence",
             "user_data",
             "weather",
+            "embeds",
             "isobank/accounts",
             "isobank/auth"
         ]
@@ -122,6 +123,7 @@ userdata = userdata.UserData()
 automod = automod.Automod()
 _presence = _presence.Presence()
 weather = weather.Weather()
+embeds = embeds.Embeds()
 _commands = _commands.Commands()
 shop_data = ShopData("config/shop.json")
 
@@ -245,6 +247,7 @@ async def on_message(ctx):
         try:
             automod.generate(ctx.guild.id)
             serverconfig.generate(ctx.guild.id)
+            embeds.generate_server_key(ctx.guild.id)
             warningsdb.generate(ctx.guild.id, ctx.author.id)
         except AttributeError: pass
 
