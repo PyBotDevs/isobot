@@ -435,7 +435,27 @@ class Utils(commands.Cog):
             title=f"Custom Server Embeds for **{ctx.guild.name}**",
             description=parsed_output
         )
+        localembed.set_footer(text="Run \"/embeds view <embed name>\" to get a preview of an embed.")
         await ctx.respond(embed=localembed)
+    
+    @embed_system(
+        name="view",
+        description="See a preview of an existing custom embed in the server."
+    )
+    @commands.guild_only()
+    @option(name="embed_name", description="The server embed that you want to view.", type=str)
+    async def embeds_view(self, ctx: ApplicationContext, embed_name: str):
+        """See a preview of an existing custom embed in the server."""
+        if not ctx.author.guild_permissions.manage_messages:
+            return await ctx.respond(
+                "You can't use this command! You need the `Manage Messages` permission in this server to run this command.",
+                ephemeral=True
+            )
+        embed_preview = _embeds.build_embed(ctx.guild.id, embed_name=embed_name)
+        await ctx.respond(
+            f"Here's a preview of the server embed `{embed_name}`:",
+            embed=embed_preview
+        )
     
     @embed_system.command(
         name="add_embed_field",
