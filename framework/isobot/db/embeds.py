@@ -57,8 +57,8 @@ class Embeds():
 
         if embed_name not in embeds[str(server_id)].keys():
             # Check whether color code is a valid value or not
-            if color not in [-1, 0] or not framework.types.is_hex_color_code(color):
-                return 2
+            #if color not in [-1, 0] or not framework.types.is_hex_color_code(color):
+            #    return 2
             
             embeds[str(server_id)][embed_name] = {
                 "title": title,
@@ -82,6 +82,12 @@ class Embeds():
         if embed_name in embeds[str(server_id)].keys():
             embed_data = embeds[str(server_id)][embed_name]
             
+            title = embed_data["title"]
+            description = embed_data["description"]
+            color = embed_data["color"]
+            title_url = embed_data["title_url"]
+            image_url = embed_data["image_url"]
+            thumbnail = embed_data["thumbnail"]
             if embed_data["title"] == None: title = discord.Embed.Empty
             if embed_data["description"] == None: description = discord.Embed.Empty
             if embed_data["color"] == None: color = discord.Embed.Empty
@@ -92,7 +98,7 @@ class Embeds():
             embed = discord.Embed(
                 title=title,
                 description=description,
-                color = discord.Color.random() if embed_data["color"] == -1 else embed_data["color"],
+                color = discord.Color.random() if embed_data["color"] == -1 else color,
                 url=title_url,
                 timestamp = datetime.datetime.utcnow() if embed_data["timestamp_enabled"] else discord.Embed.Empty
             )
@@ -101,12 +107,14 @@ class Embeds():
 
             for field in embed_data["fields"]:
                 embed.add_field(
-                    name=embed_data["fields"][field]["name"],
-                    value=embed_data["fields"][field]["value"],
-                    inline=embed_data["fields"][field]["inline"]
+                    name=field["name"],
+                    value=field["value"],
+                    inline=field["inline"]
                 )
 
             if embed_data["author"] != {}:
+                author_url = embed_data["author"]["url"]
+                author_icon_url = embed_data["author"]["icon_url"]
                 if embed_data["author"]["url"] == None: author_url = discord.Embed.Empty
                 if embed_data["author"]["icon_url"] == None: author_icon_url = discord.Embed.Empty
                 embed.set_author(name=embed_data["author"]["name"], url=author_url, icon_url=author_icon_url)
@@ -138,7 +146,7 @@ class Embeds():
         """Adds a new field to an already existing embed.\n\nReturns `0` if successful, returns `1` if the embed does not exist."""
         embeds = self.load()
         if embed_name in embeds[str(server_id)].keys():
-            list(embeds[str(server_id)][embed_name]["fields"]).append(
+            embeds[str(server_id)][embed_name]["fields"].append(
                 {
                     "name": name,
                     "value": value,

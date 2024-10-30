@@ -376,9 +376,10 @@ class Utils(commands.Cog):
             image_url=image_url,
             thumbnail=thumbnail
         )
+        new_embed = _embeds.build_embed(ctx.guild.id, embed_name)
         await ctx.respond(
             f"## :white_check_mark: Embed Successfully Created.\nThe name of this custom embed is `{embed_name}`. You can use this embed name to reference this custom embed in other commands.\n\nHere's a preview of your new embed:",
-            embed=_embeds.build_embed(ctx.guild.id, embed_name)
+            embed=new_embed
         )
     
     @embed_system.command(
@@ -462,7 +463,7 @@ class Utils(commands.Cog):
             return await ctx.respond(embed=localembed, ephemeral=True)
         else:
             localembed = _embeds.build_embed(ctx.guild.id, embed_name=embed_name)
-            await ctx.respond(f"## :white_check_mark: New field successfully added to server embed `{embed_name}\nHere's a preview of your modified embed:`", embed=localembed)
+            await ctx.respond(f"## :white_check_mark: New field successfully added to server embed `{embed_name}`\nHere's a preview of your modified embed:", embed=localembed)
 
     @embed_system.command(
         name="add_embed_author",
