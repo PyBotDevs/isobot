@@ -22,6 +22,15 @@ class Embeds():
         with open("database/embeds.json", 'w+', encoding="utf8") as f: json.dump(data, f)
         return 0
     
+    def generate_server_key(self, server_id: Union[str, int]) -> int:
+        """Creates a new data key for the specified server in the embeds database.\n\nReturns `0` if successful, returns `1` if the server already exists in the database."""
+        embeds = self.load()
+        if str(server_id) not in embeds.keys():
+            embeds[str(server_id)] = {}
+            self.save()
+            return 0
+        return 1
+    
     def get_embeds_list(self, server_id: Union[str, int]) -> dict:
         """Fetches a `dict` of all the added embeds in the specified server.\n\nReturns an empty `dict` if none are set up."""
         embeds = self.load()
@@ -43,6 +52,8 @@ class Embeds():
         ) -> int:
         """Generates an embed for the specified server using the given embed data.\n\nReturns `0` if successful, returns `1` if an embed with the same embed name already exists, returns `2` if the specified embed color is not a valid hex code."""
         embeds = self.load()
+        
+        self.generate_server_key(server_id)
 
         if embed_name not in embeds[str(server_id)].keys():
             # Check whether color code is a valid value or not
