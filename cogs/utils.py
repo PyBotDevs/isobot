@@ -422,7 +422,7 @@ class Utils(commands.Cog):
                 "You can't use this command! You need the `Manage Messages` permission in this server to run this command.",
                 ephemeral=True
             )
-        embeds_list = _embeds.get_embeds_list()
+        embeds_list = _embeds.get_embeds_list(ctx.guild.id)
         num = 0
         parsed_output = str()
         for embed in embeds_list.keys():
