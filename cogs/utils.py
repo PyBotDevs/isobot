@@ -438,7 +438,7 @@ class Utils(commands.Cog):
         localembed.set_footer(text="Run \"/embeds view <embed name>\" to get a preview of an embed.")
         await ctx.respond(embed=localembed)
     
-    @embed_system(
+    @embed_system.command(
         name="view",
         description="See a preview of an existing custom embed in the server."
     )
