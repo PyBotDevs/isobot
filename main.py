@@ -54,6 +54,7 @@ def initial_setup():
             "user_data",
             "weather",
             "embeds",
+            "isocard_transactions",
             "isobank/accounts",
             "isobank/auth"
         ]
