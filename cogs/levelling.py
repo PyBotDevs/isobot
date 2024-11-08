@@ -21,14 +21,19 @@ class Levelling(commands.Cog):
         description="Shows your rank or another user's rank"
     )
     @option(name="user", description="Who's rank do you want to view?", type=discord.User, default=None)
-    async def rank(self, ctx: ApplicationContext, user:discord.User=None):
+    async def rank(self, ctx: ApplicationContext, user: discord.User=None):
+        """Shows your rank or another user's rank."""
         if user is None: user = ctx.author
         try:
+            xpreq = int()
+            for level in range(levelling.get_level(ctx.author.id)):
+                xpreq += 50
+                if xpreq >= 5000: break
             localembed = discord.Embed(title=f"{user.display_name}'s rank", color=color)
             localembed.add_field(name="Level", value=levelling.get_level(user.id))
-            localembed.add_field(name="XP", value=levelling.get_xp(user.id))
-            localembed.set_footer(text="Keep chatting to earn levels!")
-            await ctx.respond(embed = localembed)
+            localembed.add_field(name="XP", value=f"{levelling.get_xp(user.id)}/{xpreq} gained")
+            localembed.set_footer(text="Keep chatting in servers to earn levels!\nYour rank is global across all servers.")
+            await ctx.respond(embed=localembed)
         except KeyError: return await ctx.respond("Looks like that user isn't indexed yet. Try again later.", ephemeral=True)
 
     @commands.slash_command(
@@ -37,7 +42,7 @@ class Levelling(commands.Cog):
     )
     @option(name="user", description="Who's rank do you want to edit?", type=discord.User)
     @option(name="new_rank", description="The new rank you want to set for the user", type=int)
-    async def edit_rank(self, ctx: ApplicationContext, user:discord.User, new_rank:int):
+    async def edit_rank(self, ctx: ApplicationContext, user: discord.User, new_rank: int):
         if ctx.author.id != 738290097170153472: return await ctx.respond("This command isn't for you.", ephemeral=True)
         try:
             levelling.set_level(user.id, new_rank)
@@ -50,7 +55,7 @@ class Levelling(commands.Cog):
     )
     @option(name="user", description="Who's rank do you want to edit?", type=discord.User)
     @option(name="new_xp", description="The new xp count you want to set for the user", type=int)
-    async def edit_xp(self, ctx: ApplicationContext, user:discord.User, new_xp:int):
+    async def edit_xp(self, ctx: ApplicationContext, user: discord.User, new_xp: int):
         if ctx.author.id != 738290097170153472: return await ctx.respond("This command isn't for you.", ephemeral=True)
         try:
             levelling.set_xp(user.id, new_xp)
@@ -62,6 +67,7 @@ class Levelling(commands.Cog):
         description="View the global leaderboard for user levelling ranks."
     )
     async def leaderboard_levels(self, ctx: ApplicationContext):
+        await ctx.defer()
         levels = levelling.get_raw()
         levels_dict = dict()
         for person in levels:
@@ -74,9 +80,8 @@ class Levelling(commands.Cog):
             if y < 10:
                 try:
                     if levels_dict[i] != 0:
-                        user_context = await commands.fetch_user(i)
+                        user_context = await ctx.bot.fetch_user(i)
                         if not user_context.bot and levels_dict[i] != 0:
-                            print(i, levels_dict[i])
                             if y == 1: yf = ":first_place:"
                             elif y == 2: yf = ":second_place:"
                             elif y == 3: yf = ":third_place:"
@@ -86,6 +91,11 @@ class Levelling(commands.Cog):
                 except discord.errors.NotFound: continue
         localembed = discord.Embed(title="Global levelling leaderboard", description=parsed_output, color=color)
         await ctx.respond(embed=localembed)
+
+    # User Commands
+    @commands.user_command(name="View Rank")
+    async def _view_rank(self, ctx: ApplicationContext, user: discord.User):
+        await self.rank(ctx, user)
 
 def setup(bot):
     bot.add_cog(Levelling(bot))

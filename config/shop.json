@@ -218,5 +218,85 @@
         "available": true,
         "giftable": true,
         "sellable": true
+    },
+    "chessboard": {
+        "stylized name": "Chess Board",
+        "buy price": 58000,
+        "sell price": 30680,
+        "description": "Show off to people that you know how to play chess! By owning this, you want to pretend to people that you play chess, or that you love chess, or maybe that you are addicted to it.\n\n(especially Xyren)",
+        "collection": "collectable",
+        "available": true,
+        "giftable": true,
+        "sellable": true
+    },
+    "pawn": {
+        "stylized name": "Pawn",
+        "buy price": 1000,
+        "sell price": 600,
+        "description": "Advances forwards in the chess board in a straight line, but can only move diagonally to slash another piece.\nCan perform molecular restructuring and morph into another piece type at the end of the board.\n\n*Part of the Chess Collection Set*",
+        "collection": "collectable",
+        "available": true,
+        "giftable": true,
+        "sellable": true
+    },
+    "king": {
+        "stylized name": "King",
+        "buy price": 12000,
+        "sell price": 8000,
+        "description": "One of the most important pieces of the chess board, but at the same time the most useless. Can move in any direction, including diagonally, but only within one square distance.\n\n*Part of the Chess Collection Set*",
+        "collection": "collectable",
+        "available": true,
+        "giftable": true,
+        "sellable": true
+    },
+    "queen": {
+        "stylized name": "Queen",
+        "buy price": 10000,
+        "sell price": 7500,
+        "description": "Arguably one of the most important pieces. Has high-level attack properties and moves in asterisks. Don't let it slip though, you've only got one.\n\n*Part of the Chess Collection Set*",
+        "collection": "collectable",
+        "available": true,
+        "giftable": true,
+        "sellable": true
+    },
+    "horse": {
+        "stylized name": "Horsey",
+        "buy price": 6000,
+        "sell price": 3500,
+        "description": "Moves in Ls, just like you did when you lost the chess match against a 500 elo bot for the first time.\n\n*Part of the Chess Collection Set*",
+        "collection": "collectable",
+        "available": true,
+        "giftable": true,
+        "sellable": true
+    },
+    "rook": {
+        "stylized name": "Rook Piece",
+        "buy price": 6520,
+        "sell price": 4500,
+        "description": "The ROOOOOOOOOK\n\n*Part of the Chess Collection Set*",
+        "collection": "collectable",
+        "available": true,
+        "giftable": true,
+        "sellable": true
+    },
+    "bishop": {
+        "stylized name": "Bishop Piece",
+        "buy price": 7500,
+        "sell price": 5000,
+        "description": "Can move diagonally in the chess board.\n\n*Part of the Chess Collection Set*",
+        "collection": "collectable",
+        "available": true,
+        "giftable": true,
+        "sellable": true
+    },
+    "computer": {
+        "stylized name": "Computer",
+        "buy price": 12000,
+        "sell price": 6000,
+        "description": "A performance-packed workstation that you can use to hack people.",
+        "collection": "utility",
+        "available": true,
+        "giftable": true,
+        "sellable": true
     }
 }

@@ -1,87 +1,347 @@
-<!--
-    NKA (Formerly PyBotDevs) 2022. For enquiries contact PyBotDevs <pybotdevs@outlook.com>  
-    
-    ABOUT:
-        This webpage was made for letting the user get to know about Isobot lazer and it's features.
-        Also contains links and bridges to Github.
-        Secondary purpose is there too. It's to let Uptimerobot know if the bot is online. 
-    NOTES:
-        -> This website is also deployed on the running client for Uptimerobot. 
-        -> However, since the default deployed client does not have a domain, (most likely) it will redirect the user to the Github Pages deployment (which is still accurate because it needs the client to redirect anyway).
-        ->> WE RESERVE THE RIGHT TO CHANGE the deployment services or strategies at any given time without prior notice.
--->
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
-        <title>Isobot lazer - The future of isobot</title>
-        <link rel="stylesheet" href="iso-render-bootstrap.css">
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
-        <!--Extra language fonts-->
-            <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP&display=swap" rel="stylesheet"> <!--Japanese heading-->
+        <title>NKA Development Organization</title>
+        <!--<link rel="stylesheet" type="text/css" href="style.css">-->
+        <!--<link rel="shortcut icon" href="resources/nka_white.png">--> <!-- Local Version (Disabled because not viewable by Flask) -->
+        <link rel="shortcut icon" href="https://github.com/PyBotDevs/resources/nka/nka_white.png?raw=true"> <!-- Github Repo Version -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
-    <noscript>Some functions of this website may need JavaScript. Consider <b>enabling it</b> for your browser.</noscript>
-    <body>
-        <div id="window">
-            <div id="upper-head-banner">
-                <label id="heading">Isobot lazer <label>(Isobotレーザー)</label></label><br>
-                <div class="line"></div><br>
-                <label id="desc">The future of isobot. <label>(アイソボットの未来。)</label></label>
-            </div>
-        </div>
-        <div id="element-concentration">
-            <!--The main information body for the webpage render-->
-            <center>
-                <div class="promo-card text-card" id="github-promo">
-                    <label><img src="resources/github-light.png" width="50">&nbsp; Follow along on Github!</label><br><br>
-                    <button class="button-wide"><img src="resources/github-dark.png" width="20">&nbsp; Go to Repository</button>
-                </div>
-                <!--Temporarily added for testing bootstrap-->
-                <div class="text-card">
-                    <b><u>More stuff coming soon!</u></b><br><br>
-                    <!--<button>Button placeholder</button>--> 
-                </div>
-            </center>
-        </div>
-    </body>
     <style>
+        /* Imports */
+        @import url('https://fonts.googleapis.com/css2?family=Darumadrop+One&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP&display=swap');
+
+        /* General */
         body {
             margin: 0px;
             padding: 0px;
-            font-size: 14px;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            font-weight: normal;
-            background-color: #151515;
+            background-color: black;
             color: white;
+            font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        #upper-head-banner {
+        button {
+            padding: 10px;
+            border-radius: 100px;
+            color: black;
+            background-color: white;
+            font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 17px;
+            border: none;
+            box-shadow: 3px 3px 10px 1px rgb(31, 31, 31);
+        }
+        button:hover {
+            color: #AA00FF;
+            cursor: pointer;
+            box-shadow: 0px 0px 10px 1px white;
+        }
+        button:active {
+            color: #AA00FF;
+            background-color: rgb(221, 221, 221);
+            box-shadow: 0px 0px 10px 1px white;
+        }
+
+        /* Top Nav Bar */
+        #top-nav-bar {
+            position: fixed;
+            background-color: rgba(19, 19, 19, 0.8);
+            backdrop-filter: blur(30px);
             width: 100%;
-            background-color: rgb(125, 212, 241);
-            padding-top: 20px;
-            padding-bottom: 20px;
-            padding-left: 35px;
+            padding: 20px;
+            font-size: 17px;
+            z-index: 10;
+            overflow-x: auto;
+            overflow-y: hidden;
+            white-space: nowrap;
         }
-        #upper-head-banner #heading {
-            font-size: 50px;
-            font-family: 'Varela Round', sans-serif;
+        #top-nav-bar label {
+            margin: 16px;
+        }
+        .nav-item {
+            padding: 10px;
+            border-radius: 100px;
+            color: black;
+            background-color: white;
+            box-shadow: 0px 0px 10px 3px rgb(31, 31, 31);
+        }
+        .nav-item:hover {
+            color: #AA00FF;
+            cursor: pointer;
+            box-shadow: 0px 0px 10px 1px #AA00FF;
+        }
+        #top-nav-bar #title {
+            font-weight: normal;
+            font-size: 24px;
+            margin-left: 0px;
+            font-family: 'Josefin Sans', sans-serif;
+        }
+        #top-nav-bar #title:hover {
+            cursor: pointer;
+        }
+        #top-nav-bar #invite-rd {
+            color: white;
+            background: linear-gradient(to bottom right, #AA00FF 0%, black 100%);
             font-weight: bold;
         }
-        #upper-head-banner #heading label {
+
+        /* Extra Eyecandy */
+        .separator {
+            border-radius: 100px;
+            width: 100px;
+            background-color: white;
+            height: 10px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            box-shadow: 3px 3px 10px 1px rgb(31, 31, 31);
+        }
+        .python3-highlight {
+            background: linear-gradient(to bottom right, #306998 0%, #FFD43B 100%);
+            width: fit-content;
+            color: black;
+        }
+        .discord-highlight {
+            background-color: #5865F2;
+            width: fit-content;
+            color: white;
+        }
+        .github-highlight {
+            background-color: #000000;
+            width: fit-content;
+            color: white;
+        }
+        .green-highlight {
+            background-color: green;
+            width: fit-content;
+            color: white;
+        }
+        .user-badge {
+            color: black;
+            background: white;
+            border-radius: 4px;
+            font-size: 14px;
+            padding: 1px;
+            margin: 1px;
+        }
+        .dev-badge {
+            color: white;
+            background: #EB64A7;
+        }
+        .contributor-badge {
+            color: white;
+            background: #E87435;
+        }
+        #snipe {
+            color: white;
+            background: #7F2ACF;
+        }
+        #archisha {
+            color: white;
+            background: #04B45C;
+        }
+        #iusearchbtw {
+            background: #04E9E9;
+        }
+        #isobotdev {
+            color: white;
+            background: #AA00FF;
+        }
+        #iso69dev {
+            color: white;
+            background: #10C068;
+        }
+        #archbotdev {
+            color: white;
+            background: #1081C1;
+        }
+        #dumbass {
+            color: white;
+            background: #CAA216;
+        }
+        #mafsguy {
+            color: white;
+            background: #090985;
+        }
+
+        /* Main Page Content */
+        .jap {
             font-family: 'Noto Serif JP', serif;
         }
-        #upper-head-banner #desc {
+        #page-content-container {
+            margin-left: 5%;
+            margin-right: 5%;
+        }
+        .item-card {
+            background-color: rgb(26, 26, 26);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0px 0px 10px 15px rgb(10, 10, 10); /* rgb(100, 100, 233) rgb(27, 27, 199)*/ 
+            margin-top: 25px;
+            margin-bottom: 25px;
+        }
+        #heading-card {
+            background: linear-gradient(to right, #AA00FF 0%, #55FF00 50%, #00FFFF 100%);
+        }
+        #heading-card img {
+            width: 250px;
+            margin-bottom: 20px;
+        }
+        #heading-card #title {
+            font-size: 50px;
+            font-style: italic;
+            font-weight: bold;
+            font-family: 'Josefin Sans', sans-serif;
+        }
+        #heading-card #jap-title {
+            font-size: 26px;
+            font-style: italic;
+            font-weight: bold;
+            font-family: 'Josefin Sans', sans-serif;
+        }
+        #heading-card #subtitle {
             font-size: 21px;
-            font-weight: normal;
         }
-        #upper-head-banner #desc label {
-            font-family: 'Noto Serif JP', serif;
+        #heading-card #invite-button {
+            width: 100%;
+            margin-top: 20px;
         }
-        #element-concentration {
-            margin-top: 55px;
+        #why-to-use-card {
+            text-align: left;
         }
-        #github-promo {
-            background-color: rgb(14, 14, 14);
+        #why-to-use-card #title {
+            font-size: 40px;
+            font-weight: 800;
+            background: #AA00FF;
+        }
+        #why-to-use-card .subtitle {
+            font-size: 32px;
+            font-weight: bold;
+        }
+        #invite-card-end #title {
+            font-size: 35px;
+            font-style: italic;
+            font-weight: bold;
+            font-family: 'Josefin Sans', sans-serif;
+        }
+        #invite-card-end #invite-button {
+            width: 100%;
+            margin-top: 20px;
+        }
+
+
+
+        /* Footer */
+        #footer {
+            margin-top: 75px;
+            background-color: rgb(19, 19, 19);
+            font-size: 12px;
+            font-family: 'Roboto Mono', monospace;
+            text-align: center;
+            padding: 10px;
+            box-shadow: 0px 0px 10px 8px rgb(10, 10, 10);
         }
     </style>
+    <noscript>This app requires JavaScript to function. Please enable it in your browser settings.</noscript>
+    <body>
+        <div id="top-nav-bar">
+            <label id="title">NKA</label>
+            <label class="nav-item" id="github-rd" onclick="rd('git')">Our Projects</label>
+            <label class="nav-item" id="isobot-rd" onclick="rd('isobot')">isobot</label>
+            <label class="nav-item" id="yatodb-rd" onclick="rd('yatodb')">YAToDB</label>
+            <label class="nav-item" id="iso6-9-rd" onclick="rd('iso6.9')">iso6.9</label>
+            <label class="nav-item" id="skyblockpy-rd" onclick="rd('skyblockpy')">SkyblockPy</label>
+            <label class="nav-item" id="codebot-rd" onclick="rd('codebot')">CodeBot</label>
+            <label class="nav-item" id="discord-rd" onclick="rd('server')">Discord Server</label>
+        </div>
+        <br><br><br>
+        <center>
+            <div id="page-content-container">
+                <div class="item-card" id="heading-card">
+                    <img src="resources/nka_white.png">
+                    <br>
+                    <label id="title">NKA</label>
+                    <br>
+                    <label class="jap" id="jap-title">Python開発組織</label>
+                    <div class="separator"></div>
+                    <p id="subtitle">We are a development team, we code in Python. We make Discord bots, and occasionally other Python/web related projects.</p>
+                    <button id="invite-button" onclick="rd('git')">Check out our projects!</button>
+                </div>
+                <br>
+                <div class="item-card" id="why-to-use-card">
+                    <label id="title">About us<br><div class="separator"></div></label>
+                    <br>
+                    <label class="subtitle">What do we do?</label>
+                    <p>
+                        We create various types of Discord bots, including moderating bots, economical bots, and more. Feel free to submit your ideas via head members' Discord!
+                    </p>
+                    <br>
+                    <label class="subtitle">> Our most popular bots</label>
+                    <p>
+                        <ul>
+                            <li><a href="https://github.com/PyBotDevs/isobot">isobot</a></li>
+                            <li><a href="https://github.com/PyBotDevs/iso6.9">iso6.9</a></li>
+                            <li><a href="https://github.com/PyBotDevs/yatodb">YAToDB</a></li>
+                        </ul>
+                    </p>
+                    <br>
+                    <label class="subtitle">> Our rules</label>
+                    <p>
+                        <ul>
+                            <li><b>Reduce, Reuse, and Rewrite</b> - notsniped</li>
+                            <li><b>Recreate, Recycle, and Refine</b> - archisa69</li>
+                            <li><b>Rebuild, Refresh, and Reinforce</b> - thatOneArchUser</li>
+                        </ul>
+                    </p>
+                    <br>
+                    <label class="subtitle">> Head members</label>
+                    <p>
+                        <ul>
+                            <li>notsniped <label class="user-badge" id="snipe">SNIPE</label> <label class="user-badge dev-badge">DEV</label> <label class="user-badge" id="isobotdev">isobot dev</label> <label class="user-badge contributor-badge">Contributor</label> <label class="user-badge" id="dumbass">dumbass who goes to school</label></li>
+                            <li>archisa69 <label class="user-badge" id="archisha">Archisha</label> <label class="user-badge dev-badge">DEV</label> <label class="user-badge" id="iso69dev">iso6.9 dev</label> <label class="user-badge contributor-badge">Contributor</label> <label class="user-badge" id="chess">♟️ chess</label></li>
+                            <li>hairyballtheorem <label class="user-badge" id="iusearchbtw">i use arch btw</label> <label class="user-badge dev-badge">DEV</label> <label class="user-badge" id="archbotdev">archbot dev</label> <label class="user-badge contributor-badge">Contributor</label> <label class="user-badge" id="mafsguy">mafs guy</label></li>
+                        </ul>
+                    </p>
+                    <br><br>
+                    <label id="title">About our repositories<br><div class="separator"></div></label>
+                    <br>
+                    <label class="subtitle">> Having problems?</label>
+                    <p>
+                        Feel free to ask via creating an issue in repositories or ask directly in Discord!
+                    </p>
+                    <br>
+                    <label class="subtitle">> Experienced bugs and glitches?</label>
+                    <p>
+                        Report them on certain repositories by creating issues!
+                    </p>
+                    <br>
+                </div>
+                <br>
+                <div class="item-card" id="invite-card-end">
+                    <label id="title">Invite isobot to your server!</label>
+                    <br>
+                    <button id="invite-button" onclick="rd('isobot-invite')">Add To Your Discord Server!</button>
+                </div>
+            </div>
+        </center>
+        <div id="footer"><a href="https://instagram.com/nka_development">Instagram</a>&nbsp;&nbsp;<a href="https://discord.gg/b5pz8T6Yjr">Discord</a>&nbsp;&nbsp;<a href="https://x.com/nka_development">Twitter/X</a>
+            <br>
+            &copy; NKA 2022-present | This page is open-source, licensed with GPL-3.0, and hosted on GitHub. | i use arch btw
+        </div>
+    </body>
+    <!--<script src="main.js"></script>-->
+    <script>
+        function rd(target) {
+            // Redirects the user to a subpage, or another page.
+            if (target == "git") {window.location = "https://github.com/orgs/PyBotDevs/repositories";}
+            else if (target == "isobot") {window.location = "https://pybotdevs.github.io/isobot";}
+            else if (target == "yatodb") {window.location = "https://PyBotDevs.github.io/yatodb";}
+            else if (target == "iso6.9") {window.location = "https://github.com/PyBotDevs/iso6.9";}
+            else if (target == "skyblockpy") {window.location = "https://github.com/PyBotDevs/skyblockpy";}
+            else if (target == "codebot") {window.location = "https://github.com/PyBotDevs/codebot";}
+            else if (target == "server") {window.location = "https://discord.gg/b5pz8T6Yjr";}
+            else {console.error("Page target does not exist.");}
+        }
+    </script>
 </html>

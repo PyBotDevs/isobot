@@ -4,19 +4,20 @@
 import discord
 import praw
 import os
+from api import auth
 from discord import ApplicationContext, option
 from discord.ext import commands
 from random import randint
 
 # Variables
 color = discord.Color.random()
-reddit = praw.Reddit(client_id='_pazwWZHi9JldA', client_secret=os.environ['reddit_CLIENT_SECRET'], user_agent='idk', check_for_async=False)
+reddit = praw.Reddit(client_id='_pazwWZHi9JldA', client_secret=auth.ext_token('reddit'), user_agent='idk', check_for_async=False)
 
 # Commands
 class RedditMedia(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-    
+
     @commands.slash_command(
         name='memes',
         description='Finely hand-picks a high-quality meme from the depths of reddit.'
