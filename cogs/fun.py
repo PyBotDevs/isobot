@@ -52,7 +52,7 @@ class Fun(commands.Cog):
         text = text.replace("the", "da")
         text = text.replace("you", "u")
         text = text.replace("your", "ur")
-        text += random.choice([" uwu", " owo", " UwU", " OwO", " XDDD", " :D", " ;-;", " <3", " ^-^", " >-<"])
+        text += random.choice((" uwu", " owo", " UwU", " OwO", " XDDD", " :D", " ;-;", " <3", " ^-^", " >-<"))
         await ctx.respond(text)
 
     @commands.slash_command(
