@@ -30,6 +30,32 @@ class Maths(commands.Cog):
         localembed = discord.Embed(title=f"Square root of {number}", description=result, color=color)
         localembed.set_footer(text=f"√({number}) = {result}")
         await ctx.respond(embed=localembed)
+    
+    @math.command(
+        name="solve_quadratic_roots",
+        description="Find the (real) root(s) of a quadratic equation/function."
+    )
+    @option(name="coeff_a", description="Coefficient 'a' of the equation", type=int)
+    @option(name="coeff_b", description="Coefficient 'b' of the equation", type=int)
+    @option(name="coeff_c", description="Coefficient 'c' of the equation", type=int)
+    async def math_solve_quadratic_roots(self, ctx: ApplicationContext, coeff_a: int, coeff_b: int, coeff_c: int):
+        """Find the (real) root(s) of a quadratic equation/function."""
+        # First finding discrim of Q.E
+        a = coeff_a
+        b = coeff_b
+        c = coeff_c
+        discrim = (b^2) - 4 * a * c
+        if discrim >= 0:
+            root_1 = (-b * sqrt((b^2) - 4 * a * c))/2*a
+            root_2 = (-b * -sqrt((b^2) - 4 * a * c))/2*a
+            result = f"The roots of the quadratic equation are:\n- **Root 1:** {root_1}``\n- **Root 2:** {root_2}``\n\n```Equation:\n\nf(x) = {a}x² + {b}x + {c} = 0```"
+        else:
+            result = "The roots of the quadratic equation are imaginary."
+        localembed = discord.Embed(
+            title=f"Roots of the Quadratic Equation **{a}x² + {b}x + {c} = 0**",
+            description=result
+        )
+        ctx.respond(embed=localembed)
 
     @math.command(
         name="area_square",
