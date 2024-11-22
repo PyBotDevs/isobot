@@ -23,7 +23,7 @@ userdata = userdata.UserData()
 shop_data = ShopData("config/shop.json")
 all_item_ids = shop_data.get_item_ids()
 shopitem = shop_data.get_raw_data()
-jobs = [
+jobs = (
     "Discord mod",
     "YouTuber",
     "Streamer",
@@ -31,7 +31,7 @@ jobs = [
     "Scientist",
     "Engineer",
     "Doctor"
-]
+)
 
 # Commands
 class Economy(commands.Cog):
@@ -99,7 +99,7 @@ class Economy(commands.Cog):
     )
     @commands.cooldown(1, 15, commands.BucketType.user)
     async def beg(self, ctx: ApplicationContext):
-        names = [
+        names = (
             "A random person",
             "Your friend",
             "Your boss",
@@ -126,8 +126,8 @@ class Economy(commands.Cog):
             "Your maths teacher",
             "Galaxy",
             "Taylor Swift"
-        ]
-        fail_responses = [
+        )
+        fail_responses = (
             "Maybe another day.",
             "Hell nah.",
             "Sorry I don't have any cash on me.",
@@ -140,7 +140,7 @@ class Economy(commands.Cog):
             "I think I know what you're gonna do with that money.",
             "Debloat notsniped's code and he will probably give you money.",
             "If you win a chess match against Xyren she will give you money."
-        ]
+        )
         if (randint(1, 100) >= 50):
             x = randint(10, 100)
             currency.add(ctx.author.id, x)
@@ -220,7 +220,7 @@ class Economy(commands.Cog):
     @commands.cooldown(1, 30, commands.BucketType.user)
     async def hunt(self, ctx: ApplicationContext):
         if items.fetch_item_count(ctx.author.id, "rifle") == 0: return await ctx.respond("I'd hate to see you hunt with your bare hands. Please buy a hunting rifle from the shop. ||/buy rifle||")
-        loot = ['rock', 'ant', 'skunk', 'boar', 'deer', 'dragon', 'nothing', 'died']
+        loot = ('rock', 'ant', 'skunk', 'boar', 'deer', 'dragon', 'nothing', 'died')
         choice = random.choice(loot)
         if choice != "nothing" and choice != "died":
             items.add_item(ctx.author.id, choice)
@@ -237,7 +237,7 @@ class Economy(commands.Cog):
     @commands.cooldown(1, 45, commands.BucketType.user)
     async def fish(self, ctx: ApplicationContext):
         if items.fetch_item_count(ctx.author.id, "fishingpole") == 0: return await ctx.respond("I don't think you can fish with your bare hands... or you can just put yo hands in the water bro **giga chad moment**\nAnyway it's just better to buy a fishing pole from the shop. ||/buy fishingpole||")
-        loot = ['shrimp', 'fish', 'rare fish', 'exotic fish', 'jellyfish', 'shark', 'nothing']
+        loot = ('shrimp', 'fish', 'rare fish', 'exotic fish', 'jellyfish', 'shark', 'nothing')
         choice = random.choice(loot)
         if choice != "nothing":
             items.add_item(ctx.author.id, choice)
@@ -251,7 +251,7 @@ class Economy(commands.Cog):
     @commands.cooldown(1, 45, commands.BucketType.user)
     async def dig(self, ctx: ApplicationContext):
         if items.fetch_item_count(ctx.author.id, "shovel") == 0: return await ctx.respond("You're too good to have to dig with your bare hands..... at least I hope so. Please buy a shovel from the shop. ||/buy shovel||")
-        loot = [
+        loot = (
             'coins',
             'shovel',
             'ant',
@@ -262,7 +262,7 @@ class Economy(commands.Cog):
             'rare lootbox',
             'nothing',
             'died',
-        ]
+        )
         choice = random.choice(loot)
         if (choice == "coins"):
             currency.add(ctx.author.id, random.randint('1000', '5000'))
