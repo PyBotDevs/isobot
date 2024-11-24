@@ -31,7 +31,7 @@ def initial_setup():
     """Runs the initial setup for isobot's directories.\nThis creates missing directories, new log files, as well as new databases for any missing `.json` database files."""
     # Create required client directories
     try:
-        paths = ["database", "database/isobank", "config", "logs", "themes"]
+        paths = ("database", "database/isobank", "config", "logs", "themes")
         for p in paths:
             if not os.path.isdir(p):
                 logger.warn(f"'{p}' directory appears to be missing. Created new directory for '{p}'.", module="main/Setup", nolog=True)
@@ -41,7 +41,7 @@ def initial_setup():
 
     # Generating database files
     try:
-        databases = [
+        databases = (
             "automod",
             "currency",
             "isocard",
@@ -57,7 +57,7 @@ def initial_setup():
             "isocard_transactions",
             "isobank/accounts",
             "isobank/auth"
-        ]
+        )
         for f in databases:
             if not os.path.isfile(f"database/{f}.json"):
                 logger.warn(f"[main/Setup] '{f}.json' was not found in database directory. Creating new database...", module="main/Setup", nolog=True)
@@ -579,7 +579,7 @@ async def credits(ctx: ApplicationContext):
     await ctx.respond(embed=localembed)
 
 # Initialization
-active_cogs = [
+active_cogs = (
     "economy",
     "maths",
     "reddit",
@@ -595,7 +595,7 @@ active_cogs = [
     # "osu",  Disabled due to ossapi library metadata issues. (will probably remove osu cog anyway, because cog code is outdated with ossapi library)
     "weather",
     "isocard"
-]
+)
 i = 1
 cog_errors = 0
 for x in active_cogs:
