@@ -55,7 +55,7 @@ class Maths(commands.Cog):
             title=f"Roots of the Quadratic Equation **{a}x² + {b}x + {c} = 0**",
             description=result
         )
-        ctx.respond(embed=localembed)
+        await ctx.respond(embed=localembed)
 
     @math.command(
         name="area_square",
