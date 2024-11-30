@@ -3,6 +3,7 @@
 # Imports
 import discord
 import random
+import json
 from framework.isobot.db.isocard import IsoCard
 from discord import option, ApplicationContext, SlashCommandGroup
 from discord.ext import commands
