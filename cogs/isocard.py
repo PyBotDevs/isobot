@@ -75,7 +75,7 @@ class IsoCard(commands.Cog):
         description="View a list of all your cards."
     )
     async def my_card(self, ctx: ApplicationContext):
-        all_card_numbers = isocard_db.keys()
+        all_card_numbers = isocard_db.fetch_all_cards()
         your_cards = list()
         for card in all_card_numbers:
             if isocard_db[str(card)]["cardholder_user_id"] == ctx.author.id: your_cards.append(str(card))
