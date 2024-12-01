@@ -76,14 +76,15 @@ class IsoCard(commands.Cog):
     )
     async def my_card(self, ctx: ApplicationContext):
         all_card_numbers = isocard_db.fetch_all_cards()
+        isocard_database = isocard_db.raw()
         your_cards = list()
         for card in all_card_numbers:
-            if isocard_db[str(card)]["cardholder_user_id"] == ctx.author.id: your_cards.append(str(card))
+            if isocard_database[str(card)]["cardholder_user_id"] == ctx.author.id: your_cards.append(str(card))
         embed_desc = str()
         sr = 1
         for card in your_cards:
-            if isocard_db[str(card)]["config"]["card_label"] != None:
-                embed_desc += f"{sr}. **{card}**: {isocard_db[str(card)]['config']['card_label']}\n"
+            if isocard_database[str(card)]["config"]["card_label"] != None:
+                embed_desc += f"{sr}. **{card}**: {isocard_database[str(card)]['config']['card_label']}\n"
             else: embed_desc += f"{sr}. **{card}**\n"
             sr += 1
         embed_desc += "\n*Nothing more here*"
