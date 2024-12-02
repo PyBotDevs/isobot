@@ -11,7 +11,7 @@ import api.auth
 from utils import logger, ping
 from math import floor
 from random import randint
-from framework.isobot import currency, colors, settings, commands as _commands
+from framework.isobot import currency, colors, settings, commands as _commands, isocard
 from framework.isobot.shop import ShopData
 from framework.isobot.db import levelling, items, userdata, automod, weather, warnings, presence as _presence, serverconfig, embeds
 from discord import ApplicationContext, option
