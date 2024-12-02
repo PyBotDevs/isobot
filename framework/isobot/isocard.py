@@ -14,7 +14,11 @@ log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
 app = Flask('')
 currency = currency.CurrencyAPI("database/currency.json", "")
-with open("database/isocards.json", 'r') as f: isocards = json.load(f)
+
+def call_isocards_database() -> dict:
+    """Calls all of the latest information from the IsoCards database."""
+    with open("database/isocards.json", 'r') as f: isocards = json.load(f)
+    return isocards
 
 def save(data):
     """Dumps all cached databases to the local machine."""
@@ -40,6 +44,7 @@ def main():
 @app.route('/requestpayment', methods=["GET"])
 def requestpayment():
     try:
+        isocards = call_isocards_database()
         with open("database/isocard_transactions.json", 'r') as f: transactions_db = json.load(f)
         args = request.args
         card_number = args.get("cardnumber")
@@ -114,6 +119,7 @@ def checkpayment():
 @app.route('/account', methods=["GET"])
 def account():
     try:
+        isocards = call_isocards_database()
         args = request.args
         isocard_number = args.get("cardnumber")
         ssc = args.get("ssc")
