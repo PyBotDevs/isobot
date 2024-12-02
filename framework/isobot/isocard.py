@@ -151,7 +151,7 @@ def account():
 # TODO: test this system and make sure it works
 
 # Initialization
-def run(): app.run(host="192.168.1.34", port=4800)
+def run(): app.run(host="0.0.0.0", port=4800)
 
 if auth.get_runtime_options()["isocard_server_enabled"]:  # Run server ONLY if its runtime option is enabled
     print("[isocard/server] Starting IsoCard payments server...")
