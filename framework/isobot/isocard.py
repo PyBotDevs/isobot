@@ -3,6 +3,7 @@
 import json
 import random
 import logging
+from api import auth
 from flask import Flask
 from flask import request
 from framework.isobot import currency
@@ -146,9 +147,10 @@ def account():
 # Initialization
 def run(): app.run(host="192.168.1.34", port=4800)
 
-t = Thread(target=run)
-t.daemon = True
-t.start()
+if auth.get_runtime_options()["isocard_server_enabled"]:  # Run server ONLY if its runtime option is enabled
+    t = Thread(target=run)
+    t.daemon = True
+    t.start()
 
 
 #btw i use arch
