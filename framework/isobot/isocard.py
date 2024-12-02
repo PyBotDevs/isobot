@@ -13,7 +13,7 @@ from threading import Thread
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
 app = Flask('')
-currency = currency.CurrencyAPI("database/currency.json", "")
+currency = currency.CurrencyAPI("database/currency.json", "logs/currency.log")
 
 def call_isocards_database() -> dict:
     """Calls all of the latest information from the IsoCards database."""
