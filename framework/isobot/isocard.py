@@ -51,7 +51,7 @@ def requestpayment():
         ssc = args.get("ssc")
         amount = args.get("amount")
         merchant_id = args.get("merchantid")
-        if isocards[str(card_number)]["ssc"] == ssc:
+        if str(isocards[str(card_number)]["ssc"]) == ssc:
             verification_code = generate_verification_code()
             user_id = isocards[str(card_number)]["cardholder_user_id"]
             transactions_db[str(verification_code)] = {
