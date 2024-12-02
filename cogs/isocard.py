@@ -115,7 +115,7 @@ class IsoCard(commands.Cog):
         description="Verify an ongoing transaction."
     )
     @option(name="verification_code", description="The 6-digit verification code for your transaction", type=int)
-    async def verify_transaction(ctx: ApplicationContext, verification_code: int):
+    async def verify_transaction(self, ctx: ApplicationContext, verification_code: int):
         try:
             with open("database/isocard_transactions.json", 'r') as f: transactions_db = json.load(f)
             if transactions_db[str(verification_code)]["payer_id"] == ctx.author.id:
