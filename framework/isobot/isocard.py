@@ -17,7 +17,7 @@ currency = currency.CurrencyAPI("database/currency.json", "")
 
 def call_isocards_database() -> dict:
     """Calls all of the latest information from the IsoCards database."""
-    with open("database/isocards.json", 'r') as f: isocards = json.load(f)
+    with open("database/isocard.json", 'r') as f: isocards = json.load(f)
     return isocards
 
 def save(data):
