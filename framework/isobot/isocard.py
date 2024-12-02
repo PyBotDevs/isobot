@@ -86,15 +86,15 @@ def checkpayment():
         args = request.args
         verification_code = args.get("verificationcode")
         if transactions_db[str(verification_code)]["status"] == "complete":
-            if currency.get_wallet(transactions_db[str(verification_code)]["payer_id"]) < transactions_db[str(verification_code)]["amount"]:
+            if currency.get_bank(transactions_db[str(verification_code)]["payer_id"]) < transactions_db[str(verification_code)]["amount"]:
                 del transactions_db[str(verification_code)]
                 return {
                     "code": 403,
                     "message": "Transaction terminated: Insufficient payer balance.",
                     "exception": "InsufficientFunds"
                 }, 403
-            currency.withdraw(transactions_db[str(verification_code)]["payer_id"], transactions_db[str(verification_code)]["amount"])
-            currency.deposit(transactions_db[str(verification_code)]["merchant_id"], transactions_db[str(verification_code)]["amount"])
+            currency.bank_remove(transactions_db[str(verification_code)]["payer_id"], transactions_db[str(verification_code)]["amount"])
+            currency.bank_add(transactions_db[str(verification_code)]["merchant_id"], transactions_db[str(verification_code)]["amount"])
             del transactions_db[str(verification_code)]
             save(transactions_db)
             return {
