@@ -20,7 +20,7 @@ We think isobot can help a multi-purpose economy Discord bot for your server. Ap
 * moderation
 * levelling
 * automod (swear-filter, link blocker)
-* server verification (soon)
+* server verification
 * maths commands
 * fun commands
 * ChatGPT and AI image generation commands
