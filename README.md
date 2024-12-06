@@ -30,7 +30,7 @@ We think isobot can help a multi-purpose economy Discord bot for your server. Ap
 ***PLEASE SUBMIT ISSUES AND PULL REQUESTS TO THE REPOSITORY!*** It helps us make our work easier c:
 
 ## When can I expect a fully-made version?
-Maybe not anytime soon...
+The isobot project is almost complete. and where I want it to be. So you can expect a fully-made version probably by the end of 2024 (or beginning of 2025).
 
 ## When the project's development is complete, what will happen?
 ***Our core project development is complete!*** We will still however update our project and add a **load** of features to it for the coming years. So, make sure to follow along in our Discord server for updates!
