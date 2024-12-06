@@ -148,8 +148,6 @@ def account():
         "exception": type(e).__name__
     }
 
-# TODO: test this system and make sure it works
-
 # Initialization
 def run(): app.run(host="0.0.0.0", port=4800)
 
