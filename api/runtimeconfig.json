@@ -11,7 +11,8 @@
         "guild_log_whitelist": {},
         "ping_server_override": false,
         "debug_mode": false,
-        "show_ping_on_startup": true
+        "show_ping_on_startup": true,
+        "isocard_server_enabled": true
     },
     "replit": false,
     "other_keys": {

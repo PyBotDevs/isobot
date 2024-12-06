@@ -3,6 +3,7 @@
 # Imports
 import discord
 import random
+import json
 from framework.isobot.db.isocard import IsoCard
 from discord import option, ApplicationContext, SlashCommandGroup
 from discord.ext import commands
@@ -74,15 +75,16 @@ class IsoCard(commands.Cog):
         description="View a list of all your cards."
     )
     async def my_card(self, ctx: ApplicationContext):
-        all_card_numbers = isocard_db.keys()
+        all_card_numbers = isocard_db.fetch_all_cards()
+        isocard_database = isocard_db.raw()
         your_cards = list()
         for card in all_card_numbers:
-            if isocard_db[str(card)]["cardholder_user_id"] == ctx.author.id: your_cards.append(str(card))
+            if isocard_database[str(card)]["cardholder_user_id"] == ctx.author.id: your_cards.append(str(card))
         embed_desc = str()
         sr = 1
         for card in your_cards:
-            if isocard_db[str(card)]["config"]["card_label"] != None:
-                embed_desc += f"{sr}. **{card}**: {isocard_db[str(card)]['config']['card_label']}\n"
+            if isocard_database[str(card)]["config"]["card_label"] != None:
+                embed_desc += f"{sr}. **{card}**: {isocard_database[str(card)]['config']['card_label']}\n"
             else: embed_desc += f"{sr}. **{card}**\n"
             sr += 1
         embed_desc += "\n*Nothing more here*"
@@ -107,6 +109,25 @@ class IsoCard(commands.Cog):
         isocard_db.set_card_label(card_number, new_label)
         if new_label == None: return await ctx.respond(embed=discord.Embed(description=":white_check_mark: Your card label has been reset.", color=discord.Color.green()), ephemeral=True)
         else: return await ctx.respond(embed=discord.Embed(description=":white_check_mark: Your card label has been edited.", color=discord.Color.green()), ephemeral=True)
+
+    @isocard.command(
+        name="verify_transaction",
+        description="Verify an ongoing transaction."
+    )
+    @option(name="verification_code", description="The 6-digit verification code for your transaction", type=int)
+    async def verify_transaction(self, ctx: ApplicationContext, verification_code: int):
+        try:
+            with open("database/isocard_transactions.json", 'r') as f: transactions_db = json.load(f)
+            if transactions_db[str(verification_code)]["payer_id"] == ctx.author.id:
+                transactions_db[str(verification_code)]["status"] = "complete"
+                with open("database/isocard_transactions.json", 'w+') as f: json.dump(transactions_db, f, indent=4)
+                localembed = discord.Embed(
+                    title="Transaction successfully verified.",
+                    description="Please wait patiently until the merchant has verified the transaction.",
+                    color=discord.Color.green()
+                )
+                await ctx.respond(embed=localembed, ephemeral=True)
+        except KeyError: return await ctx.respond("This transaction verification code is invalid.")
 
 # Initialization
 def setup(bot): bot.add_cog(IsoCard(bot))

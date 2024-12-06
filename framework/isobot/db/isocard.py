@@ -20,6 +20,16 @@ class IsoCard:
         with open("database/isocard.json", 'w+', encoding="utf-8") as f: json.dump(data, f, indent=4)
         return 0
     
+    def raw(self) -> dict:
+        """Returns all of the raw data from the IsoCard database.\n\n***WARNING:*** This function must **ONLY** be used for validation of IsoCard ownership, and nothing else."""
+        isocard_db = self.load()
+        return isocard_db
+
+    def fetch_all_cards(self) -> list:
+        """Fetches a `list` of all registered IsoCard numbers in the IsoCard database.\n\n***WARNING:*** This function must **ONLY** be used for validation of IsoCard ownership, and nothing else."""
+        isocard_db = self.load()
+        return list(isocard_db.keys())
+
     def fetch_card_data(self, card_id: int) -> dict:
         """Fetches the raw `dict` data related to the given IsoCard id.\n\nReturns data as `dict` if successful, returns `KeyError` if card id does not exist."""
         isocard_db = self.load()
