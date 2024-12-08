@@ -112,7 +112,7 @@ def checkpayment():
     }, 404
     except Exception as e: return {
         "code": 500,
-        "message": f"Failed to process payment: {e}",
+        "message": f"Failed to process payment due to an unhandled server error: {e}",
         "exception": type(e).__name__
     }, 500
 
