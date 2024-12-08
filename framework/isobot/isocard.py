@@ -3,6 +3,7 @@
 import json
 import random
 import logging
+import isocardtxn
 from api import auth
 from flask import Flask
 from flask import request
@@ -74,6 +75,7 @@ def requestpayment():
                 "status": "in_progress"
             }
             save(transactions_db)
+            isocardtxn.write_transaction(txn_id, user_id, merchant_id, card_number, user_id, int(amount), "In Progress")
             request_data = {
                 "code": 200,
                 "message": f"Payment requested to IsoCard number: {card_number}. Payment will be complete once user accepts this.",
@@ -101,6 +103,7 @@ def checkpayment():
         if transactions_db[str(verification_code)]["status"] == "complete":
             if currency.get_bank(transactions_db[str(verification_code)]["payer_id"]) < transactions_db[str(verification_code)]["amount"]:
                 del transactions_db[str(verification_code)]
+                isocardtxn.update_transaction_status(txn_id, "Terminated (insufficient balance)")
                 return {
                     "code": 403,
                     "txn_id": txn_id,
@@ -111,6 +114,7 @@ def checkpayment():
             currency.bank_add(transactions_db[str(verification_code)]["merchant_id"], transactions_db[str(verification_code)]["amount"])
             del transactions_db[str(verification_code)]
             save(transactions_db)
+            isocardtxn.update_transaction_status(txn_id, "Successful")
             return {
                 "code": 200,
                 "txn_id": txn_id,
@@ -126,7 +130,9 @@ def checkpayment():
         "message": "Verification code does not point to an active transaction.",
         "exception": "TransactionNotFound"
     }, 404
-    except Exception as e: return {
+    except Exception as e:
+        isocardtxn.update_transaction_status(txn_id, "Failed (unable to process payment)")
+        return {
         "code": 500,
         "message": f"Failed to process payment due to an unhandled server error: {e}",
         "exception": type(e).__name__
