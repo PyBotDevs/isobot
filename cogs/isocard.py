@@ -126,6 +126,7 @@ class IsoCard(commands.Cog):
                     description="Please wait patiently until the merchant has verified the transaction.",
                     color=discord.Color.green()
                 )
+                localembed.set_footer(text=f"Transaction ID: {transactions_db[str(verification_code)]['txn_id']}")
                 await ctx.respond(embed=localembed, ephemeral=True)
         except KeyError: return await ctx.respond("This transaction verification code is invalid.")
 

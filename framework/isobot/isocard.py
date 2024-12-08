@@ -36,6 +36,15 @@ def generate_verification_code() -> int:
     code: str = int_1 + int_2 + int_3 + int_4 + int_5 + int_6
     return int(code)
 
+def generate_txn_id() -> str:
+    """Generates a randomized transaction id, which is three **CAPITAL** letters followed by 6 numbers."""
+    txn_id = str()
+    for c in range(0, 3):
+        txn_id += str(random.choice(('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', ))).upper()
+    for n in range(0, 6):
+        txn_id += str(random.randint(0, 9))
+    return txn_id
+
 # API Commands
 @app.route('/', methods=["GET"])
 def main():
@@ -53,8 +62,10 @@ def requestpayment():
         merchant_id = args.get("merchantid")
         if str(isocards[str(card_number)]["ssc"]) == ssc:
             verification_code = generate_verification_code()
+            txn_id = generate_txn_id()
             user_id = isocards[str(card_number)]["cardholder_user_id"]
             transactions_db[str(verification_code)] = {
+                "txn_id": txn_id,
                 "payer_id": user_id,
                 "merchant_id": merchant_id,
                 "card_number": card_number,
@@ -66,6 +77,7 @@ def requestpayment():
             request_data = {
                 "code": 200,
                 "message": f"Payment requested to IsoCard number: {card_number}. Payment will be complete once user accepts this.",
+                "txn_id": txn_id,
                 "verification_code": verification_code
             }
             return request_data, 200
@@ -85,11 +97,13 @@ def checkpayment():
         with open("database/isocard_transactions.json", 'r') as f: transactions_db = json.load(f)
         args = request.args
         verification_code = args.get("verificationcode")
+        txn_id: str = transactions_db[str(verification_code)]["txn_id"]
         if transactions_db[str(verification_code)]["status"] == "complete":
             if currency.get_bank(transactions_db[str(verification_code)]["payer_id"]) < transactions_db[str(verification_code)]["amount"]:
                 del transactions_db[str(verification_code)]
                 return {
                     "code": 403,
+                    "txn_id": txn_id,
                     "message": "Transaction terminated: Insufficient payer balance.",
                     "exception": "InsufficientFunds"
                 }, 403
@@ -99,10 +113,12 @@ def checkpayment():
             save(transactions_db)
             return {
                 "code": 200,
+                "txn_id": txn_id,
                 "message": "Transaction complete."
             }, 200
         else: return {
             "code": 202,
+            "txn_id": txn_id,
             "message": "Transaction still not approved."
         }, 202
     except KeyError: return {
