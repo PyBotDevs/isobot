@@ -151,11 +151,13 @@ def account():
 # Initialization
 def run(): app.run(host="0.0.0.0", port=4800)
 
-if auth.get_runtime_options()["isocard_server_enabled"]:  # Run server ONLY if its runtime option is enabled
-    print("[isocard/server] Starting IsoCard payments server...")
-    t = Thread(target=run)
-    t.daemon = True
-    t.start()
+def deploy_server():
+    """Deploys the IsoCard Payments Server. (if the option is enabled in the runtimeconfig file)\n\nRuntimeconfig Option: `isocard_server_enabled`"""
+    if auth.get_runtime_options()["isocard_server_enabled"]:  # Run server ONLY if its runtime option is enabled
+        print("[isocard/server] Starting IsoCard payments server...")
+        t = Thread(target=run)
+        t.daemon = True
+        t.start()
 
 
 #btw i use arch
