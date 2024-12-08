@@ -55,6 +55,7 @@ def initial_setup():
             "weather",
             "embeds",
             "isocard_transactions",
+            "isocard_transaction_history",
             "isobank/accounts",
             "isobank/auth"
         )
