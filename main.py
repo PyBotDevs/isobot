@@ -88,13 +88,13 @@ def initial_setup():
     try:
         if not os.path.isfile("logs/info-log.txt"):
             with open('logs/info-log.txt', 'x', encoding="utf-8") as this:
-                this.write("#All information and warnings will be logged here!\n")
+                this.write("# All information and warnings will be logged here!\n")
                 this.close()
             logger.info("Created info log", module="main/Setup", nolog=True)
             time.sleep(0.5)
         if not os.path.isfile("logs/error-log.txt"):
             with open('logs/error-log.txt', 'x', encoding="utf-8") as this:
-                this.write("#All exceptions will be logged here!\n")
+                this.write("# All exceptions will be logged here!\n")
                 this.close()
             logger.info("Created error log", module="main/Setup", nolog=True)
             time.sleep(0.5)
@@ -109,6 +109,7 @@ def initial_setup():
             time.sleep(0.5)
         if not os.path.isfile("logs/isocard_transactions.log"):
             with open("logs/isocard_transactions.log", 'x', encoding="utf-8") as this:
+                this.write("# All IsoCard transaction updates will be logged here.\n")
                 this.close()
             time.sleep(0.5)
     except IOError as e:
