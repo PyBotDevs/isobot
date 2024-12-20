@@ -107,6 +107,10 @@ def initial_setup():
             with open("logs/startup-log.txt", 'x', encoding="utf-8") as this:
                 this.close()
             time.sleep(0.5)
+        if not os.path.isfile("logs/isocard_transactions.log"):
+            with open("logs/isocard_transactions.log", 'x', encoding="utf-8") as this:
+                this.close()
+            time.sleep(0.5)
     except IOError as e:
         logger.error(f"Failed to make log file: {e}", module="main/Setup", nolog=True)
 

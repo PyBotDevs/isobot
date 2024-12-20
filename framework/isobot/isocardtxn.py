@@ -1,15 +1,28 @@
 # Imports
 import json
 import time
+import datetime
+from typing_extensions import Union
+
+# Variables
+log_file_path = "logs/isocard_transactions.log"
 
 # Initialization
 with open("database/isocard_transaction_history.json", 'r', encoding="utf-8") as f:
     txn_db = json.load(f)
 
+# Pre-defined Methods
 def save() -> int:
     """Dumps the latest transaction data to local machine storage."""
     with open("database/isocard_transaction_history.json", 'r', encoding="utf-8") as f:
         json.dump(txn_db, f, indent=4)
+    return 0
+
+def write_to_log(payer_id: Union[str, int], reciever_id: Union[str, int], data: str) -> int:
+    """Writes a new transaction update to the specified log path."""
+    current_time = datetime.time().strftime("%d-%m-%Y %H:%M:%S")
+    with open(log_file_path, 'a') as f:
+        f.write(f"[{current_time}] ({str(payer_id)} -> {str(reciever_id)}) {data}\n")
     return 0
 
 # Functions
