@@ -130,5 +130,7 @@ class IsoCard(commands.Cog):
                 await ctx.respond(embed=localembed, ephemeral=True)
         except KeyError: return await ctx.respond("This transaction verification code is invalid.")
 
+    # TODO: Make a command to view all transactions related to a user's IsoCard, (or) all transactions related to a user.
+
 # Initialization
 def setup(bot): bot.add_cog(IsoCard(bot))
