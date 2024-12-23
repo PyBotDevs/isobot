@@ -42,9 +42,9 @@ def generate_verification_code() -> int:
 def generate_txn_id() -> str:
     """Generates a randomized transaction id, which is three *CAPITAL* letters followed by 6 numbers."""
     txn_id = str()
-    for c in range(0, 3):
-        txn_id += str(random.choice(('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', ))).upper()
-    for n in range(0, 6):
+    for _ in range(3):
+        txn_id += str(random.choice(('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', )))
+    for _ in range(6):
         txn_id += str(random.randint(0, 9))
     return txn_id
 
