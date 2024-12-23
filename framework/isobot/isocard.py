@@ -10,8 +10,6 @@ from flask import request
 from framework.isobot import currency
 from threading import Thread
 
-# TODO: Add log file write commands to ALL EXISTING FUNCTIONS.
-
 # Configuration
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
