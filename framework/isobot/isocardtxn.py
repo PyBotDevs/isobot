@@ -26,6 +26,36 @@ def write_to_log(payer_id: Union[str, int], reciever_id: Union[str, int], data: 
     return 0
 
 # Functions
+def read_transaction(txn_id: str) -> dict:
+    """
+    # `read_transactions()` Command
+    ## Command Information
+    Reads and returns the data of a transaction from the history log with the given transaction id.
+    
+    ## Exception Handling
+    ### Transaction does not exist in the transactions database:
+    - Returns error response code`1`
+
+    ## Response Format
+    All successful responses will be provided in the following `dict` format:
+
+    ```json
+    txn_id: {
+        "payer_id": user id of the payer,
+        "merchant_id": user id of the merchant (reciever),
+        "card_number": IsoCard number of the payer,
+        "user_id": the id of the user paying,
+        "amount": amount of coins requested by merchant,
+        "status": current status of the transaction,
+        "timestamp": time at which the transaction was logged
+    }
+    ```
+    """
+    try:
+        return txn_db[str(txn_id)]
+    except KeyError:
+        return 1
+
 def write_transaction(txn_id: str, payer_id: str, merchant_id: str, card_number: str, user_id: str, amount: int, status: str):
     """Writes a new transaction to the transaction history log."""
     txn_db[str(txn_id)] = {
