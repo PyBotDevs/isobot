@@ -26,7 +26,7 @@ class IsoCardTxn:
         ### If not successful:
         - Returns the respective exception class
         """
-        with open("database/isocard_transaction_history.json", 'r', encoding="utf-8") as f:
+        with open("database/isocard_transaction_history.json", 'w+', encoding="utf-8") as f:
             json.dump(self.txn_db, f, indent=4)
         return 0
 
