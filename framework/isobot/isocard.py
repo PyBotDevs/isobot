@@ -43,6 +43,7 @@ def generate_txn_id() -> str:
     txn_id = str()
     for _ in range(3):
         txn_id += str(random.choice(('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', )))
+    txn_id += "-"
     for _ in range(6):
         txn_id += str(random.randint(0, 9))
     return txn_id
