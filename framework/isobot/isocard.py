@@ -117,6 +117,7 @@ def checkpayment():
                     data="Transaction has been terminated (reason: insufficient balance of the payer)"
                 )
                 del transactions_db[str(verification_code)]
+                save(transactions_db)
                 isocardtxn.update_transaction_status(txn_id, "Terminated (insufficient balance)")
                 return {
                     "code": 403,
