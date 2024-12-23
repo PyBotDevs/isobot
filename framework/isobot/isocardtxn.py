@@ -18,11 +18,11 @@ def save() -> int:
         json.dump(txn_db, f, indent=4)
     return 0
 
-def write_to_log(payer_id: Union[str, int], reciever_id: Union[str, int], data: str) -> int:
+def write_to_log(txn_id: str, payer_id: Union[str, int], reciever_id: Union[str, int], data: str) -> int:
     """Writes a new transaction update to the specified log path."""
     current_time = datetime.time().strftime("%d-%m-%Y %H:%M:%S")
     with open(log_file_path, 'a') as f:
-        f.write(f"[{current_time}] ({str(payer_id)} -> {str(reciever_id)}) {data}\n")
+        f.write(f"[{current_time}] ({str(payer_id)} -> {str(reciever_id)}) {txn_id}: {data}\n")
     return 0
 
 # Functions
