@@ -146,3 +146,26 @@ class IsoCardTxn:
             return 0
         except KeyError:
             return 1
+    
+    def fetch_raw(self) -> dict:
+        """
+        # `fetch_raw()` Command
+        ## Command Information
+        Fetches all of the raw data from the transactions database as `dict.`
+
+        ## Transaction Log Format
+        Each log in the transactions database is given in the following format:
+
+        ```json
+        txn_id: {
+            "payer_id": user id of the payer,
+            "merchant_id": user id of the merchant (reciever),
+            "card_number": IsoCard number of the payer,
+            "user_id": the id of the user paying,
+            "amount": amount of coins requested by merchant,
+            "status": current status of the transaction,
+            "timestamp": time at which the transaction was logged
+        }
+        ```
+        """
+        return self.txn_db
