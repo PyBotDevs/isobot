@@ -97,8 +97,8 @@ def requestpayment():
 
 @app.route('/checkpayment', methods=["GET"])
 def checkpayment():
+    with open("database/isocard_transactions.json", 'r') as f: transactions_db = json.load(f)
     try:
-        with open("database/isocard_transactions.json", 'r') as f: transactions_db = json.load(f)
         args = request.args
         verification_code = args.get("verificationcode")
         txn_id: str = transactions_db[str(verification_code)]["txn_id"]
