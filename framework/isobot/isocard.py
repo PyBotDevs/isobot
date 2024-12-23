@@ -77,6 +77,12 @@ def requestpayment():
                 "status": "in_progress"
             }
             save(transactions_db)
+            isocardtxn.write_to_log(
+                txn_id=txn_id,
+                payer_id=user_id,
+                merchant_id=merchant_id,
+                data=f"New transaction request started (txn_amount: {amount}; verification code: {verification_code})"
+            )
             isocardtxn.write_transaction(txn_id, user_id, merchant_id, card_number, user_id, int(amount), "In Progress")
             request_data = {
                 "code": 200,
@@ -104,6 +110,12 @@ def checkpayment():
         txn_id: str = transactions_db[str(verification_code)]["txn_id"]
         if transactions_db[str(verification_code)]["status"] == "complete":
             if currency.get_bank(transactions_db[str(verification_code)]["payer_id"]) < transactions_db[str(verification_code)]["amount"]:
+                isocardtxn.write_to_log(
+                    txn_id=txn_id,
+                    payer_id=transactions_db[str(verification_code)]["payer_id"],
+                    reciever_id=transactions_db[str(verification_code)]["merchant_id"],
+                    data="Transaction has been terminated (reason: insufficient balance of the payer)"
+                )
                 del transactions_db[str(verification_code)]
                 isocardtxn.update_transaction_status(txn_id, "Terminated (insufficient balance)")
                 return {
@@ -114,6 +126,12 @@ def checkpayment():
                 }, 403
             currency.bank_remove(transactions_db[str(verification_code)]["payer_id"], transactions_db[str(verification_code)]["amount"])
             currency.bank_add(transactions_db[str(verification_code)]["merchant_id"], transactions_db[str(verification_code)]["amount"])
+            isocardtxn.write_to_log(
+                txn_id=txn_id,
+                payer_id=transactions_db[str(verification_code)]["payer_id"],
+                reciever_id=transactions_db[str(verification_code)]["merchant_id"],
+                data=f"Payment of {transactions_db[str(verification_code)]['amount']} coins has been successful"
+            )
             del transactions_db[str(verification_code)]
             save(transactions_db)
             isocardtxn.update_transaction_status(txn_id, "Successful")
@@ -133,6 +151,12 @@ def checkpayment():
         "exception": "TransactionNotFound"
     }, 404
     except Exception as e:
+        isocardtxn.write_to_log(
+            txn_id=txn_id,
+            payer_id=transactions_db[str(verification_code)]["payer_id"],
+            reciever_id=transactions_db[str(verification_code)]["merchant_id"],
+            data=f"Failed to process payment due to a server error (error: {e})"
+        )
         isocardtxn.update_transaction_status(txn_id, "Failed (unable to process payment)")
         return {
         "code": 500,
