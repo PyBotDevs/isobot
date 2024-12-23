@@ -51,7 +51,7 @@ class IsoCardTxn:
         [current time] (payer id -> receiver id) transaction id: status update data
         ```
         """
-        current_time = datetime.time().strftime("%d-%m-%Y %H:%M:%S")
+        current_time = datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S")
         with open(log_file_path, 'a') as f:
             f.write(f"[{current_time}] ({str(payer_id)} -> {str(reciever_id)}) {txn_id}: {data}\n")
         return 0
