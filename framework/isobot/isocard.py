@@ -79,7 +79,7 @@ def requestpayment():
             isocardtxn.write_to_log(
                 txn_id=txn_id,
                 payer_id=user_id,
-                merchant_id=merchant_id,
+                reciever_id=merchant_id,
                 data=f"New transaction request started (txn_amount: {amount}; verification code: {verification_code})"
             )
             isocardtxn.write_transaction(txn_id, user_id, merchant_id, card_number, user_id, int(amount), "In Progress")
