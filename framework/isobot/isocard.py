@@ -3,7 +3,7 @@
 import json
 import random
 import logging
-from framework.isobot import isocardtxn
+from framework.isobot import isocardtxn as isocardtxn_
 from api import auth
 from flask import Flask
 from flask import request
@@ -14,6 +14,7 @@ from threading import Thread
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
 app = Flask('')
+isocardtxn = isocardtxn_.IsoCardTxn()
 currency = currency.CurrencyAPI("database/currency.json", "logs/currency.log")
 
 def call_isocards_database() -> dict:
