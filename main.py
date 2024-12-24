@@ -55,6 +55,7 @@ def initial_setup():
             "weather",
             "embeds",
             "isocard_transactions",
+            "isocard_transaction_history",
             "isobank/accounts",
             "isobank/auth"
         )
@@ -87,13 +88,13 @@ def initial_setup():
     try:
         if not os.path.isfile("logs/info-log.txt"):
             with open('logs/info-log.txt', 'x', encoding="utf-8") as this:
-                this.write("#All information and warnings will be logged here!\n")
+                this.write("# All information and warnings will be logged here!\n")
                 this.close()
             logger.info("Created info log", module="main/Setup", nolog=True)
             time.sleep(0.5)
         if not os.path.isfile("logs/error-log.txt"):
             with open('logs/error-log.txt', 'x', encoding="utf-8") as this:
-                this.write("#All exceptions will be logged here!\n")
+                this.write("# All exceptions will be logged here!\n")
                 this.close()
             logger.info("Created error log", module="main/Setup", nolog=True)
             time.sleep(0.5)
@@ -104,6 +105,11 @@ def initial_setup():
             time.sleep(0.5)
         if not os.path.isfile("logs/startup-log.txt"):
             with open("logs/startup-log.txt", 'x', encoding="utf-8") as this:
+                this.close()
+            time.sleep(0.5)
+        if not os.path.isfile("logs/isocard_transactions.log"):
+            with open("logs/isocard_transactions.log", 'x', encoding="utf-8") as this:
+                this.write("# All IsoCard transaction updates will be logged here.\n")
                 this.close()
             time.sleep(0.5)
     except IOError as e:
@@ -161,7 +167,9 @@ __________________________________________________""")
     s.log(f'[main/Client] Logged in as {client.user.name}. Start time: {start_time.strftime("%H:%M:%S")}\n[main/Client] Ready to accept commands. Click Ctrl+C to shut down the bot.')
     await client.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name="I-I-I be poppin bottles 🗣🗣🔥"), status=discord.Status.idle)
     s.log(f'[main/Log] {colors.green}Status set to IDLE. Rich presence set.{colors.end}')
-
+    # Deploy IsoCard Payments Server
+    isocard.deploy_server()
+    time.sleep(0.5)
     # Start and Deploy Ping Server
     if api.auth.get_mode() or api.auth.get_runtime_options()["ping_server_override"]:
         # If ping_server_override is set to true, it will start the pinging server no matter what. If it's set to false, it will only start if client mode is set to replit.
