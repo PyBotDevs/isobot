@@ -4,12 +4,15 @@
 import discord
 import random
 import json
+import math
+from framework.isobot.isocardtxn import IsoCardTxn
 from framework.isobot.db.isocard import IsoCard
 from discord import option, ApplicationContext, SlashCommandGroup
 from discord.ext import commands
 
 # Variables and Functions
 isocard_db = IsoCard()
+isocardtxn = IsoCardTxn()
 
 def generate_card_id() -> int:
     # Generate 16 random digits and append to a str variable
@@ -130,7 +133,82 @@ class IsoCard(commands.Cog):
                 await ctx.respond(embed=localembed, ephemeral=True)
         except KeyError: return await ctx.respond("This transaction verification code is invalid.")
 
-    # TODO: Make a command to view all transactions related to a user's IsoCard, (or) all transactions related to a user.
+    @isocard.command(
+        name="transaction_history",
+        description="View all your past transactions (paid and received)"
+    )
+    @option(name="transaction_type", description="Which type of transactions do you want to view?", type=str, choices=["paid", "received"])
+    @option(name="page", description="Select the page number that you want to view (1 page = 5 logs)", type=int, default=1)
+    async def transaction_history(self, ctx: ApplicationContext, transaction_type: str, page: int = 1):
+        """View all your past transactions (paid and received)"""
+        transactions_db = isocardtxn.fetch_raw()
+
+        if transaction_type == "paid":
+            user_transactions_paid = {}
+            for transaction in transactions_db:
+                if str(transactions_db[transaction]["payer_id"]) == str(ctx.author.id):
+                    user_transactions_paid[transaction] = transactions_db[transaction]
+            
+            # Initial Calculation for Pages
+            total_pages = math.ceil(len(user_transactions_paid)/5)
+            if page > total_pages: page = total_pages
+
+            log_entries = 0
+            log_entries_offset = -((page-1)*5)
+            parsed_output = str()
+            sr = 0
+            for transaction in user_transactions_paid:
+                sr += 1
+                log_entries_offset += 1
+                if log_entries_offset > 0:
+                    log_entries += 1
+                    if log_entries <= 5:
+                        txn_data = user_transactions_paid[transaction]
+                        status = ""
+                        if txn_data['status'] == "Successful": status = ":white_check_mark: Successful"
+                        elif txn_data['status'] == "In Progress": status = ":arrows_counterclockwise: In Progress"
+                        elif txn_data['status'] == "Terminated (insufficient balance)": status = ":x: Terminated (insufficient balance)"
+                        elif txn_data['status'] == "Failed (unable to process payment)": status = ":warning: Failed (unable to process payment)"
+                        parsed_output += f"{sr}. **TXN ID:** `{transaction}`\n> <@!{txn_data['payer_id']}> -> <@!{txn_data['merchant_id']}> | Amount: {txn_data['amount']} | Card Used: `{txn_data['card_number']}`\n> Status: **{status}** | <t:{txn_data['timestamp']}:f>\n\n"
+            localembed = discord.Embed(
+                title=f"IsoCard Transaction History for **{ctx.author.name}** (paid)",
+                description=parsed_output
+            )
+            localembed.set_footer(text=f"Page {page} of {total_pages}")
+            return await ctx.respond(embed=localembed, ephemeral=True)
+
+        elif transaction_type == "received":
+            user_transactions_received = {}
+            for transaction in transactions_db:
+                if str(transactions_db[transaction]["merchant_id"]) == str(ctx.author.id):
+                    user_transactions_received[transaction] = transactions_db[transaction]
+            
+            # Initial Calculation for Pages
+            total_pages = math.ceil(len(user_transactions_received)/5)
+            if page > total_pages: page = total_pages
+
+            log_entries = 0
+            log_entries_offset = -((page-1)*5)
+            parsed_output = str()
+            sr = 0
+            for transaction in user_transactions_received:
+                sr += 1
+                log_entries_offset += 1
+                if log_entries_offset > 0:
+                    log_entries += 1
+                    if log_entries <= 5:
+                        txn_data = user_transactions_received[transaction]
+                        status = ""
+                        if txn_data['status'] == "Successful": status = ":white_check_mark: Successful"
+                        elif txn_data['status'] == "Terminated (insufficient balance)": status = ":x: Terminated (insufficient balance)"
+                        elif txn_data['status'] == "Failed (unable to process payment)": status = ":warning: Failed (unable to process payment)"
+                        parsed_output += f"{sr}. **TXN ID:** `{transaction}`\n> <@!{txn_data['payer_id']}> -> <@!{txn_data['merchant_id']}> | Amount: {txn_data['amount']} | Card Used: `{txn_data['card_number']}`\n> Status: **{status}** | <t:{txn_data['timestamp']}:f>\n\n"
+            localembed = discord.Embed(
+                title=f"IsoCard Transaction History for **{ctx.author.name}** (received)",
+                description=parsed_output
+            )
+            localembed.set_footer(text=f"Page {page} of {total_pages}")
+            return await ctx.respond(embed=localembed, ephemeral=True)
 
 # Initialization
 def setup(bot): bot.add_cog(IsoCard(bot))
