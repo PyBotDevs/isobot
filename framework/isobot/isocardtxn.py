@@ -9,12 +9,21 @@ log_file_path = "logs/isocard_transactions.log"
 
 # Initialization
 class IsoCardTxn:
-    def __init__(self):
-        with open("database/isocard_transaction_history.json", 'r', encoding="utf-8") as f:
-            self.txn_db = json.load(f)
-
     # Pre-defined Methods
-    def save(self) -> int:
+    def read(self) -> dict:
+        """
+        # `read()` Command
+        ## Command Information
+        Reads the latest data from the transaction database, and returns it.
+
+        ### Note: This command should only be used for internal module use. 
+        ### To use this elsewhere, use the alternate command `fetch_raw()`.
+        """
+        with open("database/isocard_transaction_history.json", 'r', encoding="utf-8") as f:
+            txn_db = json.load(f)
+        return txn_db
+
+    def save(self, data: dict) -> int:
         """
         # `save()` Command
         ## Command Information
@@ -27,7 +36,7 @@ class IsoCardTxn:
         - Returns the respective exception class
         """
         with open("database/isocard_transaction_history.json", 'w+', encoding="utf-8") as f:
-            json.dump(self.txn_db, f, indent=4)
+            json.dump(data, f, indent=4)
         return 0
 
     def write_to_log(self, txn_id: str, payer_id: Union[str, int], reciever_id: Union[str, int], data: str) -> int:
@@ -83,7 +92,9 @@ class IsoCardTxn:
         ```
         """
         try:
-            return self.txn_db[str(txn_id)]
+            with open("database/isocard_transaction_history.json", 'r', encoding="utf-8") as f:
+                txn_db = json.load(f)
+            return txn_db[str(txn_id)]
         except KeyError:
             return 1
 
@@ -116,7 +127,9 @@ class IsoCardTxn:
 
         - Note: This format can be refered to, while working with the output from the `read_transaction()` command.
         """
-        self.txn_db[str(txn_id)] = {
+        with open("database/isocard_transaction_history.json", 'r', encoding="utf-8") as f:
+            txn_db = json.load(f)
+        txn_db[str(txn_id)] = {
             "payer_id": payer_id,
             "merchant_id": merchant_id,
             "card_number": card_number,
@@ -125,7 +138,7 @@ class IsoCardTxn:
             "status": status,
             "timestamp": round(time.time()),
         }
-        self.save()
+        self.save(txn_db)
         return 0
 
     def update_transaction_status(self, txn_id: str, new_status: str) -> int:
@@ -141,8 +154,10 @@ class IsoCardTxn:
         - Returns `1`
         """
         try:
-            self.txn_db[str(txn_id)]["status"] = new_status
-            self.save()
+            with open("database/isocard_transaction_history.json", 'r', encoding="utf-8") as f:
+                txn_db = json.load(f)
+            txn_db[str(txn_id)]["status"] = new_status
+            self.save(txn_db)
             return 0
         except KeyError:
             return 1
@@ -168,4 +183,6 @@ class IsoCardTxn:
         }
         ```
         """
-        return self.txn_db
+        with open("database/isocard_transaction_history.json", 'r', encoding="utf-8") as f:
+            txn_db = json.load(f)
+        return txn_db
