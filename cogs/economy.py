@@ -275,16 +275,35 @@ class Economy(commands.Cog):
             currency.remove(ctx.author.id, 2000)
             await ctx.respond('YOU FELL INTO YOUR OWN TRAP AND DIED LMFAO\nYou lost 2000 coins in the process.')
 
-    @commands.slash_command(
-        name='shop',
-        description='Views and buys items from the shop'
+    # Shop Commands
+    shop = discord.SlashCommandGroup(name="shop", description="Commands for viewing and buying items from the shop.")
+
+    @shop.command(
+        name="list",
+        description="View all onsale items in the shop."
+    )
+    @option(name="page", description="Which page of the shop do you want to view?", type=int, default=1)
+    async def shop_list(self, ctx: ApplicationContext, page: int = 1):
+        """View all onsale items in the shop."""
+        # TODO: Add new pages for other categories in the shop
+        localembed = discord.Embed(
+            title="The Shop!",
+            description="**Tools**\n\n1) Hunting Rifle `ID: rifle`: A tool used for hunting animals. (10000 coins)\n2) Fishing Pole `ID: fishingpole`: A tool used for fishing. It lets you use /fish command. (6500 coins)\n3) Shovel `ID: shovel`: You can use this tool to dig stuff from the ground. (3000 coins)\n4) Binoculars `ID: binoculars`: Try scouting with these binoculars, maybe you can find more with it. (14850 coins)"
+        )
+        localembed.set_footer(text="Page 1 | Tools | This command is in development. More items will be added soon!")
+        await ctx.respond(embed=localembed)
+
+    @shop.command(
+        name='view',
+        description='View information on a specific item from the shop.'
     )
     @option(name="item", description="Specify an item to view.", type=str, default=None)
-    async def shop(self, ctx: ApplicationContext, item: str=None):
-        if item == None:
+    async def shop_view(self, ctx: ApplicationContext, item: str=None):
+        """View information on a specific item from the shop."""
+        try:
             localembed = discord.Embed(
-                title='The Shop!',
-                description='**Tools**\n\n1) Hunting Rifle `ID: rifle`: A tool used for hunting animals. (10000 coins)\n2) Fishing Pole `ID: fishingpole`: A tool used for fishing. It lets you use /fish command. (6500 coins)\n3) Shovel `ID: shovel`: You can use this tool to dig stuff from the ground. (3000 coins)\n4) Binoculars `ID: binoculars`: Try scouting with these binoculars, maybe you can find more with it. (14850 coins)'
+                title=shopitem[item]['stylized name'],
+                description=shopitem[item]['description']
             )
             localembed.set_footer(text='Page 1 | Tools | This command is in development. More items will be added soon!')
             await ctx.respond(embed=localembed)
