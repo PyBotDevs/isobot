@@ -303,11 +303,12 @@ class Economy(commands.Cog):
 
     @commands.slash_command(
         name='buy',
-        description='Buys an item from the shop'
+        description='Buy an onsale item from the shop.'
     )
     @option(name="name", description="What do you want to buy?", type=str)
     @option(name="quantity", description="How many do you want to buy?", type=int, default=1)
     async def buy(self, ctx: ApplicationContext, name: str, quantity: int=1):
+        """Buy an onsale item from the shop."""
         try:
             amt = shopitem[name]['buy price'] * quantity
             if (currency.get_wallet(ctx.author.id) < amt): return await ctx.respond('You don\'t have enough balance to buy this.')
