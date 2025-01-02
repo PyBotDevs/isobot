@@ -305,20 +305,12 @@ class Economy(commands.Cog):
                 title=shopitem[item]['stylized name'],
                 description=shopitem[item]['description']
             )
-            localembed.set_footer(text='Page 1 | Tools | This command is in development. More items will be added soon!')
+            localembed.add_field(name="Buying price", value=shopitem[item]['buy price'], inline=True)
+            localembed.add_field(name="Selling price", value=shopitem[item]['sell price'], inline=True)
+            localembed.add_field(name="In-store", value=shopitem[item]['available'], inline=True)
+            localembed.add_field(name="ID", value=f'`{item}`', inline=True)
             await ctx.respond(embed=localembed)
-        else:
-            try:
-                localembed = discord.Embed(
-                    title=shopitem[item]['stylized name'],
-                    description=shopitem[item]['description']
-                )
-                localembed.add_field(name='Buying price', value=shopitem[item]['buy price'], inline=True)
-                localembed.add_field(name='Selling price', value=shopitem[item]['sell price'], inline=True)
-                localembed.add_field(name='In-store', value=shopitem[item]['available'], inline=True)
-                localembed.add_field(name='ID', value=f'`{item}`', inline=True)
-                await ctx.respond(embed=localembed)
-            except KeyError: await ctx.respond('That item isn\'t in the shop, do you are have stupid?')
+        except KeyError: await ctx.respond("That item isn't in the shop, do you are have stupid?")
 
     @commands.slash_command(
         name='buy',
