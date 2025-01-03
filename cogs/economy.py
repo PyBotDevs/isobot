@@ -275,39 +275,63 @@ class Economy(commands.Cog):
             currency.remove(ctx.author.id, 2000)
             await ctx.respond('YOU FELL INTO YOUR OWN TRAP AND DIED LMFAO\nYou lost 2000 coins in the process.')
 
-    @commands.slash_command(
-        name='shop',
-        description='Views and buys items from the shop'
+    # Shop Commands
+    shop = discord.SlashCommandGroup(name="shop", description="Commands for viewing and buying items from the shop.")
+
+    @shop.command(
+        name="list",
+        description="View all onsale items in the shop."
+    )
+    @option(name="page", description="Which page of the shop do you want to view?", type=int, default=1)
+    async def shop_list(self, ctx: ApplicationContext, page: int = 1):
+        """View all onsale items in the shop."""
+        # Calcuate Pages
+        max_pages = 5
+        if page > max_pages: page = max_pages
+
+        # Shop Page Descriptions
+        shop_page_1 = "**Tools**\n\n1. Hunting Rifle `ID: rifle`: A tool used for hunting animals. (10000 coins)\n2. Fishing Pole `ID: fishingpole`: A tool used for fishing. It lets you use /fish command. (6500 coins)\n3. Shovel `ID: shovel`: You can use this tool to dig stuff from the ground. (3000 coins)\n4. Binoculars `ID: binoculars`: Try scouting with these binoculars, maybe you can find more with it. (14850 coins)"
+        shop_page_2 = "**Power-Ups**\n\n1. Coinbomb `ID: coinbomb`: Used to scatter coins in the area, and make people scavenge for them. (15000 coins)"
+        shop_page_3 = "**Collectables**\n\n1. Chess Board `ID: chessboard`: Part of the **Chess Collection** set. (58000 coins)\n2. Pawn `ID: pawn`: Part of the **Chess Collection** set. (1000 coins)\n3. King `ID: king`: Part of the **Chess Collection** set. (12000 coins)\n4. Queen `ID: queen`: Part of the **Chess Collection** set. (10000 coins)\n5. Horsey `ID: horse`: Part of the **Chess Collection** set. (6000 coins)\n6. Rook Piece `ID: rook`: Part of the **Chess Collection** set. (6520 coins)\n7. Bishop Piece `ID: bishop`: Part of the **Chess Collection** set. (7500 coins)"
+        shop_page_4 = "**Utility**\n\n1. Computer `ID: computer`: A performance-packed workstation that you can use to hack people. (12000 coins)"
+        shop_page_5 = "**Others**\n\n1. Gold `ID: gold`: Rarely found by digging the area. You can preserve, sell or trade this. (15835 coins)"
+
+        # Generating Shop Pages
+        if page == 1: localembed = discord.Embed(title="The Shop!", description=shop_page_1)
+        elif page == 2: localembed = discord.Embed(title="The Shop!", description=shop_page_2)
+        elif page == 3: localembed = discord.Embed(title="The Shop!", description=shop_page_3)
+        elif page == 4: localembed = discord.Embed(title="The Shop!", description=shop_page_4)
+        elif page == 5: localembed = discord.Embed(title="The Shop!", description=shop_page_5)
+        localembed.set_footer(text=f"Page {page} | To view information on an item, run /shop view <item name>")
+        await ctx.respond(embed=localembed)
+
+    @shop.command(
+        name='view',
+        description='View information on a specific item from the shop.'
     )
     @option(name="item", description="Specify an item to view.", type=str, default=None)
-    async def shop(self, ctx: ApplicationContext, item: str=None):
-        if item == None:
+    async def shop_view(self, ctx: ApplicationContext, item: str=None):
+        """View information on a specific item from the shop."""
+        try:
             localembed = discord.Embed(
-                title='The Shop!',
-                description='**Tools**\n\n1) Hunting Rifle `ID: rifle`: A tool used for hunting animals. (10000 coins)\n2) Fishing Pole `ID: fishingpole`: A tool used for fishing. It lets you use /fish command. (6500 coins)\n3) Shovel `ID: shovel`: You can use this tool to dig stuff from the ground. (3000 coins)\n4) Binoculars `ID: binoculars`: Try scouting with these binoculars, maybe you can find more with it. (14850 coins)'
+                title=shopitem[item]['stylized name'],
+                description=shopitem[item]['description']
             )
-            localembed.set_footer(text='Page 1 | Tools | This command is in development. More items will be added soon!')
+            localembed.add_field(name="Buying price", value=shopitem[item]['buy price'], inline=True)
+            localembed.add_field(name="Selling price", value=shopitem[item]['sell price'], inline=True)
+            localembed.add_field(name="In-store", value=shopitem[item]['available'], inline=True)
+            localembed.add_field(name="ID", value=f'`{item}`', inline=True)
             await ctx.respond(embed=localembed)
-        else:
-            try:
-                localembed = discord.Embed(
-                    title=shopitem[item]['stylized name'],
-                    description=shopitem[item]['description']
-                )
-                localembed.add_field(name='Buying price', value=shopitem[item]['buy price'], inline=True)
-                localembed.add_field(name='Selling price', value=shopitem[item]['sell price'], inline=True)
-                localembed.add_field(name='In-store', value=shopitem[item]['available'], inline=True)
-                localembed.add_field(name='ID', value=f'`{item}`', inline=True)
-                await ctx.respond(embed=localembed)
-            except KeyError: await ctx.respond('That item isn\'t in the shop, do you are have stupid?')
+        except KeyError: await ctx.respond("That item isn't in the shop, do you are have stupid?")
 
     @commands.slash_command(
         name='buy',
-        description='Buys an item from the shop'
+        description='Buy an onsale item from the shop.'
     )
     @option(name="name", description="What do you want to buy?", type=str)
     @option(name="quantity", description="How many do you want to buy?", type=int, default=1)
     async def buy(self, ctx: ApplicationContext, name: str, quantity: int=1):
+        """Buy an onsale item from the shop."""
         try:
             amt = shopitem[name]['buy price'] * quantity
             if (currency.get_wallet(ctx.author.id) < amt): return await ctx.respond('You don\'t have enough balance to buy this.')
