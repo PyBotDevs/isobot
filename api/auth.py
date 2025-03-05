@@ -1,5 +1,5 @@
 # Imports
-import json, os
+import json, os, os.path
 
 # Config
 wdir = os.getcwd()
