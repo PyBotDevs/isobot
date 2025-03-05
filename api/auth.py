@@ -1,5 +1,6 @@
 # Imports
 import json, os, os.path
+from typing_extensions import Literal
 
 # Config
 wdir = os.getcwd()
@@ -9,9 +10,9 @@ with open(f'{wdir}/api/runtimeconfig.json', 'r') as f:
     global config
     config = json.load(f)
 
-def initial_setup():
+def initial_setup() -> Literal[0]:
     # Building runtimeconfig files and directory IF missing:
-    """Checks whether the required runtimeconfig files are present in the bot runtime directory.\n\nIf they are not present, it will create the files and return `0`.\n\nIf the files are present, it will return `1`."""
+    """Checks whether the required runtimeconfig files are present in the bot runtime directory.\n\nReturns `0` if successful."""
     if not os.path.isdir("api"):
         print(f"[!] Runtimeconfig directory not found. Building runtime configuration files...")
         print("   > [1/3] Creating client api directory...")
