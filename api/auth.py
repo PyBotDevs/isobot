@@ -65,6 +65,7 @@ def initial_setup() -> Literal[0]:
 # Commands
 def get_token():
     """Returns the token in `runtimeconfig.json`, if it exists.\n\nIf there is no token provided in the config, it will try accessing the alternate token location.\n\nIf no alternate token exists, it will manually ask the user for input and it will autosave it to `runtimeconfig.json`."""
+    initial_setup()
     if config["token"] == "":
         if config["alt_token_path"] != "":
             tkn = str()
@@ -85,23 +86,28 @@ def get_token():
 
 def get_secret():
     """Returns the bot client secret in `runtimeconfig.json`, if it exists."""
+    initial_setup()
     if config["secret"] != "": return config["secret"]
     else: return "Secret has not been set."
 
 def get_public_key():
     """Returns the bot's public key in `runtimeconfig.json`, if it exists."""
+    initial_setup()
     if config["public_key"] != "": return config["public_key"]
     else: return "Public key has not been set."
 
 def get_mode() -> bool:
     """Returns a boolean of the current runtime mode.\n\nReturns `True` if replit mode is active, returns `False` if replit mode is inactive."""
+    initial_setup()
     return config["replit"]
 
 def ext_token(token_name: str) -> str:
     """Returns an external extra authorization token from `runtimeconfig.json`, if it exists."""
+    initial_setup()
     return str(config["other_keys"][token_name])
     #except KeyError: return "This external authorization key does not exist."
 
 def get_runtime_options() -> dict:
     """Returns a dict of all the client's runtime configuration options, as well as their respective values."""
+    initial_setup()
     return dict(config["runtime_options"])
