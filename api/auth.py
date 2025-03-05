@@ -51,6 +51,13 @@ def initial_setup():
         if key not in runtimeconfig_db["runtime_options"]:
             print(f"[!] Update available for runtimeconfig. Updating configuration...")
             runtimeconfig_db["runtime_options"][key] = default_runtime_option_values[key]
+
+    other_api_keys_list = ("openweathermap", "reddit", "ossapi", "chatgpt")
+    for key in other_api_keys_list:
+        if key not in runtimeconfig_db["other_keys"]:
+            print(f"[!] Update available for runtimeconfig. Updating configuration...")
+            runtimeconfig_db["other_keys"][key] = ""
+    
     with open('api/runtimeconfig.json', 'w+') as f: json.dump(runtimeconfig_db, f, indent=4)
     
 
