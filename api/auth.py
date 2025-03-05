@@ -60,7 +60,7 @@ def initial_setup() -> Literal[0]:
             runtimeconfig_db["other_keys"][key] = ""
     
     with open('api/runtimeconfig.json', 'w+') as f: json.dump(runtimeconfig_db, f, indent=4)
-    
+    return 0
 
 # Commands
 def get_token():
