@@ -9,6 +9,51 @@ with open(f'{wdir}/api/runtimeconfig.json', 'r') as f:
     global config
     config = json.load(f)
 
+def initial_setup():
+    # Building runtimeconfig files and directory IF missing:
+    """Checks whether the required runtimeconfig files are present in the bot runtime directory.\n\nIf they are not present, it will create the files and return `0`.\n\nIf the files are present, it will return `1`."""
+    if not os.path.isdir("api"):
+        print(f"[!] Runtimeconfig directory not found. Building runtime configuration files...")
+        print("   > [1/3] Creating client api directory...")
+        os.mkdir("api")
+    if not os.path.isfile("api/runtimeconfig.json"):
+        print("   > [2/3] Creating runtimeconfig file...")
+        open('api/runtimeconfig.json', 'x')  # Create a new file for runtimeconfig
+    
+    # Check whether any keys are missing in runtimeconfig file, and add them accordingly:
+    with open('api/runtimeconfig.json', 'r') as f: runtimeconfig_db = json.load(f)
+    required_keys = ("token", "alt_token_path", "secret", "public_key", "runtime_options", "replit", "other_keys")
+    for key in required_keys:
+        if key not in runtimeconfig_db:
+            print(f"[!] Update available for runtimeconfig. Updating configuration...")
+            if key == "runtime_options":
+                runtimeconfig_db[key] = {}
+            elif key == "other_keys":
+                runtimeconfig_db[key] = {}
+            elif key == "replit":
+                runtimeconfig_db[key] = False
+            else:
+                runtimeconfig_db[key] = ""
+    with open('api/runtimeconfig.json', 'w+') as f: json.dump(runtimeconfig_db, f, indent=4)
+
+    default_runtime_option_values = {
+        "themes": False,
+        "log_messages": False,
+        "guild_log_blacklist": {},
+        "only_log_whitelist": False,
+        "guild_log_whitelist": {},
+        "ping_server_override": False,
+        "debug_mode": False,
+        "show_ping_on_startup": True,
+        "isocard_server_enabled": True
+    }
+    for key in default_runtime_option_values:
+        if key not in runtimeconfig_db["runtime_options"]:
+            print(f"[!] Update available for runtimeconfig. Updating configuration...")
+            runtimeconfig_db["runtime_options"][key] = default_runtime_option_values[key]
+    with open('api/runtimeconfig.json', 'w+') as f: json.dump(runtimeconfig_db, f, indent=4)
+    
+
 # Commands
 def get_token():
     """Returns the token in `runtimeconfig.json`, if it exists.\n\nIf there is no token provided in the config, it will try accessing the alternate token location.\n\nIf no alternate token exists, it will manually ask the user for input and it will autosave it to `runtimeconfig.json`."""
