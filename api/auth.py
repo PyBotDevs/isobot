@@ -18,9 +18,12 @@ def initial_setup() -> Literal[0]:
         print("   > [1/3] Creating client api directory...")
         os.mkdir("api")
     if not os.path.isfile("api/runtimeconfig.json"):
-        print("   > [2/3] Creating runtimeconfig file...")
-        open('api/runtimeconfig.json', 'x')  # Create a new file for runtimeconfig
-    
+        print(f"[!] Runtimeconfig not found. Building runtime configuration files...")
+        print("   > Creating runtimeconfig file...")
+        with open('api/runtimeconfig.json', 'x') as f:  # Create a new file for runtimeconfig
+            json.dump({}, f)
+            f.close()
+
     # Check whether any keys are missing in runtimeconfig file, and add them accordingly:
     with open('api/runtimeconfig.json', 'r') as f: runtimeconfig_db = json.load(f)
     required_keys = ("token", "alt_token_path", "secret", "public_key", "runtime_options", "replit", "other_keys")
