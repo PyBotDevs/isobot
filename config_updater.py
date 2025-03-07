@@ -44,8 +44,8 @@ def check_for_updates() -> Literal[True]:
     Returns `True` if client-side process is successful.
     """
     # Check if all config files exist, and download them if they don't
-    if not os.path.isdir("config"):
-        os.mkdir("config")
+    if not os.path.isdir(f"{client_data_dir}/config"):
+        os.mkdir(f"{client_data_dir}/config")
 
     for _file in UpdaterConfig.config_files_list:
         if not os.path.exists(UpdaterConfig.config_files_path + _file):
