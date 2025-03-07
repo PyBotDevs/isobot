@@ -16,6 +16,9 @@ logs/error-log.txt
 logs/info-log.txt
 logs/startup-log.txt
 config/settings.json
+config/commands.json
+config/shop.json
+config/words.json
 __pycache__
 *.bak
 venv
