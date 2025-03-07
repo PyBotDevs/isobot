@@ -8,6 +8,7 @@ import datetime
 import discord, discord.errors
 import asyncio
 import api.auth
+import config_updater
 from utils import logger, ping
 from math import floor
 from random import randint
@@ -25,6 +26,9 @@ intents.members = True
 client = discord.Bot(intents=intents)
 color = discord.Color.random()
 start_time = ""
+
+# Run Config Updater 
+config_updater.check_for_updates()
 
 # Pre-Initialization Commands
 def initial_setup():
