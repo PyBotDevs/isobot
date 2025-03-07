@@ -1,6 +1,7 @@
 """The framework module library used for managing isobot's items database."""
 # Imports
 import json
+import os
 from framework.isobot.colors import Colors as colors
 from framework.isobot.shop import ShopData
 

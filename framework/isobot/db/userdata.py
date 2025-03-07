@@ -2,6 +2,7 @@
 
 # Imports
 import json
+import os
 from framework.isobot.colors import Colors as colors
 
 client_data_dir = f"{os.path.expanduser('~')}/.isobot"

@@ -5,6 +5,7 @@ import discord
 import random
 import json
 import math
+import os
 from framework.isobot.isocardtxn import IsoCardTxn
 from framework.isobot.db.isocard import IsoCard
 from discord import option, ApplicationContext, SlashCommandGroup

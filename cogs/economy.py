@@ -5,6 +5,7 @@ import discord
 import random
 import math
 import utils.logger
+import os
 import asyncio
 import framework.isobot.currency
 import framework.isobot.algorithms

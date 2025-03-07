@@ -1,6 +1,7 @@
 # Imports
 import time
 import datetime
+import os
 
 # Variables and Classes
 client_data_dir = f"{os.path.expanduser('~')}/.isobot"

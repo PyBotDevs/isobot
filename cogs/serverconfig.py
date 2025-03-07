@@ -2,6 +2,7 @@
 import discord
 import random
 import json
+import os
 from discord import option, ApplicationContext
 from discord.commands import SlashCommandGroup
 from discord.ext import commands

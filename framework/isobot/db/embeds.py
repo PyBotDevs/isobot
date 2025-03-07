@@ -2,6 +2,7 @@
 import json
 import discord
 import datetime
+import os
 import framework.types
 from typing_extensions import Union
 from framework.isobot.colors import Colors as colors

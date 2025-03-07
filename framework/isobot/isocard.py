@@ -3,6 +3,7 @@
 import json
 import random
 import logging
+import os
 from framework.isobot import isocardtxn as isocardtxn_
 from api import auth
 from flask import Flask
