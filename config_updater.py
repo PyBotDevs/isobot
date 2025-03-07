@@ -20,8 +20,8 @@ from typing_extensions import Literal
 # Configuration
 class UpdaterConfig:
     """This class contains the full configuration for the updater."""
-    update_server_target = "https://github.com/PyBotDevs/resources/tree/base/isobot-config-data"
-    use_raw_file_data = True
+    update_server_target = "https://raw.githubusercontent.com/PyBotDevs/resources/refs/heads/base/isobot-config-data"
+    use_raw_file_data = False
     config_files_path = "config/"
     config_files_list = ("commands.json", "shop.json", "words.json")
 
