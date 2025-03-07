@@ -62,7 +62,7 @@ def check_for_updates() -> Literal[True]:
             continue
         else:
             with open(UpdaterConfig.config_files_path + _file, "r") as config_file:
-                if check_file[1] != json.load(UpdaterConfig.config_files_path + _file):
+                if dict(check_file[1]) != dict(json.load(config_file)):
                     print(f"[!] An update is available for the {_file} configuration file. Updating...")
                     with open(UpdaterConfig.config_files_path + "/" + _file, "w+") as config_file:
                         json.dump(check_file[1], config_file, indent=4)
