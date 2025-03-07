@@ -9,6 +9,7 @@ from discord import option, ApplicationContext
 from discord.ext import commands
 
 # Variables
+client_data_dir = f"{os.path.expanduser('~')}/.isobot"
 color = discord.Color.random()
 
 # Functions
@@ -24,7 +25,7 @@ class Fun(commands.Cog):
     async def stroketranslate(self, ctx: ApplicationContext, strok: str):
         if len(strok) > 300: return await ctx.respond("Please use no more than `300` character length", ephemeral=True)
         else:
-            with open(f"{os.getcwd()}/config/words.json", "r", encoding="utf-8") as f: words = json.load(f)
+            with open(f"{client_data_dir}/config/words.json", "r", encoding="utf-8") as f: words = json.load(f)
             var = str()
             s = strok.lower()
             for i, c in enumerate(s): var += random.choice(words[c])

@@ -5,12 +5,14 @@ import discord
 import random
 import json
 import math
+import os
 from framework.isobot.isocardtxn import IsoCardTxn
 from framework.isobot.db.isocard import IsoCard
 from discord import option, ApplicationContext, SlashCommandGroup
 from discord.ext import commands
 
 # Variables and Functions
+client_data_dir = f"{os.path.expanduser('~')}/.isobot"
 isocard_db = IsoCard()
 isocardtxn = IsoCardTxn()
 
@@ -120,10 +122,10 @@ class IsoCard(commands.Cog):
     @option(name="verification_code", description="The 6-digit verification code for your transaction", type=int)
     async def verify_transaction(self, ctx: ApplicationContext, verification_code: int):
         try:
-            with open("database/isocard_transactions.json", 'r') as f: transactions_db = json.load(f)
+            with open(f"{client_data_dir}/database/isocard_transactions.json", 'r') as f: transactions_db = json.load(f)
             if transactions_db[str(verification_code)]["payer_id"] == ctx.author.id:
                 transactions_db[str(verification_code)]["status"] = "complete"
-                with open("database/isocard_transactions.json", 'w+') as f: json.dump(transactions_db, f, indent=4)
+                with open(f"{client_data_dir}/database/isocard_transactions.json", 'w+') as f: json.dump(transactions_db, f, indent=4)
                 localembed = discord.Embed(
                     title="Transaction successfully verified.",
                     description="Please wait patiently until the merchant has verified the transaction.",

@@ -3,12 +3,14 @@
 # Imports
 import discord
 import json
+import os
 from discord import option, ApplicationContext, SlashCommandGroup
 from discord.ext import commands
 from framework.isobot.db.presence import Presence
 
 # Variables
-with open("database/presence.json", 'r', encoding="utf-8") as f: presence = json.load(f)
+client_data_dir = f"{os.path.expanduser('~')}/.isobot"
+with open(f"{client_data_dir}/database/presence.json", 'r', encoding="utf-8") as f: presence = json.load(f)
 presence = Presence()
 
 # Commands

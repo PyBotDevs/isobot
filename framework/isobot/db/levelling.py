@@ -1,7 +1,10 @@
 """The framework module library used for managing isobot's levelling database."""
 # Imports
 import json
+import os
 from framework.isobot.colors import Colors as colors
+
+client_data_dir = f"{os.path.expanduser('~')}/.isobot"
 
 # Functions
 class Levelling():
@@ -11,12 +14,12 @@ class Levelling():
 
     def load(self) -> dict:
         """Fetches and returns the latest data from the levelling database."""
-        with open("database/levels.json", 'r', encoding="utf8") as f: db = json.load(f)
+        with open(f"{client_data_dir}/database/levels.json", 'r', encoding="utf8") as f: db = json.load(f)
         return db
 
     def save(self, data: dict) -> int:
         """Dumps all cached data to your local machine."""
-        with open("database/levels.json", 'w+', encoding="utf8") as f: json.dump(data, f)
+        with open(f"{client_data_dir}/database/levels.json", 'w+', encoding="utf8") as f: json.dump(data, f)
         return 0
 
     def generate(self, user_id: int) -> int:

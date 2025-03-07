@@ -2,10 +2,12 @@
 import json
 import time
 import datetime
+import os
 from typing_extensions import Union
 
 # Variables
-log_file_path = "logs/isocard_transactions.log"
+client_data_dir = f"{os.path.expanduser('~')}/.isobot"
+log_file_path = f"{client_data_dir}/logs/isocard_transactions.log"
 
 # Initialization
 class IsoCardTxn:
@@ -19,7 +21,7 @@ class IsoCardTxn:
         ### Note: This command should only be used for internal module use. 
         ### To use this elsewhere, use the alternate command `fetch_raw()`.
         """
-        with open("database/isocard_transaction_history.json", 'r', encoding="utf-8") as f:
+        with open(f"{client_data_dir}/database/isocard_transaction_history.json", 'r', encoding="utf-8") as f:
             txn_db = json.load(f)
         return txn_db
 
@@ -35,7 +37,7 @@ class IsoCardTxn:
         ### If not successful:
         - Returns the respective exception class
         """
-        with open("database/isocard_transaction_history.json", 'w+', encoding="utf-8") as f:
+        with open(f"{client_data_dir}/database/isocard_transaction_history.json", 'w+', encoding="utf-8") as f:
             json.dump(data, f, indent=4)
         return 0
 
@@ -92,7 +94,7 @@ class IsoCardTxn:
         ```
         """
         try:
-            with open("database/isocard_transaction_history.json", 'r', encoding="utf-8") as f:
+            with open(f"{client_data_dir}/database/isocard_transaction_history.json", 'r', encoding="utf-8") as f:
                 txn_db = json.load(f)
             return txn_db[str(txn_id)]
         except KeyError:
@@ -127,7 +129,7 @@ class IsoCardTxn:
 
         - Note: This format can be refered to, while working with the output from the `read_transaction()` command.
         """
-        with open("database/isocard_transaction_history.json", 'r', encoding="utf-8") as f:
+        with open(f"{client_data_dir}/database/isocard_transaction_history.json", 'r', encoding="utf-8") as f:
             txn_db = json.load(f)
         txn_db[str(txn_id)] = {
             "payer_id": payer_id,
@@ -154,7 +156,7 @@ class IsoCardTxn:
         - Returns `1`
         """
         try:
-            with open("database/isocard_transaction_history.json", 'r', encoding="utf-8") as f:
+            with open(f"{client_data_dir}/database/isocard_transaction_history.json", 'r', encoding="utf-8") as f:
                 txn_db = json.load(f)
             txn_db[str(txn_id)]["status"] = new_status
             self.save(txn_db)
@@ -183,6 +185,6 @@ class IsoCardTxn:
         }
         ```
         """
-        with open("database/isocard_transaction_history.json", 'r', encoding="utf-8") as f:
+        with open(f"{client_data_dir}/database/isocard_transaction_history.json", 'r', encoding="utf-8") as f:
             txn_db = json.load(f)
         return txn_db
