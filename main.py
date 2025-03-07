@@ -1,5 +1,5 @@
 """Isobot, the bot to make your server (a little bit) better.\n\nisobot (C) NKA 2022-2024.\nRun `/credits` in the Discord bot to see the credits.\n\nWARNING: This client is meant to be run standalone. Not as a Python import."""
-# Imports
+# Core Imports
 import os
 import os.path
 import json
@@ -9,6 +9,11 @@ import discord, discord.errors
 import asyncio
 import api.auth
 import config_updater
+
+# Run Config Updater 
+config_updater.check_for_updates()
+
+# Client Module Imports
 from utils import logger, ping
 from math import floor
 from random import randint
@@ -26,9 +31,6 @@ intents.members = True
 client = discord.Bot(intents=intents)
 color = discord.Color.random()
 start_time = ""
-
-# Run Config Updater 
-config_updater.check_for_updates()
 
 # Pre-Initialization Commands
 def initial_setup():
