@@ -85,9 +85,9 @@ def initial_setup():
     
     # Generating other files
     try:
-        if not os.path.isfile(f"config/settings.json"):
+        if not os.path.isfile(f"{client_data_dir}/config/settings.json"):
             logger.warn(f"[main/Setup] Settings database file was not found in config directory. Creating new database...", module="main/Setup", nolog=True)
-            with open(f"config/settings.json", 'x', encoding="utf-8") as f:
+            with open(f"{client_data_dir}/config/settings.json", 'x', encoding="utf-8") as f:
                 json.dump({}, f)
                 f.close()
     except IOError as e:
@@ -141,11 +141,11 @@ _presence = _presence.Presence()
 weather = weather.Weather()
 embeds = embeds.Embeds()
 _commands = _commands.Commands()
-shop_data = ShopData("config/shop.json")
+shop_data = ShopData(f"{client_data_dir}/config/shop.json")
 
 # Theme Loader
 if api.auth.get_runtime_options()["themes"]:
-    with open("themes/halloween.theme.json", 'r', encoding="utf-8") as f:
+    with open(f"{client_data_dir}/themes/halloween.theme.json", 'r', encoding="utf-8") as f:
         theme = json.load(f)
         try:
             color_loaded = theme["theme"]["embed_color"]

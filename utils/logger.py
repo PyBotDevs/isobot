@@ -3,8 +3,9 @@ import time
 import datetime
 
 # Variables and Classes
-log_path = "logs/info-log.txt"
-error_path = "logs/error-log.txt"
+client_data_dir = f"{os.path.expanduser('~')}/.isobot"
+log_path = f"{client_data_dir}/logs/info-log.txt"
+error_path = f"{client_data_dir}/logs/error-log.txt"
 class colours:
     error = '\033[91m'
     success = '\033[92m'
