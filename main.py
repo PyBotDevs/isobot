@@ -73,7 +73,7 @@ def initial_setup():
                         json.dump({"treasury": 100000000, "wallet": {}, "bank": {}}, f)
                     else:
                         json.dump({}, f)
-                        f.close()
+                    f.close()
                 time.sleep(0.5)
     except IOError as e:
         logger.error(f"Failed to make database file: {e}", module="main/Setup")
