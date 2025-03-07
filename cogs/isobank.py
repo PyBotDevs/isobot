@@ -9,10 +9,11 @@ from discord.ext import commands
 from framework.isobank import manager, authorize
 
 # Variables
+client_data_dir = f"{os.path.expanduser('~')}/.isobot"
 color = discord.Color.random()
 
 # Isobot Framework
-isobankauth = authorize.IsobankAuth("database/isobank/auth.json", "database/isobank/accounts.json")
+isobankauth = authorize.IsobankAuth(f"{client_data_dir}/database/isobank/auth.json", f"{client_data_dir}/database/isobank/accounts.json")
 
 # Commands
 class IsoBank(commands.Cog):

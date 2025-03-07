@@ -8,6 +8,7 @@ from discord.ext import commands
 from framework.isobot.db import serverconfig
 
 # Variables
+client_data_dir = f"{os.path.expanduser('~')}/.isobot"
 serverconf = serverconfig.ServerConfig()
 
 # Functions
@@ -16,7 +17,7 @@ class ServerConfig(commands.Cog):
         self.bot = bot
 
         # Load Verification Database
-        with open("database/serververification.json", 'r', encoding="utf-8") as f:
+        with open(f"{client_data_dir}/database/serververification.json", 'r', encoding="utf-8") as f:
             self.verification_db: dict = json.load(f)
     
     serverconfig_cmds = SlashCommandGroup(name="serverconfig", description="Commands related to server customization and configuration.")
@@ -230,7 +231,7 @@ class ServerConfig(commands.Cog):
                 return await ctx.respond("Your verification process is already ongoing in this server!", ephemeral=True)
 
         self.verification_db[str(ctx.author.id)][str(verify_code)] = {"guild_id": ctx.guild.id}
-        with open("database/serververification.json", 'w+', encoding="utf-8") as f:
+        with open(f"{client_data_dir}/database/serververification.json", 'w+', encoding="utf-8") as f:
             json.dump(self.verification_db, f, indent=4)
 
         localembed = discord.Embed(
@@ -260,7 +261,7 @@ class ServerConfig(commands.Cog):
         await server_context_user.add_roles(verification_role, reason="Member has been successfully verified in server.")
 
         del self.verification_db[str(ctx.author.id)][str(verification_code)]
-        with open("database/serververification.json", 'w+', encoding="utf-8") as f:
+        with open(f"{client_data_dir}/database/serververification.json", 'w+', encoding="utf-8") as f:
             json.dump(self.verification_db, f, indent=4)
 
         return await ctx.respond(f"You have been successfully verified in **{vcode_guild.name}**!")

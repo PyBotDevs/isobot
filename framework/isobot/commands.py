@@ -2,6 +2,9 @@
 import json
 from framework.isobot.colors import Colors as colors
 
+# Variables
+client_data_dir = f"{os.path.expanduser('~')}/.isobot"
+
 # Classes
 class Commands():
     """The library used to fetch information about isobot commands, and manage them."""
@@ -10,12 +13,12 @@ class Commands():
 
     def load(self) -> dict:
         """Loads the latest content from the commands database onto memory."""
-        with open("config/commands.json", 'r', encoding="utf-8") as f: data = json.load(f)
+        with open(f"{client_data_dir}/config/commands.json", 'r', encoding="utf-8") as f: data = json.load(f)
         return data
 
     def save(self, data: dict) -> int:
         """Saves the cached database to local machine storage."""
-        with open("config/commands.json", 'w+', encoding="utf-8") as f: json.dump(data, f)
+        with open(f"{client_data_dir}/config/commands.json", 'w+', encoding="utf-8") as f: json.dump(data, f)
         return 0
 
     def fetch_raw(self) -> dict:

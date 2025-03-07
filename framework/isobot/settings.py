@@ -4,7 +4,9 @@
 import json
 from typing import Union, Literal
 
-# Classes and Functions
+# Classes and Variables
+client_data_dir = f"{os.path.expanduser('~')}/.isobot"
+
 class Colors:
     """Contains general stdout colors."""
     cyan = '\033[96m'
@@ -22,33 +24,33 @@ class Configurator(Colors):
         """Generates a new settings configuration for the specified user.
         Does not do anything if a configuration already exists.\n
         Returns 0 if the request was successful, returns 1 if the configuration already exists."""
-        with open("config/settings.json", 'r', encoding="utf-8") as f: db = json.load(f)
+        with open(f"{client_data_dir}/config/settings.json", 'r', encoding="utf-8") as f: db = json.load(f)
         if str(user_id) in db.keys(): return 1
         template = {
             "levelup_messages": True
         }
         db[str(user_id)] = template
-        with open("config/settings.json", 'w+', encoding="utf-8") as f: json.dump(db, f, indent=4)
+        with open(f"{client_data_dir}/config/settings.json", 'w+', encoding="utf-8") as f: json.dump(db, f, indent=4)
         return 0
 
     def fetch_setting(self, user_id: int, setting: str) -> Union[int, str, bool]:
         """Fetches the current value of a user setting."""
-        with open("config/settings.json", 'r', encoding="utf-8") as f: db = json.load(f)
+        with open(f"{client_data_dir}/config/settings.json", 'r', encoding="utf-8") as f: db = json.load(f)
         return db[str(user_id)][setting]
 
     def edit_setting(self, user_id: int, setting: str, value) -> Literal[0]:
         """Modifies the value of a user setting."""
-        with open("config/settings.json", 'r', encoding="utf-8") as f: db = json.load(f)
+        with open(f"{client_data_dir}/config/settings.json", 'r', encoding="utf-8") as f: db = json.load(f)
         db[str(user_id)][setting] = value
-        with open("config/settings.json", 'w+', encoding="utf-8") as f: json.dump(db, f, indent=4)
+        with open(f"{client_data_dir}/config/settings.json", 'w+', encoding="utf-8") as f: json.dump(db, f, indent=4)
         return 0
 
     def reset(self, user_id: int):
         """Completely resets the specified user's configuration."""
-        with open("config/settings.json", 'r', encoding="utf-8") as f: db = json.load(f)
+        with open(f"{client_data_dir}/config/settings.json", 'r', encoding="utf-8") as f: db = json.load(f)
         template = {
             "levelup_messages": True
         }
         db[str(user_id)] = template
-        with open("config/settings.json", 'w+', encoding="utf-8") as f: json.dump(db, f, indent=4)
+        with open(f"{client_data_dir}/config/settings.json", 'w+', encoding="utf-8") as f: json.dump(db, f, indent=4)
         return 0

@@ -9,17 +9,18 @@ from discord import ApplicationContext, SlashCommandGroup
 from discord.ext import commands
 
 # Variables
-if not os.path.isdir("database"):  # TEMPORARY: Allow cog to handle "database" directory generation (for now)
-    os.mkdir("database")
-if not os.path.isfile("database/isotokens.json"):  # Generate database file, if missing.
-    with open("database/isotokens.json", 'x', encoding="utf-8") as f:
+client_data_dir = f"{os.path.expanduser('~')}/.isobot"
+# if not os.path.isdir("database"):  # TEMPORARY: Allow cog to handle "database" directory generation (for now)
+#     os.mkdir("database")
+if not os.path.isfile(f"{client_data_dir}/database/isotokens.json"):  # Generate database file, if missing.
+    with open(f"{client_data_dir}/database/isotokens.json", 'x', encoding="utf-8") as f:
         json.dump({}, f)
         f.close()
 
-with open("database/isotokens.json", 'r', encoding="utf-8") as f: isocoins = json.load(f)
+with open(f"{client_data_dir}/database/isotokens.json", 'r', encoding="utf-8") as f: isocoins = json.load(f)
 
 def save():
-    with open("database/isotokens.json", 'w+', encoding="utf-8") as f: json.dump(isocoins, f)
+    with open(f"{client_data_dir}/database/isotokens.json", 'w+', encoding="utf-8") as f: json.dump(isocoins, f)
 
 # Functions
 def create_isocoin_key(user_id: int) -> int:

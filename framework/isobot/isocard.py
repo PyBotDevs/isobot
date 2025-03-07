@@ -11,20 +11,21 @@ from framework.isobot import currency
 from threading import Thread
 
 # Configuration
+client_data_dir = f"{os.path.expanduser('~')}/.isobot"
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
 app = Flask('')
 isocardtxn = isocardtxn_.IsoCardTxn()
-currency = currency.CurrencyAPI("database/currency.json", "logs/currency.log")
+currency = currency.CurrencyAPI(f"{client_data_dir}/database/currency.json", f"{client_data_dir}/logs/currency.log")
 
 def call_isocards_database() -> dict:
     """Calls all of the latest information from the IsoCards database."""
-    with open("database/isocard.json", 'r') as f: isocards = json.load(f)
+    with open(f"{client_data_dir}/database/isocard.json", 'r') as f: isocards = json.load(f)
     return isocards
 
 def save(data):
     """Dumps all cached databases to the local machine."""
-    with open("database/isocard_transactions.json", 'w+') as f: json.dump(data, f, indent=4)
+    with open(f"{client_data_dir}/database/isocard_transactions.json", 'w+') as f: json.dump(data, f, indent=4)
 
 # Functions
 def generate_verification_code() -> int:
@@ -57,7 +58,7 @@ def main():
 def requestpayment():
     try:
         isocards = call_isocards_database()
-        with open("database/isocard_transactions.json", 'r') as f: transactions_db = json.load(f)
+        with open(f"{client_data_dir}/database/isocard_transactions.json", 'r') as f: transactions_db = json.load(f)
         args = request.args
         card_number = args.get("cardnumber")
         ssc = args.get("ssc")
@@ -103,7 +104,7 @@ def requestpayment():
 
 @app.route('/checkpayment', methods=["GET"])
 def checkpayment():
-    with open("database/isocard_transactions.json", 'r') as f: transactions_db = json.load(f)
+    with open(f"{client_data_dir}/database/isocard_transactions.json", 'r') as f: transactions_db = json.load(f)
     try:
         args = request.args
         verification_code = args.get("verificationcode")
