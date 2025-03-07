@@ -15,7 +15,7 @@ If there are no updates available, this is skipped and the bot is directly start
 import requests
 import os
 import json
-import typing_extensions
+from typing_extensions import Literal
 
 # Configuration
 class UpdaterConfig:
