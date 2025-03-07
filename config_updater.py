@@ -28,7 +28,7 @@ class UpdaterConfig:
 # Functions
 def download_file(config_file_name: str) -> tuple:
     """Downloads the requested file from the update server.\n\nReturns a `tuple` containing the status of the request, along with the data from the request."""
-    download_request = requests.get(UpdaterConfig.update_server_target + config_file_name + ("?raw=true" if UpdaterConfig.use_raw_file_data else ""))
+    download_request = requests.get(UpdaterConfig.update_server_target + "/" + config_file_name + ("?raw=true" if UpdaterConfig.use_raw_file_data else ""))
     if download_request.status_code == 200:
         return (True, dict(json.loads(download_request.text)))
     else:
@@ -64,7 +64,7 @@ def check_for_updates() -> Literal[True]:
             with open(UpdaterConfig.config_files_path + _file, "r") as config_file:
                 if check_file[1] != json.load(UpdaterConfig.config_files_path + _file):
                     print(f"[!] An update is available for the {_file} configuration file. Updating...")
-                    with open(UpdaterConfig.config_files_path + _file, "w+") as config_file:
+                    with open(UpdaterConfig.config_files_path + "/" + _file, "w+") as config_file:
                         json.dump(check_file[1], config_file, indent=4)
                         config_file.close()
                     print(f"[✅] Successfully updated the configuration file.")
