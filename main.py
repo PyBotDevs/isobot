@@ -31,17 +31,22 @@ intents.members = True
 client = discord.Bot(intents=intents)
 color = discord.Color.random()
 start_time = ""
+home_dir = os.path.expanduser('~')
+client_data_dir = f"{home_dir}/.isobot"
 
 # Pre-Initialization Commands
 def initial_setup():
     """Runs the initial setup for isobot's directories.\nThis creates missing directories, new log files, as well as new databases for any missing `.json` database files."""
     # Create required client directories
     try:
+        if not os.path.isdir(f"{home_dir}/.isobot"):
+            os.mkdir(f"{home_dir}/.isobot")
+
         paths = ("database", "database/isobank", "config", "logs", "themes")
         for p in paths:
-            if not os.path.isdir(p):
+            if not os.path.isdir(f"{client_data_dir}/{p}"):
                 logger.warn(f"'{p}' directory appears to be missing. Created new directory for '{p}'.", module="main/Setup", nolog=True)
-                os.mkdir(p)
+                os.mkdir(f"{client_data_dir}/{p}")
     except OSError:
         logger.error(f"Failed to make directory: {e}", module="main/Setup")
 
@@ -66,9 +71,9 @@ def initial_setup():
             "isobank/auth"
         )
         for _file in databases:
-            if not os.path.isfile(f"database/{_file}.json"):
+            if not os.path.isfile(f"{client_data_dir}/database/{_file}.json"):
                 logger.warn(f"[main/Setup] '{_file}.json' was not found in database directory. Creating new database...", module="main/Setup", nolog=True)
-                with open(f"database/{_file}.json", 'x', encoding="utf-8") as f:
+                with open(f"{client_data_dir}/database/{_file}.json", 'x', encoding="utf-8") as f:
                     if _file == "currency":
                         json.dump({"treasury": 100000000, "wallet": {}, "bank": {}}, f)
                     else:
@@ -90,29 +95,29 @@ def initial_setup():
 
     # Generating client log files
     try:
-        if not os.path.isfile("logs/info-log.txt"):
-            with open('logs/info-log.txt', 'x', encoding="utf-8") as this:
+        if not os.path.isfile(f"{client_data_dir}/logs/info-log.txt"):
+            with open(f'{client_data_dir}/logs/info-log.txt', 'x', encoding="utf-8") as this:
                 this.write("# All information and warnings will be logged here!\n")
                 this.close()
             logger.info("Created info log", module="main/Setup", nolog=True)
             time.sleep(0.5)
-        if not os.path.isfile("logs/error-log.txt"):
-            with open('logs/error-log.txt', 'x', encoding="utf-8") as this:
+        if not os.path.isfile(f"{client_data_dir}/logs/error-log.txt"):
+            with open(f'{client_data_dir}/logs/error-log.txt', 'x', encoding="utf-8") as this:
                 this.write("# All exceptions will be logged here!\n")
                 this.close()
             logger.info("Created error log", module="main/Setup", nolog=True)
             time.sleep(0.5)
-        if not os.path.isfile("logs/currency.log"):
-            with open('logs/currency.log', 'x', encoding="utf-8") as this:
+        if not os.path.isfile(f"{client_data_dir}/logs/currency.log"):
+            with open(f'{client_data_dir}/logs/currency.log', 'x', encoding="utf-8") as this:
                 this.close()
             logger.info("Created currency log", module="main/Setup", nolog=True)
             time.sleep(0.5)
-        if not os.path.isfile("logs/startup-log.txt"):
-            with open("logs/startup-log.txt", 'x', encoding="utf-8") as this:
+        if not os.path.isfile(f"{client_data_dir}/logs/startup-log.txt"):
+            with open(f"{client_data_dir}/logs/startup-log.txt", 'x', encoding="utf-8") as this:
                 this.close()
             time.sleep(0.5)
-        if not os.path.isfile("logs/isocard_transactions.log"):
-            with open("logs/isocard_transactions.log", 'x', encoding="utf-8") as this:
+        if not os.path.isfile(f"{client_data_dir}/logs/isocard_transactions.log"):
+            with open(f"{client_data_dir}/logs/isocard_transactions.log", 'x', encoding="utf-8") as this:
                 this.write("# All IsoCard transaction updates will be logged here.\n")
                 this.close()
             time.sleep(0.5)
@@ -123,8 +128,8 @@ initial_setup()  # Check for any missing sub-directories or databases in bot dir
 
 # Framework Module Loader
 colors = colors.Colors()
-s = logger.StartupLog("logs/startup-log.txt", clear_old_logs=True)
-currency = currency.CurrencyAPI("database/currency.json", "logs/currency.log")
+s = logger.StartupLog(f"{client_data_dir}/logs/startup-log.txt", clear_old_logs=True)
+currency = currency.CurrencyAPI(f"{client_data_dir}/database/currency.json", f"{client_data_dir}/logs/currency.log")
 settings = settings.Configurator()
 levelling = levelling.Levelling()
 items = items.Items()

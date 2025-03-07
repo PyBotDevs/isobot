@@ -17,12 +17,15 @@ import os
 import json
 from typing_extensions import Literal
 
+# Variables
+client_data_dir = f"{os.path.expanduser('~')}/.isobot"
+
 # Configuration
 class UpdaterConfig:
     """This class contains the full configuration for the updater."""
     update_server_target = "https://raw.githubusercontent.com/PyBotDevs/resources/refs/heads/base/isobot-config-data"
     use_raw_file_data = False
-    config_files_path = "config/"
+    config_files_path = f"{client_data_dir}/config/"
     config_files_list = ("commands.json", "shop.json", "words.json")
 
 # Functions
