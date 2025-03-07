@@ -6,7 +6,7 @@ from typing_extensions import Union
 
 # Variables
 client_data_dir = f"{os.path.expanduser('~')}/.isobot"
-log_file_path = "logs/isocard_transactions.log"
+log_file_path = f"{client_data_dir}/logs/isocard_transactions.log"
 
 # Initialization
 class IsoCardTxn:
