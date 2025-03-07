@@ -65,15 +65,13 @@ def initial_setup():
             "isobank/accounts",
             "isobank/auth"
         )
-        for f in databases:
-            if not os.path.isfile(f"database/{f}.json"):
-                logger.warn(f"[main/Setup] '{f}.json' was not found in database directory. Creating new database...", module="main/Setup", nolog=True)
-                if f == "currency":
-                    with open(f"database/{f}.json", 'x', encoding="utf-8") as f:
+        for _file in databases:
+            if not os.path.isfile(f"database/{_file}.json"):
+                logger.warn(f"[main/Setup] '{_file}.json' was not found in database directory. Creating new database...", module="main/Setup", nolog=True)
+                with open(f"database/{_file}.json", 'x', encoding="utf-8") as f:
+                    if _file == "currency":
                         json.dump({"treasury": 100000000, "wallet": {}, "bank": {}}, f)
-                        f.close()
-                else:
-                    with open(f"database/{f}.json", 'x', encoding="utf-8") as f:
+                    else:
                         json.dump({}, f)
                         f.close()
                 time.sleep(0.5)
