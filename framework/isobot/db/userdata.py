@@ -4,6 +4,8 @@
 import json
 from framework.isobot.colors import Colors as colors
 
+client_data_dir = f"{os.path.expanduser('~')}/.isobot"
+
 # Functions
 class UserData():
     """Used to initialize the UserData system."""
@@ -12,12 +14,12 @@ class UserData():
 
     def load(self) -> dict:
         """Fetches and returns the latest data from the levelling database."""
-        with open("database/user_data.json", 'r', encoding="utf8") as f: db = json.load(f)
+        with open(f"{client_data_dir}/database/user_data.json", 'r', encoding="utf8") as f: db = json.load(f)
         return db
 
     def save(self, data: dict) -> int:
         """Dumps all cached data to your local machine."""
-        with open("database/user_data.json", 'w+', encoding="utf8") as f: json.dump(data, f)
+        with open(f"{client_data_dir}/database/user_data.json", 'w+', encoding="utf8") as f: json.dump(data, f)
         return 0
 
     def generate(self, user_id: int) -> int:

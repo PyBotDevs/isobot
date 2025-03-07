@@ -5,7 +5,8 @@ from framework.isobot.colors import Colors as colors
 from framework.isobot.shop import ShopData
 
 # Variables
-shop = ShopData("config/shop.json")
+client_data_dir = f"{os.path.expanduser('~')}/.isobot"
+shop = ShopData(f"{client_data_dir}/config/shop.json")
 shopitem = shop.get_item_ids()
 
 # Functions
@@ -16,12 +17,12 @@ class Items():
 
     def load(self) -> dict:
         """Fetches and returns the latest data from the items database."""
-        with open("database/items.json", 'r', encoding="utf8") as f: db = json.load(f)
+        with open(f"{client_data_dir}/database/items.json", 'r', encoding="utf8") as f: db = json.load(f)
         return db
 
     def save(self, data: dict) -> int:
         """Dumps all cached data to your local machine."""
-        with open("database/items.json", 'w+', encoding="utf8") as f: json.dump(data, f)
+        with open(f"{client_data_dir}/database/items.json", 'w+', encoding="utf8") as f: json.dump(data, f)
         return 0
 
     def generate(self, user_id: int) -> int:

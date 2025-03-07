@@ -5,6 +5,8 @@ import json
 import time
 from framework.isobot.colors import Colors as colors
 
+client_data_dir = f"{os.path.expanduser('~')}/.isobot"
+
 # Functions
 class IsoCard:
     def __init__(self):
@@ -12,12 +14,12 @@ class IsoCard:
     
     def load(self) -> dict:
         """Loads the latest IsoCard database content from local storage."""
-        with open("database/isocard.json", "r", encoding="utf-8") as f: data = json.load(f)
+        with open(f"{client_data_dir}/database/isocard.json", "r", encoding="utf-8") as f: data = json.load(f)
         return data
     
     def save(self, data: dict) -> int:
         """Saves the latest cached database to local storage."""
-        with open("database/isocard.json", 'w+', encoding="utf-8") as f: json.dump(data, f, indent=4)
+        with open(f"{client_data_dir}/database/isocard.json", 'w+', encoding="utf-8") as f: json.dump(data, f, indent=4)
         return 0
     
     def raw(self) -> dict:

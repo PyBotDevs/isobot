@@ -4,6 +4,8 @@
 import json
 from framework.isobot.colors import Colors as colors
 
+client_data_dir = f"{os.path.expanduser('~')}/.isobot"
+
 # Functions
 class Warnings:
     """Used to initialize the warnings database."""
@@ -12,12 +14,12 @@ class Warnings:
 
     def load(self) -> dict:
         """Fetches and returns the latest data from the warnings database."""
-        with open("database/warnings.json", 'r', encoding="utf8") as f: db = json.load(f)
+        with open(f"{client_data_dir}/database/warnings.json", 'r', encoding="utf8") as f: db = json.load(f)
         return db
 
     def save(self, data: dict) -> int:
         """Dumps all cached data to your local machine."""
-        with open("database/warnings.json", 'w+', encoding="utf8") as f: json.dump(data, f)
+        with open(f"{client_data_dir}/database/warnings.json", 'w+', encoding="utf8") as f: json.dump(data, f)
         return 0
     
     def generate(self, guild_id: int, user_id: int) -> int:
