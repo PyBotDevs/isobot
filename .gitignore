@@ -15,6 +15,7 @@ logs/currency.log
 logs/error-log.txt
 logs/info-log.txt
 logs/startup-log.txt
+config
 config/settings.json
 config/commands.json
 config/shop.json
