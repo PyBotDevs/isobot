@@ -3,6 +3,8 @@
 import json
 import random
 import logging
+import os
+from framework.isobot import isocardtxn as isocardtxn_
 from api import auth
 from flask import Flask
 from flask import request
@@ -10,19 +12,21 @@ from framework.isobot import currency
 from threading import Thread
 
 # Configuration
+client_data_dir = f"{os.path.expanduser('~')}/.isobot"
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
 app = Flask('')
-currency = currency.CurrencyAPI("database/currency.json", "logs/currency.log")
+isocardtxn = isocardtxn_.IsoCardTxn()
+currency = currency.CurrencyAPI(f"{client_data_dir}/database/currency.json", f"{client_data_dir}/logs/currency.log")
 
 def call_isocards_database() -> dict:
     """Calls all of the latest information from the IsoCards database."""
-    with open("database/isocard.json", 'r') as f: isocards = json.load(f)
+    with open(f"{client_data_dir}/database/isocard.json", 'r') as f: isocards = json.load(f)
     return isocards
 
 def save(data):
     """Dumps all cached databases to the local machine."""
-    with open("database/isocard_transactions.json", 'w+') as f: json.dump(data, f, indent=4)
+    with open(f"{client_data_dir}/database/isocard_transactions.json", 'w+') as f: json.dump(data, f, indent=4)
 
 # Functions
 def generate_verification_code() -> int:
@@ -36,6 +40,16 @@ def generate_verification_code() -> int:
     code: str = int_1 + int_2 + int_3 + int_4 + int_5 + int_6
     return int(code)
 
+def generate_txn_id() -> str:
+    """Generates a randomized transaction id, which is three *CAPITAL* letters followed by 6 numbers."""
+    txn_id = str()
+    for _ in range(3):
+        txn_id += str(random.choice(('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', )))
+    txn_id += "-"
+    for _ in range(6):
+        txn_id += str(random.randint(0, 9))
+    return txn_id
+
 # API Commands
 @app.route('/', methods=["GET"])
 def main():
@@ -45,7 +59,7 @@ def main():
 def requestpayment():
     try:
         isocards = call_isocards_database()
-        with open("database/isocard_transactions.json", 'r') as f: transactions_db = json.load(f)
+        with open(f"{client_data_dir}/database/isocard_transactions.json", 'r') as f: transactions_db = json.load(f)
         args = request.args
         card_number = args.get("cardnumber")
         ssc = args.get("ssc")
@@ -53,8 +67,10 @@ def requestpayment():
         merchant_id = args.get("merchantid")
         if str(isocards[str(card_number)]["ssc"]) == ssc:
             verification_code = generate_verification_code()
+            txn_id = generate_txn_id()
             user_id = isocards[str(card_number)]["cardholder_user_id"]
             transactions_db[str(verification_code)] = {
+                "txn_id": txn_id,
                 "payer_id": user_id,
                 "merchant_id": merchant_id,
                 "card_number": card_number,
@@ -63,9 +79,17 @@ def requestpayment():
                 "status": "in_progress"
             }
             save(transactions_db)
+            isocardtxn.write_to_log(
+                txn_id=txn_id,
+                payer_id=user_id,
+                reciever_id=merchant_id,
+                data=f"New transaction request started (txn_amount: {amount}; verification code: {verification_code})"
+            )
+            isocardtxn.write_transaction(txn_id, user_id, merchant_id, card_number, user_id, int(amount), "In Progress")
             request_data = {
                 "code": 200,
                 "message": f"Payment requested to IsoCard number: {card_number}. Payment will be complete once user accepts this.",
+                "txn_id": txn_id,
                 "verification_code": verification_code
             }
             return request_data, 200
@@ -81,28 +105,47 @@ def requestpayment():
 
 @app.route('/checkpayment', methods=["GET"])
 def checkpayment():
+    with open(f"{client_data_dir}/database/isocard_transactions.json", 'r') as f: transactions_db = json.load(f)
     try:
-        with open("database/isocard_transactions.json", 'r') as f: transactions_db = json.load(f)
         args = request.args
         verification_code = args.get("verificationcode")
+        txn_id: str = transactions_db[str(verification_code)]["txn_id"]
         if transactions_db[str(verification_code)]["status"] == "complete":
             if currency.get_bank(transactions_db[str(verification_code)]["payer_id"]) < transactions_db[str(verification_code)]["amount"]:
+                isocardtxn.write_to_log(
+                    txn_id=txn_id,
+                    payer_id=transactions_db[str(verification_code)]["payer_id"],
+                    reciever_id=transactions_db[str(verification_code)]["merchant_id"],
+                    data="Transaction has been terminated (reason: insufficient balance of the payer)"
+                )
                 del transactions_db[str(verification_code)]
+                save(transactions_db)
+                isocardtxn.update_transaction_status(txn_id, "Terminated (insufficient balance)")
                 return {
                     "code": 403,
+                    "txn_id": txn_id,
                     "message": "Transaction terminated: Insufficient payer balance.",
                     "exception": "InsufficientFunds"
                 }, 403
             currency.bank_remove(transactions_db[str(verification_code)]["payer_id"], transactions_db[str(verification_code)]["amount"])
             currency.bank_add(transactions_db[str(verification_code)]["merchant_id"], transactions_db[str(verification_code)]["amount"])
+            isocardtxn.write_to_log(
+                txn_id=txn_id,
+                payer_id=transactions_db[str(verification_code)]["payer_id"],
+                reciever_id=transactions_db[str(verification_code)]["merchant_id"],
+                data=f"Payment of {transactions_db[str(verification_code)]['amount']} coins has been successful"
+            )
             del transactions_db[str(verification_code)]
             save(transactions_db)
+            isocardtxn.update_transaction_status(txn_id, "Successful")
             return {
                 "code": 200,
+                "txn_id": txn_id,
                 "message": "Transaction complete."
             }, 200
         else: return {
             "code": 202,
+            "txn_id": txn_id,
             "message": "Transaction still not approved."
         }, 202
     except KeyError: return {
@@ -110,9 +153,17 @@ def checkpayment():
         "message": "Verification code does not point to an active transaction.",
         "exception": "TransactionNotFound"
     }, 404
-    except Exception as e: return {
+    except Exception as e:
+        isocardtxn.write_to_log(
+            txn_id=txn_id,
+            payer_id=transactions_db[str(verification_code)]["payer_id"],
+            reciever_id=transactions_db[str(verification_code)]["merchant_id"],
+            data=f"Failed to process payment due to a server error (error: {e})"
+        )
+        isocardtxn.update_transaction_status(txn_id, "Failed (unable to process payment)")
+        return {
         "code": 500,
-        "message": f"Failed to process payment: {e}",
+        "message": f"Failed to process payment due to an unhandled server error: {e}",
         "exception": type(e).__name__
     }, 500
 
@@ -151,11 +202,13 @@ def account():
 # Initialization
 def run(): app.run(host="0.0.0.0", port=4800)
 
-if auth.get_runtime_options()["isocard_server_enabled"]:  # Run server ONLY if its runtime option is enabled
-    print("[isocard/server] Starting IsoCard payments server...")
-    t = Thread(target=run)
-    t.daemon = True
-    t.start()
+def deploy_server():
+    """Deploys the IsoCard Payments Server. (if the option is enabled in the runtimeconfig file)\n\nRuntimeconfig Option: `isocard_server_enabled`"""
+    if auth.get_runtime_options()["isocard_server_enabled"]:  # Run server ONLY if its runtime option is enabled
+        print("[isocard/server] Starting IsoCard payments server...")
+        t = Thread(target=run)
+        t.daemon = True
+        t.start()
 
 
 #btw i use arch

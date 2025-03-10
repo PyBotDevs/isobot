@@ -3,7 +3,10 @@
 # Imports
 import json
 import time
+import os
 from framework.isobot.colors import Colors as colors
+
+client_data_dir = f"{os.path.expanduser('~')}/.isobot"
 
 # Functions
 class Presence():
@@ -13,12 +16,12 @@ class Presence():
 
     def load(self) -> dict:
         """Fetches and returns the latest data from the presence database."""
-        with open("database/presence.json", 'r', encoding="utf8") as f: db = json.load(f)
+        with open(f"{client_data_dir}/database/presence.json", 'r', encoding="utf8") as f: db = json.load(f)
         return db
 
     def save(self, data: dict) -> int:
         """Dumps all cached data to your local machine."""
-        with open("database/presence.json", 'w+', encoding="utf8") as f: json.dump(data, f)
+        with open(f"{client_data_dir}/database/presence.json", 'w+', encoding="utf8") as f: json.dump(data, f)
         return 0
 
     def add_afk(self, guild_id: int, user_id: int, response: str) -> int:

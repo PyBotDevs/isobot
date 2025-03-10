@@ -18,8 +18,9 @@ from discord.ext import commands
 from framework.isobot.db.presence import Presence
 
 # Variables
+client_data_dir = f"{os.path.expanduser('~')}/.isobot"
 color = discord.Color.random()
-currency = currency.CurrencyAPI("database/currency.json", "logs/currency.log")
+currency = currency.CurrencyAPI(f"{client_data_dir}/database/currency.json", f"{client_data_dir}/logs/currency.log")
 levelling = levelling.Levelling()
 _commands = cmds.Commands()
 _embeds = _embeds.Embeds()

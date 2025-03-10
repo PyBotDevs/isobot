@@ -1,4 +1,4 @@
-import time, datetime
+import time, datetime, os
 from isobot.colors import Colors
 
 class Logger(Colors):
