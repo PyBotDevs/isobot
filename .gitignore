@@ -1,4 +1,3 @@
-api/runtimeconfig.json
 *.log
 *.pyc
 __pycache__

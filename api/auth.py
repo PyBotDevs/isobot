@@ -3,30 +3,26 @@ import json, os, os.path
 from typing_extensions import Literal
 
 # Config
-wdir = os.getcwd()
+wdir = f"{os.path.expanduser('~')}/.isobot"
 
 # Setup
 def load_config() -> dict:
     """Loads the runtimeconfig file and returns the contents as a `dict`."""
-    with open(f'{wdir}/api/runtimeconfig.json', 'r') as f:
+    with open(f'{wdir}/runtimeconfig.json', 'r') as f:
         return json.load(f)
 
 def initial_setup() -> Literal[0]:
     # Building runtimeconfig files and directory IF missing:
     """Checks whether the required runtimeconfig files are present in the bot runtime directory.\n\nReturns `0` if successful."""
-    if not os.path.isdir("api"):
-        print(f"[!] Runtimeconfig directory not found. Building runtime configuration files...")
-        print("   > [1/3] Creating client api directory...")
-        os.mkdir("api")
-    if not os.path.isfile("api/runtimeconfig.json"):
+    if not os.path.isfile(f"{wdir}/runtimeconfig.json"):
         print(f"[!] Runtimeconfig not found. Building runtime configuration files...")
         print("   > Creating runtimeconfig file...")
-        with open('api/runtimeconfig.json', 'x') as f:  # Create a new file for runtimeconfig
+        with open(f'{wdir}/runtimeconfig.json', 'x') as f:  # Create a new file for runtimeconfig
             json.dump({}, f)
             f.close()
 
     # Check whether any keys are missing in runtimeconfig file, and add them accordingly:
-    with open('api/runtimeconfig.json', 'r') as f: runtimeconfig_db = json.load(f)
+    with open(f'{wdir}/runtimeconfig.json', 'r') as f: runtimeconfig_db = json.load(f)
     required_keys = ("token", "alt_token_path", "secret", "public_key", "runtime_options", "replit", "other_keys")
     for key in required_keys:
         if key not in runtimeconfig_db:
@@ -39,7 +35,7 @@ def initial_setup() -> Literal[0]:
                 runtimeconfig_db[key] = False
             else:
                 runtimeconfig_db[key] = ""
-    with open('api/runtimeconfig.json', 'w+') as f: json.dump(runtimeconfig_db, f, indent=4)
+    with open(f'{wdir}/runtimeconfig.json', 'w+') as f: json.dump(runtimeconfig_db, f, indent=4)
 
     default_runtime_option_values = {
         "themes": False,
@@ -63,7 +59,7 @@ def initial_setup() -> Literal[0]:
             print(f"[!] Update available for runtimeconfig. Updating configuration...")
             runtimeconfig_db["other_keys"][key] = ""
     
-    with open('api/runtimeconfig.json', 'w+') as f: json.dump(runtimeconfig_db, f, indent=4)
+    with open(f'{wdir}/runtimeconfig.json', 'w+') as f: json.dump(runtimeconfig_db, f, indent=4)
     return 0
 
 # Commands
@@ -84,7 +80,7 @@ def get_token():
             if arg1.lower() == "y" or arg1.lower() == "yes":
                 arg2 = input("Enter your custom token: ")
                 config["token"] = str(arg2)
-                with open(f'{wdir}/api/runtimeconfig.json', 'w+') as f: json.dump(config, f, indent=4)
+                with open(f'{wdir}/runtimeconfig.json', 'w+') as f: json.dump(config, f, indent=4)
                 print("[✅] Setup successful!")
             elif arg1.lower() == "n" or arg1.lower() == "no": return
     return str(config["token"])

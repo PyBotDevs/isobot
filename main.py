@@ -7,7 +7,6 @@ import time
 import datetime
 import discord, discord.errors
 import asyncio
-import api.auth
 import config_updater
 
 # Run Config Updater 
@@ -125,6 +124,9 @@ def initial_setup():
         logger.error(f"Failed to make log file: {e}", module="main/Setup", nolog=True)
 
 initial_setup()  # Check for any missing sub-directories or databases in bot directory
+
+# Import Client API Library
+import api.auth
 
 # Framework Module Loader
 colors = colors.Colors()
