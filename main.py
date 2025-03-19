@@ -7,13 +7,22 @@ import time
 import datetime
 import discord, discord.errors
 import asyncio
+import network_check
 import config_updater
+from utils import logger
+
+# Check Network Status
+while True:
+    if network_check.network_check(): break
+    else:
+        logger.warn("System network check failed (no network/internet access). Retrying in 10 seconds...", module="main/NetworkCheck")
+        time.sleep(10)
 
 # Run Config Updater 
 config_updater.check_for_updates()
 
 # Client Module Imports
-from utils import logger, ping
+from utils import ping
 from math import floor
 from random import randint
 from framework.isobot import currency, colors, settings, commands as _commands, isocard
@@ -628,8 +637,24 @@ if cog_errors == 0: s.log(f"[main/Cogs] {colors.green}All cogs successfully load
 else: s.log(f"[main/Cogs] {colors.yellow}{cog_errors}/{len(active_cogs)} cogs failed to load.{colors.end}")
 s.log("--------------------")
 s.log(f"[main/Client] Starting client in {f'{colors.cyan}Replit mode{colors.end}' if api.auth.get_mode() else f'{colors.orange}local mode{colors.end}'}...")
-if api.auth.get_mode(): client.run(os.getenv("TOKEN"))
-else: client.run(api.auth.get_token())
+
+login_tries = int()
+max_login_tries = 5
+for attempt in range(max_login_tries):
+    try:
+        if api.auth.get_mode(): client.run(os.getenv("TOKEN"))
+        else: client.run(api.auth.get_token())
+    except (discord.HTTPException, discord.GatewayNotFound, discord.LoginFailure, asyncio.TimeoutError) as e:
+        login_tries += 1
+        if login_tries == max_login_tries:
+            logger.critical("Max retries reached. Terminating isobot...")
+            exit()
+        else:
+            s.log(f"Login attempt {login_tries + 1} failed: {e}")
+            logger.warn(f"Login attempt {login_tries + 1} failed: {e}")
+            s.log("Retrying in 5 seconds...")
+            logger.warn("Retrying in 5 seconds...")
+            time.sleep(5)
 
 
 
