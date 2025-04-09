@@ -400,19 +400,6 @@ class Economy(commands.Cog):
             await ctx.respond(f"wtf is {item}?")
 
     @commands.slash_command(
-        name='modify_balance',
-        description="Modifies user balance (Normal Digit: Adds Balance; Negative Digit: Removes Balance)"
-    )
-    @option(name="user", description="Specify the user to change their balance", type=discord.User)
-    @option(name="modifier", description="Specify the balance to modify", type=int)
-    async def modify_balance(self, ctx: ApplicationContext, user:discord.User, modifier:int):
-        if ctx.author.id != 738290097170153472: return ctx.respond("Sorry, but this command is only for my developer's use.", ephemeral=True)
-        try:
-            currency.add(user.id, modifier)
-            await ctx.respond(f"{user.name}\'s balance has been modified by {modifier} coins.\n\n**New Balance:** {currency.get_wallet(user.id)} coins", ephemeral=True)
-        except KeyError: await ctx.respond("That user doesn't exist in the database.", ephemeral=True)
-
-    @commands.slash_command(
         name='give',
         description='Gives any amount of cash to someone else'
     )
