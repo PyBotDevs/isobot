@@ -37,32 +37,6 @@ class Levelling(commands.Cog):
         except KeyError: return await ctx.respond("Looks like that user isn't indexed yet. Try again later.", ephemeral=True)
 
     @commands.slash_command(
-        name="edit_rank",
-        description="Edits a user's rank. (DEV ONLY)"
-    )
-    @option(name="user", description="Who's rank do you want to edit?", type=discord.User)
-    @option(name="new_rank", description="The new rank you want to set for the user", type=int)
-    async def edit_rank(self, ctx: ApplicationContext, user: discord.User, new_rank: int):
-        if ctx.author.id != 738290097170153472: return await ctx.respond("This command isn't for you.", ephemeral=True)
-        try:
-            levelling.set_level(user.id, new_rank)
-            await ctx.respond(f"{user.display_name}\'s rank successfully edited. `New Rank: {levelling.get_level(user.id)}`")
-        except KeyError: return await ctx.respond("That user isn't indexed yet.", ephemeral=True)
-
-    @commands.slash_command(
-        name="edit_xp",
-        description="Edits a user's XP. (DEV ONLY)"
-    )
-    @option(name="user", description="Who's rank do you want to edit?", type=discord.User)
-    @option(name="new_xp", description="The new xp count you want to set for the user", type=int)
-    async def edit_xp(self, ctx: ApplicationContext, user: discord.User, new_xp: int):
-        if ctx.author.id != 738290097170153472: return await ctx.respond("This command isn't for you.", ephemeral=True)
-        try:
-            levelling.set_xp(user.id, new_xp)
-            await ctx.respond(f"{user.display_name}\'s XP count successfully edited. `New XP: {levelling.get_xp(user.id)}`")
-        except KeyError: return await ctx.respond("That user isn't indexed yet.", ephemeral=True)
-
-    @commands.slash_command(
         name="leaderboard_levels",
         description="View the global leaderboard for user levelling ranks."
     )
