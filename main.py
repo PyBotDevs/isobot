@@ -582,14 +582,14 @@ async def delete_my_data(ctx: ApplicationContext):
     items.delete_user(ctx.author.id)
     userdata.delete_user(ctx.author.id)
     weather.delete_user(ctx.author.id)
-    localembed = discord.Embed(title=":white_check_mark: Successfully deleted all of your isobot data.", color=discord.Color.green())
+    localembed = discord.Embed(title=":white_check_mark: All of your isobot data has been permanently deleted.", color=discord.Color.green())
     localembed.add_field(
         name="What has been deleted",
         value="- Your currency wallet and bank data\n- Your user levels\n- Items in your inventory\n- Weather save data\n- All of your isobot user settings"
     )
     localembed.add_field(
         name="What has not been deleted",
-        value="- Any isobot data relating to your servers"
+        value="- Any isobot settings and configuration data relating to any servers"
     )
     await ctx.respond(embed=localembed, ephemeral=True)
 

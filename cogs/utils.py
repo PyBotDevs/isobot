@@ -6,7 +6,6 @@ import math
 import psutil
 import openai
 import discord
-import json
 import time
 import datetime
 from api import auth
