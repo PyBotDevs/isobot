@@ -46,7 +46,8 @@ def initial_setup() -> Literal[0]:
         "ping_server_override": False,
         "debug_mode": False,
         "show_ping_on_startup": True,
-        "isocard_server_enabled": True
+        "isocard_server_enabled": True,
+        "superusers": []
     }
     for key in default_runtime_option_values:
         if key not in runtimeconfig_db["runtime_options"]:
