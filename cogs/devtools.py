@@ -15,8 +15,6 @@ currency = CurrencyAPI(f"{client_data_dir}/database/currency.json", f"{client_da
 levelling = levelling.Levelling()
 
 # Bot Superusers List
-superusers = ["738290097170153472"]
-
 def fetch_superusers() -> list:
     """Fetches a list of all of the superusers' Discord IDs registered in isobot."""
     return list(auth.get_runtime_options["superusers"])
