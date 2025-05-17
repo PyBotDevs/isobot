@@ -42,8 +42,10 @@ class Automod(commands.Cog):
     @option(name="toggle", description="Do you want to turn it on or off?", type=bool)
     async def automod_swearfilter(self, ctx: ApplicationContext, toggle: bool):
         """Turn on or off automod's swear-filter in your server."""
-        if not ctx.author.guild_permissions.administrator: return await ctx.respond("You cannot use this command. If you think this is a mistake, please contact your server owner/administrator.", ephemeral=True)
-        if automod.fetch_config(ctx.guild.id)["swear_filter"]["enabled"] == toggle: return await ctx.respond(f"That automod option is already set to `{toggle}`.", ephemeral=True)
+        if not ctx.author.guild_permissions.administrator:
+            return await ctx.respond("You cannot use this command. If you think this is a mistake, please contact your server owner/administrator.", ephemeral=True)
+        if automod.fetch_config(ctx.guild.id)["swear_filter"]["enabled"] == toggle:
+            return await ctx.respond(f"That automod option is already set to `{toggle}`.", ephemeral=True)
         automod.swearfilter_enabled(ctx.guild.id, toggle)
         if toggle is True: await ctx.respond("Swear-filter successfully **enabled**.", ephemeral=True)
         elif toggle is False: await ctx.respond("Swear-filter successfully **disabled**.", ephemeral=True)
@@ -56,8 +58,10 @@ class Automod(commands.Cog):
     @option(name="toggle", description="Do you want to turn it on or off?", type=bool)
     async def automod_use_default_keywords(self, ctx: ApplicationContext, toggle: bool):
         """Choose whether or not you want to use the default keywords for automod's swear-filter."""
-        if not ctx.author.guild_permissions.administrator: return await ctx.respond("You cannot use this command. If you think this is a mistake, please contact your server owner/administrator.", ephemeral=True)
-        if automod.fetch_config(ctx.guild.id)["swear_filter"]["keywords"]["use_default"] == toggle: return await ctx.respond(f"That automod option is already set to `{toggle}`.", ephemeral=True)
+        if not ctx.author.guild_permissions.administrator:
+            return await ctx.respond("You cannot use this command. If you think this is a mistake, please contact your server owner/administrator.", ephemeral=True)
+        if automod.fetch_config(ctx.guild.id)["swear_filter"]["keywords"]["use_default"] == toggle:
+            return await ctx.respond(f"That automod option is already set to `{toggle}`.", ephemeral=True)
         automod.swearfilter_usedefaultkeywords(ctx.guild.id, toggle)
         if toggle is True: await ctx.respond("Using default swear-filter keywords successfully **enabled**.", ephemeral=True)
         elif toggle is False: await ctx.respond("Using default swear-filter keywords successfully **disabled**.", ephemeral=True)
@@ -89,7 +93,8 @@ class Automod(commands.Cog):
     @option(name="keyword", description="What keyword do you want to add?", type=str)
     async def automod_add_custom_keyword(self, ctx: ApplicationContext, keyword: str):
         """Adds a custom keyword to your server's swear-filter."""
-        if not ctx.author.guild_permissions.administrator: return await ctx.respond("You cannot use this command. If you think this is a mistake, please contact your server owner/administrator.", ephemeral=True)
+        if not ctx.author.guild_permissions.administrator:
+            return await ctx.respond("You cannot use this command. If you think this is a mistake, please contact your server owner/administrator.", ephemeral=True)
         loaded_config = automod.fetch_config(ctx.guild.id)
         if keyword not in loaded_config["swear_filter"]["keywords"]["custom"]:
             automod.swearfilter_addkeyword(ctx.guild.id, keyword)
@@ -105,7 +110,8 @@ class Automod(commands.Cog):
     @option(name="id", description="What's the id of the keyword to remove (can be found through /automod_view_custom_keywords", type=int)
     async def automod_remove_custom_keyword(self, ctx: ApplicationContext, id: int):
         """Removes a custom keyword (matching its id) from your server's swear-filter."""
-        if not ctx.author.guild_permissions.administrator: return await ctx.respond("You cannot use this command. If you think this is a mistake, please contact your server owner/administrator.", ephemeral=True)
+        if not ctx.author.guild_permissions.administrator:
+            return await ctx.respond("You cannot use this command. If you think this is a mistake, please contact your server owner/administrator.", ephemeral=True)
         try:
             automod.swearfilter_removekeyword(ctx.guild.id, id)
             return await ctx.respond(f"Keyword (id: `{id}`) successfully removed from swear-filter configuration.")
@@ -120,7 +126,8 @@ class Automod(commands.Cog):
     @option(name="toggle", description="Do you want to turn it on or off?", type=bool)
     async def automod_linkblocker(self, ctx: ApplicationContext, toggle: bool):
         """Turn on or off automod's link blocker in your server."""
-        if not ctx.author.guild_permissions.administrator: return await ctx.respond("You cannot use this command. If you think this is a mistake, please contact your server owner/administrator.", ephemeral=True)
+        if not ctx.author.guild_permissions.administrator:
+            return await ctx.respond("You cannot use this command. If you think this is a mistake, please contact your server owner/administrator.", ephemeral=True)
         if automod.fetch_config(ctx.guild.id)["link_blocker"]["enabled"] == toggle: return await ctx.respond(f"That automod option is already set to `{toggle}`.", ephemeral=True)
         automod.linkblocker_enabled(ctx.guild.id, toggle)
         if toggle is True: await ctx.respond("Link blocker successfully **enabled**.", ephemeral=True)
@@ -134,7 +141,8 @@ class Automod(commands.Cog):
     @option(name="toggle", description="Do you want to turn it on or off?", type=bool)
     async def automod_linkblocker_only_whitelisted_links(self, ctx: ApplicationContext, toggle: bool):
         """Only allows whitelisted links in the server and blocks all other links."""
-        if not ctx.author.guild_permissions.administrator: return await ctx.respond("You cannot use this command. If you think this is a mistake, please contact your server owner/administrator.", ephemeral=True)
+        if not ctx.author.guild_permissions.administrator:
+            return await ctx.respond("You cannot use this command. If you think this is a mistake, please contact your server owner/administrator.", ephemeral=True)
         if automod.fetch_config(ctx.guild.id)["link_blocker"]["use_whitelist_only"] == toggle: return await ctx.respond(f"That automod option is already set to `{toggle}`.", ephemeral=True)
         automod.linkblocker_enabled(ctx.guild.id, toggle)
         if toggle is True: await ctx.respond("Link blocker successfully **enabled**.", ephemeral=True)
@@ -148,7 +156,8 @@ class Automod(commands.Cog):
     @option(name="link", description="The link that you want to add (must be in form of https://{url})", type=str)
     async def automod_linkblocker_add_whitelist(self, ctx: ApplicationContext, link: str):
         """Adds a link to your server link blocker's whitelist."""
-        if not ctx.author.guild_permissions.administrator: return await ctx.respond("You cannot use this command. If you think this is a mistake, please contact your server owner/administrator.", ephemeral=True)
+        if not ctx.author.guild_permissions.administrator:
+            return await ctx.respond("You cannot use this command. If you think this is a mistake, please contact your server owner/administrator.", ephemeral=True)
         if link in automod.fetch_config(ctx.guild.id)["link_blocker"]["whitelist"]: return await ctx.respond("This link is already in your server's link blocker whitelist.", ephemeral=True)
         if "https://" in link or "http://" in link:
             automod.linkblocker_add_whitelisted(link)
@@ -163,7 +172,8 @@ class Automod(commands.Cog):
     @option(name="link", description="The link that you want to add (must be in form of https://{url})", type=str)
     async def automod_linkblocker_add_blacklist(self, ctx: ApplicationContext, link: str):
         """Adds a link to your server link blocker's blacklist."""
-        if not ctx.author.guild_permissions.administrator: return await ctx.respond("You cannot use this command. If you think this is a mistake, please contact your server owner/administrator.", ephemeral=True)
+        if not ctx.author.guild_permissions.administrator:
+            return await ctx.respond("You cannot use this command. If you think this is a mistake, please contact your server owner/administrator.", ephemeral=True)
         if link in automod.fetch_config(ctx.guild.id)["link_blocker"]["blacklist"]: return await ctx.respond("This link is already in your server's link blocker blacklist.", ephemeral=True)
         if "https://" in link or "http://" in link:
             automod.linkblocker_add_blacklisted(link)
@@ -216,11 +226,13 @@ class Automod(commands.Cog):
     @option(name="id", description="What's the id of the link to remove? (can be found through /automod_view_blacklisted_links", type=int)
     async def automod_linkblocker_remove_blacklist(self, ctx: ApplicationContext, id: int):
         """Removes a blacklisted link (matching its id) from this server's link blocker."""
-        if not ctx.author.guild_permissions.administrator: return await ctx.respond("You cannot use this command. If you think this is a mistake, please contact your server owner/administrator.", ephemeral=True)
+        if not ctx.author.guild_permissions.administrator:
+            return await ctx.respond("You cannot use this command. If you think this is a mistake, please contact your server owner/administrator.", ephemeral=True)
         try:
             automod.linkblocker_remove_blacklisted(ctx.guild.id, id)
             return await ctx.respond(f"Blacklisted link (id: `{id}`) successfully removed from link blocker.")
-        except IndexError: await ctx.respond("That blacklisted link id doesn't exist. Please specify a valid id and try again.", ephemeral=True)
+        except IndexError:
+            await ctx.respond("That blacklisted link id doesn't exist. Please specify a valid id and try again.", ephemeral=True)
     
     @automod_cmds.command(
         name="linkblocker_remove_whitelist",
@@ -230,11 +242,13 @@ class Automod(commands.Cog):
     @option(name="id", description="What's the id of the link to remove? (can be found through /automod_view_whitelisted_links", type=int)
     async def automod_linkblocker_remove_whitelist(self, ctx: ApplicationContext, id: int):
         """Removes a whitelisted link (matching its id) from this server's link blocker."""
-        if not ctx.author.guild_permissions.administrator: return await ctx.respond("You cannot use this command. If you think this is a mistake, please contact your server owner/administrator.", ephemeral=True)
+        if not ctx.author.guild_permissions.administrator:
+            return await ctx.respond("You cannot use this command. If you think this is a mistake, please contact your server owner/administrator.", ephemeral=True)
         try:
             automod.linkblocker_remove_whitelisted(ctx.guild.id, id)
             return await ctx.respond(f"Whitelisted link (id: `{id}`) successfully removed from link blocker.")
-        except IndexError: await ctx.respond("That whitelisted link id doesn't exist. Please specify a valid id and try again.", ephemeral=True)
+        except IndexError:
+            await ctx.respond("That whitelisted link id doesn't exist. Please specify a valid id and try again.", ephemeral=True)
 
 def setup(bot):
     bot.add_cog(Automod(bot))
