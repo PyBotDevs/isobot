@@ -158,7 +158,8 @@ class Automod(commands.Cog):
         """Adds a link to your server link blocker's whitelist."""
         if not ctx.author.guild_permissions.administrator:
             return await ctx.respond("You cannot use this command. If you think this is a mistake, please contact your server owner/administrator.", ephemeral=True)
-        if link in automod.fetch_config(ctx.guild.id)["link_blocker"]["whitelist"]: return await ctx.respond("This link is already in your server's link blocker whitelist.", ephemeral=True)
+        if link in automod.fetch_config(ctx.guild.id)["link_blocker"]["whitelist"]:
+            return await ctx.respond("This link is already in your server's link blocker whitelist.", ephemeral=True)
         if "https://" in link or "http://" in link:
             automod.linkblocker_add_whitelisted(link)
             await ctx.respond(f"Link `{link}` has successfully been added to whitelist.", ephemeral=True)
@@ -174,7 +175,8 @@ class Automod(commands.Cog):
         """Adds a link to your server link blocker's blacklist."""
         if not ctx.author.guild_permissions.administrator:
             return await ctx.respond("You cannot use this command. If you think this is a mistake, please contact your server owner/administrator.", ephemeral=True)
-        if link in automod.fetch_config(ctx.guild.id)["link_blocker"]["blacklist"]: return await ctx.respond("This link is already in your server's link blocker blacklist.", ephemeral=True)
+        if link in automod.fetch_config(ctx.guild.id)["link_blocker"]["blacklist"]:
+            return await ctx.respond("This link is already in your server's link blocker blacklist.", ephemeral=True)
         if "https://" in link or "http://" in link:
             automod.linkblocker_add_blacklisted(link)
             await ctx.respond(f"Link `{link}` has successfully been added to blacklist.", ephemeral=True)
