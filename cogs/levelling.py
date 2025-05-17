@@ -18,7 +18,7 @@ class Levelling(commands.Cog):
 
     @commands.slash_command(
         name="rank",
-        description="Shows your rank or another user's rank"
+        description="Shows your rank or another user's rank."
     )
     @option(name="user", description="Who's rank do you want to view?", type=discord.User, default=None)
     async def rank(self, ctx: ApplicationContext, user: discord.User=None):
@@ -41,6 +41,7 @@ class Levelling(commands.Cog):
         description="View the global leaderboard for user levelling ranks."
     )
     async def leaderboard_levels(self, ctx: ApplicationContext):
+        """View the global leaderboard for user levelling ranks."""
         await ctx.defer()
         levels = levelling.get_raw()
         levels_dict = dict()

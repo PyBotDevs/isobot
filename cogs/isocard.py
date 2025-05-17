@@ -39,6 +39,7 @@ class IsoCard(commands.Cog):
     )
     @option(name="ssc", description="The Special Security Code for your new card. (aka. CVV)", type=int)
     async def register(self, ctx: ApplicationContext, ssc: int):
+        """Register a new IsoCard in your account."""
         new_card_id = generate_card_id()
         new_card_data = isocard_db.generate(new_card_id, ctx.author.id, ctx.author.name, ssc)
         localembed = discord.Embed(title=":tada: Congratulations!", description="Your new IsoCard has successfully been registered!", color=discord.Color.green())
@@ -55,6 +56,7 @@ class IsoCard(commands.Cog):
     )
     @option(name="card_number", description="Enter your card number of the card you want to view.", type=int)
     async def info(self, ctx: ApplicationContext, card_number: int):
+        """View information on your IsoCard."""
         try:
             try: card_data = isocard_db.fetch_card_data(card_number)
             except KeyError: return await ctx.respond("There was a problem with your card number. Please check it and try again.", ephemeral=True)
@@ -80,6 +82,7 @@ class IsoCard(commands.Cog):
         description="View a list of all your cards."
     )
     async def my_card(self, ctx: ApplicationContext):
+        """View a list of all your cards."""
         all_card_numbers = isocard_db.fetch_all_cards()
         isocard_database = isocard_db.raw()
         your_cards = list()
@@ -103,11 +106,12 @@ class IsoCard(commands.Cog):
 
     @isocard.command(
         name="options_label",
-        description="Set your IsoCard's label"
+        description="Set your IsoCard's label."
     )
     @option(name="card_number", description="Enter your card number that you want to work with.", type=int)
     @option(name="new_label", description="What do you want your new card label to be?", type=str, default=None)
     async def options_label(self, ctx: ApplicationContext, card_number: int, new_label: str):
+        """Set your IsoCard's label."""
         try: card_data = isocard_db.fetch_card_data(card_number)
         except KeyError: return await ctx.respond("There was a problem with your card number. Please check it and try again.", ephemeral=True)
         if card_data["cardholder_user_id"] != ctx.author.id: return await ctx.respond("You do not have permission to access this IsoCard.\n If you think this is an error, please contact the devs.", ephemeral=True)
@@ -121,6 +125,7 @@ class IsoCard(commands.Cog):
     )
     @option(name="verification_code", description="The 6-digit verification code for your transaction", type=int)
     async def verify_transaction(self, ctx: ApplicationContext, verification_code: int):
+        """Verify an ongoing transaction."""
         try:
             with open(f"{client_data_dir}/database/isocard_transactions.json", 'r') as f: transactions_db = json.load(f)
             if transactions_db[str(verification_code)]["payer_id"] == ctx.author.id:
@@ -137,12 +142,12 @@ class IsoCard(commands.Cog):
 
     @isocard.command(
         name="transaction_history",
-        description="View all your past transactions (paid and received)"
+        description="View all your past transactions. (paid and received)"
     )
     @option(name="transaction_type", description="Which type of transactions do you want to view?", type=str, choices=["paid", "received"])
     @option(name="page", description="Select the page number that you want to view (1 page = 5 logs)", type=int, default=1)
     async def transaction_history(self, ctx: ApplicationContext, transaction_type: str, page: int = 1):
-        """View all your past transactions (paid and received)"""
+        """View all your past transactions. (paid and received)"""
         transactions_db = isocardtxn.fetch_raw()
 
         if transaction_type == "paid":

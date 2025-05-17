@@ -24,6 +24,7 @@ class Weather(commands.Cog):
     )
     @option(name="location", description="What location do you want to set?", type=str)
     async def weather_set_location(self, ctx: ApplicationContext, location: str):
+        """Set your default location for the /weather command."""
         weather.new(ctx.author.id)
         test_ping = requests.get(f"https://api.openweathermap.org/data/2.5/weather?q={location}&appid={api_key}").content
         test_ping_json = json.loads(test_ping)
@@ -39,6 +40,7 @@ class Weather(commands.Cog):
     )
     @option(name="scale", description="Which scale do you want to use?", type=str, choices=["Celsius", "Fahrenheit", "Kelvin"])
     async def weather_set_scale(self, ctx: ApplicationContext, scale: str):
+        """Set your preferred unit scale for temperature for the /weather command."""
         weather.new(ctx.author.id)
         if scale not in ["Celsius", "Fahrenheit", "Kelvin"]: return 1
         weather.set_scale(ctx.author.id, scale)
@@ -51,6 +53,7 @@ class Weather(commands.Cog):
     )
     @option(name="location", description="The location you want weather info about (leave empty for set location)", type=str, default=None)
     async def weather(self, ctx: ApplicationContext, location: str = None):
+        """See the current weather conditions of your set location, or another location."""
         weather.new(ctx.author.id)
         if location == None:
             if weather.get_default_location(ctx.author.id) == None: return await ctx.respond("You do not have a default location set yet.\nEnter a location name and try again.", ephemeral=True)
