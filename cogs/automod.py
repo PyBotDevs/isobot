@@ -187,7 +187,7 @@ class Automod(commands.Cog):
         description="Shows a list of the whitelisted links set for this server.",
     )
     @commands.guild_only()
-    async def automod_view_custom_keywords(self, ctx: ApplicationContext):
+    async def automod_linkblocker_view_whitelisted(self, ctx: ApplicationContext):
         """Shows a list of the whitelisted links set for this server."""
         loaded_config = automod.fetch_config(ctx.guild.id)
         out = ""
@@ -206,7 +206,7 @@ class Automod(commands.Cog):
         description="Shows a list of the blacklisted links set for this server.",
     )
     @commands.guild_only()
-    async def automod_view_custom_keywords(self, ctx: ApplicationContext):
+    async def automod_linkblocker_view_blacklisted(self, ctx: ApplicationContext):
         """Shows a list of the blacklisted links set for this server."""
         loaded_config = automod.fetch_config(ctx.guild.id)
         out = ""
