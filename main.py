@@ -409,6 +409,7 @@ async def help_list(ctx: ApplicationContext, search: str = None):
         automod_moderation_commands = str()
         serverconfig_commands = str()
         maths_commands = str()
+        isocoin_and_isocard_commands = str()
         other_commands = str()
         for _command in commandsdb:
             command_type = commandsdb[_command]["type"]
@@ -420,11 +421,12 @@ async def help_list(ctx: ApplicationContext, search: str = None):
                 elif command_type == "reddit media": reddit_commands += f"`/{_command}` "
                 elif command_type == "AFK system": afk_commands += f"`/{_command}` "
                 elif command_type == "automod" or command_type == "moderation": automod_moderation_commands += f"`/{_command}` "
-                elif command_type == "serverconfig": serverconfig_commands += f"`/{_command}` "
+                elif command_type == "serverconfig" or command_type == "embed system": serverconfig_commands += f"`/{_command}` "
                 elif command_type == "maths": maths_commands += f"`/{_command}` "
+                elif command_type == "IsoCoin system" or command_type == "IsoCard system": isocoin_and_isocard_commands += f"`/{_command}` "
                 else: other_commands += f"`/{_command}` "
                 
-        commands_list = f"**:money_with_wings: Economy System:**\n{economy_commands}\n\n**:arrow_up: Levelling System:**\n{levelling_commands}\n\n**:toolbox: Utilities:**\n{utility_commands}\n\n**:joy: Fun Commands:**\n{fun_commands}\n\n**:crescent_moon: AFK System**\n{afk_commands}\n\n**:tools: Moderation and Automod:**\n{automod_moderation_commands}\n\n**:gear: Server Configuration:**\n{serverconfig_commands}\n\n**:1234: Maths Commands:**\n{maths_commands}\n\n**:frame_photo: Reddit Media Commands:**\n{reddit_commands}\n\n**:sparkles: Miscellaneous:**\n{other_commands}"
+        commands_list = f"**:money_with_wings: Economy System:**\n{economy_commands}\n\n**:arrow_up: Levelling System:**\n{levelling_commands}\n\n**:toolbox: Utilities:**\n{utility_commands}\n\n**:joy: Fun Commands:**\n{fun_commands}\n\n**:crescent_moon: AFK System**\n{afk_commands}\n\n**:tools: Moderation and Automod:**\n{automod_moderation_commands}\n\n**:gear: Server Configuration:**\n{serverconfig_commands}\n\n**:1234: Maths Commands:**\n{maths_commands}\n\n**:frame_photo: Reddit Media Commands:**\n{reddit_commands}\n\n**:credit_card: IsoCoin/IsoCard Commands:**\n{reddit_commands}\n\n**:sparkles: Miscellaneous:**\n{other_commands}"
         localembed = discord.Embed(title="Isobot Command Help", description=commands_list, color=color)
         localembed.set_footer(text="Run \"/help info\" to get more information on a command.")
     await ctx.respond(embed=localembed)
