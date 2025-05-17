@@ -22,7 +22,7 @@ class PresenceCog(commands.Cog):
 
     @afk_system.command(
         name="set",
-        description="Sets your AFK status with a custom response"
+        description="Sets your AFK status with a custom response."
     )
     @commands.guild_only()
     @option(name="response", description="What do you want your AFK response to be?", type=str, default="I'm AFK")
@@ -33,7 +33,7 @@ class PresenceCog(commands.Cog):
 
     @afk_system.command(
         name="remove",
-        description="Removes your AFK status"
+        description="Removes your AFK status."
     )
     @commands.guild_only()
     async def afk_remove(self, ctx: ApplicationContext):
@@ -43,7 +43,7 @@ class PresenceCog(commands.Cog):
 
     @afk_system.command(
         name="mod_remove",
-        description="Removes an AFK status for someone else"
+        description="Removes an AFK status for someone else."
     )
     @commands.guild_only()
     @option(name="user", description="Whose AFK status do you want to remove?", type=discord.User)

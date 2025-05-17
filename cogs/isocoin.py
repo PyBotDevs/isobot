@@ -39,7 +39,7 @@ class IsoCoin(commands.Cog):
 
     @isocoin_system.command(
         name="balance",
-        description="See your IsoCoin balances"
+        description="See your IsoCoin balance."
     )
     async def isocoin_balance(self, ctx: ApplicationContext):
         localembed = discord.Embed(description=f"You currently have **{isocoins[str(ctx.author.id)]}** IsoCoins.")
@@ -47,7 +47,7 @@ class IsoCoin(commands.Cog):
 
     @isocoin_system.command(
         name="daily",
-        description="Collect your daily reward of IsoCoins"
+        description="Collect your daily reward of IsoCoins."
     )
     @commands.cooldown(1, 86400, commands.BucketType.user)
     async def isocoin_daily(self, ctx: ApplicationContext):

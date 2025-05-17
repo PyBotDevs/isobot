@@ -23,7 +23,7 @@ class IsoBank(commands.Cog):
     
     @commands.slash_command(
         name="isobank_register",
-        description="Registers a new IsoBank account with your Discord ID"
+        description="Registers a new IsoBank account with your Discord ID."
     )
     @option(name="pin", description="Your new account's authentication ID. Must be a 6-digit integer.", type=int)
     async def isobank_register(self, ctx: ApplicationContext, pin:int):

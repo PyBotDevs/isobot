@@ -19,7 +19,7 @@ class Fun(commands.Cog):
 
     @commands.slash_command(
         name='stroketranslate',
-        description='Gives you the ability to make full words and sentences from a cluster of letters'
+        description='Gives you the ability to make full words and sentences from a cluster of letters!'
     )
     @option(name="strok", description="What do you want to translate?", type=str)
     async def stroketranslate(self, ctx: ApplicationContext, strok: str):

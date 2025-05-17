@@ -28,7 +28,7 @@ class DevTools(commands.Cog):
 
     @devtools.command(
         name='modify_balance',
-        description="Modifies user balance (Normal Digit: Adds Balance; Negative Digit: Removes Balance)"
+        description="Modifies user balance. (Normal Digit: Adds Balance; Negative Digit: Removes Balance)"
     )
     @option(name="user", description="Specify the user to change their balance", type=discord.User)
     @option(name="modifier", description="Specify the balance to modify", type=int)

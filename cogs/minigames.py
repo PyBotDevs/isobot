@@ -20,7 +20,7 @@ class Minigames(commands.Cog):
     
     @commands.slash_command(
         name="guessthenumber",
-        description="Guess a random number from 1 to 10 that the bot is thinking about"
+        description="Guess a random number from 1 to 10 that the bot is thinking about!"
     )
     @commands.cooldown(1, 10, commands.BucketType.user)
     async def guessthenumber(self, ctx: ApplicationContext):
@@ -38,7 +38,7 @@ class Minigames(commands.Cog):
 
     @commands.slash_command(
         name="highlow",
-        description="Guess whether the actual number is higher or lower than the hint number"
+        description="Guess whether the actual number is higher or lower than the hint number!"
     )
     @commands.cooldown(1, 40, commands.BucketType.user)
     async def highlow(self, ctx: ApplicationContext):

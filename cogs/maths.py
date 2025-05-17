@@ -18,7 +18,7 @@ class Maths(commands.Cog):
 
     @math.command(
         name="squareroot",
-        description="Finds the square root of any positive number"
+        description="Finds the square root of any positive number."
     )
     @option(name="number", description="Which number do you want to find the root of?", type=int)
     async def squareroot(self, ctx: ApplicationContext, number: int):
@@ -59,7 +59,7 @@ class Maths(commands.Cog):
 
     @math.command(
         name="area_square",
-        description="Finds the area of a square"
+        description="Finds the area of a square."
     )
     @option(name="length", description="What is the length of one side?", type=int)
     async def area_square(self, ctx: ApplicationContext, length: int):
@@ -71,7 +71,7 @@ class Maths(commands.Cog):
 
     @math.command(
         name="area_rectangle",
-        description="Finds the area of a rectangle"
+        description="Finds the area of a rectangle."
     )
     @option(name="length", description="What is the length?", type=int)
     @option(name="breadth", description="What is the breadth?", type=int)
@@ -85,7 +85,7 @@ class Maths(commands.Cog):
 
     @math.command(
         name="area_circle",
-        description="Finds the area of a circle"
+        description="Finds the area of a circle."
     )
     @option(name="radius", description="What is the radius of the circle?", type=int)
     @option(name="pi", description="Set a value for π (default is 22/7)", type=str, choices=["22/7", "3.14", "3"], default="22/7")
@@ -102,7 +102,7 @@ class Maths(commands.Cog):
 
     @math.command(
         name="area_triangle",
-        description="Finds the area of a triangle (using Heron's formula)"
+        description="Finds the area of a triangle. (using Heron's formula)"
     )
     @option(name="side_length_a", description="What is the length of side A of the triangle?", type=int)
     @option(name="side_length_b", description="What is the length of side B of the triangle?", type=int)
@@ -121,7 +121,7 @@ class Maths(commands.Cog):
     # Volume Commands
     @math.command(
         name="volume_cuboid",
-        description="Find the volume of a cuboid (use only length for volume of cube)"
+        description="Find the volume of a cuboid. (use only length for volume of cube)"
     )
     @option(name="length", description="The length of the cuboid", type=float)
     @option(name="breadth", description="The breadth of the cuboid", type=float, default=None)
@@ -138,7 +138,7 @@ class Maths(commands.Cog):
 
     @math.command(
         name="volume_sphere",
-        description="Find the volume of a sphere"
+        description="Find the volume of a sphere."
     )
     @option(name="radius", description="The radius of the corresponding sphere", type=float)
     async def volume_sphere(self, ctx: ApplicationContext, radius: float):
@@ -150,7 +150,7 @@ class Maths(commands.Cog):
 
     @math.command(
         name="volume_hemisphere",
-        description="Find the volume of a hemisphere"
+        description="Find the volume of a hemisphere."
     )
     @option(name="radius", description="The radius of the corresponding hemisphere", type=float)
     async def volume_sphere(self, ctx: ApplicationContext, radius: float):
@@ -162,7 +162,7 @@ class Maths(commands.Cog):
 
     @math.command(
         name="volume_cylinder",
-        description="Find the volume of a cylinder"
+        description="Find the volume of a cylinder."
     )
     @option(name="radius", description="The radius of the cylinder", type=float)
     @option(name="height", description="The height of the cylinder", type=float)
@@ -175,7 +175,7 @@ class Maths(commands.Cog):
 
     @math.command(
         name="volume_cone",
-        description="Find the volume of a cone"
+        description="Find the volume of a cone."
     )
     @option(name="radius", description="The radius of the base of the cone", type=float)
     @option(name="height", description="The height of the cone", type=float)
@@ -189,7 +189,7 @@ class Maths(commands.Cog):
     # Surface Area Commands
     @math.command(
         name="surfacearea_cuboid",
-        description="Find the surface area of a cuboid"
+        description="Find the surface area of a cuboid. (use only length for cube)"
     )
     @option(name="length", description="The length of the cuboid", type=float)
     @option(name="breadth", description="The breadth of the cuboid", type=float, default=None)
@@ -206,7 +206,7 @@ class Maths(commands.Cog):
 
     @math.command(
         name="surfacearea_sphere",
-        description="Find the surface area of a sphere"
+        description="Find the surface area of a sphere."
     )
     @option(name="radius", description="The radius of the sphere", type=float)
     async def surfacearea_sphere(self, ctx: ApplicationContext, radius: float):
@@ -218,7 +218,7 @@ class Maths(commands.Cog):
     
     @math.command(
         name="surfacearea_hemisphere",
-        description="Find the surface area of a hemisphere"
+        description="Find the surface area of a hemisphere."
     )
     @option(name="mode", description="Do you want to calculate for CSA or TSA?", type=str, choices=["CSA", "TSA"])
     @option(name="radius", description="The radius of the hemisphere", type=float)
@@ -236,7 +236,7 @@ class Maths(commands.Cog):
     
     @math.command(
         name="surfacearea_cylinder",
-        description="Find the surface area of a cylinder"
+        description="Find the surface area of a cylinder."
     )
     @option(name="mode", description="Do you want to calculate for CSA or TSA?", type=str, choices=["CSA", "TSA"])
     @option(name="radius", description="The radius of the cylinder", type=float)
@@ -255,7 +255,7 @@ class Maths(commands.Cog):
 
     @math.command(
         name="surfacearea_cone",
-        description="Find the surface area of a cone"
+        description="Find the surface area of a cone."
     )
     @option(name="mode", description="Do you want to calculate for CSA or TSA?", type=str, choices=["CSA", "TSA"])
     @option(name="radius", description="The radius of the cone", type=float)

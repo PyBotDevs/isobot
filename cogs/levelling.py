@@ -18,7 +18,7 @@ class Levelling(commands.Cog):
 
     @commands.slash_command(
         name="rank",
-        description="Shows your rank or another user's rank"
+        description="Shows your rank or another user's rank."
     )
     @option(name="user", description="Who's rank do you want to view?", type=discord.User, default=None)
     async def rank(self, ctx: ApplicationContext, user: discord.User=None):

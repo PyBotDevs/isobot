@@ -20,7 +20,7 @@ class Automod(commands.Cog):
 
     @automod_cmds.command(
         name="config",
-        description="Shows the current automod configuration for your server"
+        description="Shows the current automod configuration for your server."
     )
     @commands.guild_only()
     async def automod_config(self, ctx: ApplicationContext):
@@ -35,7 +35,7 @@ class Automod(commands.Cog):
     # Swear-filter Commands
     @automod_cmds.command(
         name="swearfilter",
-        description="Turn on or off automod's swear-filter in your server"
+        description="Turn on or off automod's swear-filter in your server."
     )
     @commands.guild_only()
     @option(name="toggle", description="Do you want to turn it on or off?", type=bool)
@@ -48,7 +48,7 @@ class Automod(commands.Cog):
 
     @automod_cmds.command(
         name="use_default_keywords",
-        description="Choose whether or not you want to use the default keywords for automod's swear-filter"
+        description="Choose whether or not you want to use the default keywords for automod's swear-filter."
     )
     @commands.guild_only()
     @option(name="toggle", description="Do you want to turn it on or off?", type=bool)
@@ -61,7 +61,7 @@ class Automod(commands.Cog):
 
     @automod_cmds.command(
         name="view_custom_keywords",
-        description="Shows a list of the custom automod swear-filter keywords set for your server",
+        description="Shows a list of the custom automod swear-filter keywords set for your server.",
     )
     @commands.guild_only()
     async def automod_view_custom_keywords(self, ctx: ApplicationContext):
@@ -79,7 +79,7 @@ class Automod(commands.Cog):
 
     @automod_cmds.command(
         name="add_custom_keyword",
-        description="Adds a custom keyword to your server's swear-filter"
+        description="Adds a custom keyword to your server's swear-filter."
     )
     @commands.guild_only()
     @option(name="keyword", description="What keyword do you want to add?", type=str)
@@ -94,7 +94,7 @@ class Automod(commands.Cog):
 
     @automod_cmds.command(
         name="remove_custom_keyword",
-        description="Removes a custom keyword (matching its id) from your server's swear-filter"
+        description="Removes a custom keyword (matching its id) from your server's swear-filter."
     )
     @commands.guild_only()
     @option(name="id", description="What's the id of the keyword to remove (can be found through /automod_view_custom_keywords", type=int)
@@ -108,7 +108,7 @@ class Automod(commands.Cog):
     # Link Blocker Commands
     @automod_cmds.command(
         name="linkblocker",
-        description="Turn on or off automod's link blocker in your server"
+        description="Turn on or off automod's link blocker in your server."
     )
     @commands.guild_only()
     @option(name="toggle", description="Do you want to turn it on or off?", type=bool)
@@ -121,7 +121,7 @@ class Automod(commands.Cog):
     
     @automod_cmds.command(
         name="linkblocker_only_whitelisted",
-        description="Only allows whitelisted links in the server and blocks all other links"
+        description="Only allows whitelisted links in the server and blocks all other links."
     )
     @commands.guild_only()
     @option(name="toggle", description="Do you want to turn it on or off?", type=bool)
@@ -162,7 +162,7 @@ class Automod(commands.Cog):
     
     @automod_cmds.command(
         name="linkblocker_view_whitelisted",
-        description="Shows a list of the whitelisted links set for this server",
+        description="Shows a list of the whitelisted links set for this server.",
     )
     @commands.guild_only()
     async def automod_view_custom_keywords(self, ctx: ApplicationContext):
@@ -180,7 +180,7 @@ class Automod(commands.Cog):
     
     @automod_cmds.command(
         name="linkblocker_view_blacklisted",
-        description="Shows a list of the blacklisted links set for this server",
+        description="Shows a list of the blacklisted links set for this server.",
     )
     @commands.guild_only()
     async def automod_view_custom_keywords(self, ctx: ApplicationContext):
@@ -198,7 +198,7 @@ class Automod(commands.Cog):
     
     @automod_cmds.command(
         name="linkblocker_remove_blacklist",
-        description="Removes a blacklisted link (matching its id) from this server's link blocker"
+        description="Removes a blacklisted link (matching its id) from this server's link blocker."
     )
     @commands.guild_only()
     @option(name="id", description="What's the id of the link to remove? (can be found through /automod_view_blacklisted_links", type=int)
@@ -211,7 +211,7 @@ class Automod(commands.Cog):
     
     @automod_cmds.command(
         name="linkblocker_remove_whitelist",
-        description="Removes a whitelisted link (matching its id) from this server's link blocker"
+        description="Removes a whitelisted link (matching its id) from this server's link blocker."
     )
     @commands.guild_only()
     @option(name="id", description="What's the id of the link to remove? (can be found through /automod_view_whitelisted_links", type=int)

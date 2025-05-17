@@ -103,7 +103,7 @@ class IsoCard(commands.Cog):
 
     @isocard.command(
         name="options_label",
-        description="Set your IsoCard's label"
+        description="Set your IsoCard's label."
     )
     @option(name="card_number", description="Enter your card number that you want to work with.", type=int)
     @option(name="new_label", description="What do you want your new card label to be?", type=str, default=None)
@@ -137,7 +137,7 @@ class IsoCard(commands.Cog):
 
     @isocard.command(
         name="transaction_history",
-        description="View all your past transactions (paid and received)"
+        description="View all your past transactions. (paid and received)"
     )
     @option(name="transaction_type", description="Which type of transactions do you want to view?", type=str, choices=["paid", "received"])
     @option(name="page", description="Select the page number that you want to view (1 page = 5 logs)", type=int, default=1)
