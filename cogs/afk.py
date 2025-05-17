@@ -27,6 +27,7 @@ class PresenceCog(commands.Cog):
     @commands.guild_only()
     @option(name="response", description="What do you want your AFK response to be?", type=str, default="I'm AFK")
     async def afk_set(self, ctx: ApplicationContext, response: str="I'm AFK"):
+        """Sets your AFK status with a custom response."""
         presence.add_afk(ctx.guild.id, ctx.user.id, response)
         localembed = discord.Embed(title=f"{ctx.author.display_name} is now AFK.", description=f"Response: {response}", color=discord.Color.dark_orange())
         await ctx.respond(embed=localembed)
@@ -37,6 +38,7 @@ class PresenceCog(commands.Cog):
     )
     @commands.guild_only()
     async def afk_remove(self, ctx: ApplicationContext):
+        """Removes your AFK status."""
         status = presence.remove_afk(ctx.guild.id, ctx.author.id)
         if status == 0: return await ctx.respond(f"Alright {ctx.author.mention}, I've removed your AFK.")
         elif status == 1: return await ctx.respond("You weren't previously AFK.", ephemeral=True)
@@ -48,6 +50,7 @@ class PresenceCog(commands.Cog):
     @commands.guild_only()
     @option(name="user", description="Whose AFK status do you want to remove?", type=discord.User)
     async def afk_mod_remove(self, ctx: ApplicationContext, user:discord.User):
+        """Removes an AFK status for someone else."""
         if not ctx.author.guild_permissions.manage_messages: return await ctx.respond("You don't have the required permissions to use this.", ephemeral=True)
         status = presence.remove_afk(ctx.guild.id, user.id)
         if status == 0: return await ctx.respond(f"{user.display_name}'s AFK has been removed.")

@@ -24,6 +24,7 @@ class Minigames(commands.Cog):
     )
     @commands.cooldown(1, 10, commands.BucketType.user)
     async def guessthenumber(self, ctx: ApplicationContext):
+        """Guess a random number from 1 to 10 that the bot is thinking about!"""
         number = randint(1, 10)
         localembed = discord.Embed(title="Guess the number!", description="I am currently thinking of a number from 1 to 10. Can you guess what it is?", color=color)
         localembed.set_footer(text="If you guess what it is, you will win 500 to 1000 coins!")
@@ -42,6 +43,7 @@ class Minigames(commands.Cog):
     )
     @commands.cooldown(1, 40, commands.BucketType.user)
     async def highlow(self, ctx: ApplicationContext):
+        """Guess whether the actual number is higher or lower than the hint number!"""
         numb = randint(1, 100)
         numb2 = randint(1, 100)
         coins = randint(300, 1000)

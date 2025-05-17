@@ -42,6 +42,7 @@ class IsoCoin(commands.Cog):
         description="See your IsoCoin balance."
     )
     async def isocoin_balance(self, ctx: ApplicationContext):
+        """See your IsoCoin balance."""
         localembed = discord.Embed(description=f"You currently have **{isocoins[str(ctx.author.id)]}** IsoCoins.")
         await ctx.respond(embed=localembed)
 
@@ -51,6 +52,7 @@ class IsoCoin(commands.Cog):
     )
     @commands.cooldown(1, 86400, commands.BucketType.user)
     async def isocoin_daily(self, ctx: ApplicationContext):
+        """Collect your daily reward of IsoCoins."""
         isocoins_reward = random.randint(2500, 5000)
         isocoins[str(ctx.author.id)] += isocoins_reward
         save()
@@ -61,6 +63,7 @@ class IsoCoin(commands.Cog):
         description="See all the items that you can buy using your IsoCoins."
     )
     async def isocoin_shop(self, ctx: ApplicationContext):
+        """See all the items that you can buy using your IsoCoins."""
         await ctx.respond("IsoCoin shop is coming soon! Check back later for new items.")
 
 # Cog Initialization

@@ -33,6 +33,7 @@ class DevTools(commands.Cog):
     @option(name="user", description="Specify the user to change their balance", type=discord.User)
     @option(name="modifier", description="Specify the balance to modify", type=int)
     async def modify_balance(self, ctx: ApplicationContext, user: discord.User, modifier: int):
+        """Modifies user balance. (Normal Digit: Adds Balance; Negative Digit: Removes Balance)"""
         if str(ctx.author.id) not in fetch_superusers(): return ctx.respond("This command is usable only by **developers** and **bot superusers**.", ephemeral=True)
         try:
             currency.add(user.id, modifier)
@@ -46,6 +47,7 @@ class DevTools(commands.Cog):
     @option(name="user", description="Who's rank do you want to edit?", type=discord.User)
     @option(name="new_rank", description="The new rank you want to set for the user", type=int)
     async def edit_rank(self, ctx: ApplicationContext, user: discord.User, new_rank: int):
+        """Edits a user's rank."""
         if str(ctx.author.id) not in fetch_superusers(): return await ctx.respond("This command is usable only by **developers** and **bot superusers**.", ephemeral=True)
         try:
             levelling.set_level(user.id, new_rank)
@@ -59,6 +61,7 @@ class DevTools(commands.Cog):
     @option(name="user", description="Who's rank do you want to edit?", type=discord.User)
     @option(name="new_xp", description="The new xp count you want to set for the user", type=int)
     async def edit_xp(self, ctx: ApplicationContext, user: discord.User, new_xp: int):
+        """Edits a user's XP."""
         if str(ctx.author.id) not in fetch_superusers(): return await ctx.respond("This command is usable only by **developers** and **bot superusers**.", ephemeral=True)
         try:
             levelling.set_xp(user.id, new_xp)

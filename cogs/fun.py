@@ -23,6 +23,7 @@ class Fun(commands.Cog):
     )
     @option(name="strok", description="What do you want to translate?", type=str)
     async def stroketranslate(self, ctx: ApplicationContext, strok: str):
+        """Gives you the ability to make full words and sentences from a cluster of letters!"""
         if len(strok) > 300: return await ctx.respond("Please use no more than `300` character length", ephemeral=True)
         else:
             with open(f"{client_data_dir}/config/words.json", "r", encoding="utf-8") as f: words = json.load(f)
