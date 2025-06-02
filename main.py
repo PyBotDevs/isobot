@@ -555,6 +555,18 @@ async def reload(ctx: ApplicationContext, cog: str):
             )
         )
 
+# Core Developer Commands
+@client.slash_command(
+    name="shutdown",
+    description="Shut down the bot as a developer."
+)
+async def shutdown(ctx: ApplicationContext):
+    """Shut down the bot as a developer."""
+    if ctx.author.id != 738290097170153472:
+        return await ctx.respond("You can't use this command!", ephemeral=True)
+    ctx.respond(":sleeping: Acknowledged. Isobot will now shut down.")
+    raise SystemExit
+
 # Settings commands
 config = client.create_group("settings", "Commands used to change bot settings.")
 
