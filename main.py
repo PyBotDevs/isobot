@@ -44,7 +44,9 @@ client_data_dir = f"{home_dir}/.isobot"
 
 # Pre-Initialization Commands
 def initial_setup():
-    """Runs the initial setup for isobot's directories.\nThis creates missing directories, new log files, as well as new databases for any missing `.json` database files."""
+    """Runs the initial setup for isobot's directories.
+    \n
+    This creates missing directories, new log files, as well as new databases for any missing `.json` database files."""
     # Create required client directories
     try:
         if not os.path.isdir(f"{home_dir}/.isobot"):
