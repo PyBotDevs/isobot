@@ -54,7 +54,7 @@ class DevTools(commands.Cog):
             await ctx.respond(f"{user.display_name}\'s rank successfully edited. `New Rank: {levelling.get_level(user.id)}`")
         except KeyError: return await ctx.respond("That user isn't indexed yet.", ephemeral=True)
 
-    @devtools.commands(
+    @devtools.command(
         name="edit_xp",
         description="Edits a user's XP."
     )

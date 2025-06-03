@@ -622,6 +622,21 @@ async def credits(ctx: ApplicationContext):
     )
     await ctx.respond(embed=localembed)
 
+@client.slash_command(
+    name="invite",
+    description="Quickly get a link to invite isobot to your own server."
+)
+async def invite(ctx: ApplicationContext):
+    """Quickly get a link to invite isobot to your own server."""
+    localembed = discord.Embed(
+        title="Invite isobot to your server!",
+        description="You can invite isobot to your own server (or other servers that you manage) to get the same great experience there too!\n\nJust click [here](https://discord.com/oauth2/authorize?client_id=896437848176230411&permissions=8&redirect_uri=https%3A%2F%2Fbit.ly%2Fisobotinv&integration_type=0&scope=bot+applications.commands) to invite.",
+        color=color
+    )
+    localembed.add_field(name="Our Website", value="https://pybotdevs.github.io/isobot")
+    localembed.add_field(name="Isobot Support Server", value="https://discord.gg/NcJgwKWgvw")
+    await ctx.respond(embed=localembed)
+
 # Initialization
 active_cogs = (
     "economy",
