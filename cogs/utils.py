@@ -181,86 +181,86 @@ class Utils(commands.Cog):
         localembed.set_footer(text=f"Requested by {ctx.author.name}", icon_url=ctx.author.avatar)
         await ctx.respond(embed=localembed)
 
-    @commands.slash_command(
-        name="chatgpt",
-        description="Talk to ChatGPT and get a response back."
-    )
-    @option(name="message", description="What do you want to send to ChatGPT?", type=str)
-    @commands.cooldown(1, 1, commands.BucketType.user)
-    async def chatgpt(self, ctx: ApplicationContext, message: str):
-        """Talk to ChatGPT and get a response back."""
-        if str(ctx.author.id) not in chatgpt_conversation:
-            chatgpt_conversation[str(ctx.author.id)] = [
-                    {
-                        "role": "system",
-                        "content": "You are a intelligent assistant."
-                    }
-                ]
-        await ctx.defer()
-        try:
-            chatgpt_conversation[str(ctx.author.id)].append({"role": "user", "content": message})
-            _chat = openai.ChatCompletion.create(
-                model="gpt-3.5-turbo",
-                messages=chatgpt_conversation[str(ctx.author.id)]
-            )
-            _reply = _chat.choices[0].message.content
-            chatgpt_conversation[str(ctx.author.id)].append({"role": "assistant", "content": _reply})
-        except openai.error.RateLimitError as e:
-            print(f"Rate limit for OpenAI exceeded: {e}")
-            return await ctx.respond("The OpenAI API is currently being rate-limited. Try again after some time.", ephemeral=True)
-        except openai.error.ServiceUnavailableError:
-            return await ctx.respond("The ChatGPT service is currently unavailable.\nTry again after some time, or check it's status at https://status.openai.com", ephemeral=True)
-        except openai.error.APIError:
-            return await ctx.respond("ChatGPT encountered an internal error. Please try again.", ephemeral=True)
-        except openai.error.Timeout:
-            return await ctx.respond("Your request timed out. Please try again, or wait for a while.", ephemeral=True)
-        localembed = discord.Embed(description=f"{_reply}", color=discord.Color.random())
-        localembed.set_author(name="ChatGPT", icon_url="https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/ChatGPT_logo.svg/1200px-ChatGPT_logo.svg.png")
-        localembed.set_footer(text="Powered by OpenAI")
-        await ctx.respond(embed=localembed)
+#    @commands.slash_command(
+#        name="chatgpt",
+#        description="Talk to ChatGPT and get a response back."
+#    )
+#    @option(name="message", description="What do you want to send to ChatGPT?", type=str)
+#    @commands.cooldown(1, 1, commands.BucketType.user)
+#    async def chatgpt(self, ctx: ApplicationContext, message: str):
+#        """Talk to ChatGPT and get a response back."""
+#        if str(ctx.author.id) not in chatgpt_conversation:
+#            chatgpt_conversation[str(ctx.author.id)] = [
+#                    {
+#                        "role": "system",
+#                        "content": "You are a intelligent assistant."
+#                    }
+#                ]
+#        await ctx.defer()
+#        try:
+#            chatgpt_conversation[str(ctx.author.id)].append({"role": "user", "content": message})
+#            _chat = openai.ChatCompletion.create(
+#                model="gpt-3.5-turbo",
+#                messages=chatgpt_conversation[str(ctx.author.id)]
+#            )
+#            _reply = _chat.choices[0].message.content
+#            chatgpt_conversation[str(ctx.author.id)].append({"role": "assistant", "content": _reply})
+#        except openai.error.RateLimitError as e:
+#            print(f"Rate limit for OpenAI exceeded: {e}")
+#            return await ctx.respond("The OpenAI API is currently being rate-limited. Try again after some time.", ephemeral=True)
+#        except openai.error.ServiceUnavailableError:
+#            return await ctx.respond("The ChatGPT service is currently unavailable.\nTry again after some time, or check it's status at https://status.openai.com", ephemeral=True)
+#        except openai.error.APIError:
+#            return await ctx.respond("ChatGPT encountered an internal error. Please try again.", ephemeral=True)
+#        except openai.error.Timeout:
+#            return await ctx.respond("Your request timed out. Please try again, or wait for a while.", ephemeral=True)
+#        localembed = discord.Embed(description=f"{_reply}", color=discord.Color.random())
+#        localembed.set_author(name="ChatGPT", icon_url="https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/ChatGPT_logo.svg/1200px-ChatGPT_logo.svg.png")
+#        localembed.set_footer(text="Powered by OpenAI")
+#        await ctx.respond(embed=localembed)
 
-    @commands.slash_command(
-        name="generate_image",
-        description="Generate an image of your choice using the DALL-E modal."
-    )
-    @option(name="prompt", description="What image do you want the bot to generate?", type=str)
-    @option(name="resolution", description="Set a custom resolution for your generated image", type=str, default="512x512", choices=["256x256", "512x512", "1024x1024"])
-    @commands.cooldown(1, 10, commands.BucketType.user)
-    async def generate_image(self, ctx: ApplicationContext, prompt: str, resolution: str = "512x512"):
-        """Generate an image of your choice using the DALL-E modal."""
-        parsed_resolution: list = resolution.split("x")
-        max_index: int = 0
-        for index in parsed_resolution:
-            max_index += 1
-        if max_index < 2 or max_index > 2:
-            return await ctx.respond("Your resolution format is malformed. Please check it and try again.", ephemeral=True)
-        res_width = int(parsed_resolution[0])
-        res_height = int(parsed_resolution[1])
-        if res_width < 256 or res_height < 256:
-            return await ctx.respond("Your custom resolution needs to be at least 256p or higher.", ephermeral=True)
-        if res_width > 1024 or res_height > 1024:
-            return await ctx.respond("Your image output resolution cannot exceed 1024p.", ephemeral=True)
-        await ctx.defer()
-        try:
-            response = openai.Image.create(
-                prompt=prompt,
-                n=1,
-                size=resolution
-            )
-            generated_image_url = response['data'][0]['url']
-        except openai.error.RateLimitError:
-            return await ctx.respond("The OpenAI API is currently being rate-limited. Try again after some time.", ephemeral=True)
-        except openai.error.ServiceUnavailableError:
-            return await ctx.respond("The OpenAI service is currently unavailable.\nTry again after some time, or check it's status at https://status.openai.com", ephemeral=True)
-        except openai.error.APIError:
-            return await ctx.respond("DALL-E encountered an internal error. Please try again.", ephemeral=True)
-        except openai.error.Timeout:
-            return await ctx.respond("Your request timed out. Please try again, or wait for a while.", ephemeral=True)
-        localembed = discord.Embed(title="Here's an image generated using your prompt.", color=discord.Color.random())
-        localembed.set_image(url=generated_image_url)
-        localembed.set_author(name="DALL-E", icon_url="https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/ChatGPT_logo.svg/1200px-ChatGPT_logo.svg.png")
-        localembed.set_footer(text="Powered by OpenAI")
-        await ctx.respond(embed=localembed)
+#    @commands.slash_command(
+#        name="generate_image",
+#        description="Generate an image of your choice using the DALL-E modal."
+#    )
+#    @option(name="prompt", description="What image do you want the bot to generate?", type=str)
+#    @option(name="resolution", description="Set a custom resolution for your generated image", type=str, default="512x512", choices=["256x256", "512x512", "1024x1024"])
+#    @commands.cooldown(1, 10, commands.BucketType.user)
+#    async def generate_image(self, ctx: ApplicationContext, prompt: str, resolution: str = "512x512"):
+#        """Generate an image of your choice using the DALL-E modal."""
+#        parsed_resolution: list = resolution.split("x")
+#        max_index: int = 0
+#        for index in parsed_resolution:
+#            max_index += 1
+#        if max_index < 2 or max_index > 2:
+#            return await ctx.respond("Your resolution format is malformed. Please check it and try again.", ephemeral=True)
+#        res_width = int(parsed_resolution[0])
+#        res_height = int(parsed_resolution[1])
+#        if res_width < 256 or res_height < 256:
+#            return await ctx.respond("Your custom resolution needs to be at least 256p or higher.", ephermeral=True)
+#        if res_width > 1024 or res_height > 1024:
+#            return await ctx.respond("Your image output resolution cannot exceed 1024p.", ephemeral=True)
+#        await ctx.defer()
+#        try:
+#            response = openai.Image.create(
+#                prompt=prompt,
+#                n=1,
+#                size=resolution
+#            )
+#            generated_image_url = response['data'][0]['url']
+#        except openai.error.RateLimitError:
+#            return await ctx.respond("The OpenAI API is currently being rate-limited. Try again after some time.", ephemeral=True)
+#        except openai.error.ServiceUnavailableError:
+#            return await ctx.respond("The OpenAI service is currently unavailable.\nTry again after some time, or check it's status at https://status.openai.com", ephemeral=True)
+#        except openai.error.APIError:
+#            return await ctx.respond("DALL-E encountered an internal error. Please try again.", ephemeral=True)
+#        except openai.error.Timeout:
+#            return await ctx.respond("Your request timed out. Please try again, or wait for a while.", ephemeral=True)
+#        localembed = discord.Embed(title="Here's an image generated using your prompt.", color=discord.Color.random())
+#        localembed.set_image(url=generated_image_url)
+#        localembed.set_author(name="DALL-E", icon_url="https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/ChatGPT_logo.svg/1200px-ChatGPT_logo.svg.png")
+#        localembed.set_footer(text="Powered by OpenAI")
+#        await ctx.respond(embed=localembed)
     
     @commands.slash_command(
         name="vote",
