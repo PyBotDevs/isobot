@@ -4,7 +4,7 @@
 import os
 import math
 import psutil
-import openai
+# import openai
 import discord
 import time
 import datetime
@@ -23,7 +23,7 @@ currency = currency.CurrencyAPI(f"{client_data_dir}/database/currency.json", f"{
 levelling = levelling.Levelling()
 _commands = cmds.Commands()
 _embeds = _embeds.Embeds()
-openai.api_key = auth.ext_token('chatgpt')
+# openai.api_key = auth.ext_token('chatgpt')
 chatgpt_conversation = dict()
 _presence = Presence()
 
